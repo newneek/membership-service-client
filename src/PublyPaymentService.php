@@ -41,16 +41,30 @@ class PublyPaymentService extends BaseApiService {
     /*
      * Order related functions
      */
-    public function getOrdersByUser($userId, $page, $limit)
+    public function payReservedOrdersByContent($changerId, $contentId)
     {
-        return $this->get("order/user/{$userId}", 
-                          [ 'page' => $page,
-                            'limit' => $limit ]);
+        return $this->put("order/content/{$contentId}", 
+                          [ 'changer_id' => $changerId, 
+                            'action' => 'pay' ]);
     }
 
-    public function getTotalOrdersByRewardId($rewardId)
+    public function failReservedOrdersByContent($changerId, $contentId)
     {
-    	return $this->get("order/reward/{$rewardId}/total");
+        return $this->put("order/content/{$contentId}", 
+                          [ 'changer_id' => $changerId, 
+                            'action' => 'fail' ]);
+    }   
+
+    public function getOrdersByUser($userId, $page, $limit, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("order/user/{$userId}", $filterArray);
+    }
+
+    public function getTotalOrdersByRewardId($rewardId, $filterArray = [])
+    {
+        return $this->get("order/reward/{$rewardId}/total", $filterArray);
     }
 
     public function getOrdersByProjectId($projectId, $page = 1, $limit = 10)
@@ -83,6 +97,7 @@ class PublyPaymentService extends BaseApiService {
                 ]);
         } catch (ResponseException $e) {
             $result['success'] = false;
+            $result['error_code'] = $e->getCode();
             $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
 
             return $result;
@@ -97,6 +112,61 @@ class PublyPaymentService extends BaseApiService {
     /*
      * Helpers
      */
+    public function orderAndReservePayment(
+                        $userId,
+                        $creditCardId,
+                        $contentId,
+                        $rewardId,
+                        $price,
+                        $userName,
+                        $userEmail,
+                        $userPhone)
+    {
+        $result = [ 'success' => false ];
+
+        // order
+        $resultOrder = $this->order(
+                                $userId,
+                                $contentId,
+                                $rewardId,
+                                $price,
+                                $userName,
+                                $userEmail,
+                                $userPhone);
+
+        if (!$resultOrder['success']) {
+            $result['success'] = false;
+            $result['from'] = 'order';
+            $result['error_code'] = $resultOrder['error_code'];
+            $result['message'] = $resultOrder['message'];
+            return $result;
+        }
+
+        $order = $resultOrder['item'];
+        // 정상적으로 주문 되었음. 
+
+        // reserve payment
+        $resultPayment = $this->reservePayment(
+                                $userId,
+                                $order['id'],
+                                static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+                                $creditCardId);
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $payment = $resultPayment['item'];
+        //
+
+        $result['success'] = true;
+        return $result;
+    }
+
     public function addCreditCardAndOrderAndReservePayment(
     					$userId,
     					$creditCardNumber,
@@ -124,7 +194,9 @@ class PublyPaymentService extends BaseApiService {
 
     	if (!$resultCreditCard['success']) {
     		$result['success'] = false;
-    		$result['message'] = $resultCreditCard['message'];
+            $result['from'] = 'credit_card';
+            $result['error_code'] = $resultCreditCard['error_code'];
+            $result['message'] = $resultCreditCard['message'];
     		return $result;
     	}
 
@@ -143,7 +215,9 @@ class PublyPaymentService extends BaseApiService {
 
     	if (!$resultOrder['success']) {
     		$result['success'] = false;
-    		$result['message'] = $resultOrder['message'];
+            $result['from'] = 'order';
+            $result['error_code'] = $resultOrder['error_code'];
+            $result['message'] = $resultOrder['message'];
     		return $result;
     	}
 
@@ -159,7 +233,9 @@ class PublyPaymentService extends BaseApiService {
 
     	if (!$resultPayment['success']) {
     		$result['success'] = false;
-    		$result['message'] = $resultPayment['message'];
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
     		return $result;
     	}
 
@@ -192,6 +268,7 @@ class PublyPaymentService extends BaseApiService {
 				]);
     	} catch (ResponseException $e) {
     		$result['success'] = false;
+            $result['error_code'] = $e->getCode();
     		$result['message'] = json_decode($e->getMessage(), true)['error']['message'];
 
     		return $result;
@@ -228,10 +305,8 @@ class PublyPaymentService extends BaseApiService {
                 ]);
 
         } catch (ResponseException $e) {
-
-            return $e->getMessage();
-
             $result['success'] = false;
+            $result['error_code'] = $e->getCode();
             $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
 
             return $result;
@@ -246,6 +321,7 @@ class PublyPaymentService extends BaseApiService {
     /* 
      * Payment Methods related functions
      */
+
     public function getCreditCardsByUser($userId)
     {
         return $this->get("credit_card/user/{$userId}");
@@ -273,6 +349,7 @@ class PublyPaymentService extends BaseApiService {
 				]);
     	} catch (ResponseException $e) {
     		$result['success'] = false;
+            $result['error_code'] = $e->getCode();
     		$result['message'] = json_decode($e->getMessage(), true)['error']['message'];
 
     		return $result;
@@ -282,5 +359,101 @@ class PublyPaymentService extends BaseApiService {
     	$result['item'] = $resultCreditCard['success']['data'];
 
     	return $result;
+    }
+
+    public function deleteCreditCard(
+                        $userId,
+                        $creditCardId)
+    {
+        $result = [ 'success' => false ];
+        try {
+            $resultCreditCard = 
+                $this->post("credit_card/{$creditCardId}/delete", [    
+                    'changer_id' => $userId,
+                    'user_id' => $userId
+                ]);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $result['success'] = true;
+        return $result;
+    }
+
+    /* 
+     * Main Payment Method related functions
+     */
+    public function getMainPaymentMethod($userId)
+    {
+        $pgType = static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD;
+        try {
+            $resultMainPaymentMethod = 
+                $this->get("user_main_payment_method/user/{$userId}/pg_type/{$pgType}");
+        } catch (ResponseException $e) {            
+            return null;
+        }
+
+        return $resultMainPaymentMethod['success']['data'];
+    }
+
+    public function setMainPaymentMethod($userId, $creditCardId)
+    {
+        $result = [ 'success' => false ];
+        $pgType = static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD;
+        try {
+            $resultMainPaymentMethod = 
+                $this->put("user_main_payment_method/user/{$userId}/pg_type/{$pgType}",
+                           [ 'credit_card_id' => $creditCardId ]);
+            $result['success'] = true;
+        } catch (ResponseException $e) {            
+            $result['success'] = false;
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+        }
+
+        return $result;
+    }
+
+    public function updatePayment($changerId, $paymentId, $creditCardId)
+    {
+        $result = [ 'success' => false ];
+        $pgType = static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD;
+        try {
+            $resultApi = 
+                $this->put("/payment/{$paymentId}",
+                           [ 'changer_id' => $changerId,
+                             'action' => 'change',
+                             'pg_type' => $pgType,
+                             'credit_card_id' => $creditCardId ]);
+            $result['success'] = true;
+        } catch (ResponseException $e) {            
+            $result['success'] = false;
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+        }
+        
+        return $result;
+    }
+
+    public function cancelOrder($changerId, $orderId)
+    {
+        $result = [ 'success' => false ];
+        try {
+            $resultApi = 
+                $this->put("/order/{$orderId}",
+                           [ 'changer_id' => $changerId,
+                             'action' => 'cancel' ]);
+            $result['success'] = true;
+        } catch (ResponseException $e) {            
+            $result['success'] = false;
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+        }
+        
+        return $result;
     }
 }
