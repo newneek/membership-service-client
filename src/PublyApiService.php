@@ -6,10 +6,10 @@ use App\Services\Api\BaseApiService;
 
 class PublyApiService extends BaseApiService {
 
-    public function __construct() {
+    public function __construct($domain) {
         parent::__construct();
 
-        $this->domain = config('services.publy_api.domain');
+        $this->domain = $domain;
         $this->apiUrl = "$this->domain/";        
-    }    
+    }     
 }

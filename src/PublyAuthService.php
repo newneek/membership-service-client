@@ -11,10 +11,10 @@ class PublyAuthService extends BaseApiService {
     const GROUP_MANAGER = 3;
     const GROUP_AUTHOR = 4;
 
-    public function __construct() {
+    public function __construct($domain) {
         parent::__construct();
 
-        $this->domain = config('services.publy_auth.domain');
+        $this->domain = $domain;
         $this->apiUrl = "$this->domain/";        
     }
 
