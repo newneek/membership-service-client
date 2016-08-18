@@ -18,7 +18,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Publy\\Service\\Client\\": "src/"
+            "Publy\\ServiceClient\\": "src/"
         }
     }
 }

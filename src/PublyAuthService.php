@@ -1,6 +1,6 @@
 <?php
 
-namespace Publy\Service\Client;
+namespace Publy\ServiceClient;
 
 use App\Services\Api\BaseApiService;
 use App\Services\Api\ResponseException;
