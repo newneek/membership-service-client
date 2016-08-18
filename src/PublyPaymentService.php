@@ -1,5 +1,5 @@
 <?php
-
+ 
 namespace Publy\ServiceClient;
 
 use App\Services\Api\BaseApiService;
