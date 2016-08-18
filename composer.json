@@ -1,7 +1,19 @@
 {
     "name": "publy/publy-service-client",
+    "type": "library",
     "description": "publy all api service client",
+    "keywords": ["service"],
+    "homepage": "https://publy.co",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yongsang Lee",
+            "email": "yongsang@publy.co",
+            "homepage": "https://publy.co",
+            "role": "Developer"
+        }
+    ],
     "require": {
-        "php": "^7.0"
+        "php": ">=5.3.0"
     }
 }
