@@ -18,14 +18,23 @@ class PublyContentService extends BaseApiService {
     	return $this->get("reward/{$rewardId}");
     }
 
-    public function getRewardsByIds($rewardIds)
+    public function getRewardsByIds($rewardIds, $includeHidden = false)
     {
-        return $this->get("reward/by_ids", [ 'ids' => implode(',', $rewardIds) ]);
+        if ($includeHidden) {
+            return $this->get("reward/by_ids", [ 'ids' => implode(',', $rewardIds) ]);
+        } else {
+            return $this->get("reward/by_ids", [ 'ids' => implode(',', $rewardIds) ,
+                                                 'is_hidden' => 0 ]);
+        }
     }
 
-    public function getRewardsByProject($projectId)
+    public function getRewardsByProject($projectId, $includeHidden = false)
     {
-        return $this->get("reward/project/{$projectId}");
+        if ($includeHidden) {            
+            return $this->get("reward/project/{$projectId}");
+        } else {
+            return $this->get("reward/project/{$projectId}", [ 'is_hidden' => 0 ]);
+        }
     }
 
     public function getContent($contentId)
@@ -36,6 +45,16 @@ class PublyContentService extends BaseApiService {
     public function getContentsByIds($contentIds)
     {
         return $this->get("content/by_ids", [ 'ids' => implode(',', $contentIds) ]);
+    }
+
+    public function getContentsByProject($projectId, $includeHidden)
+    {
+        if ($includeHidden) {
+            return $this->get("content/project/{$projectId}");
+        }
+        else {
+            return $this->get("content/project/{$projectId}", [ 'is_hidden' => false ]);
+        }        
     }
 
     public function getProjects($filterArray = null)
