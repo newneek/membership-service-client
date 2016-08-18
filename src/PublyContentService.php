@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace Publy\Service\Client;
 
 use App\Services\Api\BaseApiService;
 
