@@ -1,0 +1,7 @@
+{
+    "name": "publy/publy-service-client",
+    "description": "publy all api service client",
+    "require": {
+        "php": "^7.0"
+    }
+}
