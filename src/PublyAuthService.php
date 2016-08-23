@@ -109,6 +109,21 @@ class PublyAuthService extends BaseApiService {
         return $result;
     }
 
+    public function changeReceiveEmail($id, $newReceiveEmail)
+    {
+        $result = [ 'success' => false ];
+        try {
+            $this->post('change_receive_email', array('id' => $id,
+                                                      'receive_email' => $newReceiveEmail));
+            $result['success'] = true;
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+        }
+
+        return $result;
+    }
+
     public function forgotPassword($email)
     {
         return $this->post('forgot_password', array('email' => $email));
