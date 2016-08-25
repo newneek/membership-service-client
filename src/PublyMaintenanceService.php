@@ -12,4 +12,14 @@ class PublyMaintenanceService extends BaseApiService {
         $this->domain = $domain;
         $this->apiUrl = "$this->domain/";        
     }     
+
+    public function getMaintenance()
+    {
+    	return $this->get('maintenance');
+    }
+
+    public function getExceptionIps()
+    {
+    	return $this->get('exception_ip');
+    }
 }
