@@ -3,7 +3,7 @@
 namespace Publy\ServiceClient\Api;
 
 use GuzzleHttp\Psr7\Request;
-use Api\ResponseException;
+use Publy\ServiceClient\Api\ResponseException;
 use GuzzleHttp\Exception\RequestException;
 
 class Http {
