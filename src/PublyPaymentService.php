@@ -2,8 +2,8 @@
  
 namespace Publy\ServiceClient;
 
-use Api\BaseApiService;
-use Api\ResponseException;
+use Publy\ServiceClient\Api\BaseApiService;
+use Publy\ServiceClient\Api\ResponseException;
 
 class PublyPaymentService extends BaseApiService {
 

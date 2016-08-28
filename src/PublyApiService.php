@@ -2,7 +2,7 @@
 
 namespace Publy\ServiceClient;
 
-use Api\BaseApiService;
+use Publy\ServiceClient\Api\BaseApiService;
 
 class PublyApiService extends BaseApiService {
 

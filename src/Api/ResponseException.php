@@ -1,5 +1,5 @@
 <?php
-namespace Publy\ServiceClient;
+namespace Publy\ServiceClient\Api;
 
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;

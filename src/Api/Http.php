@@ -1,6 +1,6 @@
 <?php
 
-namespace Publy\ServiceClient;
+namespace Publy\ServiceClient\Api;
 
 use GuzzleHttp\Psr7\Request;
 use Api\ResponseException;
