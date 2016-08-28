@@ -2,7 +2,8 @@
 
 namespace Publy\ServiceClient;
 
-use App\Services\Api\BaseApiService;
+use Api\BaseApiService;
+use Api\ResponseException;
 
 class PublyMaintenanceService extends BaseApiService {
 
