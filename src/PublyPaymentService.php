@@ -7,7 +7,7 @@ use Publy\ServiceClient\Api\ResponseException;
 
 class PublyPaymentService extends BaseApiService {
 
-	const PAYMENT_TYPE_NICEPAY_CREDIT_CARD = 1;
+    const PAYMENT_TYPE_NICEPAY_CREDIT_CARD = 1;
     const PAYMENT_TYPE_ADMIN = 2;
 
     const ORDER_STATUS_CHECKEDOUT = 1; // no payment was assigned.
@@ -65,11 +65,6 @@ class PublyPaymentService extends BaseApiService {
     public function getTotalOrdersByRewardId($rewardId, $filterArray = [])
     {
         return $this->get("order/reward/{$rewardId}/total", $filterArray);
-    }
-
-    public function getTotalOrdersByProject($projectId, $filterArray = [])
-    {
-        return $this->get("order/project/{$projectId}/total", $filterArray);
     }
 
     public function getOrdersByProjectId($projectId, $page = 1, $limit = 10, $filterArray = [])
@@ -174,116 +169,116 @@ class PublyPaymentService extends BaseApiService {
     }
 
     public function addCreditCardAndOrderAndReservePayment(
-    					$userId,
-    					$creditCardNumber,
-    					$expireYear,
-    					$expireMonth,
-    					$id,
-    					$password,
-    					$contentId,
-    					$rewardId,
+                        $userId,
+                        $creditCardNumber,
+                        $expireYear,
+                        $expireMonth,
+                        $id,
+                        $password,
+                        $contentId,
+                        $rewardId,
                         $price,
                         $userName,
                         $userEmail,
                         $userPhone)
     {
-    	$result = [ 'success' => false ];
+        $result = [ 'success' => false ];
 
-    	// add credit card
-    	$resultCreditCard = $this->addCreditCard(
-			    					$userId,
-			    					$creditCardNumber,
-			    					$expireYear,
-			    					$expireMonth,
-			    					$id,
-			    					$password);
+        // add credit card
+        $resultCreditCard = $this->addCreditCard(
+                                    $userId,
+                                    $creditCardNumber,
+                                    $expireYear,
+                                    $expireMonth,
+                                    $id,
+                                    $password);
 
-    	if (!$resultCreditCard['success']) {
-    		$result['success'] = false;
+        if (!$resultCreditCard['success']) {
+            $result['success'] = false;
             $result['from'] = 'credit_card';
             $result['error_code'] = $resultCreditCard['error_code'];
             $result['message'] = $resultCreditCard['message'];
-    		return $result;
-    	}
+            return $result;
+        }
 
-    	$creditCard = $resultCreditCard['item'];
-    	// 정상적으로 카드 등록 되었음. 
+        $creditCard = $resultCreditCard['item'];
+        // 정상적으로 카드 등록 되었음. 
 
-    	// order
-    	$resultOrder = $this->order(
-		    					$userId,
-		    					$contentId,
-		    					$rewardId,
-		    					$price,
-		    					$userName,
-		    					$userEmail,
-		    					$userPhone);
+        // order
+        $resultOrder = $this->order(
+                                $userId,
+                                $contentId,
+                                $rewardId,
+                                $price,
+                                $userName,
+                                $userEmail,
+                                $userPhone);
 
-    	if (!$resultOrder['success']) {
-    		$result['success'] = false;
+        if (!$resultOrder['success']) {
+            $result['success'] = false;
             $result['from'] = 'order';
             $result['error_code'] = $resultOrder['error_code'];
             $result['message'] = $resultOrder['message'];
-    		return $result;
-    	}
+            return $result;
+        }
 
-    	$order = $resultOrder['item'];
-    	// 정상적으로 주문 되었음. 
+        $order = $resultOrder['item'];
+        // 정상적으로 주문 되었음. 
 
-    	// reserve payment
-    	$resultPayment = $this->reservePayment(
-		    					$userId,
-		    					$order['id'],
-		    					static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
-		    					$creditCard['id']);
+        // reserve payment
+        $resultPayment = $this->reservePayment(
+                                $userId,
+                                $order['id'],
+                                static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+                                $creditCard['id']);
 
-    	if (!$resultPayment['success']) {
-    		$result['success'] = false;
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
             $result['from'] = 'payment';
             $result['error_code'] = $resultPayment['error_code'];
             $result['message'] = $resultPayment['message'];
-    		return $result;
-    	}
+            return $result;
+        }
 
-    	$payment = $resultPayment['item'];
-    	//
+        $payment = $resultPayment['item'];
+        //
 
-    	$result['success'] = true;
-    	return $result;
+        $result['success'] = true;
+        return $result;
     }
 
     /*
      * Payment related functions
      */
     public function reservePayment(
-    					$userId,
-    					$orderId,
-    					$pgType,
-    					$creditCardId)
+                        $userId,
+                        $orderId,
+                        $pgType,
+                        $creditCardId)
     {
-    	$result = [ 'success' => false ];
-    	try {
-    		$resultPayment = 
-		    	$this->post('payment', [	
-					'changer_id' => $userId,
-					'user_id' => $userId,
-					'order_id' => $orderId,
-					'pg_type' => $pgType,
-					'credit_card_id' => $creditCardId,
-					'immediate' => false
-				]);
-    	} catch (ResponseException $e) {
-    		$result['success'] = false;
+        $result = [ 'success' => false ];
+        try {
+            $resultPayment = 
+                $this->post('payment', [    
+                    'changer_id' => $userId,
+                    'user_id' => $userId,
+                    'order_id' => $orderId,
+                    'pg_type' => $pgType,
+                    'credit_card_id' => $creditCardId,
+                    'immediate' => false
+                ]);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
             $result['error_code'] = $e->getCode();
-    		$result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
 
-    		return $result;
-    	}
+            return $result;
+        }
 
-    	$result['success'] = true;
-    	$result['item'] = $resultPayment['success']['data'];
+        $result['success'] = true;
+        $result['item'] = $resultPayment['success']['data'];
 
-    	return $result;
+        return $result;
     }
 
     /*
@@ -295,7 +290,8 @@ class PublyPaymentService extends BaseApiService {
                         $orderId,
                         $pgType,
                         $paymentMethodId,
-                        $immediate
+                        $immediate,
+                        $note
                         )
     {
         $result = [ 'success' => false ];
@@ -307,7 +303,8 @@ class PublyPaymentService extends BaseApiService {
                     'order_id' => $orderId,
                     'pg_type' => $pgType,
                     'credit_card_id' => $paymentMethodId,
-                    'immediate' => $immediate
+                    'immediate' => $immediate,
+                    'note' => $note
                 ]);
 
         } catch (ResponseException $e) {
@@ -334,37 +331,37 @@ class PublyPaymentService extends BaseApiService {
     }   
 
     public function addCreditCard(
-    					$userId,
-    					$creditCardNumber,
-    					$expireYear,
-    					$expireMonth,
-    					$id,
-    					$password)
+                        $userId,
+                        $creditCardNumber,
+                        $expireYear,
+                        $expireMonth,
+                        $id,
+                        $password)
     {
-    	$result = [ 'success' => false ];
-    	try {
-    		$resultCreditCard = 
-		    	$this->post('credit_card', [	
-					'changer_id' => $userId,
-					'user_id' => $userId,
-					'card_number' => $creditCardNumber,
-					'expire_year' => $expireYear,
-					'expire_month' => $expireMonth,
-					'id' => $id,
-					'password' => $password
-				]);
-    	} catch (ResponseException $e) {
-    		$result['success'] = false;
+        $result = [ 'success' => false ];
+        try {
+            $resultCreditCard = 
+                $this->post('credit_card', [    
+                    'changer_id' => $userId,
+                    'user_id' => $userId,
+                    'card_number' => $creditCardNumber,
+                    'expire_year' => $expireYear,
+                    'expire_month' => $expireMonth,
+                    'id' => $id,
+                    'password' => $password
+                ]);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
             $result['error_code'] = $e->getCode();
-    		$result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
 
-    		return $result;
-    	}
+            return $result;
+        }
 
-    	$result['success'] = true;
-    	$result['item'] = $resultCreditCard['success']['data'];
+        $result['success'] = true;
+        $result['item'] = $resultCreditCard['success']['data'];
 
-    	return $result;
+        return $result;
     }
 
     public function deleteCreditCard(
