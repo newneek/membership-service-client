@@ -9,7 +9,7 @@ class PublyPaymentService extends BaseApiService {
 
     const PAYMENT_TYPE_NICEPAY_CREDIT_CARD = 1;
     const PAYMENT_TYPE_ADMIN = 2;
-    const PAYMENT_TYPE_BANK_TRANSFER = 2;
+    const PAYMENT_TYPE_BANK_TRANSFER = 3;
     const PAYMENT_TYPE_IAMPORT = 90;
     const PAYMENT_TYPE_OLD_ADMIN = 91;
 
