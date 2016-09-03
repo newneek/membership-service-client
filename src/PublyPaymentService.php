@@ -9,6 +9,9 @@ class PublyPaymentService extends BaseApiService {
 
     const PAYMENT_TYPE_NICEPAY_CREDIT_CARD = 1;
     const PAYMENT_TYPE_ADMIN = 2;
+    const PAYMENT_TYPE_BANK_TRANSFER = 2;
+    const PAYMENT_TYPE_IAMPORT = 90;
+    const PAYMENT_TYPE_OLD_ADMIN = 91;
 
     const ORDER_STATUS_CHECKEDOUT = 1; // no payment was assigned.
     const ORDER_STATUS_WAITING_PAYMENT = 2; // Reserved Payment. payment can be canceled, changed.
@@ -28,8 +31,12 @@ class PublyPaymentService extends BaseApiService {
         PublyPaymentService::ORDER_STATUS_PAYMENT_FAILED => "결제실패"];
 
     const STRING_PAYMENT_TYPE = [
-        PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD => "신용카드",
-        PublyPaymentService::PAYMENT_TYPE_ADMIN => "관리자 추가"];
+        PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD => "nicapay 신용카드",
+        PublyPaymentService::PAYMENT_TYPE_ADMIN => "관리자 추가",
+        PublyPaymentService::PAYMENT_TYPE_BANK_TRANSFER => "계좌이체",
+        PublyPaymentService::PAYMENT_TYPE_IAMPORT => "아임포트",
+        PublyPaymentService::PAYMENT_TYPE_OLD_ADMIN => "구 관리자 추가"
+        ];
 
     public function __construct($domain) {
         parent::__construct();
