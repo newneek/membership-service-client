@@ -18,6 +18,18 @@ class PublyAuthService extends BaseApiService {
         $this->apiUrl = "$this->domain/";        
     }
 
+    public function getUser($userId)
+    {
+        return $this->get("user/{$userId}");
+    }
+
+    public function getUsers($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("user", $filterArray);
+    }
+
     public function getUsersByIds($userIds)
     {
         return $this->get("user/by_ids", [ 'ids' => implode(',', $userIds) ]);
