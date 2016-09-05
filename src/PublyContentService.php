@@ -57,13 +57,17 @@ class PublyContentService extends BaseApiService {
         }        
     }
 
-    public function getProjects($filterArray = null)
+    public function getProjects($page = 1, $limit = 10, $filterArray = [])
     {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
         return $this->get("project", $filterArray);
     }
     
-    public function getContents($filterArray = null)
+    public function getContents($page = 1, $limit = 10, $filterArray = [])
     {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
         return $this->get("content", $filterArray);
     }
 
