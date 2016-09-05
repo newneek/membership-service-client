@@ -74,6 +74,11 @@ class PublyPaymentService extends BaseApiService {
         return $this->get("order/reward/{$rewardId}/total", $filterArray);
     }
 
+    public function getTotalOrdersByProject($projectId, $filterArray = []) 
+    { 
+        return $this->get("order/project/{$projectId}/total", $filterArray); 
+    } 
+
     public function getOrdersByProjectId($projectId, $page = 1, $limit = 10, $filterArray = [])
     {
         $filterArray['page'] = $page;
