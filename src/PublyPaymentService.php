@@ -433,17 +433,40 @@ class PublyPaymentService extends BaseApiService {
         return $result;
     }
 
-    public function updatePayment($changerId, $paymentId, $creditCardId)
+    public function updatePayment($changerId, $paymentId, $inputs)
     {
+        $inputs['changer_id'] = $changerId;
+        
         $result = [ 'success' => false ];
-        $pgType = static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD;
         try {
             $resultApi = 
-                $this->put("/payment/{$paymentId}",
+                $this->put("/payment/{$paymentId}", $inputs);
+            $result['success'] = true;
+        } catch (ResponseException $e) {            
+            $result['success'] = false;
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+        }
+        
+        return $result;
+    }
+
+    public function updateOrder($changerId, 
+                                $orderId,
+                                $userName,
+                                $userEmail,
+                                $userPhone)
+    {
+        $result = [ 'success' => false ];
+        try {
+            $resultApi = 
+                $this->put("/order/{$orderId}",
                            [ 'changer_id' => $changerId,
-                             'action' => 'change',
-                             'pg_type' => $pgType,
-                             'credit_card_id' => $creditCardId ]);
+                             'force' => true,
+                             'action' => 'modify',
+                             'user_name' => $userName,
+                             'user_email' => $userEmail,
+                             'user_phone' => $userPhone ]);
             $result['success'] = true;
         } catch (ResponseException $e) {            
             $result['success'] = false;
