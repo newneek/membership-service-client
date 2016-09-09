@@ -57,6 +57,12 @@ class PublyContentService extends BaseApiService {
                                                         'order_in_set' => $orderInSet ]);
     }
 
+    public function updateContentOrderInSet($changerId, $contentIds)
+    {
+        return $this->put("content/set/{$setId}", [ 'changer_id' => $setId,
+                                                    'ids' => implode(',', $contentIds) ]);
+    }
+
     public function getContent($contentId)
     {
     	return $this->get("content/{$contentId}");
