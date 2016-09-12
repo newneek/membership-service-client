@@ -13,6 +13,10 @@ class PublyContentService extends BaseApiService {
         $this->apiUrl = "$this->domain/";        
     }
 
+    /*
+     * Reward Related Functions
+     */  
+
     public function getReward($rewardId)
     {
     	return $this->get("reward/{$rewardId}");
@@ -37,6 +41,32 @@ class PublyContentService extends BaseApiService {
         }
     }
 
+    /*
+     * Content Related Functions
+     */    
+    public function getContents($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("content", $filterArray);
+    }
+
+    public function getContentsBySet($setId, $filterArray)
+    {
+        return $this->get("content/set/{$setId}", $filterArray);
+    }
+
+    public function updateContentSet($contentId, $setId, $orderInSet)
+    {
+        return $this->put("content/{$contentId}/set", [ 'set_id' => $setId,
+                                                        'order_in_set' => $orderInSet ]);
+    }
+
+    public function updateContentsOrderInSet($setId, $contentIds)
+    {
+        return $this->put("content/set/{$setId}", [ 'ids' => implode(',', $contentIds) ]);
+    }
+
     public function getContent($contentId)
     {
     	return $this->get("content/{$contentId}");
@@ -57,25 +87,24 @@ class PublyContentService extends BaseApiService {
         }        
     }
 
+    /*
+     * Project Related Functions
+     */
+    public function getProject($projectId)
+    {
+        return $this->get("project/{$projectId}");
+    }
+
     public function getProjects($page = 1, $limit = 10, $filterArray = [])
     {
         $filterArray['page'] = $page;
         $filterArray['limit'] = $limit;
         return $this->get("project", $filterArray);
     }
-    
-    public function getContents($page = 1, $limit = 10, $filterArray = [])
-    {
-        $filterArray['page'] = $page;
-        $filterArray['limit'] = $limit;
-        return $this->get("content", $filterArray);
-    }
 
-    public function getProject($projectId)
-    {
-        return $this->get("project/{$projectId}");
-    }
-    
+    /*
+     * Project Progress Related Functions
+     */
     public function updateAllProjectProgress($includeFinished = false)
     {
         return $this->put("project_progress", [ 'include_finished' => $includeFinished ? 1 : 0 ]);
@@ -85,4 +114,31 @@ class PublyContentService extends BaseApiService {
     {
         return $this->put("project_progress/project/{$projectId}");
     }
+
+    /*
+     * Set Related Functions
+     */
+    public function getSets($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("set", $filterArray);
+    }
+
+    public function getSet($setId)
+    {
+        return $this->get("set/{$setId}");
+    }
+
+    public function createSet($changerId, $title)
+    {
+        return $this->post("set", [ 'changer_id' => $changerId,
+                                    'title' => $title ]);
+    }
+
+    public function updateSet($setId, $changerId, $title)
+    {
+        return $this->put("set/{$setId}", [ 'changer_id' => $changerId,
+                                            'title' => $title ]);
+    }    
 }
