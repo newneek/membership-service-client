@@ -102,6 +102,21 @@ class PublyContentService extends BaseApiService {
         return $this->get("project", $filterArray);
     }
 
+    public function getProjectsBySet($setId, $filterArray = [])
+    {
+        return $this->get("project/set/{$setId}", $filterArray);
+    }
+
+    public function createProjectSet($projectId, $setId)
+    {
+        return $this->post("project/{$projectId}/set/{$setId}");
+    }
+
+    public function removeProjectSet($projectId, $setId)
+    {
+        return $this->post("project/{$projectId}/set/{$setId}/delete");
+    }
+
     /*
      * Project Progress Related Functions
      */
