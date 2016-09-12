@@ -43,17 +43,36 @@ class PublyMaintenanceService extends BaseApiService
 
     public function getExceptionIps()
     {
-        return $this->get('exception_ip');
+        return $this->get('exception_ips');
     }
 
-    public function updateExceptionIps($changerId, $ips)
+    public function storeExceptionIp($changerId, $ip, $description)
     {
         $result = [ 'success' => false ];
         try {
-            $result = $this->post('exception_ip', [
+            $result = $this->put('exception_ip', [
                 'changer_id' => $changerId,
-                'ips' => $ips
+                'ip' => $ip,
+                'description' => $description
             ]);
+        } catch (ResponseException $e) {
+            $result = [ 'success' => false,
+                        'error_code' => $e->getCode(),
+                        'message' => $e->getMessage()
+                        ];
+        }
+
+        return $result;
+    }
+    
+    public function updateExceptionIp($changerId, $id, $params)
+    {
+        $params['id'] = $id;
+        $params['changer_id'] = $changerId;
+
+        $result = [ 'success' => false ];
+        try {
+            $result = $this->post('exception_ip', $params);
         } catch (ResponseException $e) {
             $result = [ 'success' => false,
                         'error_code' => $e->getCode(),
