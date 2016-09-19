@@ -145,15 +145,23 @@ class PublyContentService extends BaseApiService
         return $this->put("set/{$setId}", [ 'changer_id' => $changerId,
                                             'title' => $title ]);
     }
-
     /*
      * SetReader Related Functions
      */
-    public function getSetReaders($userId, $page = 1, $limit = 10, $filterArray = [])
+    public function getSetReadersByUserId($userId, $page = 1, $limit = 10, $filterArray = [])
     {
         $filterArray['page'] = $page;
         $filterArray['limit'] = $limit;
-        return $this->get("set_reader/user/{$userId}", $filterArray);
+        $filterArray['user_id'] = $userId;
+        return $this->get("set_reader/", $filterArray);
+    }
+    
+    public function getSetReadersBySetId($setId, $page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        $filterArray['set_id'] = $setId;
+        return $this->get("set_reader/", $filterArray);
     }
 
     public function createSetReader($userId, $setId, $sourceType, $adminId, $orderId, $expireAt, $note)
