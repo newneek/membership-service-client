@@ -6,6 +6,8 @@ use Publy\ServiceClient\Api\BaseApiService;
 
 class PublyContentService extends BaseApiService
 {
+    const SET_READER_SOURCE_TYPE_ADMIN = 1;
+    const SET_READER_SOURCE_TYPE_ORDER = 2;
     
     public function __construct($domain)
     {
@@ -103,20 +105,21 @@ class PublyContentService extends BaseApiService
         return $this->get("project", $filterArray);
     }
 
-    public function getProjectsBySet($setId, $filterArray = [])
-    {
-        return $this->get("project/set/{$setId}", $filterArray);
-    }
-
-    public function createProjectSet($projectId, $setId)
-    {
-        return $this->post("project/{$projectId}/set/{$setId}");
-    }
-
-    public function removeProjectSet($projectId, $setId)
-    {
-        return $this->post("project/{$projectId}/set/{$setId}/delete");
-    }
+    public function getProjectsBySet($setId, $filterArray = []) 
+    { 
+        return $this->get("project/set/{$setId}", $filterArray); 
+    } 
+ 
+    public function createProjectSet($projectId, $setId) 
+    { 
+        return $this->post("project/{$projectId}/set/{$setId}"); 
+    } 
+ 
+    public function removeProjectSet($projectId, $setId) 
+    { 
+        return $this->post("project/{$projectId}/set/{$setId}/delete"); 
+    } 
+ 
 
     /*
      * Project Progress Related Functions
@@ -157,9 +160,63 @@ class PublyContentService extends BaseApiService
         return $this->put("set/{$setId}", [ 'changer_id' => $changerId,
                                             'title' => $title ]);
     }
-
-    public function loadSetDataFromProject($changerId, $setId)
+    /*
+     * SetReader Related Functions
+     */
+    public function getSetReader($setReaderId)
     {
-        return $this->post("set/{$setId}/load_data_from_project", [ 'changer_id' => $changerId ]);
+        return $this->get("set_reader/{$setReaderId}");
+    }
+
+    public function getTotalSetReader($userId, $setId)
+    {
+        return $this->get("set_reader/total", [ 'user_id' => $userId,
+                                                'set_id' => $setId ]);
+    }
+
+    public function getSetReadersByUserId($userId, $page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        $filterArray['user_id'] = $userId;
+        return $this->get("set_reader/", $filterArray);
+    }
+    
+    public function getSetReadersBySetId($setId, $page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        $filterArray['set_id'] = $setId;
+        return $this->get("set_reader/", $filterArray);
+    }
+
+    public function createSetReader($userId, $setId, $sourceType, $adminId, $orderId, $expireAt, $note)
+    {
+        try {
+            return $this->post("set_reader", [  'user_id' => $userId,
+                                                'set_id' => $setId,
+                                                'source_type' => $sourceType,
+                                                'admin_id' => $adminId,
+                                                'order_id' => $orderId,
+                                                'expire_at' => $expireAt,
+                                                'note' => $note ]);
+        } catch (\Exception $e) {
+            $result['success'] = false;
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+    }
+
+    public function updateSetReader($setReaderId, $changerId, $note)
+    {
+        return $this->put("set_reader/{$setReaderId}", ['changer_id' => $changerId,
+                                                        'note' => $note ]);
+    }
+
+    public function deleteSetReader($params)
+    {
+        return $this->post("set_reader/delete", $params);
     }
 }
