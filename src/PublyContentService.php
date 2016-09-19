@@ -163,6 +163,11 @@ class PublyContentService extends BaseApiService
     /*
      * SetReader Related Functions
      */
+    public function getSetReader($setReaderId)
+    {
+        return $this->get("set_reader/{$setReaderId}");
+    }
+
     public function getSetReadersByUserId($userId, $page = 1, $limit = 10, $filterArray = [])
     {
         $filterArray['page'] = $page;
@@ -188,6 +193,12 @@ class PublyContentService extends BaseApiService
                                             'order_id' => $orderId,
                                             'expire_at' => $expireAt,
                                             'note' => $note]);
+    }
+
+    public function updateSetReader($setReaderId, $changerId, $note)
+    {
+        return $this->put("set_reader/{$setReaderId}", ['changer_id' => $changerId,
+                                                        'note' => $note]);
     }
 
     public function deleteSetReader($params)
