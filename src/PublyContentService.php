@@ -6,7 +6,6 @@ use Publy\ServiceClient\Api\BaseApiService;
 
 class PublyContentService extends BaseApiService
 {
-
     const SET_READER_SOURCE_TYPE_ADMIN = 1;
     const SET_READER_SOURCE_TYPE_ORDER = 2;
     
@@ -106,6 +105,22 @@ class PublyContentService extends BaseApiService
         return $this->get("project", $filterArray);
     }
 
+    public function getProjectsBySet($setId, $filterArray = []) 
+    { 
+        return $this->get("project/set/{$setId}", $filterArray); 
+    } 
+ 
+    public function createProjectSet($projectId, $setId) 
+    { 
+        return $this->post("project/{$projectId}/set/{$setId}"); 
+    } 
+ 
+    public function removeProjectSet($projectId, $setId) 
+    { 
+        return $this->post("project/{$projectId}/set/{$setId}/delete"); 
+    } 
+ 
+
     /*
      * Project Progress Related Functions
      */
@@ -173,5 +188,10 @@ class PublyContentService extends BaseApiService
                                             'order_id' => $orderId,
                                             'expire_at' => $expireAt,
                                             'note' => $note]);
+    }
+
+    public function deleteSetReader($params)
+    {
+        return $this->post("set_reader/delete", $params);
     }
 }
