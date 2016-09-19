@@ -186,13 +186,21 @@ class PublyContentService extends BaseApiService
 
     public function createSetReader($userId, $setId, $sourceType, $adminId, $orderId, $expireAt, $note)
     {
-        return $this->post("set_reader", [  'user_id' => $userId,
-                                            'set_id' => $setId,
-                                            'source_type' => $sourceType,
-                                            'admin_id' => $adminId,
-                                            'order_id' => $orderId,
-                                            'expire_at' => $expireAt,
-                                            'note' => $note]);
+        try {
+            return $this->post("set_reader", [  'user_id' => $userId,
+                                                'set_id' => $setId,
+                                                'source_type' => $sourceType,
+                                                'admin_id' => $adminId,
+                                                'order_id' => $orderId,
+                                                'expire_at' => $expireAt,
+                                                'note' => $note]);
+        } catch (\Exception $e) {
+            $result['success'] = false;
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
     }
 
     public function updateSetReader($setReaderId, $changerId, $note)
