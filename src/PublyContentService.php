@@ -6,6 +6,9 @@ use Publy\ServiceClient\Api\BaseApiService;
 
 class PublyContentService extends BaseApiService
 {
+
+    const SET_READER_SOURCE_TYPE_ADMIN = 1;
+    const SET_READER_SOURCE_TYPE_ORDER = 2;
     
     public function __construct($domain)
     {
@@ -103,21 +106,6 @@ class PublyContentService extends BaseApiService
         return $this->get("project", $filterArray);
     }
 
-    public function getProjectsBySet($setId, $filterArray = [])
-    {
-        return $this->get("project/set/{$setId}", $filterArray);
-    }
-
-    public function createProjectSet($projectId, $setId)
-    {
-        return $this->post("project/{$projectId}/set/{$setId}");
-    }
-
-    public function removeProjectSet($projectId, $setId)
-    {
-        return $this->post("project/{$projectId}/set/{$setId}/delete");
-    }
-
     /*
      * Project Progress Related Functions
      */
@@ -158,8 +146,24 @@ class PublyContentService extends BaseApiService
                                             'title' => $title ]);
     }
 
-    public function loadSetDataFromProject($changerId, $setId)
+    /*
+     * SetReader Related Functions
+     */
+    public function getSetReaders($userId, $page = 1, $limit = 10, $filterArray = [])
     {
-        return $this->post("set/{$setId}/load_data_from_project", [ 'changer_id' => $changerId ]);
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("set_reader/user/{$userId}", $filterArray);
+    }
+
+    public function createSetReader($userId, $setId, $sourceType, $adminId, $orderId, $expireAt, $note)
+    {
+        return $this->post("set_reader", [  'user_id' => $userId,
+                                            'set_id' => $setId,
+                                            'source_type' => $sourceType,
+                                            'admin_id' => $adminId,
+                                            'order_id' => $orderId,
+                                            'expire_at' => $expireAt,
+                                            'note' => $note]);
     }
 }
