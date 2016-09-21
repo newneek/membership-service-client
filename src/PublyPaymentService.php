@@ -93,21 +93,30 @@ class PublyPaymentService extends BaseApiService {
                         $price,
                         $userName,
                         $userEmail,
-                        $userPhone)
+                        $userPhone,
+                        $deliveryName = null,
+                        $deliveryPhone = null,
+                        $deliveryZipcode = null,
+                        $deliveryAddress = null)
     {
         $result = [ 'success' => false ];
         try {
-            $resultOrder = 
-                $this->post('order', [  
-                    'changer_id' => $userId,
-                    'content_id' => $contentId,
-                    'reward_id' => $rewardId,
-                    'user_id' => $userId,
-                    'price' => $price,
-                    'user_name' => $userName,
-                    'user_email' => $userEmail,
-                    'user_phone' => $userPhone
-                ]);
+            $inputs = [ 'changer_id' => $userId,
+                        'content_id' => $contentId,
+                        'reward_id' => $rewardId,
+                        'user_id' => $userId,
+                        'price' => $price,
+                        'user_name' => $userName,
+                        'user_email' => $userEmail,
+                        'user_phone' => $userPhone ];
+            if ($deliveryName || $deliveryPhone || $deliveryZipcode || $deliveryAddress) {
+                $inputs = array_merge($inputs, [ 'delivery_name' => $deliveryName,
+                                                 'delivery_phone' => $deliveryPhone,
+                                                 'delivery_zipcode' => $deliveryZipcode,
+                                                 'delivery_address' => $deliveryAddress,
+                                               ]);
+            }
+            $resultOrder = $this->post('order', $inputs);
         } catch (ResponseException $e) {
             $result['success'] = false;
             $result['error_code'] = $e->getCode();
@@ -133,7 +142,11 @@ class PublyPaymentService extends BaseApiService {
                         $price,
                         $userName,
                         $userEmail,
-                        $userPhone)
+                        $userPhone,
+                        $deliveryName = null,
+                        $deliveryPhone = null,
+                        $deliveryZipcode = null,
+                        $deliveryAddress = null)
     {
         $result = [ 'success' => false ];
 
@@ -145,7 +158,11 @@ class PublyPaymentService extends BaseApiService {
                                 $price,
                                 $userName,
                                 $userEmail,
-                                $userPhone);
+                                $userPhone,
+                                $deliveryName,
+                                $deliveryPhone,
+                                $deliveryZipcode,
+                                $deliveryAddress);
 
         if (!$resultOrder['success']) {
             $result['success'] = false;
@@ -192,7 +209,11 @@ class PublyPaymentService extends BaseApiService {
                         $price,
                         $userName,
                         $userEmail,
-                        $userPhone)
+                        $userPhone,
+                        $deliveryName = null,
+                        $deliveryPhone = null,
+                        $deliveryZipcode = null,
+                        $deliveryAddress = null)
     {
         $result = [ 'success' => false ];
 
@@ -224,7 +245,11 @@ class PublyPaymentService extends BaseApiService {
                                 $price,
                                 $userName,
                                 $userEmail,
-                                $userPhone);
+                                $userPhone,
+                                $deliveryName,
+                                $deliveryPhone,
+                                $deliveryZipcode,
+                                $deliveryAddress);
 
         if (!$resultOrder['success']) {
             $result['success'] = false;
