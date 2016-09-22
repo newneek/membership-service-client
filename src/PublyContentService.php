@@ -144,9 +144,10 @@ class PublyContentService extends BaseApiService
         return $this->get("set", $filterArray);
     }
 
-    public function getSetsByIds($setIds)
+    public function getSetsByIds($setIds, $filterArray = [])
     {
-        return $this->get("set/by_ids", [ 'ids' => implode(',', $setIds) ]);
+        $filterArray['ids'] = implode(',', $setIds);
+        return $this->get("set/by_ids", $filterArray);
     }
 
     public function getSetsByProject($projectId)
