@@ -480,18 +480,30 @@ class PublyPaymentService extends BaseApiService {
                                 $orderId,
                                 $userName,
                                 $userEmail,
-                                $userPhone)
+                                $userPhone,
+                                $deliveryName = null,
+                                $deliveryPhone = null,
+                                $deliveryZipcode = null,
+                                $deliveryAddress = null,
+                                $force = false)
     {
         $result = [ 'success' => false ];
         try {
-            $resultApi = 
-                $this->put("/order/{$orderId}",
-                           [ 'changer_id' => $changerId,
-                             'force' => true,
-                             'action' => 'modify',
-                             'user_name' => $userName,
-                             'user_email' => $userEmail,
-                             'user_phone' => $userPhone ]);
+            $inputs = [ 'changer_id' => $changerId,
+                        'force' => $force ? 1 : 0,
+                        'action' => 'modify',
+                        'user_name' => $userName,
+                        'user_email' => $userEmail,
+                        'user_phone' => $userPhone ];
+            if ($deliveryName || $deliveryPhone || $deliveryZipcode || $deliveryAddress) {
+                $inputs = array_merge($inputs, [ 'delivery_name' => $deliveryName,
+                                                 'delivery_phone' => $deliveryPhone,
+                                                 'delivery_zipcode' => $deliveryZipcode,
+                                                 'delivery_address' => $deliveryAddress,
+                                               ]);
+            }
+
+            $resultApi = $this->put("/order/{$orderId}", $inputs);
             $result['success'] = true;
         } catch (ResponseException $e) {            
             $result['success'] = false;
