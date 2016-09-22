@@ -514,14 +514,15 @@ class PublyPaymentService extends BaseApiService {
         return $result;
     }
 
-    public function cancelOrder($changerId, $orderId)
+    public function cancelOrder($changerId, $orderId, $force = false)
     {
         $result = [ 'success' => false ];
         try {
             $resultApi = 
                 $this->put("/order/{$orderId}",
                            [ 'changer_id' => $changerId,
-                             'action' => 'cancel' ]);
+                             'action' => 'cancel',
+                             'force' => $force ? 1 : 0 ]);
             $result['success'] = true;
         } catch (ResponseException $e) {            
             $result['success'] = false;
