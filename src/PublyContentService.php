@@ -164,7 +164,7 @@ class PublyContentService extends BaseApiService
     {
         return $this->post("set", [ 'changer_id' => $changerId,
                                     'title' => $title ]);
-    }
+    } 
 
     public function updateSet($setId, $changerId, $title)
     {
