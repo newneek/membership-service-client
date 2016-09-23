@@ -1,11 +1,12 @@
 <?php
- 
+
 namespace Publy\ServiceClient;
 
 use Publy\ServiceClient\Api\BaseApiService;
 use Publy\ServiceClient\Api\ResponseException;
 
-class PublyPaymentService extends BaseApiService {
+class PublyPaymentService extends BaseApiService
+{
 
     const PAYMENT_TYPE_NICEPAY_CREDIT_CARD = 1;
     const PAYMENT_TYPE_ADMIN = 2;
@@ -38,11 +39,12 @@ class PublyPaymentService extends BaseApiService {
         PublyPaymentService::PAYMENT_TYPE_OLD_ADMIN => "구 관리자 추가"
         ];
 
-    public function __construct($domain) {
+    public function __construct($domain)
+    {
         parent::__construct();
 
         $this->domain = $domain;
-        $this->apiUrl = "$this->domain/";        
+        $this->apiUrl = "$this->domain/";
     }
 
     /*
@@ -50,17 +52,17 @@ class PublyPaymentService extends BaseApiService {
      */
     public function payReservedOrdersByContent($changerId, $contentId)
     {
-        return $this->put("order/content/{$contentId}", 
-                          [ 'changer_id' => $changerId, 
+        return $this->put("order/content/{$contentId}",
+                          [ 'changer_id' => $changerId,
                             'action' => 'pay' ]);
     }
 
     public function failReservedOrdersByContent($changerId, $contentId)
     {
-        return $this->put("order/content/{$contentId}", 
-                          [ 'changer_id' => $changerId, 
+        return $this->put("order/content/{$contentId}",
+                          [ 'changer_id' => $changerId,
                             'action' => 'fail' ]);
-    }   
+    }
 
     public function getOrdersByUser($userId, $page, $limit, $filterArray = [])
     {
@@ -74,10 +76,10 @@ class PublyPaymentService extends BaseApiService {
         return $this->get("order/reward/{$rewardId}/total", $filterArray);
     }
 
-    public function getTotalOrdersByProject($projectId, $filterArray = []) 
-    { 
-        return $this->get("order/project/{$projectId}/total", $filterArray); 
-    } 
+    public function getTotalOrdersByProject($projectId, $filterArray = [])
+    {
+        return $this->get("order/project/{$projectId}/total", $filterArray);
+    }
 
     public function getOrdersByProjectId($projectId, $page = 1, $limit = 10, $filterArray = [])
     {
@@ -295,8 +297,8 @@ class PublyPaymentService extends BaseApiService {
     {
         $result = [ 'success' => false ];
         try {
-            $resultPayment = 
-                $this->post('payment', [    
+            $resultPayment =
+                $this->post('payment', [
                     'changer_id' => $userId,
                     'user_id' => $userId,
                     'order_id' => $orderId,
@@ -329,12 +331,11 @@ class PublyPaymentService extends BaseApiService {
                         $paymentMethodId,
                         $immediate,
                         $note
-                        )
-    {
+                        ) {
         $result = [ 'success' => false ];
         try {
-            $resultPayment = 
-                $this->post('payment', [    
+            $resultPayment =
+                $this->post('payment', [
                     'changer_id' => $changerId,
                     'user_id' => $userId,
                     'order_id' => $orderId,
@@ -343,7 +344,6 @@ class PublyPaymentService extends BaseApiService {
                     'immediate' => $immediate,
                     'note' => $note
                 ]);
-
         } catch (ResponseException $e) {
             $result['success'] = false;
             $result['error_code'] = $e->getCode();
@@ -365,7 +365,7 @@ class PublyPaymentService extends BaseApiService {
     public function getCreditCardsByUser($userId)
     {
         return $this->get("credit_card/user/{$userId}");
-    }   
+    }
 
     public function addCreditCard(
                         $userId,
@@ -377,8 +377,8 @@ class PublyPaymentService extends BaseApiService {
     {
         $result = [ 'success' => false ];
         try {
-            $resultCreditCard = 
-                $this->post('credit_card', [    
+            $resultCreditCard =
+                $this->post('credit_card', [
                     'changer_id' => $userId,
                     'user_id' => $userId,
                     'card_number' => $creditCardNumber,
@@ -407,8 +407,8 @@ class PublyPaymentService extends BaseApiService {
     {
         $result = [ 'success' => false ];
         try {
-            $resultCreditCard = 
-                $this->post("credit_card/{$creditCardId}/delete", [    
+            $resultCreditCard =
+                $this->post("credit_card/{$creditCardId}/delete", [
                     'changer_id' => $userId,
                     'user_id' => $userId
                 ]);
@@ -431,9 +431,9 @@ class PublyPaymentService extends BaseApiService {
     {
         $pgType = static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD;
         try {
-            $resultMainPaymentMethod = 
+            $resultMainPaymentMethod =
                 $this->get("user_main_payment_method/user/{$userId}/pg_type/{$pgType}");
-        } catch (ResponseException $e) {            
+        } catch (ResponseException $e) {
             return null;
         }
 
@@ -445,11 +445,11 @@ class PublyPaymentService extends BaseApiService {
         $result = [ 'success' => false ];
         $pgType = static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD;
         try {
-            $resultMainPaymentMethod = 
+            $resultMainPaymentMethod =
                 $this->put("user_main_payment_method/user/{$userId}/pg_type/{$pgType}",
                            [ 'credit_card_id' => $creditCardId ]);
             $result['success'] = true;
-        } catch (ResponseException $e) {            
+        } catch (ResponseException $e) {
             $result['success'] = false;
             $result['error_code'] = $e->getCode();
             $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
@@ -464,10 +464,10 @@ class PublyPaymentService extends BaseApiService {
         
         $result = [ 'success' => false ];
         try {
-            $resultApi = 
+            $resultApi =
                 $this->put("/payment/{$paymentId}", $inputs);
             $result['success'] = true;
-        } catch (ResponseException $e) {            
+        } catch (ResponseException $e) {
             $result['success'] = false;
             $result['error_code'] = $e->getCode();
             $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
@@ -476,7 +476,7 @@ class PublyPaymentService extends BaseApiService {
         return $result;
     }
 
-    public function updateOrder($changerId, 
+    public function updateOrder($changerId,
                                 $orderId,
                                 $userName,
                                 $userEmail,
@@ -505,7 +505,7 @@ class PublyPaymentService extends BaseApiService {
 
             $resultApi = $this->put("/order/{$orderId}", $inputs);
             $result['success'] = true;
-        } catch (ResponseException $e) {            
+        } catch (ResponseException $e) {
             $result['success'] = false;
             $result['error_code'] = $e->getCode();
             $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
@@ -518,13 +518,13 @@ class PublyPaymentService extends BaseApiService {
     {
         $result = [ 'success' => false ];
         try {
-            $resultApi = 
+            $resultApi =
                 $this->put("/order/{$orderId}",
                            [ 'changer_id' => $changerId,
                              'action' => 'cancel',
                              'force' => $force ? 1 : 0 ]);
             $result['success'] = true;
-        } catch (ResponseException $e) {            
+        } catch (ResponseException $e) {
             $result['success'] = false;
             $result['error_code'] = $e->getCode();
             $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
