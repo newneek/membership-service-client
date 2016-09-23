@@ -133,6 +133,52 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
+    public function order2(
+                        $changerId,
+                        $userId,
+                        $contentId,
+                        $rewardId,
+                        $price,
+                        $userName,
+                        $userEmail,
+                        $userPhone,
+                        $deliveryName = null,
+                        $deliveryPhone = null,
+                        $deliveryZipcode = null,
+                        $deliveryAddress = null)
+    {
+        $result = [ 'success' => false ];
+        try {
+            $inputs = [ 'changer_id' => $changerId,
+                        'content_id' => $contentId,
+                        'reward_id' => $rewardId,
+                        'user_id' => $userId,
+                        'price' => $price,
+                        'user_name' => $userName,
+                        'user_email' => $userEmail,
+                        'user_phone' => $userPhone ];
+            if ($deliveryName || $deliveryPhone || $deliveryZipcode || $deliveryAddress) {
+                $inputs = array_merge($inputs, [ 'delivery_name' => $deliveryName,
+                                                 'delivery_phone' => $deliveryPhone,
+                                                 'delivery_zipcode' => $deliveryZipcode,
+                                                 'delivery_address' => $deliveryAddress,
+                                               ]);
+            }
+            $resultOrder = $this->post('order', $inputs);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $result['success'] = true;
+        $result['item'] = $resultOrder['success']['data'];
+
+        return $result;
+    }
+
     /*
      * Helpers
      */
@@ -286,6 +332,163 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
+    public function orderAndReservePayment2(
+                        $changerId,
+                        $userId,
+                        $creditCardId,
+                        $contentId,
+                        $rewardId,
+                        $price,
+                        $userName,
+                        $userEmail,
+                        $userPhone,
+                        $deliveryName = null,
+                        $deliveryPhone = null,
+                        $deliveryZipcode = null,
+                        $deliveryAddress = null)
+    {
+        $result = [ 'success' => false ];
+
+        // order
+        $resultOrder = $this->order2(
+                                $changerId,
+                                $userId,
+                                $contentId,
+                                $rewardId,
+                                $price,
+                                $userName,
+                                $userEmail,
+                                $userPhone,
+                                $deliveryName,
+                                $deliveryPhone,
+                                $deliveryZipcode,
+                                $deliveryAddress);
+
+        if (!$resultOrder['success']) {
+            $result['success'] = false;
+            $result['from'] = 'order';
+            $result['error_code'] = $resultOrder['error_code'];
+            $result['message'] = $resultOrder['message'];
+            return $result;
+        }
+
+        $order = $resultOrder['item'];
+        // 정상적으로 주문 되었음. 
+
+        // reserve payment
+        $resultPayment = $this->reservePayment2(
+                                $changerId,
+                                $userId,
+                                $order['id'],
+                                static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+                                $creditCardId);
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $payment = $resultPayment['item'];
+        //
+
+        $result['success'] = true;
+        return $result;
+    }
+
+    public function addCreditCardAndOrderAndReservePayment2(
+                        $changerId,
+                        $userId,
+                        $creditCardNumber,
+                        $expireYear,
+                        $expireMonth,
+                        $id,
+                        $password,
+                        $contentId,
+                        $rewardId,
+                        $price,
+                        $userName,
+                        $userEmail,
+                        $userPhone,
+                        $deliveryName = null,
+                        $deliveryPhone = null,
+                        $deliveryZipcode = null,
+                        $deliveryAddress = null)
+    {
+        $result = [ 'success' => false ];
+
+        // add credit card
+        $resultCreditCard = $this->addCreditCard2(
+                                    $changerId,
+                                    $userId,
+                                    $creditCardNumber,
+                                    $expireYear,
+                                    $expireMonth,
+                                    $id,
+                                    $password);
+
+        if (!$resultCreditCard['success']) {
+            $result['success'] = false;
+            $result['from'] = 'credit_card';
+            $result['error_code'] = $resultCreditCard['error_code'];
+            $result['message'] = $resultCreditCard['message'];
+            return $result;
+        }
+
+        $creditCard = $resultCreditCard['item'];
+        // 정상적으로 카드 등록 되었음. 
+
+        // order
+        $resultOrder = $this->order2(
+                                $changerId,
+                                $userId,
+                                $contentId,
+                                $rewardId,
+                                $price,
+                                $userName,
+                                $userEmail,
+                                $userPhone,
+                                $deliveryName,
+                                $deliveryPhone,
+                                $deliveryZipcode,
+                                $deliveryAddress);
+
+        if (!$resultOrder['success']) {
+            $result['success'] = false;
+            $result['from'] = 'order';
+            $result['error_code'] = $resultOrder['error_code'];
+            $result['message'] = $resultOrder['message'];
+            return $result;
+        }
+
+        $order = $resultOrder['item'];
+        // 정상적으로 주문 되었음. 
+
+        // reserve payment
+        $resultPayment = $this->reservePayment2(
+                                $changerId,
+                                $userId,
+                                $order['id'],
+                                static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+                                $creditCard['id']);
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $payment = $resultPayment['item'];
+        //
+
+        $result['success'] = true;
+        return $result;
+    }
+
     /*
      * Payment related functions
      */
@@ -300,6 +503,38 @@ class PublyPaymentService extends BaseApiService
             $resultPayment =
                 $this->post('payment', [
                     'changer_id' => $userId,
+                    'user_id' => $userId,
+                    'order_id' => $orderId,
+                    'pg_type' => $pgType,
+                    'credit_card_id' => $creditCardId,
+                    'immediate' => false
+                ]);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $result['success'] = true;
+        $result['item'] = $resultPayment['success']['data'];
+
+        return $result;
+    }
+
+    public function reservePayment2(
+                        $changerId,
+                        $userId,
+                        $orderId,
+                        $pgType,
+                        $creditCardId)
+    {
+        $result = [ 'success' => false ];
+        try {
+            $resultPayment =
+                $this->post('payment', [
+                    'changer_id' => $changerId,
                     'user_id' => $userId,
                     'order_id' => $orderId,
                     'pg_type' => $pgType,
@@ -380,6 +615,41 @@ class PublyPaymentService extends BaseApiService
             $resultCreditCard =
                 $this->post('credit_card', [
                     'changer_id' => $userId,
+                    'user_id' => $userId,
+                    'card_number' => $creditCardNumber,
+                    'expire_year' => $expireYear,
+                    'expire_month' => $expireMonth,
+                    'id' => $id,
+                    'password' => $password
+                ]);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $result['success'] = true;
+        $result['item'] = $resultCreditCard['success']['data'];
+
+        return $result;
+    }
+
+    public function addCreditCard2(
+                        $changerId,
+                        $userId,
+                        $creditCardNumber,
+                        $expireYear,
+                        $expireMonth,
+                        $id,
+                        $password)
+    {
+        $result = [ 'success' => false ];
+        try {
+            $resultCreditCard =
+                $this->post('credit_card', [
+                    'changer_id' => $changerId,
                     'user_id' => $userId,
                     'card_number' => $creditCardNumber,
                     'expire_year' => $expireYear,
