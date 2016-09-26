@@ -593,6 +593,42 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
+    public function pay2(
+                        $changerId,
+                        $userId,
+                        $orderId,
+                        $pgType,
+                        $paymentMethodIdName,
+                        $paymentMethodId,
+                        $immediate,
+                        $note
+                        ) {
+        $result = [ 'success' => false ];
+        try {
+            $resultPayment =
+                $this->post('payment', [
+                    'changer_id' => $changerId,
+                    'user_id' => $userId,
+                    'order_id' => $orderId,
+                    'pg_type' => $pgType,
+                    $paymentMethodIdName => $paymentMethodId,
+                    'immediate' => $immediate,
+                    'note' => $note
+                ]);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $result['success'] = true;
+        $result['item'] = $resultPayment['success']['data'];
+
+        return $result;
+    }
+
     /* 
      * Payment Methods related functions
      */
