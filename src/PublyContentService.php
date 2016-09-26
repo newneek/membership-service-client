@@ -207,7 +207,7 @@ class PublyContentService extends BaseApiService
         return $this->get("set_reader/", $filterArray);
     }
 
-    public function createSetReader($userId, $setId, $sourceType, $adminId, $orderId, $expireAt, $note)
+    public function createSetReader($userId, $setId, $sourceType, $adminId, $orderId, $note)
     {
         try {
             return $this->post("set_reader", [  'user_id' => $userId,
@@ -215,7 +215,6 @@ class PublyContentService extends BaseApiService
                                                 'source_type' => $sourceType,
                                                 'admin_id' => $adminId,
                                                 'order_id' => $orderId,
-                                                'expire_at' => $expireAt,
                                                 'note' => $note ]);
         } catch (\Exception $e) {
             $result['success'] = false;
