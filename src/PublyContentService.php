@@ -155,9 +155,9 @@ class PublyContentService extends BaseApiService
         return $this->get("set/project/{$projectId}");
     }
 
-    public function getSet($setId)
+    public function getSet($setId, $filterArray = [])
     {
-        return $this->get("set/{$setId}");
+        return $this->get("set/{$setId}", $filterArray);
     }
 
     public function createSet($changerId, $title)
