@@ -207,10 +207,11 @@ class PublyContentService extends BaseApiService
         return $this->get("set_reader/", $filterArray);
     }
 
-    public function createSetReader($userId, $setId, $sourceType, $adminId, $orderId, $note)
+    public function createSetReader($changerId, $userId, $setId, $sourceType, $adminId, $orderId, $note)
     {
         try {
-            return $this->post("set_reader", [  'user_id' => $userId,
+            return $this->post("set_reader", [  'changer_id' => $changerId,
+                                                'user_id' => $userId,
                                                 'set_id' => $setId,
                                                 'source_type' => $sourceType,
                                                 'admin_id' => $adminId,
