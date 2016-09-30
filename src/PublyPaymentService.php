@@ -226,6 +226,7 @@ class PublyPaymentService extends BaseApiService
         }
 
         $order = $resultOrder['item'];
+
         // 정상적으로 주문 되었음. 
 
         // reserve payment
@@ -247,6 +248,7 @@ class PublyPaymentService extends BaseApiService
         //
 
         $result['success'] = true;
+        $result['order'] = $order;
         return $result;
     }
 
@@ -334,6 +336,7 @@ class PublyPaymentService extends BaseApiService
         //
 
         $result['success'] = true;
+        $result['order'] = $order;
         return $result;
     }
 
@@ -400,6 +403,7 @@ class PublyPaymentService extends BaseApiService
         //
 
         $result['success'] = true;
+        $result['order'] = $order;
         return $result;
     }
 
@@ -491,6 +495,7 @@ class PublyPaymentService extends BaseApiService
         //
 
         $result['success'] = true;
+        $result['order'] = $order;
         return $result;
     }
 
