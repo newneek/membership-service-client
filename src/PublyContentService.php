@@ -134,6 +134,12 @@ class PublyContentService extends BaseApiService
         return $this->put("project_progress/project/{$projectId}");
     }
 
+    public function getProjectProgressesByProjectIds($projectIds, $filterArray = [])
+    {
+        $filterArray['project_ids'] = implode(',', $projectIds);
+        return $this->get("project_progress/by_project_ids", $filterArray);
+    }
+
     /*
      * Set Related Functions
      */
