@@ -60,6 +60,11 @@ class PublyContentService extends BaseApiService
         return $this->get("content/set/{$setId}", $filterArray);
     }
 
+    public function updateContent($contentId, $isPaid)
+    {
+        return $this->put("content/{$contentId}", [ 'is_paid' => $isPaid ]);
+    }
+
     public function updateContentSet($contentId, $setId, $orderInSet)
     {
         return $this->put("content/{$contentId}/set", [ 'set_id' => $setId,
@@ -242,4 +247,10 @@ class PublyContentService extends BaseApiService
     {
         return $this->post("set_reader/delete", $params);
     }
+
+    public function togglePreorder($projectId)
+    {
+        return $this->post("project/{$projectId}/toggle_preorder");
+    }
+
 }
