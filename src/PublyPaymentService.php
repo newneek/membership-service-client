@@ -407,6 +407,76 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
+    public function orderAndPay(
+                        $changerId,
+                        $userId,
+                        $creditCardId,
+                        $contentId,
+                        $rewardId,
+                        $price,
+                        $userName,
+                        $userEmail,
+                        $userPhone,
+                        $deliveryName = null,
+                        $deliveryPhone = null,
+                        $deliveryZipcode = null,
+                        $deliveryAddress = null)
+    {
+        $result = [ 'success' => false ];
+
+        // order
+        $resultOrder = $this->order2(
+                                $changerId,
+                                $userId,
+                                $contentId,
+                                $rewardId,
+                                $price,
+                                $userName,
+                                $userEmail,
+                                $userPhone,
+                                $deliveryName,
+                                $deliveryPhone,
+                                $deliveryZipcode,
+                                $deliveryAddress);
+
+        if (!$resultOrder['success']) {
+            $result['success'] = false;
+            $result['from'] = 'order';
+            $result['error_code'] = $resultOrder['error_code'];
+            $result['message'] = $resultOrder['message'];
+            return $result;
+        }
+
+        $order = $resultOrder['item'];
+        // 정상적으로 주문 되었음. 
+
+        // reserve payment
+        $resultPayment = $this->pay2(
+                                $changerId,
+                                $userId,
+                                $order['id'],
+                                static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+                                'credit_card_id',
+                                $creditCardId,
+                                true,
+                                '');
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $payment = $resultPayment['item'];
+        //
+
+        $result['success'] = true;
+        $result['order'] = $order;
+        return $result;
+    }
+
     public function addCreditCardAndOrderAndReservePayment2(
                         $changerId,
                         $userId,
@@ -568,41 +638,6 @@ class PublyPaymentService extends BaseApiService
     /*
      * Payment related functions
      */
-    public function pay(
-                        $changerId,
-                        $userId,
-                        $orderId,
-                        $pgType,
-                        $paymentMethodId,
-                        $immediate,
-                        $note
-                        ) {
-        $result = [ 'success' => false ];
-        try {
-            $resultPayment =
-                $this->post('payment', [
-                    'changer_id' => $changerId,
-                    'user_id' => $userId,
-                    'order_id' => $orderId,
-                    'pg_type' => $pgType,
-                    'credit_card_id' => $paymentMethodId,
-                    'immediate' => $immediate,
-                    'note' => $note
-                ]);
-        } catch (ResponseException $e) {
-            $result['success'] = false;
-            $result['error_code'] = $e->getCode();
-            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
-
-            return $result;
-        }
-
-        $result['success'] = true;
-        $result['item'] = $resultPayment['success']['data'];
-
-        return $result;
-    }
-
     public function pay2(
                         $changerId,
                         $userId,
