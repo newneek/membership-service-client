@@ -242,4 +242,10 @@ class PublyContentService extends BaseApiService
     {
         return $this->post("set_reader/delete", $params);
     }
+
+    public function togglePreorder($projectId)
+    {
+        return $this->post("project/{$projectId}/toggle_preorder");
+    }
+
 }
