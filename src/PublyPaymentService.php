@@ -661,6 +661,7 @@ class PublyPaymentService extends BaseApiService
 
         $result['success'] = true;
         $result['order'] = $order;
+        $result['creditCard'] = $creditCard;
         return $result;
     }
 
@@ -772,6 +773,11 @@ class PublyPaymentService extends BaseApiService
     /* 
      * Payment Methods related functions
      */
+
+    public function getCreditCard($creditCardId)
+    {
+        return $this->get("credit_card/{$creditCardId}");
+    }
 
     public function getCreditCardsByUser($userId)
     {
