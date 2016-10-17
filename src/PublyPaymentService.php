@@ -661,6 +661,7 @@ class PublyPaymentService extends BaseApiService
 
         $result['success'] = true;
         $result['order'] = $order;
+        $result['creditCard'] = $creditCard;
         return $result;
     }
 
