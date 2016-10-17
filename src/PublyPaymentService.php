@@ -774,6 +774,11 @@ class PublyPaymentService extends BaseApiService
      * Payment Methods related functions
      */
 
+    public function getCreditCard($creditCardId)
+    {
+        return $this->get("credit_card/{$creditCardId}");
+    }
+
     public function getCreditCardsByUser($userId)
     {
         return $this->get("credit_card/user/{$userId}");
