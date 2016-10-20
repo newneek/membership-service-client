@@ -60,9 +60,9 @@ class PublyAuthService extends BaseApiService {
 
     public function retrieveByEmail($email)
     {
-    	return $this->get('retrieve_by_email', array('email'=> urlencode($email)));
+        return $this->get('retrieve_by_email', array('email'=> $email));
     }
-
+    
     public function retrieveByFacebookToken($accessToken)
     {
         return $this->get('retrieve_by_facebook_token', array('access_token' => $accessToken));

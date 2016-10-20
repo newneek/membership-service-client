@@ -477,6 +477,101 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
+    public function addCreditCardAndOrderAndPay(
+                        $changerId,
+                        $userId,
+                        $creditCardNumber,
+                        $expireYear,
+                        $expireMonth,
+                        $id,
+                        $password,
+                        $contentId,
+                        $rewardId,
+                        $price,
+                        $userName,
+                        $userEmail,
+                        $userPhone,
+                        $deliveryName = null,
+                        $deliveryPhone = null,
+                        $deliveryZipcode = null,
+                        $deliveryAddress = null)
+    {
+        $result = [ 'success' => false ];
+
+        // add credit card
+        $resultCreditCard = $this->addCreditCard2(
+                                    $changerId,
+                                    $userId,
+                                    $creditCardNumber,
+                                    $expireYear,
+                                    $expireMonth,
+                                    $id,
+                                    $password);
+
+        if (!$resultCreditCard['success']) {
+            $result['success'] = false;
+            $result['from'] = 'credit_card';
+            $result['error_code'] = $resultCreditCard['error_code'];
+            $result['message'] = $resultCreditCard['message'];
+            return $result;
+        }
+
+        $creditCard = $resultCreditCard['item'];
+        // 정상적으로 카드 등록 되었음. 
+
+        // order
+        $resultOrder = $this->order2(
+                                $changerId,
+                                $userId,
+                                $contentId,
+                                $rewardId,
+                                $price,
+                                $userName,
+                                $userEmail,
+                                $userPhone,
+                                $deliveryName,
+                                $deliveryPhone,
+                                $deliveryZipcode,
+                                $deliveryAddress);
+
+        if (!$resultOrder['success']) {
+            $result['success'] = false;
+            $result['from'] = 'order';
+            $result['error_code'] = $resultOrder['error_code'];
+            $result['message'] = $resultOrder['message'];
+            return $result;
+        }
+
+        $order = $resultOrder['item'];
+        // 정상적으로 주문 되었음. 
+
+        // reserve payment
+        $resultPayment = $this->pay2(
+                                $changerId,
+                                $userId,
+                                $order['id'],
+                                static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+                                'credit_card_id',
+                                $creditCard['id'],
+                                true,
+                                '');
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $payment = $resultPayment['item'];
+        //
+
+        $result['success'] = true;
+        $result['order'] = $order;
+        return $result;
+    }
+
     public function addCreditCardAndOrderAndReservePayment2(
                         $changerId,
                         $userId,
@@ -566,6 +661,7 @@ class PublyPaymentService extends BaseApiService
 
         $result['success'] = true;
         $result['order'] = $order;
+        $result['creditCard'] = $creditCard;
         return $result;
     }
 
@@ -677,6 +773,11 @@ class PublyPaymentService extends BaseApiService
     /* 
      * Payment Methods related functions
      */
+
+    public function getCreditCard($creditCardId)
+    {
+        return $this->get("credit_card/{$creditCardId}");
+    }
 
     public function getCreditCardsByUser($userId)
     {
