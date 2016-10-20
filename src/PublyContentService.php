@@ -86,6 +86,7 @@ class PublyContentService extends BaseApiService
         return $this->get("content/by_ids", [ 'ids' => implode(',', $contentIds) ]);
     }
 
+    // deprecated
     public function getContentsByProject($projectId, $includeHidden)
     {
         if ($includeHidden) {
@@ -148,6 +149,32 @@ class PublyContentService extends BaseApiService
     {
         $filterArray['project_ids'] = implode(',', $projectIds);
         return $this->get("project_progress/by_project_ids", $filterArray);
+    }
+
+    /*
+     * User Content Progress Related Functions
+     */
+    public function createUserContentProgress($userId, $contentId)
+    {
+        return $this->post("user_content_progress", [ 'user_id' => $userId,
+                                                      'content_id' => $contentId ]);
+    }
+
+    public function updateUserContentProgress($userId, $contentId)
+    {
+        return $this->put("user_content_progress/user/{$userId}/content/{$contentId}");
+    }
+
+    public function getUserContentProgressesByUserAndContentIds($userId, $contentIds)
+    {
+        $filterArray = [];
+        $filterArray['content_ids'] = implode(',', $contentIds);
+        return $this->get("user_content_progress/user/{$userId}/by_content_ids", $filterArray);
+    }
+
+    public function getUserContentProgress($userId, $contentId)
+    {
+        return $this->get("user_content_progress/user/{$userId}/content/{$contentId}");
     }
 
     /*
