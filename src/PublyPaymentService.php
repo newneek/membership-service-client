@@ -343,6 +343,7 @@ class PublyPaymentService extends BaseApiService
 
         $result['success'] = true;
         $result['order'] = $order;
+        $result['creditCard'] = $creditCard;
         return $result;
     }
 
@@ -360,7 +361,7 @@ class PublyPaymentService extends BaseApiService
                         $deliveryPhone = null,
                         $deliveryZipcode = null,
                         $deliveryAddress = null,
-                        $isPreorder)
+                        $isPreorder = null)
     {
         $result = [ 'success' => false ];
 
