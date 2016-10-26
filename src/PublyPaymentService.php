@@ -150,7 +150,8 @@ class PublyPaymentService extends BaseApiService
                         $deliveryName = null,
                         $deliveryPhone = null,
                         $deliveryZipcode = null,
-                        $deliveryAddress = null)
+                        $deliveryAddress = null,
+                        $isPreorder = null)
     {
         $result = [ 'success' => false ];
         try {
@@ -169,6 +170,11 @@ class PublyPaymentService extends BaseApiService
                                                  'delivery_address' => $deliveryAddress,
                                                ]);
             }
+
+            if (is_null($isPreorder) == false) {
+                $inputs = array_merge($inputs, [ 'is_preorder' => $isPreorder ]);
+            }
+
             $resultOrder = $this->post('order', $inputs);
         } catch (ResponseException $e) {
             $result['success'] = false;
@@ -353,7 +359,8 @@ class PublyPaymentService extends BaseApiService
                         $deliveryName = null,
                         $deliveryPhone = null,
                         $deliveryZipcode = null,
-                        $deliveryAddress = null)
+                        $deliveryAddress = null,
+                        $isPreorder)
     {
         $result = [ 'success' => false ];
 
@@ -370,7 +377,8 @@ class PublyPaymentService extends BaseApiService
                                 $deliveryName,
                                 $deliveryPhone,
                                 $deliveryZipcode,
-                                $deliveryAddress);
+                                $deliveryAddress,
+                                $isPreorder);
 
         if (!$resultOrder['success']) {
             $result['success'] = false;
@@ -420,7 +428,8 @@ class PublyPaymentService extends BaseApiService
                         $deliveryName = null,
                         $deliveryPhone = null,
                         $deliveryZipcode = null,
-                        $deliveryAddress = null)
+                        $deliveryAddress = null,
+                        $isPreorder = null)
     {
         $result = [ 'success' => false ];
 
@@ -437,7 +446,8 @@ class PublyPaymentService extends BaseApiService
                                 $deliveryName,
                                 $deliveryPhone,
                                 $deliveryZipcode,
-                                $deliveryAddress);
+                                $deliveryAddress,
+                                $isPreorder);
 
         if (!$resultOrder['success']) {
             $result['success'] = false;
@@ -494,7 +504,8 @@ class PublyPaymentService extends BaseApiService
                         $deliveryName = null,
                         $deliveryPhone = null,
                         $deliveryZipcode = null,
-                        $deliveryAddress = null)
+                        $deliveryAddress = null,
+                        $isPreorder = null)
     {
         $result = [ 'success' => false ];
 
@@ -532,7 +543,8 @@ class PublyPaymentService extends BaseApiService
                                 $deliveryName,
                                 $deliveryPhone,
                                 $deliveryZipcode,
-                                $deliveryAddress);
+                                $deliveryAddress,
+                                $isPreorder);
 
         if (!$resultOrder['success']) {
             $result['success'] = false;
@@ -589,7 +601,8 @@ class PublyPaymentService extends BaseApiService
                         $deliveryName = null,
                         $deliveryPhone = null,
                         $deliveryZipcode = null,
-                        $deliveryAddress = null)
+                        $deliveryAddress = null,
+                        $isPreorder = null)
     {
         $result = [ 'success' => false ];
 
@@ -627,7 +640,8 @@ class PublyPaymentService extends BaseApiService
                                 $deliveryName,
                                 $deliveryPhone,
                                 $deliveryZipcode,
-                                $deliveryAddress);
+                                $deliveryAddress,
+                                $isPreorder);
 
         if (!$resultOrder['success']) {
             $result['success'] = false;
