@@ -461,7 +461,7 @@ class PublyPaymentService extends BaseApiService
         $order = $resultOrder['item'];
         // 정상적으로 주문 되었음. 
 
-        // reserve payment
+        // payment
         $resultPayment = $this->pay2(
                                 $changerId,
                                 $userId,
@@ -481,10 +481,13 @@ class PublyPaymentService extends BaseApiService
         }
 
         $payment = $resultPayment['item'];
-        //
+        
+        $orderResult = $this->get("order/".$order['id'], []);
+        $order = $orderResult['success']['data'];
 
         $result['success'] = true;
         $result['order'] = $order;
+        $result['payment'] = $payment;
         return $result;
     }
 
@@ -578,10 +581,13 @@ class PublyPaymentService extends BaseApiService
         }
 
         $payment = $resultPayment['item'];
-        //
+        
+        $orderResult = $this->get("order/".$order['id'], []);
+        $order = $orderResult['success']['data'];
 
         $result['success'] = true;
         $result['order'] = $order;
+        $result['payment'] = $payment;
         $result['creditCard'] = $creditCard;
         return $result;
     }
@@ -703,6 +709,7 @@ class PublyPaymentService extends BaseApiService
                 ]);
         } catch (ResponseException $e) {
             $result['success'] = false;
+            $result['from'] = 'payment';
             $result['error_code'] = $e->getCode();
             $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
 
@@ -735,6 +742,7 @@ class PublyPaymentService extends BaseApiService
                 ]);
         } catch (ResponseException $e) {
             $result['success'] = false;
+            $result['from'] = 'payment';
             $result['error_code'] = $e->getCode();
             $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
 
@@ -774,6 +782,7 @@ class PublyPaymentService extends BaseApiService
                 ]);
         } catch (ResponseException $e) {
             $result['success'] = false;
+            $result['from'] = 'payment';
             $result['error_code'] = $e->getCode();
             $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
 
@@ -822,6 +831,7 @@ class PublyPaymentService extends BaseApiService
                 ]);
         } catch (ResponseException $e) {
             $result['success'] = false;
+            $result['from'] = 'credit_card';
             $result['error_code'] = $e->getCode();
             $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
 
@@ -857,6 +867,7 @@ class PublyPaymentService extends BaseApiService
                 ]);
         } catch (ResponseException $e) {
             $result['success'] = false;
+            $result['from'] = 'credit_card';
             $result['error_code'] = $e->getCode();
             $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
 
@@ -882,6 +893,7 @@ class PublyPaymentService extends BaseApiService
                 ]);
         } catch (ResponseException $e) {
             $result['success'] = false;
+            $result['from'] = 'credit_card';
             $result['error_code'] = $e->getCode();
             $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
 
@@ -919,6 +931,7 @@ class PublyPaymentService extends BaseApiService
             $result['success'] = true;
         } catch (ResponseException $e) {
             $result['success'] = false;
+            $result['from'] = 'payment';
             $result['error_code'] = $e->getCode();
             $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
         }
@@ -937,6 +950,7 @@ class PublyPaymentService extends BaseApiService
             $result['success'] = true;
         } catch (ResponseException $e) {
             $result['success'] = false;
+            $result['from'] = 'payment';
             $result['error_code'] = $e->getCode();
             $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
         }
@@ -975,6 +989,7 @@ class PublyPaymentService extends BaseApiService
             $result['success'] = true;
         } catch (ResponseException $e) {
             $result['success'] = false;
+            $result['from'] = 'order';
             $result['error_code'] = $e->getCode();
             $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
         }
@@ -994,6 +1009,7 @@ class PublyPaymentService extends BaseApiService
             $result['success'] = true;
         } catch (ResponseException $e) {
             $result['success'] = false;
+            $result['from'] = 'order';
             $result['error_code'] = $e->getCode();
             $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
         }
