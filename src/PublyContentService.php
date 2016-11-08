@@ -285,4 +285,41 @@ class PublyContentService extends BaseApiService
         return $this->post("project/{$projectId}/toggle_preorder");
     }
 
+    public function getHomeDisplay($type, $page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['type'] = $type;
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("homeDisplay", $filterArray);
+    }
+
+    public function createHomeDisplay($changerId, $type, $projectId, $startAt, $finishAt)
+    {
+        return $this->post("homeDisplay", ['changer_id' => $changerId,
+                                           'type' => $type, 
+                                           'project_id' => $projectId, 
+                                           'start_at' => $startAt,
+                                           'finish_at' => $finishAt
+                                           ]);
+    }
+
+    public function updateHomeDisplayTime($changerId, $homeDisplayId, $startAt, $finishAt)
+    {
+        return $this->post("homeDisplay/{$homeDisplayId}", ['changer_id' => $changerId,
+                                                            'start_at' => $startAt,
+                                                            'finish_at' => $finishAt
+                                                            ]);
+    }
+
+    public function updateHomeDisplayOrder($changerId, $homeDisplayIds)
+    {
+        return $this->put("homeDisplay/order", [ 'changer_id' => $changerId,
+                                                 'ids' => implode(',', $homeDisplayIds) ]);
+    }
+
+    public function deleteHomeDisplay($changerId, $homeDisplayId)
+    {
+        return $this->delelte("homeDisplay/{$homeDisplayId}", [ 'changer_id' => $changerId ]);
+    }
+
 }
