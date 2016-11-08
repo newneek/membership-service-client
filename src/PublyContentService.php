@@ -9,6 +9,8 @@ class PublyContentService extends BaseApiService
     const SET_READER_SOURCE_TYPE_ADMIN = 1;
     const SET_READER_SOURCE_TYPE_ORDER = 2;
     
+    const HOME_DISPLAY_TYPE_PROJECT = 1;
+
     public function __construct($domain)
     {
         parent::__construct();
@@ -290,12 +292,12 @@ class PublyContentService extends BaseApiService
         $filterArray['type'] = $type;
         $filterArray['page'] = $page;
         $filterArray['limit'] = $limit;
-        return $this->get("homeDisplay", $filterArray);
+        return $this->get("home_display", $filterArray);
     }
 
     public function createHomeDisplay($changerId, $type, $projectId, $startAt, $finishAt)
     {
-        return $this->post("homeDisplay", ['changer_id' => $changerId,
+        return $this->post("home_display", ['changer_id' => $changerId,
                                            'type' => $type, 
                                            'project_id' => $projectId, 
                                            'start_at' => $startAt,
@@ -305,7 +307,7 @@ class PublyContentService extends BaseApiService
 
     public function updateHomeDisplayTime($changerId, $homeDisplayId, $startAt, $finishAt)
     {
-        return $this->post("homeDisplay/{$homeDisplayId}", ['changer_id' => $changerId,
+        return $this->post("home_display/{$homeDisplayId}", ['changer_id' => $changerId,
                                                             'start_at' => $startAt,
                                                             'finish_at' => $finishAt
                                                             ]);
@@ -313,13 +315,13 @@ class PublyContentService extends BaseApiService
 
     public function updateHomeDisplayOrder($changerId, $homeDisplayIds)
     {
-        return $this->put("homeDisplay/order", [ 'changer_id' => $changerId,
+        return $this->put("home_display/order", [ 'changer_id' => $changerId,
                                                  'ids' => implode(',', $homeDisplayIds) ]);
     }
 
     public function deleteHomeDisplay($changerId, $homeDisplayId)
     {
-        return $this->delelte("homeDisplay/{$homeDisplayId}", [ 'changer_id' => $changerId ]);
+        return $this->delelte("home_display/{$homeDisplayId}", [ 'changer_id' => $changerId ]);
     }
 
 }
