@@ -316,12 +316,13 @@ class PublyContentService extends BaseApiService
     public function updateHomeDisplayOrder($changerId, $homeDisplayIds)
     {
         return $this->put("home_display/order", [ 'changer_id' => $changerId,
-                                                 'ids' => implode(',', $homeDisplayIds) ]);
+                                                  'ids' => implode(',', $homeDisplayIds) ]);
     }
 
     public function deleteHomeDisplay($changerId, $homeDisplayId)
     {
-        return $this->delelte("home_display/{$homeDisplayId}", [ 'changer_id' => $changerId ]);
+        return $this->post("home_display/delete/", [ 'changer_id' => $changerId,
+                                                     'homeDisplayId' => $homeDisplayId ]);
     }
 
 }
