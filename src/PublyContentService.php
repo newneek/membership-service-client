@@ -73,6 +73,11 @@ class PublyContentService extends BaseApiService
                                                         'order_in_set' => $orderInSet ]);
     }
 
+    public function updateContentProjectId($contentId, $projectId)
+    {
+        return $this->put("content/{$contentId}/project", [ 'project_id' => $projectId ]);
+    }
+
     public function updateContentsOrderInSet($setId, $contentIds)
     {
         return $this->put("content/set/{$setId}", [ 'ids' => implode(',', $contentIds) ]);
@@ -88,7 +93,6 @@ class PublyContentService extends BaseApiService
         return $this->get("content/by_ids", [ 'ids' => implode(',', $contentIds) ]);
     }
 
-    // deprecated
     public function getContentsByProject($projectId, $includeHidden)
     {
         if ($includeHidden) {
