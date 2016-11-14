@@ -93,13 +93,9 @@ class PublyContentService extends BaseApiService
         return $this->get("content/by_ids", [ 'ids' => implode(',', $contentIds) ]);
     }
 
-    public function getContentsByProject($projectId, $includeHidden)
+    public function getContentsByProject($projectId, $filterArray)
     {
-        if ($includeHidden) {
-            return $this->get("content/project/{$projectId}");
-        } else {
-            return $this->get("content/project/{$projectId}", [ 'is_hidden' => false ]);
-        }
+        return $this->get("content/project/{$projectId}", $filterArray);
     }
 
     /*
