@@ -325,4 +325,39 @@ class PublyContentService extends BaseApiService
                                                      'homeDisplayId' => $homeDisplayId ]);
     }
 
+    public function getReplies($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("reply", $filterArray);
+    }
+
+    public function getChildRepliesByIds($replyIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $replyIds);
+        return $this->get("reply/by_parent_ids", $filterArray);
+    }
+
+    public function createReply($changerId, $userId, $content, $projectId, $contentId, $parentId)
+    {
+        return $this->post("reply", ['changer_id' => $changerId, 
+                                     'user_id' => $userId, 
+                                     'content' => $content, 
+                                     'project_id' => $projectId, 
+                                     'content_id' => $contentId, 
+                                     'parent_id' => $parentId
+                                     ]);
+    }
+
+    public function deleteReply($changerId, $replyId)
+    {
+        return $this->post("reply/delete/", [ 'changer_id' => $changerId,
+                                              'reply_id' => $replyId ]);
+    }
+
+    public function updateReply($changerId, $replyId, $content)
+    {
+        return $this->put("reply/{$replyId}/", [ 'changer_id' => $changerId,
+                                                 'content' => $content ]);
+    }
 }
