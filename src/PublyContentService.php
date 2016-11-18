@@ -349,15 +349,17 @@ class PublyContentService extends BaseApiService
                                      ]);
     }
 
-    public function deleteReply($changerId, $replyId)
+    public function deleteReply($changerId, $replyId, $force = false)
     {
         return $this->post("reply/delete/", [ 'changer_id' => $changerId,
-                                              'reply_id' => $replyId ]);
+                                              'reply_id' => $replyId,
+                                              'force' => $force ? 1 : 0 ]);
     }
 
-    public function updateReply($changerId, $replyId, $content)
+    public function updateReply($changerId, $replyId, $content, $force = false)
     {
         return $this->put("reply/{$replyId}/", [ 'changer_id' => $changerId,
-                                                 'content' => $content ]);
+                                                 'content' => $content,
+                                                 'force' => $force ? 1 : 0 ]);
     }
 }
