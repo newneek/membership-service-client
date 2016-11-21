@@ -307,7 +307,7 @@ class PublyContentService extends BaseApiService
 
     public function updateHomeDisplayTime($changerId, $homeDisplayId, $startAt, $finishAt)
     {
-        return $this->post("home_display/{$homeDisplayId}", ['changer_id' => $changerId,
+        return $this->put("home_display/{$homeDisplayId}", ['changer_id' => $changerId,
                                                             'start_at' => $startAt,
                                                             'finish_at' => $finishAt
                                                             ]);
