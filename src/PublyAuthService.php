@@ -18,6 +18,9 @@ class PublyAuthService extends BaseApiService {
         $this->apiUrl = "$this->domain/";        
     }
 
+    /*
+     * User Related Interfaces
+     */
     public function getUser($userId)
     {
         return $this->get("user/{$userId}");
@@ -33,6 +36,15 @@ class PublyAuthService extends BaseApiService {
     public function getUsersByIds($userIds)
     {
         return $this->get("user/by_ids", [ 'ids' => implode(',', $userIds) ]);
+    }
+
+    /*
+     * User Email Change History Related Interfaces
+     */
+
+    public function getUserEmailChangeHistoryByFrom($fromEmail)
+    {
+        return $this->get("user_email_change_history/from/{$fromEmail}");
     }
 
     public function retrieveById($id)
