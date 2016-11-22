@@ -38,6 +38,13 @@ class PublyAuthService extends BaseApiService {
         return $this->get("user/by_ids", [ 'ids' => implode(',', $userIds) ]);
     }
 
+    public function updateUser($userId, $name, $email, $phone)
+    {
+        return $this->put("user/{$userId}", [ 'name' => $name,
+                                              'email' => $email,
+                                              'phone' => $phone ]);
+    }
+
     /*
      * User Email Change History Related Interfaces
      */
