@@ -19,10 +19,30 @@ class PublyNotificationService extends BaseApiService
     public function notifyByTemplate($templateType, $destEmail, $destName, $destPhone, $variables)
     {
         return $this->post("/template/send", [ 'template_type' => $templateType,
-                                              'dest_email' => $destEmail, 
-                                              'dest_name' => $destName, 
-                                              'dest_phone' => $destPhone, 
-                                              'variables' => $variables, 
-                                              ]);
+                                               'dest_email' => $destEmail, 
+                                               'dest_name' => $destName, 
+                                               'dest_phone' => $destPhone, 
+                                               'variables' => $variables, 
+                                               ]);
+    }
+
+    public function sendEmail($destEmail, $subject, $body, $isAuto, $sourceEmail = null)
+    {
+        return $this->post("/email/send", [ 'dest_email' => $destEmail, 
+                                            'subject' => $subject, 
+                                            'body' => $body, 
+                                            'is_auto' => $isAuto, 
+                                            'source_email' => $sourceEmail, 
+                                            ]);
+    }
+
+    public function sendSMS($destPhones, $body, $sendTime, $isAuto, $sourcePhone = null)
+    {
+        return $this->post("/sms/send", [ 'dest_phones' => $destPhones, 
+                                          'body' => $body, 
+                                          'send_time' => $sendTime, 
+                                          'is_auto' => $isAuto, 
+                                          'source_phone' => $sourcePhone, 
+                                          ]);
     }
 }
