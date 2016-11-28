@@ -28,7 +28,7 @@ class PublyNotificationService extends BaseApiService
 
     public function sendEmail($destEmail, $subject, $body, $isAuto, $sourceEmail = null)
     {
-        return $this->post("/email/send", [ 'dest_email' => $destEmail, 
+        return $this->post("/email/send", [ 'dest_emails' => $destEmail, 
                                             'subject' => $subject, 
                                             'body' => $body, 
                                             'is_auto' => $isAuto, 
