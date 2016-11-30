@@ -48,9 +48,9 @@ class PublyNotificationService extends BaseApiService
                                                ]);
     }
 
-    public function sendEmail($destEmail, $subject, $body, $isAuto, $sourceEmail = null)
+    public function sendEmail($destEmails, $subject, $body, $isAuto, $sourceEmail = null)
     {
-        return $this->post("/email/send", [ 'dest_emails' => $destEmail, 
+        return $this->post("/email/send", [ 'dest_emails' => $destEmails, 
                                             'subject' => $subject, 
                                             'body' => $body, 
                                             'is_auto' => $isAuto, 
@@ -66,6 +66,34 @@ class PublyNotificationService extends BaseApiService
                                           'is_auto' => $isAuto, 
                                           'source_phone' => $sourcePhone, 
                                           ]);
+    }
+
+    public function notifyTemplateByUserId($templateType, $urseId, $variables)
+    {
+        return $this->post("/template/send/byUserId", [ 'template_type' => $templateType,
+                                                        'user_id' => $urseId, 
+                                                        'variables' => $variables, 
+                                                        ]);
+    }
+
+    public function sendEmailByUserId($userIds, $subject, $body, $isAuto, $sourceEmail = null)
+    {
+        return $this->post("/email/send/byUserId", [ 'user_ids' => $userIds, 
+                                                     'subject' => $subject, 
+                                                     'body' => $body, 
+                                                     'is_auto' => $isAuto, 
+                                                     'source_email' => $sourceEmail, 
+                                                     ]);
+    }
+
+    public function sendSMSByUserId($userIds, $body, $sendTime, $isAuto, $sourcePhone = null)
+    {
+        return $this->post("/sms/send/byUserId", [ 'user_ids' => $userIds, 
+                                                   'body' => $body, 
+                                                   'send_time' => $sendTime, 
+                                                   'is_auto' => $isAuto, 
+                                                   'source_phone' => $sourcePhone, 
+                                                   ]);
     }
 
     public function getEmailLogs($page, $limit, $filterArray = [])
