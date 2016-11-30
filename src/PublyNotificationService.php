@@ -20,10 +20,16 @@ class PublyNotificationService extends BaseApiService
     {
         return $this->get("/template");
     }
-    
+
     public function getTemplate($templateId)
     {
         return $this->get("/template/{$templateId}");
+    }
+
+    public function updateTemplate($templateId, $changerId, $inputs)
+    {
+        $inputs['changer_id'] = $changerId;
+        return $this->post("/template/{$templateId}", $inputs);
     }
 
     public function notifyByTemplate($templateType, $destEmail, $destName, $destPhone, $variables)
