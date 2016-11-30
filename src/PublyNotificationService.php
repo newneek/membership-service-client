@@ -67,4 +67,18 @@ class PublyNotificationService extends BaseApiService
                                           'source_phone' => $sourcePhone, 
                                           ]);
     }
+
+    public function getEmailLogs($page, $limit, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("/email/logs", $filterArray);
+    }
+
+    public function getSmsLogs($page, $limit, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("/sms/logs", $filterArray);
+    }
 }
