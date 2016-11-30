@@ -16,9 +16,9 @@ class PublyNotificationService extends BaseApiService
         $this->apiUrl = "$this->domain/";
     }
 
-    public function getTemplates()
+    public function getTemplates($filterArray)
     {
-        return $this->get("/template");
+        return $this->get("/template", $filterArray);
     }
 
     public function getTemplate($templateId)
