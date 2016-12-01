@@ -103,6 +103,11 @@ class PublyNotificationService extends BaseApiService
         return $this->get("/email/logs", $filterArray);
     }
 
+    public function getEmailLog($emailLogId)
+    {
+        return $this->get("/email/log/{$emailLogId}");
+    }
+
     public function getSmsLogs($page, $limit, $filterArray = [])
     {
         $filterArray['page'] = $page;
