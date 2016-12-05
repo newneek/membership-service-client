@@ -68,15 +68,15 @@ class PublyNotificationService extends BaseApiService
                                           ]);
     }
 
-    public function notifyTemplateByUserId($templateType, $urseId, $variables)
+    public function sendNotificationTemplateByUser($templateType, $userId, $variables)
     {
         return $this->post("/template/send/byUserId", [ 'template_type' => $templateType,
-                                                        'user_id' => $urseId, 
+                                                        'user_id' => $userId, 
                                                         'variables' => $variables, 
                                                         ]);
     }
 
-    public function sendEmailByUserId($userIds, $subject, $body, $isAuto, $sourceEmail = null)
+    public function sendEmailByUsers($userIds, $subject, $body, $isAuto, $sourceEmail = null)
     {
         return $this->post("/email/send/byUserId", [ 'user_ids' => $userIds, 
                                                      'subject' => $subject, 
@@ -86,7 +86,7 @@ class PublyNotificationService extends BaseApiService
                                                      ]);
     }
 
-    public function sendSMSByUserId($userIds, $body, $sendTime, $isAuto, $sourcePhone = null)
+    public function sendSMSByUsers($userIds, $body, $sendTime, $isAuto, $sourcePhone = null)
     {
         return $this->post("/sms/send/byUserId", [ 'user_ids' => $userIds, 
                                                    'body' => $body, 
