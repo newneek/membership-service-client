@@ -21,6 +21,7 @@ class PublyPaymentService extends BaseApiService
     const ORDER_STATUS_PROJECT_FAILED = 5;
     const ORDER_STATUS_PAYMENT_IN_PROGRESS = 6; // Right before to make payment from reserved status(user can't change or cancel payment) 
     const ORDER_STATUS_PAYMENT_FAILED = 7;
+    const ORDER_STATUS_MAX = 8;
     
     const STRING_ORDER_STATUS = [
         PublyPaymentService::ORDER_STATUS_CHECKEDOUT => "주문완료",
