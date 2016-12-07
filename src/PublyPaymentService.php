@@ -1029,4 +1029,12 @@ class PublyPaymentService extends BaseApiService
         
         return $result;
     }
+
+    public function cancelOrder2($changerId, $orderId, $force = false)
+    {
+        return $this->put("/order/{$orderId}",
+                          [ 'changer_id' => $changerId,
+                            'action' => 'cancel',
+                            'force' => $force ? 1 : 0 ]);      
+    }
 }
