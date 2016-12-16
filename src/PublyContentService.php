@@ -369,4 +369,50 @@ class PublyContentService extends BaseApiService
                                                  'content' => $content,
                                                  'force' => $force ? 1 : 0 ]);
     }
+
+    public function addProjectAuthor($changerId, $projectId, $userId, $isHidden)
+    {
+        return $this->post("writer", [  'changer_id' => $changerId,
+                                        'user_id' => $userId,
+                                        'project_id' => $projectId, 
+                                        'is_hidden' => $isHidden ]);
+    }
+
+    public function removeProjectAuthor($changerId, $projectId, $userId)
+    {
+        return $this->post("writer/delete/", [ 'changer_id' => $changerId,
+                                               'user_id' => $userId,
+                                               'project_id' => $projectId ]);
+    }
+
+    public function addContentAuthor($changerId, $contentId, $userId, $isHidden)
+    {
+        return $this->post("writer", [  'changer_id' => $changerId,
+                                        'user_id' => $userId,
+                                        'content_id' => $contentId, 
+                                        'is_hidden' => $isHidden ]);
+    }
+
+    public function removeContentAuthor($changerId, $contentId, $userId)
+    {
+        return $this->post("writer/delete/", [ 'changer_id' => $changerId,
+                                               'user_id' => $userId,
+                                               'content_id' => $contentId ]);
+    }
+
+    public function getProjectWriters($projectId, $filterArray = [])
+    {
+        return $this->get("writer/project/{$projectId}", $filterArray);
+    }
+
+    public function getContentWriters($contentId, $filterArray = [])
+    {
+        return $this->get("writer/content/{$contentId}", $filterArray);
+    }
+
+    public function getWritersByContentIds($contentIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $contentIds);
+        return $this->get("writer/content/ids", $filterArray);
+    }
 }
