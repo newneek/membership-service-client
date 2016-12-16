@@ -393,8 +393,26 @@ class PublyContentService extends BaseApiService
                                         'is_hidden' => $isHidden ]);
     }
 
+    public function removeContentAuthor($changerId, $contentId, $userId)
+    {
+        return $this->post("writer/delete/", [ 'changer_id' => $changerId,
+                                               'user_id' => $userId,
+                                               'content_id' => $contentId ]);
+    }
+
     public function getProjectWriters($projectId, $filterArray = [])
     {
         return $this->get("writer/project/{$projectId}", $filterArray);
+    }
+
+    public function getContentWriters($contentId, $filterArray = [])
+    {
+        return $this->get("writer/content/{$contentId}", $filterArray);
+    }
+
+    public function getWritersByContentIds($contentIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $contentIds);
+        return $this->get("writer/content/ids", $filterArray);
     }
 }
