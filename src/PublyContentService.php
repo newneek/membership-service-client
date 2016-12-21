@@ -137,6 +137,11 @@ class PublyContentService extends BaseApiService
     /*
      * Project Progress Related Functions
      */
+    public function getProjectProgressByProject($projectId)
+    {
+        return $this->get("project_progress/project/{$projectId}");
+    }
+    
     public function updateAllProjectProgress($includeFinished = false)
     {
         return $this->put("project_progress", [ 'include_finished' => $includeFinished ? 1 : 0 ]);
