@@ -405,6 +405,21 @@ class PublyContentService extends BaseApiService
                                                'content_id' => $contentId ]);
     }
 
+    public function addSetAuthor($changerId, $setId, $userId, $isHidden)
+    {
+        return $this->post("writer", [  'changer_id' => $changerId,
+                                        'user_id' => $userId,
+                                        'set_id' => $setId, 
+                                        'is_hidden' => $isHidden ]);
+    }
+
+    public function removeSetAuthor($changerId, $setId, $userId)
+    {
+        return $this->post("writer/delete/", [ 'changer_id' => $changerId,
+                                               'user_id' => $userId,
+                                               'set_id' => $setId ]);
+    }
+
     public function getProjectWriters($projectId, $filterArray = [])
     {
         return $this->get("writer/project/{$projectId}", $filterArray);
