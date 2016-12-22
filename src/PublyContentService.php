@@ -132,7 +132,21 @@ class PublyContentService extends BaseApiService
     { 
         return $this->post("project/{$projectId}/set/{$setId}/delete"); 
     } 
- 
+
+    public function updateProjectCoverImage($projectId, $imageUrl)
+    {
+        return $this->put("project/{$projectId}/image", ['cover_image' => $imageUrl]);
+    }
+
+    public function updateProjectListImage($projectId, $imageUrl)
+    {
+        return $this->put("project/{$projectId}/image", ['list_image' => $imageUrl]);
+    }
+
+    public function updateProjectMobileImage($projectId, $imageUrl)
+    {
+        return $this->put("project/{$projectId}/image", ['mobile_image' => $imageUrl]);
+    }
 
     /*
      * Project Progress Related Functions
