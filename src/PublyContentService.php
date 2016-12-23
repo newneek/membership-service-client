@@ -241,6 +241,12 @@ class PublyContentService extends BaseApiService
         return $this->post("set/{$setId}/load_data_from_project", [ 'changer_id' => $changerId ]); 
     } 
 
+    public function updateSetImage($changerId, $setId, $imageUrl)
+    {
+        return $this->put("set/{$setId}/image", [ 'changer_id' => $changerId, 
+                                                  'image_url' => $imageUrl ]);
+    }
+
     /*
      * SetReader Related Functions
      */
