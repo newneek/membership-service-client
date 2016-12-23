@@ -83,6 +83,16 @@ class PublyContentService extends BaseApiService
         return $this->put("content/set/{$setId}", [ 'ids' => implode(',', $contentIds) ]);
     }
 
+    public function updateContentCoverImage($contentId, $imageUrl)
+    {
+        return $this->put("content/{$contentId}/image", ['cover_image' => $imageUrl]);
+    }
+
+    public function updateContentListImage($contentId, $imageUrl)
+    {
+        return $this->put("content/{$contentId}/image", ['list_image' => $imageUrl]);
+    }
+
     public function getContent($contentId)
     {
         return $this->get("content/{$contentId}");
