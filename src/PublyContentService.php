@@ -83,6 +83,16 @@ class PublyContentService extends BaseApiService
         return $this->put("content/set/{$setId}", [ 'ids' => implode(',', $contentIds) ]);
     }
 
+    public function updateContentCoverImage($contentId, $imageUrl)
+    {
+        return $this->put("content/{$contentId}/image", ['cover_image' => $imageUrl]);
+    }
+
+    public function updateContentListImage($contentId, $imageUrl)
+    {
+        return $this->put("content/{$contentId}/image", ['list_image' => $imageUrl]);
+    }
+
     public function getContent($contentId)
     {
         return $this->get("content/{$contentId}");
@@ -132,7 +142,21 @@ class PublyContentService extends BaseApiService
     { 
         return $this->post("project/{$projectId}/set/{$setId}/delete"); 
     } 
- 
+
+    public function updateProjectCoverImage($projectId, $imageUrl)
+    {
+        return $this->put("project/{$projectId}/image", ['cover_image' => $imageUrl]);
+    }
+
+    public function updateProjectListImage($projectId, $imageUrl)
+    {
+        return $this->put("project/{$projectId}/image", ['list_image' => $imageUrl]);
+    }
+
+    public function updateProjectMobileImage($projectId, $imageUrl)
+    {
+        return $this->put("project/{$projectId}/image", ['mobile_image' => $imageUrl]);
+    }
 
     /*
      * Project Progress Related Functions
@@ -226,6 +250,12 @@ class PublyContentService extends BaseApiService
     { 
         return $this->post("set/{$setId}/load_data_from_project", [ 'changer_id' => $changerId ]); 
     } 
+
+    public function updateSetImage($changerId, $setId, $imageUrl)
+    {
+        return $this->put("set/{$setId}/image", [ 'changer_id' => $changerId, 
+                                                  'image_url' => $imageUrl ]);
+    }
 
     /*
      * SetReader Related Functions
@@ -403,6 +433,21 @@ class PublyContentService extends BaseApiService
         return $this->post("writer/delete/", [ 'changer_id' => $changerId,
                                                'user_id' => $userId,
                                                'content_id' => $contentId ]);
+    }
+
+    public function addSetAuthor($changerId, $setId, $userId, $isHidden)
+    {
+        return $this->post("writer", [  'changer_id' => $changerId,
+                                        'user_id' => $userId,
+                                        'set_id' => $setId, 
+                                        'is_hidden' => $isHidden ]);
+    }
+
+    public function removeSetAuthor($changerId, $setId, $userId)
+    {
+        return $this->post("writer/delete/", [ 'changer_id' => $changerId,
+                                               'user_id' => $userId,
+                                               'set_id' => $setId ]);
     }
 
     public function getProjectWriters($projectId, $filterArray = [])
