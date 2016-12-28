@@ -133,14 +133,14 @@ class PublyContentService extends BaseApiService
         return $this->get("project/set/{$setId}", $filterArray); 
     } 
  
-    public function createProjectSet($projectId, $setId) 
+    public function createProjectSet($changerId, $projectId, $setId) 
     { 
-        return $this->post("project/{$projectId}/set/{$setId}"); 
+        return $this->post("project/{$projectId}/set/{$setId}", [ 'changer_id' => $changerId ]); 
     } 
  
-    public function removeProjectSet($projectId, $setId) 
+    public function removeProjectSet($changerId, $projectId, $setId) 
     { 
-        return $this->post("project/{$projectId}/set/{$setId}/delete"); 
+        return $this->post("project/{$projectId}/set/{$setId}/delete", [ 'changer_id' => $changerId ]);
     } 
 
     public function updateProjectCoverImage($projectId, $imageUrl)
