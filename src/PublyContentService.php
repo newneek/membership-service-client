@@ -111,6 +111,13 @@ class PublyContentService extends BaseApiService
     /*
      * Project Related Functions
      */
+
+    public function createProject($changerId, $title)
+    {
+        return $this->post("project", [ 'title' => $title,
+                                        'changer_id' => $changerId ]);
+    }
+
     public function getProject($projectId)
     {
         return $this->get("project/{$projectId}");
