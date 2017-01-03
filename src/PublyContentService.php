@@ -118,6 +118,23 @@ class PublyContentService extends BaseApiService
                                         'changer_id' => $changerId ]);
     }
 
+    public function updateProject(  $changerId, 
+                                    $projectId, 
+                                    $title,
+                                    $startAt,
+                                    $finishAt,
+                                    $donateGoalPrice,
+                                    $memo )
+    {
+        return $this->put("project/{$projectId}", [ 'changer_id' => $changerId,
+                                                    'title' => $title,
+                                                    'start_at' => $startAt,
+                                                    'finish_at' => $finishAt,
+                                                    'donate_goal_price' => $donateGoalPrice,
+                                                    'memo' => $memo
+                                                     ]);
+    }
+
     public function getProject($projectId)
     {
         return $this->get("project/{$projectId}");
