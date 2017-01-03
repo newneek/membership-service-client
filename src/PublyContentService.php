@@ -22,6 +22,24 @@ class PublyContentService extends BaseApiService
     /*
      * Reward Related Functions
      */
+    
+
+    public function createReward( $changerId,
+                                  $projectId,
+                                  $name,
+                                  $needDelivery,
+                                  $price,
+                                  $quantity,
+                                  $description )
+    {
+        return $this->post("reward", [ 'changer_id' => $changerId,
+                                       'project_id' => $projectId,
+                                       'name' => $name,
+                                       'need_delivery' => $needDelivery,
+                                       'price' => $price,
+                                       'quantity' => $quantity,
+                                       'description' => $description ]);
+    }
 
     public function getReward($rewardId)
     {
