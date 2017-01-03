@@ -47,6 +47,11 @@ class PublyContentService extends BaseApiService
         }
     }
 
+    public function toggleRewardActive($rewardId)
+    {
+        return $this->put("reward/{$rewardId}/toggle_active");
+    }
+
     /*
      * Content Related Functions
      */
