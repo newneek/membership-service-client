@@ -22,6 +22,39 @@ class PublyContentService extends BaseApiService
     /*
      * Reward Related Functions
      */
+    
+    public function createReward( $changerId,
+                                  $projectId,
+                                  $name,
+                                  $needDelivery,
+                                  $price,
+                                  $quantity,
+                                  $description )
+    {
+        return $this->post("reward", [ 'changer_id' => $changerId,
+                                       'project_id' => $projectId,
+                                       'name' => $name,
+                                       'need_delivery' => $needDelivery,
+                                       'price' => $price,
+                                       'quantity' => $quantity,
+                                       'description' => $description ]);
+    }
+
+    public function updateReward( $rewardId,
+                                  $changerId,
+                                  $name,
+                                  $needDelivery,
+                                  $price,
+                                  $quantity,
+                                  $description )
+    {
+        return $this->put("reward/{$rewardId}", [ 'changer_id' => $changerId,
+                                                  'name' => $name,
+                                                  'need_delivery' => $needDelivery,
+                                                  'price' => $price,
+                                                  'quantity' => $quantity,
+                                                  'description' => $description ]);
+    }
 
     public function getReward($rewardId)
     {
@@ -45,6 +78,11 @@ class PublyContentService extends BaseApiService
         } else {
             return $this->get("reward/project/{$projectId}", [ 'is_hidden' => 0 ]);
         }
+    }
+
+    public function toggleRewardActive($rewardId)
+    {
+        return $this->put("reward/{$rewardId}/toggle_active");
     }
 
     /*
@@ -111,6 +149,30 @@ class PublyContentService extends BaseApiService
     /*
      * Project Related Functions
      */
+
+    public function createProject($changerId, $title)
+    {
+        return $this->post("project", [ 'title' => $title,
+                                        'changer_id' => $changerId ]);
+    }
+
+    public function updateProject(  $changerId, 
+                                    $projectId, 
+                                    $title,
+                                    $startAt,
+                                    $finishAt,
+                                    $donateGoalPrice,
+                                    $memo )
+    {
+        return $this->put("project/{$projectId}", [ 'changer_id' => $changerId,
+                                                    'title' => $title,
+                                                    'start_at' => $startAt,
+                                                    'finish_at' => $finishAt,
+                                                    'donate_goal_price' => $donateGoalPrice,
+                                                    'memo' => $memo
+                                                     ]);
+    }
+
     public function getProject($projectId)
     {
         return $this->get("project/{$projectId}");
