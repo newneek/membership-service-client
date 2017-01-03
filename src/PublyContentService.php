@@ -23,7 +23,6 @@ class PublyContentService extends BaseApiService
      * Reward Related Functions
      */
     
-
     public function createReward( $changerId,
                                   $projectId,
                                   $name,
@@ -39,6 +38,22 @@ class PublyContentService extends BaseApiService
                                        'price' => $price,
                                        'quantity' => $quantity,
                                        'description' => $description ]);
+    }
+
+    public function updateReward( $rewardId,
+                                  $changerId,
+                                  $name,
+                                  $needDelivery,
+                                  $price,
+                                  $quantity,
+                                  $description )
+    {
+        return $this->put("reward/{$rewardId}", [ 'changer_id' => $changerId,
+                                                  'name' => $name,
+                                                  'need_delivery' => $needDelivery,
+                                                  'price' => $price,
+                                                  'quantity' => $quantity,
+                                                  'description' => $description ]);
     }
 
     public function getReward($rewardId)
