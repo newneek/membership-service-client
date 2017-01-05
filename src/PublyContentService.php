@@ -85,6 +85,11 @@ class PublyContentService extends BaseApiService
         return $this->put("reward/{$rewardId}/toggle_active");
     }
 
+    public function updateRewardsOrderInProject($projectId, $rewardIds)
+    {
+        return $this->put("reward/project/{$projectId}", [ 'ids' => implode(',', $rewardIds) ]);
+    }
+
     /*
      * Content Related Functions
      */
