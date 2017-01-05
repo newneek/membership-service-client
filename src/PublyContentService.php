@@ -167,6 +167,8 @@ class PublyContentService extends BaseApiService
                                     $startAt,
                                     $finishAt,
                                     $donateGoalPrice,
+                                    $status,
+                                    $isPreorder,
                                     $memo )
     {
         return $this->put("project/{$projectId}", [ 'changer_id' => $changerId,
@@ -174,6 +176,8 @@ class PublyContentService extends BaseApiService
                                                     'start_at' => $startAt,
                                                     'finish_at' => $finishAt,
                                                     'donate_goal_price' => $donateGoalPrice,
+                                                    'status' => $status,
+                                                    'is_preorder' => $isPreorder,
                                                     'memo' => $memo
                                                      ]);
     }
