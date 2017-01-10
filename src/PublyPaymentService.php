@@ -67,6 +67,13 @@ class PublyPaymentService extends BaseApiService
                             'action' => 'fail' ]);
     }
 
+    public function getOrders($page, $limit, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("order", $filterArray);
+    }
+
     public function getOrdersByUser($userId, $page, $limit, $filterArray = [])
     {
         $filterArray['page'] = $page;
