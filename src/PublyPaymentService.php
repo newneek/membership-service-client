@@ -1047,6 +1047,21 @@ class PublyPaymentService extends BaseApiService
                             'force' => $force ? 1 : 0 ]);      
     }
 
+    public function requestRefundOrder($changerId, $orderId, $force = false)
+    {
+        return $this->put("/order/{$orderId}",
+                          [ 'changer_id' => $changerId,
+                            'action' => 'request-refund',
+                            'force' => $force ? 1 : 0 ]);
+    }
+
+    public function completeRefundOrder($changerId, $orderId)
+    {// only for admin. do not use this interface on www.
+        return $this->put("/order/{$orderId}",
+                          [ 'changer_id' => $changerId,
+                            'action' => 'complete-refund' ]); 
+    }
+
     public function refreshSetReaderByProject($projectId)
     {
         return $this->post("/order/refresh_set_reader", ['project_id' => $projectId]);
