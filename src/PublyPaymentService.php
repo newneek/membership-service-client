@@ -33,7 +33,9 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::ORDER_STATUS_CANCELLED => "결제전 취소",
         PublyPaymentService::ORDER_STATUS_PROJECT_FAILED => "프로젝트 실패",
         PublyPaymentService::ORDER_STATUS_PAYMENT_IN_PROGRESS => "결제중",
-        PublyPaymentService::ORDER_STATUS_PAYMENT_FAILED => "결제실패"];
+        PublyPaymentService::ORDER_STATUS_PAYMENT_FAILED => "결제실패",
+        PublyPaymentService::ORDER_STATUS_REFUND_REQUESTED => "환불 신청",
+        PublyPaymentService::ORDER_STATUS_REFUND_COMPLETED => "환불 완료" ];
 
     const STRING_PAYMENT_TYPE = [
         PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD => "Nicapay 신용카드",
