@@ -228,6 +228,12 @@ class PublyContentService extends BaseApiService
     {
         return $this->put("project/{$projectId}/image", ['mobile_image' => $imageUrl]);
     }
+    
+    public function updateProjectContent($changerId, $projectId, $content)
+    {
+        return $this->put("project/{$projectId}/content_list", ['changer_id' => $changerId, 
+                                                                'content' => $content]);
+    }
 
     /*
      * Project Progress Related Functions
