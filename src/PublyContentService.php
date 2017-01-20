@@ -136,6 +136,18 @@ class PublyContentService extends BaseApiService
         return $this->put("content/{$contentId}/image", ['list_image' => $imageUrl]);
     }
 
+    public function updateContentContentList($changerId, 
+                                             $contentId, 
+                                             $contentListIdArray, 
+                                             $contentArray)
+    {
+        $inputs = ['changer_id' => $changerId, 
+                   'content_list_id' => implode(',', $contentListIdArray), 
+                   'content' => $contentArray];
+
+        return $this->put("content/{$contentId}/content_lists", $inputs);
+    }
+
     public function getContent($contentId)
     {
         return $this->get("content/{$contentId}");
