@@ -163,6 +163,19 @@ class PublyContentService extends BaseApiService
         return $this->get("content/project/{$projectId}", $filterArray);
     }
 
+    public function createContentList($changerId, $contentId, $title)
+    {
+        return $this->post("content/{$contentId}/content_list", [ 'changer_id' => $changerId,
+                                                                  'title' => $title ]);
+    } 
+
+    public function deleteContentList($changerId, $contentId, $listId)
+    {
+        return $this->post("content/{$contentId}/content_list/delete", [ 'changer_id' => $changerId,
+                                                                         'list_id' => $listId ]);
+    } 
+    
+
     /*
      * Project Related Functions
      */
