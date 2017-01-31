@@ -90,6 +90,14 @@ class PublyPaymentService extends BaseApiService
         return $this->get("order/{$orderId}", $filterArray);
     }
 
+    public function deleteOrder(
+                        $changerId,
+                        $orderId)
+    {
+        return $this->post("order/{$orderId}/delete", 
+                           ['changer_id' => $changerId]);        
+    }
+
     public function getTotalOrdersByRewardId($rewardId, $filterArray = [])
     {
         return $this->get("order/reward/{$rewardId}/total", $filterArray);
