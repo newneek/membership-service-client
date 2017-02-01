@@ -10,6 +10,7 @@ class PublyAuthService extends BaseApiService {
     const GROUP_ADMIN = 1;
     const GROUP_MANAGER = 3;
     const GROUP_AUTHOR = 4;
+    const GROUP_EDITOR = 5;
 
     public function __construct($domain) {
         parent::__construct();
