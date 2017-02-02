@@ -110,6 +110,12 @@ class PublyContentService extends BaseApiService
         return $this->put("content/{$contentId}", [ 'is_paid' => $isPaid ]);
     }
 
+    public function updateContent2($contentId, $isPaid, $readTime)
+    {
+        return $this->put("content/{$contentId}", [ 'is_paid' => $isPaid,
+                                                    'read_time' => $readTime ]);
+    }
+
     public function updateContentSet($contentId, $setId, $orderInSet)
     {
         return $this->put("content/{$contentId}/set", [ 'set_id' => $setId,
