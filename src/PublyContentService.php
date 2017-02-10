@@ -580,4 +580,18 @@ class PublyContentService extends BaseApiService
         $filterArray['ids'] = implode(',', $contentIds);
         return $this->get("writer/content/ids", $filterArray);
     }
+
+    public function addProjectLike($changerId, $userId, $projectId)
+    {
+        return $this->post("project_like", [ 'changer_id' => $changerId,
+                                             'user_id' => $userId,
+                                             'project_id' => $projectId ]);
+    }
+
+    public function removeProjectLike($changerId, $userId, $projectId)
+    {
+        return $this->post("project_like/delete", [ 'changer_id' => $changerId,
+                                                    'user_id' => $userId,
+                                                    'project_id' => $projectId ]);
+    }
 }
