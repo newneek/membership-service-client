@@ -581,6 +581,12 @@ class PublyContentService extends BaseApiService
         return $this->get("writer/content/ids", $filterArray);
     }
 
+    public function getProjectLikesByProjectIds($projectIds, $filterArray = [])
+    {
+        $filterArray['project_ids'] = implode(',', $projectIds);
+        return $this->get("project_like/by_project_ids", $filterArray);
+    }
+
     public function addProjectLike($changerId, $userId, $projectId)
     {
         return $this->post("project_like", [ 'changer_id' => $changerId,
