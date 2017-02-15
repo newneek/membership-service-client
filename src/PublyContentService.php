@@ -110,10 +110,11 @@ class PublyContentService extends BaseApiService
         return $this->put("content/{$contentId}", [ 'is_paid' => $isPaid ]);
     }
 
-    public function updateContent2($contentId, $isPaid, $readTime)
+    public function updateContent2($contentId, $isPaid, $readTime, $summary)
     {
         return $this->put("content/{$contentId}", [ 'is_paid' => $isPaid,
-                                                    'read_time' => $readTime ]);
+                                                    'read_time' => $readTime,
+                                                    'summary' => $summary ]);
     }
 
     public function updateContentSet($contentId, $setId, $orderInSet)
@@ -197,20 +198,22 @@ class PublyContentService extends BaseApiService
     public function updateProject(  $changerId, 
                                     $projectId, 
                                     $title,
+                                    $status,
+                                    $isPreorder,
                                     $startAt,
                                     $finishAt,
                                     $donateGoalPrice,
-                                    $status,
-                                    $isPreorder,
+                                    $summary,
                                     $memo )
     {
         return $this->put("project/{$projectId}", [ 'changer_id' => $changerId,
                                                     'title' => $title,
+                                                    'status' => $status,
+                                                    'is_preorder' => $isPreorder,
                                                     'start_at' => $startAt,
                                                     'finish_at' => $finishAt,
                                                     'donate_goal_price' => $donateGoalPrice,
-                                                    'status' => $status,
-                                                    'is_preorder' => $isPreorder,
+                                                    'summary' => $summary,
                                                     'memo' => $memo
                                                      ]);
     }
