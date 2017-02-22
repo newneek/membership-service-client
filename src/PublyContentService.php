@@ -200,6 +200,7 @@ class PublyContentService extends BaseApiService
                                     $title,
                                     $status,
                                     $isPreorder,
+                                    $isUnderConsideration,
                                     $startAt,
                                     $finishAt,
                                     $donateGoalPrice,
@@ -210,6 +211,7 @@ class PublyContentService extends BaseApiService
                                                     'title' => $title,
                                                     'status' => $status,
                                                     'is_preorder' => $isPreorder,
+                                                    'is_under_consideration' => $isUnderConsideration,
                                                     'start_at' => $startAt,
                                                     'finish_at' => $finishAt,
                                                     'donate_goal_price' => $donateGoalPrice,
@@ -576,6 +578,12 @@ class PublyContentService extends BaseApiService
     public function getSetWriters($setId, $filterArray = [])
     {
         return $this->get("writer/set/{$setId}", $filterArray);
+    }
+
+    public function getWritersByProjectIds($projectIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $projectIds);
+        return $this->get("writer/project/ids", $filterArray);
     }
 
     public function getWritersByContentIds($contentIds, $filterArray = [])
