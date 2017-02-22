@@ -580,6 +580,12 @@ class PublyContentService extends BaseApiService
         return $this->get("writer/set/{$setId}", $filterArray);
     }
 
+    public function getWritersByProjectIds($projectIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $projectIds);
+        return $this->get("writer/project/ids", $filterArray);
+    }
+
     public function getWritersByContentIds($contentIds, $filterArray = [])
     {
         $filterArray['ids'] = implode(',', $contentIds);
