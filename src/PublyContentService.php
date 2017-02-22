@@ -182,8 +182,15 @@ class PublyContentService extends BaseApiService
     {
         return $this->post("content/{$contentId}/content_list/delete", [ 'changer_id' => $changerId,
                                                                          'list_id' => $listId ]);
-    } 
-    
+    }
+
+    /*
+     * Content Related Functions
+     */
+    public function getContentListsByContent($contentId)
+    {
+        return $this->get("content_list/content/{$contentId}");
+    }    
 
     /*
      * Project Related Functions
