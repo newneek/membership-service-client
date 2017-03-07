@@ -1001,6 +1001,7 @@ class PublyPaymentService extends BaseApiService
                                 $deliveryPhone = null,
                                 $deliveryZipcode = null,
                                 $deliveryAddress = null,
+                                $note,
                                 $force = false)
     {
         $result = [ 'success' => false ];
@@ -1010,7 +1011,8 @@ class PublyPaymentService extends BaseApiService
                         'action' => 'modify',
                         'user_name' => $userName,
                         'user_email' => $userEmail,
-                        'user_phone' => $userPhone ];
+                        'user_phone' => $userPhone,
+                        'note' => $note ];
             if ($deliveryName || $deliveryPhone || $deliveryZipcode || $deliveryAddress) {
                 $inputs = array_merge($inputs, [ 'delivery_name' => $deliveryName,
                                                  'delivery_phone' => $deliveryPhone,
