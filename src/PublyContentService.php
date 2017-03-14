@@ -248,6 +248,12 @@ class PublyContentService extends BaseApiService
     { 
         return $this->get("project/set/{$setId}", $filterArray); 
     } 
+
+    public function getProjectsFinishedIn5Minutes($filterArray = []) 
+    { 
+        $filterArray['finish_in_5_minutes'] = true;
+        return $this->get("project", $filterArray); 
+    }
  
     public function createProjectSet($changerId, $projectId, $setId) 
     { 
@@ -278,6 +284,11 @@ class PublyContentService extends BaseApiService
     {
         return $this->put("project/{$projectId}/content_list", ['changer_id' => $changerId, 
                                                                 'content' => $content]);
+    }
+
+    public function updateProjectFlagSuccess($projectId, $flagSuccess)
+    {
+        return $this->put("project/{$projectId}/flag_success", ['flag_success' => $flagSuccess]);
     }
 
     /*
