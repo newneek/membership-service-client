@@ -38,7 +38,7 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::ORDER_STATUS_REFUND_COMPLETED => "환불 완료" ];
 
     const STRING_PAYMENT_TYPE = [
-        PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD => "Nicapay 신용카드",
+        PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD => "Nicepay 신용카드",
         PublyPaymentService::PAYMENT_TYPE_ADMIN => "관리자 추가",
         PublyPaymentService::PAYMENT_TYPE_BANK_TRANSFER => "계좌이체",
         PublyPaymentService::PAYMENT_TYPE_PAYPAL => "PayPal",
