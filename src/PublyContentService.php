@@ -122,13 +122,15 @@ class PublyContentService extends BaseApiService
                                    $status, 
                                    $isPaid, 
                                    $readTime, 
-                                   $summary)
+                                   $summary,
+                                   $memo)
     {
         return $this->put("content/{$contentId}", [ 'title' => $title,
                                                     'status' => $status,
                                                     'is_paid' => $isPaid,
                                                     'read_time' => $readTime,
-                                                    'summary' => $summary ]);
+                                                    'summary' => $summary,
+                                                    'memo' => $memo ]);
     }
 
     public function updateContentSet($contentId, $setId, $orderInSet)
