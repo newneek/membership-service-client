@@ -93,6 +93,13 @@ class PublyContentService extends BaseApiService
     /*
      * Content Related Functions
      */
+    public function createContent($changerId, $title, $type)
+    {
+        return $this->post("content", [ 'title' => $title,
+                                        'type' => $type,
+                                        'changer_id' => $changerId ]);
+    }
+
     public function getContents($page = 1, $limit = 10, $filterArray = [])
     {
         $filterArray['page'] = $page;
@@ -110,11 +117,20 @@ class PublyContentService extends BaseApiService
         return $this->put("content/{$contentId}", [ 'is_paid' => $isPaid ]);
     }
 
-    public function updateContent2($contentId, $isPaid, $readTime, $summary)
+    public function updateContent2($contentId, 
+                                   $title, 
+                                   $status, 
+                                   $isPaid, 
+                                   $readTime, 
+                                   $summary,
+                                   $memo)
     {
-        return $this->put("content/{$contentId}", [ 'is_paid' => $isPaid,
+        return $this->put("content/{$contentId}", [ 'title' => $title,
+                                                    'status' => $status,
+                                                    'is_paid' => $isPaid,
                                                     'read_time' => $readTime,
-                                                    'summary' => $summary ]);
+                                                    'summary' => $summary,
+                                                    'memo' => $memo ]);
     }
 
     public function updateContentSet($contentId, $setId, $orderInSet)
