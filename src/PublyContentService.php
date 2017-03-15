@@ -93,6 +93,13 @@ class PublyContentService extends BaseApiService
     /*
      * Content Related Functions
      */
+    public function createContent($changerId, $title, $type)
+    {
+        return $this->post("content", [ 'title' => $title,
+                                        'type' => $type,
+                                        'changer_id' => $changerId ]);
+    }
+
     public function getContents($page = 1, $limit = 10, $filterArray = [])
     {
         $filterArray['page'] = $page;
