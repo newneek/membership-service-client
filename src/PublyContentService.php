@@ -272,9 +272,9 @@ class PublyContentService extends BaseApiService
         return $this->get("project/set/{$setId}", $filterArray); 
     } 
 
-    public function getProjectsFinishedIn5Minutes($filterArray = []) 
+    public function getProjectsFinished($filterArray = []) 
     { 
-        $filterArray['finish_in_5_minutes'] = true;
+        $filterArray['finished'] = true;
         return $this->get("project", $filterArray); 
     }
  
