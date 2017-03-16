@@ -129,6 +129,7 @@ class PublyContentService extends BaseApiService
                                    $status, 
                                    $isPaid, 
                                    $readTime, 
+                                   $startAt,
                                    $summary,
                                    $memo)
     {
@@ -136,6 +137,7 @@ class PublyContentService extends BaseApiService
                                                     'status' => $status,
                                                     'is_paid' => $isPaid,
                                                     'read_time' => $readTime,
+                                                    'start_at' => $startAt,
                                                     'summary' => $summary,
                                                     'memo' => $memo ]);
     }
