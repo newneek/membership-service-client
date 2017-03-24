@@ -39,7 +39,25 @@ class PublyContentService extends BaseApiService
                                        'quantity' => $quantity,
                                        'description' => $description ]);
     }
-
+    
+    public function createReward2( $changerId,
+                                   $projectId,
+                                   $name,
+                                   $needDelivery,
+                                   $price,
+                                   $quantity,
+                                   $hasOffline,
+                                   $description )
+    {
+        return $this->post("reward", [ 'changer_id' => $changerId,
+                                       'project_id' => $projectId,
+                                       'name' => $name,
+                                       'need_delivery' => $needDelivery,
+                                       'price' => $price,
+                                       'quantity' => $quantity,
+                                       'has_offline' => $hasOffline,
+                                       'description' => $description ]);
+    }
     public function updateReward( $rewardId,
                                   $changerId,
                                   $name,
@@ -53,6 +71,24 @@ class PublyContentService extends BaseApiService
                                                   'need_delivery' => $needDelivery,
                                                   'price' => $price,
                                                   'quantity' => $quantity,
+                                                  'description' => $description ]);
+    }
+
+    public function updateReward2( $rewardId,
+                                   $changerId,
+                                   $name,
+                                   $needDelivery,
+                                   $price,
+                                   $quantity,
+                                   $hasOffline,
+                                   $description )
+    {
+        return $this->put("reward/{$rewardId}", [ 'changer_id' => $changerId,
+                                                  'name' => $name,
+                                                  'need_delivery' => $needDelivery,
+                                                  'price' => $price,
+                                                  'quantity' => $quantity,
+                                                  'has_offline' => $hasOffline,
                                                   'description' => $description ]);
     }
 
