@@ -116,6 +116,28 @@ class PublyContentService extends BaseApiService
         }
     }
 
+    public function getOfflineRewardsByProject($projectId, $includeHidden = false)
+    {
+        $filterArray = ['has_offline' => 1];
+
+        if ($includeHidden == false) {
+            $filterArray = array_merge($filterArray, [ 'is_hidden' => 0 ]);
+        } 
+
+        return $this->get("reward/project/{$projectId}", $filterArray);
+    }
+
+    public function getContentRewardsByProject($projectId, $includeHidden = false)
+    {
+        $filterArray = ['has_offline' => 0];
+
+        if ($includeHidden == false) {
+            $filterArray = array_merge($filterArray, [ 'is_hidden' => 0 ]);
+        } 
+
+        return $this->get("reward/project/{$projectId}", $filterArray);
+    }
+
     public function toggleRewardActive($rewardId)
     {
         return $this->put("reward/{$rewardId}/toggle_active");
@@ -345,6 +367,20 @@ class PublyContentService extends BaseApiService
     {
         return $this->put("project/{$projectId}/content_list", ['changer_id' => $changerId, 
                                                                 'content' => $content]);
+    }
+
+    public function updateProjectSections($changerId, 
+                                          $projectId, 
+                                          $projectRecommnend, 
+                                          $projectAuthors, 
+                                          $projectDetail, 
+                                          $projectTableOfContents)
+    {
+        return $this->put("project/{$projectId}/sections", ['changer_id' => $changerId, 
+                                                            'project_recommnend' => $projectRecommnend, 
+                                                            'project_authors' => $projectAuthors, 
+                                                            'project_detail' => $projectDetail, 
+                                                            'project_table_of_contents' => $projectTableOfContents]);
     }
 
     public function updateProjectFlagSuccess($projectId, $flagSuccess)
