@@ -116,6 +116,28 @@ class PublyContentService extends BaseApiService
         }
     }
 
+    public function getOfflineRewardsByProject($projectId, $includeHidden = false)
+    {
+        $filterArray = ['has_offline' => 1];
+
+        if ($includeHidden == false) {
+            $filterArray = array_merge($filterArray, [ 'is_hidden' => 0 ]);
+        } 
+
+        return $this->get("reward/project/{$projectId}", $filterArray);
+    }
+
+    public function getContentRewardsByProject($projectId, $includeHidden = false)
+    {
+        $filterArray = ['has_offline' => 0];
+
+        if ($includeHidden == false) {
+            $filterArray = array_merge($filterArray, [ 'is_hidden' => 0 ]);
+        } 
+
+        return $this->get("reward/project/{$projectId}", $filterArray);
+    }
+
     public function toggleRewardActive($rewardId)
     {
         return $this->put("reward/{$rewardId}/toggle_active");
