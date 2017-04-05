@@ -369,6 +369,20 @@ class PublyContentService extends BaseApiService
                                                                 'content' => $content]);
     }
 
+    public function updateProjectSections($changerId, 
+                                          $projectId, 
+                                          $projectRecommnend, 
+                                          $projectAuthors, 
+                                          $projectDetail, 
+                                          $projectTableOfContents)
+    {
+        return $this->put("project/{$projectId}/sections", ['changer_id' => $changerId, 
+                                                            'project_recommnend' => $projectRecommnend, 
+                                                            'project_authors' => $projectAuthors, 
+                                                            'project_detail' => $projectDetail, 
+                                                            'project_table_of_contents' => $projectTableOfContents]);
+    }
+
     public function updateProjectFlagSuccess($projectId, $flagSuccess)
     {
         return $this->put("project/{$projectId}/flag_success", ['flag_success' => $flagSuccess]);
