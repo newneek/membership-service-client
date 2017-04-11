@@ -11,6 +11,13 @@ class PublyContentService extends BaseApiService
     
     const HOME_DISPLAY_TYPE_PROJECT = 1;
 
+    const PROJECT_STATUS_UNDER_CONSIDERATION = 1;
+    const PROJECT_STATUS_PREORDER = 2;
+    const PROJECT_STATUS_PAYMENT_IN_PROGRESS = 3;
+    const PROJECT_STATUS_PAYMENT_DONE = 4;
+    const PROJECT_STATUS_BUY = 5;
+    const PROJECT_STATUS_DROP = 6;
+
     public function __construct($domain)
     {
         parent::__construct();
@@ -157,6 +164,13 @@ class PublyContentService extends BaseApiService
                                         'type' => $type,
                                         'changer_id' => $changerId ]);
     }
+    
+    public function createContent2($changerId, $title, $isPaid)
+    {
+        return $this->post("content", [ 'title' => $title,
+                                        'is_paid' => $isPaid,
+                                        'changer_id' => $changerId ]);
+    }
 
     public function getContents($page = 1, $limit = 10, $filterArray = [])
     {
@@ -200,6 +214,26 @@ class PublyContentService extends BaseApiService
                                                     'memo' => $memo ]);
     }
 
+    public function updateContent4($contentId, 
+                                   $title, 
+                                   $isActive, 
+                                   $isPaid, 
+                                   $image,
+                                   $readTime, 
+                                   $publishAt,
+                                   $summary,
+                                   $memo)
+    {
+        return $this->put("content/{$contentId}", [ 'title' => $title,
+                                                    'is_active' => $isActive,
+                                                    'is_paid' => $isPaid,
+                                                    'read_time' => $readTime,
+                                                    'image' => $image,
+                                                    'publish_at' => $publishAt,
+                                                    'summary' => $summary,
+                                                    'memo' => $memo ]);
+    }
+
     public function updateContentSet($contentId, $setId, $orderInSet)
     {
         return $this->put("content/{$contentId}/set", [ 'set_id' => $setId,
@@ -216,16 +250,16 @@ class PublyContentService extends BaseApiService
         return $this->put("content/set/{$setId}", [ 'ids' => implode(',', $contentIds) ]);
     }
 
-    public function updateContentCoverImage($contentId, $imageUrl)
-    {
-        return $this->put("content/{$contentId}/image", ['cover_image' => $imageUrl]);
-    }
-
-    public function updateContentListImage($contentId, $imageUrl)
-    {
-        return $this->put("content/{$contentId}/image", ['list_image' => $imageUrl]);
-    }
-
+    public function updateContentCoverImage($contentId, $imageUrl) 
+    { 
+        return $this->put("content/{$contentId}/image", ['cover_image' => $imageUrl]); 
+    } 
+ 
+    public function updateContentListImage($contentId, $imageUrl) 
+    { 
+        return $this->put("content/{$contentId}/image", ['list_image' => $imageUrl]); 
+    } 
+ 
     public function updateContentContentList($changerId, 
                                              $contentId, 
                                              $contentListIdArray, 
@@ -310,6 +344,31 @@ class PublyContentService extends BaseApiService
                                                      ]);
     }
 
+    public function updateProject2(  $changerId, 
+                                     $projectId, 
+                                     $title,
+                                     // $status,
+                                     $imageUrl,
+                                     $imageVerticalUrl,
+                                     $preorderStartAt,
+                                     $preorderFinishAt,
+                                     $preorderGoalPrice,
+                                     $summary,
+                                     $memo )
+    {
+        return $this->put("project/{$projectId}", [ 'changer_id' => $changerId,
+                                                    'title' => $title,
+                                                    // 'status' => $status,
+                                                    'image' => $imageUrl,
+                                                    'image_vertical' => $imageVerticalUrl,
+                                                    'preorder_start_at' => $preorderStartAt,
+                                                    'preorder_finish_at' => $preorderFinishAt,
+                                                    'preorder_goal_price' => $preorderGoalPrice,
+                                                    'summary' => $summary,
+                                                    'memo' => $memo
+                                                     ]);
+    }
+
     public function getProject($projectId)
     {
         return $this->get("project/{$projectId}");
@@ -347,22 +406,22 @@ class PublyContentService extends BaseApiService
     { 
         return $this->post("project/{$projectId}/set/{$setId}/delete", [ 'changer_id' => $changerId ]);
     } 
-
-    public function updateProjectCoverImage($projectId, $imageUrl)
-    {
-        return $this->put("project/{$projectId}/image", ['cover_image' => $imageUrl]);
-    }
-
-    public function updateProjectListImage($projectId, $imageUrl)
-    {
-        return $this->put("project/{$projectId}/image", ['list_image' => $imageUrl]);
-    }
-
-    public function updateProjectMobileImage($projectId, $imageUrl)
-    {
-        return $this->put("project/{$projectId}/image", ['mobile_image' => $imageUrl]);
-    }
-    
+   
+    public function updateProjectCoverImage($projectId, $imageUrl) 
+    { 
+        return $this->put("project/{$projectId}/image", ['cover_image' => $imageUrl]); 
+    } 
+ 
+    public function updateProjectListImage($projectId, $imageUrl) 
+    { 
+        return $this->put("project/{$projectId}/image", ['list_image' => $imageUrl]); 
+    } 
+ 
+    public function updateProjectMobileImage($projectId, $imageUrl) 
+    { 
+        return $this->put("project/{$projectId}/image", ['mobile_image' => $imageUrl]); 
+    } 
+      
     public function updateProjectContent($changerId, $projectId, $content)
     {
         return $this->put("project/{$projectId}/content_list", ['changer_id' => $changerId, 

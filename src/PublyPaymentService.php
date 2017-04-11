@@ -973,6 +973,15 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
+    public function retryPayment($changerId, $paymentId)
+    {
+        $inputs = [];
+        $inputs['changer_id'] = $changerId;
+        $inputs['action'] = 'pay';
+        
+        return $this->put("/payment/{$paymentId}", $inputs);
+    }
+
     public function updatePayment($changerId, $paymentId, $inputs)
     {
         $inputs['changer_id'] = $changerId;
