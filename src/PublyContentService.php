@@ -250,6 +250,16 @@ class PublyContentService extends BaseApiService
         return $this->put("content/set/{$setId}", [ 'ids' => implode(',', $contentIds) ]);
     }
 
+    public function updateContentCoverImage($contentId, $imageUrl) 
+    { 
+        return $this->put("content/{$contentId}/image", ['cover_image' => $imageUrl]); 
+    } 
+ 
+    public function updateContentListImage($contentId, $imageUrl) 
+    { 
+        return $this->put("content/{$contentId}/image", ['list_image' => $imageUrl]); 
+    } 
+ 
     public function updateContentContentList($changerId, 
                                              $contentId, 
                                              $contentListIdArray, 
@@ -396,7 +406,22 @@ class PublyContentService extends BaseApiService
     { 
         return $this->post("project/{$projectId}/set/{$setId}/delete", [ 'changer_id' => $changerId ]);
     } 
-    
+   
+    public function updateProjectCoverImage($projectId, $imageUrl) 
+    { 
+        return $this->put("project/{$projectId}/image", ['cover_image' => $imageUrl]); 
+    } 
+ 
+    public function updateProjectListImage($projectId, $imageUrl) 
+    { 
+        return $this->put("project/{$projectId}/image", ['list_image' => $imageUrl]); 
+    } 
+ 
+    public function updateProjectMobileImage($projectId, $imageUrl) 
+    { 
+        return $this->put("project/{$projectId}/image", ['mobile_image' => $imageUrl]); 
+    } 
+      
     public function updateProjectContent($changerId, $projectId, $content)
     {
         return $this->put("project/{$projectId}/content_list", ['changer_id' => $changerId, 
