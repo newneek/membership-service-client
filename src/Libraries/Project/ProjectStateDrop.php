@@ -6,6 +6,8 @@ use Publy\ServiceClient\PublyContentService;
 
 class ProjectStateDrop implements ProjectState
 {
+    private $nextStates = [];
+
     public function onEnter()
     {
     	
@@ -13,7 +15,7 @@ class ProjectStateDrop implements ProjectState
 
     public function canStatusChange($status)
     {
-        return false;
+        return in_array($status, $this->nextStates);
     }
 
     public function onExit()

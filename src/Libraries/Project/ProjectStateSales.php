@@ -6,6 +6,9 @@ use Publy\ServiceClient\PublyContentService;
 
 class ProjectStateSales implements ProjectState
 {
+    private $nextStates = [ PublyContentService::PROJECT_STATUS_PREORDER_DONE, 
+                            PublyContentService::PROJECT_STATUS_DROP ];
+
     public function onEnter()
     {
     	
@@ -13,12 +16,7 @@ class ProjectStateSales implements ProjectState
 
     public function canStatusChange($status)
     {
-        if ($status == PublyContentService::PROJECT_STATUS_PREORDER_DONE
-            || $status == PublyContentService::PROJECT_STATUS_DROP) {
-            return true;
-        }
-
-        return false;
+        return in_array($status, $this->nextStates);
     }
 
     public function onExit()
