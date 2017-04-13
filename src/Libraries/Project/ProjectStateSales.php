@@ -6,7 +6,7 @@ use Publy\ServiceClient\PublyContentService;
 
 class ProjectStateSales implements ProjectState
 {
-    private $nextStates = [ PublyContentService::PROJECT_STATUS_PREORDER_DONE, 
+    public $nextStates = [ PublyContentService::PROJECT_STATUS_PREORDER_DONE, 
                             PublyContentService::PROJECT_STATUS_DROP ];
 
     public function onEnter()

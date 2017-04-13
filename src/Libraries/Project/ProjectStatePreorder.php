@@ -6,7 +6,7 @@ use Publy\ServiceClient\PublyContentService;
 
 class ProjectStatePreorder implements ProjectState
 {
-    private $nextStates = [ PublyContentService::PROJECT_STATUS_PAYMENT_IN_PROGRESS, 
+    public $nextStates = [ PublyContentService::PROJECT_STATUS_PAYMENT_IN_PROGRESS, 
                             PublyContentService::PROJECT_STATUS_DROP ];
 
     public function onEnter()

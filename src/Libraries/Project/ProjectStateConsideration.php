@@ -6,7 +6,7 @@ use Publy\ServiceClient\PublyContentService;
 
 class ProjectStateConsideration implements ProjectState
 {
-    private $nextStates = [ PublyContentService::PROJECT_STATUS_PREORDER, 
+    public $nextStates = [ PublyContentService::PROJECT_STATUS_PREORDER, 
                             PublyContentService::PROJECT_STATUS_DROP ];
 
     public function onEnter()

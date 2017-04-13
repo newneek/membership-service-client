@@ -41,6 +41,11 @@ class ProjectStateMachine
     	$this->currentState = $this->states[$this->project['status']];
     }
 
+    public function currentState()
+    {
+        return $this->currentState;
+    }
+
     public function changeState($status)
     {
     	if ($this->currentState->canStatusChange($status) == false) 

@@ -6,7 +6,7 @@ use Publy\ServiceClient\PublyContentService;
 
 class ProjectStateDrop implements ProjectState
 {
-    private $nextStates = [];
+    public $nextStates = [];
 
     public function onEnter()
     {
