@@ -14,9 +14,17 @@ class PublyContentService extends BaseApiService
     const PROJECT_STATUS_UNDER_CONSIDERATION = 1;
     const PROJECT_STATUS_PREORDER = 2;
     const PROJECT_STATUS_PAYMENT_IN_PROGRESS = 3;
-    const PROJECT_STATUS_PAYMENT_DONE = 4;
-    const PROJECT_STATUS_BUY = 5;
+    const PROJECT_STATUS_PREORDER_DONE = 4;
+    const PROJECT_STATUS_SALES = 5;
     const PROJECT_STATUS_DROP = 6;
+    
+    const STRING_PROJECT_STATUS = [
+        PublyContentService::PROJECT_STATUS_UNDER_CONSIDERATION => "검토중",
+        PublyContentService::PROJECT_STATUS_PREORDER => "예약구매",
+        PublyContentService::PROJECT_STATUS_PAYMENT_IN_PROGRESS => "결제중",
+        PublyContentService::PROJECT_STATUS_PREORDER_DONE => "예약구매종료",
+        PublyContentService::PROJECT_STATUS_SALES => "즉시구매",
+        PublyContentService::PROJECT_STATUS_DROP => "중단" ];
 
     public function __construct($domain)
     {
@@ -367,6 +375,13 @@ class PublyContentService extends BaseApiService
                                                     'summary' => $summary,
                                                     'memo' => $memo
                                                      ]);
+    }
+
+    public function updateProjectStatus($changerId, $projectId, $status)
+    {
+        return $this->put("project/{$projectId}/status", [ 'changer_id' => $changerId,
+                                                           'status' => $status
+                                                           ]);
     }
 
     public function getProject($projectId)
