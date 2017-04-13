@@ -24,7 +24,8 @@ class PublyContentService extends BaseApiService
         PublyContentService::PROJECT_STATUS_PAYMENT_IN_PROGRESS => "결제중",
         PublyContentService::PROJECT_STATUS_PREORDER_DONE => "예약구매종료",
         PublyContentService::PROJECT_STATUS_SALES => "즉시구매",
-        PublyContentService::PROJECT_STATUS_DROP => "중단" ];
+        PublyContentService::PROJECT_STATUS_DROP => "중단" 
+    ];
 
     public function __construct($domain)
     {
