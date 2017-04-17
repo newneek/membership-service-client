@@ -223,7 +223,8 @@ class PublyContentService extends BaseApiService
                                                     'memo' => $memo ]);
     }
 
-    public function updateContent4($contentId, 
+    public function updateContent4($changerId,
+                                   $contentId, 
                                    $title, 
                                    $isActive, 
                                    $isPaid, 
@@ -233,7 +234,8 @@ class PublyContentService extends BaseApiService
                                    $summary,
                                    $memo)
     {
-        return $this->put("content/{$contentId}", [ 'title' => $title,
+        return $this->put("content/{$contentId}", [ 'changer_id' => $changerId, 
+                                                    'title' => $title,
                                                     'is_active' => $isActive,
                                                     'is_paid' => $isPaid,
                                                     'read_time' => $readTime,
