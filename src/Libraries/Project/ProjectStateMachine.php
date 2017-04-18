@@ -3,7 +3,7 @@
 namespace Publy\ServiceClient\Libraries\Project;
 
 use Publy\ServiceClient\Libraries\Exceptions\ProjectStateException;
-
+use Publy\ServiceClient\Libraries\Events\ProjectStateChanged;
 use Publy\ServiceClient\Libraries\Project\ProjectStateConsideration;
 use Publy\ServiceClient\Libraries\Project\ProjectStatePreorder;
 use Publy\ServiceClient\Libraries\Project\ProjectStatePaymentInProgress;
@@ -41,11 +41,6 @@ class ProjectStateMachine
     	$this->currentState = $this->states[$this->project['status']];
     }
 
-    public function currentState()
-    {
-        return $this->currentState;
-    }
-
     public function changeState($status)
     {
     	if ($this->currentState->canStatusChange($status) == false) 
@@ -53,10 +48,13 @@ class ProjectStateMachine
     		throw new ProjectStateException(ProjectStateException::UNCHANGEABLE_STATUS, "Cannot change project status (current: {$this->project['status']} change: {$status})");
     	}
 
+        $oldStatus = $this->project['status'];
+
     	$this->currentState->onExit();
     	
-        // TODO : send event
-    	// $this->project->update(['status' => $status]);
+        $event = new ProjectStateChanged($this->project, $oldStatus, $status);
+        event($event);
+
     	$this->currentState = $this->states[$status];
 
     	$this->currentState->onEnter();
