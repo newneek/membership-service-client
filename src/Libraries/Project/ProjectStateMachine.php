@@ -41,7 +41,7 @@ class ProjectStateMachine
     	$this->currentState = $this->states[$this->project['status']];
     }
 
-    public function changeState($status)
+    public function changeState($changerId, $status)
     {
     	if ($this->currentState->canStatusChange($status) == false) 
     	{
@@ -52,7 +52,7 @@ class ProjectStateMachine
 
     	$this->currentState->onExit();
     	
-        $event = new ProjectStateChanged($this->project, $oldStatus, $status);
+        $event = new ProjectStateChanged($changerId, $this->project, $oldStatus, $status);
         event($event);
 
     	$this->currentState = $this->states[$status];

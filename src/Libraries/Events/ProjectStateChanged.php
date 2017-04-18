@@ -6,6 +6,7 @@ use Publy\ServiceClient\Libraries\Events\Event;
 
 class ProjectStateChanged extends Event
 {
+    public $changerId;
 	public $project;
     public $oldValue;
     public $newValue;
@@ -15,8 +16,9 @@ class ProjectStateChanged extends Event
      *
      * @return void
      */
-    public function __construct($project, $oldValue, $newValue)
+    public function __construct($changerId, $project, $oldValue, $newValue)
     {
+        $this->changerId = $changerId;
     	$this->project = $project;
         $this->oldValue = $oldValue;
         $this->newValue = $newValue;
