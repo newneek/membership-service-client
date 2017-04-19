@@ -1090,4 +1090,11 @@ class PublyPaymentService extends BaseApiService
     {
         return $this->post("/order/refresh_set_reader", ['project_id' => $projectId]);
     }
+
+    public function addOrderComment($changerId, $orderId, $comment)
+    {
+        return $this->post("/order_comment/", [ 'changer_id' => $changerId,
+                                                'order_id' => $orderId, 
+                                                'comment' => $comment ]);
+    }
 }
