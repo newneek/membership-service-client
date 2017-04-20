@@ -810,4 +810,13 @@ class PublyContentService extends BaseApiService
                                                     'user_id' => $userId,
                                                     'project_id' => $projectId ]);
     }
+
+    public function updateSetReview($changerId, $userId, $setId, $rating, $comment)
+    {
+        $inputs = [ 'changer_id' => $changerId ];
+        if ($rating) $inputs['rating'] = $rating;
+        if ($comment) $inputs['comment'] = $comment;
+
+        return $this->post("/set_review/user/{$userId}/set/{$setId}", $inputs);
+    }
 }
