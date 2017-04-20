@@ -114,4 +114,14 @@ class PublyNotificationService extends BaseApiService
         $filterArray['limit'] = $limit;
         return $this->get("/sms/logs", $filterArray);
     }
+
+    public function eventSetReviewCreated($setReview)
+    {
+        return $this->post("/event/set_review_created", [ 'set_review' => $setReview ]);
+    }
+
+    public function eventSetReviewUpdated($setReview)
+    {
+        return $this->post("/event/set_review_updated", [ 'set_review' => $setReview ]);
+    }
 }
