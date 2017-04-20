@@ -817,6 +817,6 @@ class PublyContentService extends BaseApiService
         if ($rating) $inputs['rating'] = $rating;
         if ($comment) $inputs['comment'] = $comment;
 
-        return $this->post("/set_review/user/{$userId}/set/{$setId}", $inputs);
+        return $this->put("/set_review/user/{$userId}/set/{$setId}", $inputs);
     }
 }
