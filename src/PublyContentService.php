@@ -14,9 +14,18 @@ class PublyContentService extends BaseApiService
     const PROJECT_STATUS_UNDER_CONSIDERATION = 1;
     const PROJECT_STATUS_PREORDER = 2;
     const PROJECT_STATUS_PAYMENT_IN_PROGRESS = 3;
-    const PROJECT_STATUS_PAYMENT_DONE = 4;
-    const PROJECT_STATUS_BUY = 5;
+    const PROJECT_STATUS_PREORDER_DONE = 4;
+    const PROJECT_STATUS_SALES = 5;
     const PROJECT_STATUS_DROP = 6;
+    
+    const STRING_PROJECT_STATUS = [
+        PublyContentService::PROJECT_STATUS_UNDER_CONSIDERATION => "검토중",
+        PublyContentService::PROJECT_STATUS_PREORDER => "예약구매",
+        PublyContentService::PROJECT_STATUS_PAYMENT_IN_PROGRESS => "결제중",
+        PublyContentService::PROJECT_STATUS_PREORDER_DONE => "예약구매종료",
+        PublyContentService::PROJECT_STATUS_SALES => "즉시구매",
+        PublyContentService::PROJECT_STATUS_DROP => "중단" 
+    ];
 
     public function __construct($domain)
     {
@@ -214,7 +223,8 @@ class PublyContentService extends BaseApiService
                                                     'memo' => $memo ]);
     }
 
-    public function updateContent4($contentId, 
+    public function updateContent4($changerId,
+                                   $contentId, 
                                    $title, 
                                    $isActive, 
                                    $isPaid, 
@@ -224,7 +234,8 @@ class PublyContentService extends BaseApiService
                                    $summary,
                                    $memo)
     {
-        return $this->put("content/{$contentId}", [ 'title' => $title,
+        return $this->put("content/{$contentId}", [ 'changer_id' => $changerId, 
+                                                    'title' => $title,
                                                     'is_active' => $isActive,
                                                     'is_paid' => $isPaid,
                                                     'read_time' => $readTime,
@@ -369,6 +380,13 @@ class PublyContentService extends BaseApiService
                                                      ]);
     }
 
+    public function updateProjectStatus($changerId, $projectId, $status)
+    {
+        return $this->put("project/{$projectId}/status", [ 'changer_id' => $changerId,
+                                                           'status' => $status
+                                                           ]);
+    }
+
     public function getProject($projectId)
     {
         return $this->get("project/{$projectId}");
@@ -487,6 +505,11 @@ class PublyContentService extends BaseApiService
         return $this->put("user_content_progress/user/{$userId}/content/{$contentId}");
     }
 
+    public function resetUserContentProgress($userId, $contentId)
+    {
+        return $this->put("user_content_progress/user/{$userId}/content/{$contentId}/reset");
+    }
+    
     public function getUserContentProgressesByUserAndContentIds($userId, $contentIds)
     {
         $filterArray = [];
@@ -786,5 +809,14 @@ class PublyContentService extends BaseApiService
         return $this->post("project_like/delete", [ 'changer_id' => $changerId,
                                                     'user_id' => $userId,
                                                     'project_id' => $projectId ]);
+    }
+
+    public function updateSetReview($changerId, $userId, $setId, $rating, $comment)
+    {
+        $inputs = [ 'changer_id' => $changerId ];
+        if ($rating) $inputs['rating'] = $rating;
+        if ($comment) $inputs['comment'] = $comment;
+
+        return $this->put("/set_review/user/{$userId}/set/{$setId}", $inputs);
     }
 }
