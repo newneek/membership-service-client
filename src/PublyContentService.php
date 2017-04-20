@@ -505,6 +505,11 @@ class PublyContentService extends BaseApiService
         return $this->put("user_content_progress/user/{$userId}/content/{$contentId}");
     }
 
+    public function resetUserContentProgress($userId, $contentId)
+    {
+        return $this->put("user_content_progress/user/{$userId}/content/{$contentId}/reset");
+    }
+    
     public function getUserContentProgressesByUserAndContentIds($userId, $contentIds)
     {
         $filterArray = [];
