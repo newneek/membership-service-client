@@ -811,8 +811,11 @@ class PublyContentService extends BaseApiService
                                                     'project_id' => $projectId ]);
     }
 
-    public function getSetReviewsBySetId($setId, $filterArray = [])
+    public function getSetReviewsBySetId($setId, $page = 1, $limit = 10, $filterArray = [])
     {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+
         return $this->get("/set_review/set/{$setId}", $filterArray);
     }
     
