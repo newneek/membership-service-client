@@ -25,6 +25,11 @@ class PublyPaymentService extends BaseApiService
     const ORDER_STATUS_REFUND_REQUESTED = 8;
     const ORDER_STATUS_REFUND_COMPLETED = 9; // requested 단계를 무조건 거치고 이동해야 함
     const ORDER_STATUS_MAX = 10;
+
+    const PAYMENT_STATUS_WAITING = 1;
+    const PAYMENT_STATUS_COMPLETED = 2;
+    const PAYMENT_STATUS_FAILED = 3;
+    const PAYMENT_STATUS_IN_PROGRESS = 4;
     
     const STRING_ORDER_STATUS = [
         PublyPaymentService::ORDER_STATUS_CHECKEDOUT => "주문완료",

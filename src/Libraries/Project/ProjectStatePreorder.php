@@ -16,7 +16,12 @@ class ProjectStatePreorder implements ProjectState
         event($event);
     }
 
-    public function canStatusChange($status)
+    public function canStatusEnter($project)
+    {
+        return true;
+    }
+
+    public function canStatusExit($status)
     {
         return in_array($status, $this->nextStates);
     }
