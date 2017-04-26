@@ -10,7 +10,6 @@ use Publy\ServiceClient\Libraries\Project\ProjectStatePaymentInProgress;
 use Publy\ServiceClient\Libraries\Project\ProjectStatePreorderDone;
 use Publy\ServiceClient\Libraries\Project\ProjectStateSales;
 use Publy\ServiceClient\Libraries\Project\ProjectStateDrop;
-
 use Publy\ServiceClient\PublyContentService;
 
 class ProjectStateMachine
@@ -50,13 +49,13 @@ class ProjectStateMachine
 
         $oldStatus = $this->project['status'];
 
-    	$this->currentState->onExit();
+    	$this->currentState->onExit($this->project);
     	
         $event = new ProjectStateChanged($changerId, $this->project, $oldStatus, $status);
         event($event);
 
     	$this->currentState = $this->states[$status];
 
-    	$this->currentState->onEnter();
+    	$this->currentState->onEnter($this->project);
     }
 }

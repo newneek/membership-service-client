@@ -1091,6 +1091,13 @@ class PublyPaymentService extends BaseApiService
         return $this->post("/order/refresh_set_reader", ['project_id' => $projectId]);
     }
 
+    public function getOrderCommentsByProjectId($projectId, $page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("order_comment/project/{$projectId}", $filterArray);
+    }
+
     public function addOrderComment($changerId, $orderId, $comment)
     {
         return $this->post("/order_comment/", [ 'changer_id' => $changerId,
