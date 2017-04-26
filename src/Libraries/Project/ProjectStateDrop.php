@@ -8,7 +8,7 @@ class ProjectStateDrop implements ProjectState
 {
     public $nextStates = [];
 
-    public function onEnter()
+    public function onEnter($project)
     {
     	
     }
@@ -18,7 +18,7 @@ class ProjectStateDrop implements ProjectState
         return in_array($status, $this->nextStates);
     }
 
-    public function onExit()
+    public function onExit($project)
     {
 
     }

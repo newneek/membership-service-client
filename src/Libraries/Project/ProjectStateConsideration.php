@@ -9,7 +9,7 @@ class ProjectStateConsideration implements ProjectState
     public $nextStates = [ PublyContentService::PROJECT_STATUS_PREORDER, 
                             PublyContentService::PROJECT_STATUS_DROP ];
 
-    public function onEnter()
+    public function onEnter($project)
     {
         
     }
@@ -19,7 +19,7 @@ class ProjectStateConsideration implements ProjectState
         return in_array($status, $this->nextStates);
     }
 
-    public function onExit()
+    public function onExit($project)
     {
 
     }

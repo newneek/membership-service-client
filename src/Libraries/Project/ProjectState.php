@@ -4,7 +4,7 @@ namespace Publy\ServiceClient\Libraries\Project;
 
 interface ProjectState
 {
-    public function onEnter();
+    public function onEnter($project);
     public function canStatusChange($status);
-    public function onExit();
+    public function onExit($project);
 }
