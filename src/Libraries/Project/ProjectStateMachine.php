@@ -42,10 +42,16 @@ class ProjectStateMachine
 
     public function changeState($changerId, $status)
     {
-    	if ($this->currentState->canStatusChange($status) == false) 
+    	if ($this->currentState->canStatusExit($status) == false) 
     	{
     		throw new ProjectStateException(ProjectStateException::UNCHANGEABLE_STATUS, "Cannot change project status (current: {$this->project['status']} change: {$status})");
     	}
+
+        $nextState = $this->states[$status];
+        if ($nextState->canStatusEnter($this->project) == false) 
+        {
+            throw new ProjectStateException(ProjectStateException::UNCHANGEABLE_STATUS, "Cannot change project status (current: {$this->project['status']} change: {$status})");
+        }
 
         $oldStatus = $this->project['status'];
 
