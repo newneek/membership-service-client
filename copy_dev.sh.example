@@ -1,16 +1,18 @@
-admin_l5="./../admin-l5";
-content_service="./../content-service";
-payment_service="./../payment-service";
-www_l5="./../www-l5";
+BASEDIR=$(dirname "$0")
+
+admin_l5=$BASEDIR"/../admin-l5";
+content_service=$BASEDIR"/../content-service";
+payment_service=$BASEDIR"/../payment-service";
+www_l5=$BASEDIR"/../www-l5";
 
 # Define your function here
 copy_src_to_vendor () {
    if [ -d $1 ]; then
 		rm -rf $1"/vendor/publy/publy-service-client"
 		mkdir $1"/vendor/publy/publy-service-client"
-		cp -r * $1"/vendor/publy/publy-service-client"
+		cp -r $BASEDIR"/"* $1"/vendor/publy/publy-service-client"
 
-		echo "copy "$1
+		echo "cp "$BASEDIR"/* "$1"/vendor/publy/publy-service-client"
 	fi
 }
 

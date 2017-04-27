@@ -8,7 +8,7 @@ class ProjectStateDrop implements ProjectState
 {
     public $nextStates = [];
 
-    public function onEnter($project)
+    public function onEnter($changerId, $project, $params)
     {
     	
     }

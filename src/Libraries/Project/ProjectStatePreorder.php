@@ -10,7 +10,7 @@ class ProjectStatePreorder implements ProjectState
     public $nextStates = [ PublyContentService::PROJECT_STATUS_PAYMENT_IN_PROGRESS, 
                             PublyContentService::PROJECT_STATUS_DROP ];
 
-    public function onEnter($project)
+    public function onEnter($changerId, $project, $params)
     {
     	$event = new ProjectPreorderStarted($project);
         event($event);
