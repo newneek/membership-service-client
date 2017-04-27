@@ -394,11 +394,11 @@ class PublyContentService extends BaseApiService
                                                            ]);
     }
 
-    public function updateProjectStatusPreorderDone($projectId, $flagSuccess)
+    public function updateProjectStatusPreorderDone($projectId, $preorderSuccess)
     {
         return $this->put("project/{$projectId}/status", [ 'changer_id' => $changerId,
                                                            'status' => PublyContentService::PROJECT_STATUS_PREORDER_DONE,
-                                                           'preorder_success' => $flagSuccess
+                                                           'preorder_success' => $preorderSuccess
                                                            ]);
     }
 
@@ -483,11 +483,6 @@ class PublyContentService extends BaseApiService
                                                             'project_detail' => $projectDetail, 
                                                             'project_table_of_contents' => $projectTableOfContents,
                                                             'project_reward_description' => $projectRewardDescription]);
-    }
-
-    public function updateProjectFlagSuccess($projectId, $flagSuccess)
-    {
-        return $this->put("project/{$projectId}/flag_success", ['flag_success' => $flagSuccess]);
     }
 
     /*
