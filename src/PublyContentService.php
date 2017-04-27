@@ -397,8 +397,8 @@ class PublyContentService extends BaseApiService
     public function updateProjectStatusPreorderDone($projectId, $flagSuccess)
     {
         return $this->put("project/{$projectId}/status", [ 'changer_id' => $changerId,
-                                                           'status' => PublyContentService::PROJECT_STATUS_PREORDER_DONE
-                                                           'preorder_success' => $flag_success
+                                                           'status' => PublyContentService::PROJECT_STATUS_PREORDER_DONE,
+                                                           'preorder_success' => $flagSuccess
                                                            ]);
     }
 
