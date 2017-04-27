@@ -15,13 +15,15 @@ use Publy\ServiceClient\PublyContentService;
 class ProjectStateMachine
 {
 	private $project;
+    private $params;
 
 	private $states;
 	private $currentState;
 
-    public function __construct($project)
+    public function __construct($project, $params)
     {
     	$this->project = $project;
+        $this->params = $params;
 
     	$this->initState();
     }
@@ -67,6 +69,6 @@ class ProjectStateMachine
 
     	$this->currentState = $this->states[$status];
 
-    	$this->currentState->onEnter($this->project);
+    	$this->currentState->onEnter($changerId, $this->project, $this->params);
     }
 }

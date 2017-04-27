@@ -10,7 +10,7 @@ class ProjectStateSales implements ProjectState
     public $nextStates = [ PublyContentService::PROJECT_STATUS_PREORDER_DONE, 
                             PublyContentService::PROJECT_STATUS_DROP ];
 
-    public function onEnter($project)
+    public function onEnter($changerId, $project, $params)
     {
     	
     }
