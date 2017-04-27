@@ -13,7 +13,7 @@ class ProjectStatePreorderDone implements ProjectState
     public function onEnter($changerId, $project, $params)
     {
         // warning: this event update only DB, $project value not update yes (Do need this?)
-        $event = new ProjectPreorderSuccessModified($changerId, $project, $params['flag_success']);
+        $event = new ProjectPreorderSuccessModified($changerId, $project['id'], $params['flag_success']);
         event($event);
     }
 

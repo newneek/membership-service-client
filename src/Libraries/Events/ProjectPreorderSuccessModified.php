@@ -6,15 +6,19 @@ use Publy\ServiceClient\Libraries\Events\Event;
 
 class ProjectPreorderSuccessModified extends Event
 {
-    public $project;
+    public $changerId;
+    public $projectId;
+    public $flagSuccess;
     
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($project)
+    public function __construct($changerId, $projectId, $flagSuccess)
     {
-    	$this->project = $project;
+        $this->changerId = $changerId;
+        $this->projectId = $projectId;
+    	$this->flagSuccess = $flagSuccess;
     }
 }
