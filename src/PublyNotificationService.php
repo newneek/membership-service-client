@@ -124,4 +124,11 @@ class PublyNotificationService extends BaseApiService
     {
         return $this->post("/event/set_review_updated", [ 'set_review' => $setReview ]);
     }
+
+    public function eventOrderStatusChanged($order, $oldStatus, $newStatus)
+    {
+        return $this->post("/event/order_status_changed", [ 'order' => $order, 
+                                                            'old_status' => $oldStatus, 
+                                                            'new_status' => $newStatus ]);
+    }
 }
