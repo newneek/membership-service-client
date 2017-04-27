@@ -429,6 +429,14 @@ class PublyContentService extends BaseApiService
         $filterArray['finished'] = true;
         return $this->get("project", $filterArray); 
     }
+
+    public function getProjectsFinished2($filterArray = []) 
+    { 
+        $filterArray['finished'] = true;
+        $filterArray['is_active'] = 1;
+        $filterArray['status'] = PublyContentService::PROJECT_STATUS_PREORDER;
+        return $this->get("project", $filterArray); 
+    }
  
     public function createProjectSet($changerId, $projectId, $setId) 
     { 
