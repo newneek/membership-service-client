@@ -387,6 +387,21 @@ class PublyContentService extends BaseApiService
                                                            ]);
     }
 
+    public function updateProjectStatusPaymentInProgress($projectId)
+    {   
+        return $this->put("project/{$projectId}/status", [ 'changer_id' => $changerId,
+                                                           'status' => PublyContentService::PROJECT_STATUS_PAYMENT_IN_PROGRESS
+                                                           ]);
+    }
+
+    public function updateProjectStatusPreorderDone($projectId, $flagSuccess)
+    {
+        return $this->put("project/{$projectId}/status", [ 'changer_id' => $changerId,
+                                                           'status' => PublyContentService::PROJECT_STATUS_PREORDER_DONE
+                                                           'preorder_success' => $flag_success
+                                                           ]);
+    }
+
     public function getProject($projectId)
     {
         return $this->get("project/{$projectId}");
