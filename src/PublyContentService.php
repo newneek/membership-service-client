@@ -358,7 +358,7 @@ class PublyContentService extends BaseApiService
     public function updateProject2(  $changerId, 
                                      $projectId, 
                                      $title,
-                                     // $status,
+                                     $isActive,
                                      $imageUrl,
                                      $imageVerticalUrl,
                                      $preorderStartAt,
@@ -369,7 +369,7 @@ class PublyContentService extends BaseApiService
     {
         return $this->put("project/{$projectId}", [ 'changer_id' => $changerId,
                                                     'title' => $title,
-                                                    // 'status' => $status,
+                                                    'is_active' => $isActive,
                                                     'image' => $imageUrl,
                                                     'image_vertical' => $imageVerticalUrl,
                                                     'preorder_start_at' => $preorderStartAt,
