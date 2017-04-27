@@ -49,6 +49,24 @@ class PublyAuthService extends BaseApiService {
                                               'phone' => $phone ]);
     }
 
+    public function updateUser2($changerId, $userId, $name, $email, $phone)
+    {
+        $inputs = [];
+        if ($name !== null) {
+            $inputs['name'] = $name;
+        }
+
+        if ($email !== null) {
+            $inputs['email'] = $email;            
+        }
+
+        if ($phone !== null) {
+            $inputs['phone'] = $phone;
+        }
+
+        return $this->put("user/{$userId}", array_merge([ 'changer_id' => $changerId], $inputs));
+    }
+
     /*
      * User Email Change History Related Interfaces
      */
