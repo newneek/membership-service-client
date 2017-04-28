@@ -387,14 +387,14 @@ class PublyContentService extends BaseApiService
                                                            ]);
     }
 
-    public function updateProjectStatusPaymentInProgress($projectId)
+    public function updateProjectStatusPaymentInProgress($changerId, $projectId)
     {   
         return $this->put("project/{$projectId}/status", [ 'changer_id' => $changerId,
                                                            'status' => PublyContentService::PROJECT_STATUS_PAYMENT_IN_PROGRESS
                                                            ]);
     }
 
-    public function updateProjectStatusPreorderDone($projectId, $preorderSuccess)
+    public function updateProjectStatusPreorderDone($changerId, $projectId, $preorderSuccess)
     {
         return $this->put("project/{$projectId}/status", [ 'changer_id' => $changerId,
                                                            'status' => PublyContentService::PROJECT_STATUS_PREORDER_DONE,
