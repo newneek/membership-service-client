@@ -380,6 +380,29 @@ class PublyContentService extends BaseApiService
                                                      ]);
     }
 
+    public function updateProject3(  $changerId, 
+                                     $projectId, 
+                                     $title,
+                                     $imageUrl,
+                                     $imageVerticalUrl,
+                                     $preorderStartAt,
+                                     $preorderFinishAt,
+                                     $preorderGoalPrice,
+                                     $summary,
+                                     $memo )
+    {
+        return $this->put("project/{$projectId}", [ 'changer_id' => $changerId,
+                                                    'title' => $title,
+                                                    'image' => $imageUrl,
+                                                    'image_vertical' => $imageVerticalUrl,
+                                                    'preorder_start_at' => $preorderStartAt,
+                                                    'preorder_finish_at' => $preorderFinishAt,
+                                                    'preorder_goal_price' => $preorderGoalPrice,
+                                                    'summary' => $summary,
+                                                    'memo' => $memo
+                                                     ]);
+    }
+
     public function updateProjectStatus($changerId, $projectId, $status)
     {
         return $this->put("project/{$projectId}/status", [ 'changer_id' => $changerId,
@@ -400,6 +423,18 @@ class PublyContentService extends BaseApiService
                                                            'status' => PublyContentService::PROJECT_STATUS_PREORDER_DONE,
                                                            'preorder_success' => $preorderSuccess
                                                            ]);
+    }
+
+    public function updateProjectInactive($changerId, $projectId)
+    {
+        return $this->put("project/{$projectId}/is_active", [ 'changer_id' => $changerId,
+                                                              'is_active' => 0 ]); 
+    }
+
+    public function updateProjectActive($changerId, $projectId)
+    {
+        return $this->put("project/{$projectId}/is_active", [ 'changer_id' => $changerId,
+                                                              'is_active' => 1 ]); 
     }
 
     public function getProject($projectId)
