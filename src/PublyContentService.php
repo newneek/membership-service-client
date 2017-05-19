@@ -895,4 +895,50 @@ class PublyContentService extends BaseApiService
 
         return $this->put("/set_review/user/{$userId}/set/{$setId}", $inputs);
     }
+
+    public function getAuthorGuides($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+
+        return $this->get("/author_guide", $filterArray);
+    }
+
+    public function getAuthorGuide($authorGuideId)
+    {
+        return $this->get("/author_guide/{$authorGuideId}");
+    }
+
+    public function createAuthorGuide($changerId, $title)
+    {
+        return $this->post("/author_guide", ['changer_id' => $changerId,
+                                                      'title' => $title ]);
+    }
+
+    public function updateAuthorGuide($changerId, $authorGuideId, $title, $text, $imageUrl)
+    {
+        return $this->put("/author_guide/{$authorGuideId}", ['changer_id' => $changerId,
+            'title' => $title,
+            'text' => $text,
+            'image_url' => $imageUrl]);
+    }
+
+    public function updateAuthorGuideOrder($changerId, $authorGuideIds)
+    {
+        return $this->put("author_guide/order", ['changer_id' => $changerId,
+                                                          'ids' => implode(',', $authorGuideIds)]);
+    }
+
+    public function updateAuthorGuideIsActive($changerId, $authorGuideId, $isActive)
+    {
+        return $this->put("author_guide/{$authorGuideId}/is_active", ['changer_id' => $changerId,
+                                                                               'is_active' => $isActive]);
+    }
+
+    public function getTextLibrariesByIds($ids, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $ids);
+        return $this->get("text_library/ids", $filterArray);
+    }
+
 }
