@@ -915,11 +915,12 @@ class PublyContentService extends BaseApiService
                                                       'title' => $title ]);
     }
 
-    public function updateAuthorGuide($changerId, $authorGuideId, $title, $text)
+    public function updateAuthorGuide($changerId, $authorGuideId, $title, $text, $imageUrl)
     {
         return $this->put("/author_guide/{$authorGuideId}", ['changer_id' => $changerId,
-                                                                       'title' => $title,
-                                                                       'text' => $text]);
+            'title' => $title,
+            'text' => $text,
+            'image_url' => $imageUrl]);
     }
 
     public function updateAuthorGuideOrder($changerId, $authorGuideIds)
