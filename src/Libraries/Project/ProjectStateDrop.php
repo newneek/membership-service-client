@@ -7,6 +7,7 @@ use Publy\ServiceClient\PublyContentService;
 class ProjectStateDrop implements ProjectState
 {
     public $nextStates = [];
+    public $manuallyChangeableStates = [];
 
     public function onEnter($changerId, $project, $params)
     {

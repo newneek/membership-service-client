@@ -8,6 +8,7 @@ class ProjectStatePaymentInProgress implements ProjectState
 {
     public $nextStates = [ PublyContentService::PROJECT_STATUS_PREORDER_DONE, 
                             PublyContentService::PROJECT_STATUS_DROP ];
+    public $manuallyChangeableStates = [];
 
     public function onEnter($changerId, $project, $params)
     {

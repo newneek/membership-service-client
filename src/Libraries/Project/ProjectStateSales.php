@@ -8,7 +8,8 @@ use Publy\ServiceClient\PublyContentService;
 class ProjectStateSales implements ProjectState
 {
     public $nextStates = [ PublyContentService::PROJECT_STATUS_PREORDER_DONE, 
-                            PublyContentService::PROJECT_STATUS_DROP ];
+                           PublyContentService::PROJECT_STATUS_DROP ];
+    public $manuallyChangeableStates = [ PublyContentService::PROJECT_STATUS_DROP ];
 
     public function onEnter($changerId, $project, $params)
     {
