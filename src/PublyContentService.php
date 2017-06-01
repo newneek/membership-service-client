@@ -525,6 +525,28 @@ class PublyContentService extends BaseApiService
                                                             'project_reward_description' => $projectRewardDescription]);
     }
 
+    public function updateProjectSections2($changerId,
+                                           $projectId,
+                                           $projectSummary,
+                                           $projectTargetReader,
+//                                           $projectRecommnend,
+                                           $projectAuthors,
+                                           $projectDetail,
+                                           $projectTableOfContents,
+                                           $projectRewardDescription)
+    {
+        return $this->put("project/{$projectId}/sections",
+            [ 'changer_id' => $changerId,
+//              'project_recommend' => $projectRecommnend,
+              'project_summary' => $projectSummary,
+              'project_target_reader' => $projectTargetReader,
+              'project_authors' => $projectAuthors,
+              'project_detail' => $projectDetail,
+              'project_table_of_contents' => $projectTableOfContents,
+              'project_reward_description' => $projectRewardDescription
+            ]);
+    }
+
     /*
      * Project Progress Related Functions
      */
