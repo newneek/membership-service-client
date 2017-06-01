@@ -9,6 +9,7 @@ class ProjectStatePreorder implements ProjectState
 {
     public $nextStates = [ PublyContentService::PROJECT_STATUS_PAYMENT_IN_PROGRESS, 
                             PublyContentService::PROJECT_STATUS_DROP ];
+    public $manuallyChangeableStates = [ PublyContentService::PROJECT_STATUS_DROP ];
 
     public function onEnter($changerId, $project, $params)
     {

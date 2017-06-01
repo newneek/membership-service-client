@@ -8,7 +8,9 @@ use Publy\ServiceClient\Libraries\Events\ProjectPreorderSuccessModified;
 class ProjectStatePreorderDone implements ProjectState
 {
     public $nextStates = [ PublyContentService::PROJECT_STATUS_SALES, 
-                            PublyContentService::PROJECT_STATUS_DROP ];
+                           PublyContentService::PROJECT_STATUS_DROP ];
+    public $manuallyChangeableStates = [ PublyContentService::PROJECT_STATUS_SALES,
+                                         PublyContentService::PROJECT_STATUS_DROP ];
 
     public function onEnter($changerId, $project, $params)
     {
