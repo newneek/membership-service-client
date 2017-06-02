@@ -408,7 +408,7 @@ class PublyContentService extends BaseApiService
                                                      ]);
     }
 
-    public function updateProjectIsActive($isActive)
+    public function updateProjectIsActive($changerId, $projectId, $isActive)
     {
         return $this->put("project/{$projectId}", [ 'changer_id' => $changerId,
                                                     'is_active' => $isActive ]);
