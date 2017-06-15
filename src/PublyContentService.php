@@ -969,4 +969,36 @@ class PublyContentService extends BaseApiService
         return $this->get("text_library/ids", $filterArray);
     }
 
+    /*
+     * Curation Related Functions
+     */
+    public function getCuration($page, $limit, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("curation", $filterArray);
+    }
+
+    public function createCuration($changerId, $title)
+    {
+        return $this->post("curation", ['changer_id' => $changerId,
+            'title' => $title]);
+    }
+
+    public function updateCurationOrder($changerId, $curationIds)
+    {
+        return $this->put("curation/order", [ 'changer_id' => $changerId,
+            'ids' => implode(',', $curationIds) ]);
+    }
+
+    public function updateCuration($changerId, $curationId, $isActive)
+    {
+        return $this->put("curation/{$curationId}", ['changer_id' => $changerId,
+            'is_active' => $isActive]);
+    }
+
+    public function deleteCuration($changerId, $curationId)
+    {
+        return $this->put("curation/{$curationId}/delete", ['changer_id' => $changerId]);
+    }
 }
