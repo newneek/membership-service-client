@@ -972,11 +972,16 @@ class PublyContentService extends BaseApiService
     /*
      * Curation Related Functions
      */
-    public function getCuration($page, $limit, $filterArray = [])
+    public function getCurations($page, $limit, $filterArray = [])
     {
         $filterArray['page'] = $page;
         $filterArray['limit'] = $limit;
         return $this->get("curation", $filterArray);
+    }
+
+    public function getCuration($curationId, $filterArray = [])
+    {
+        return $this->get("curation/{$curationId}", $filterArray);
     }
 
     public function createCuration($changerId, $title)
@@ -991,14 +996,45 @@ class PublyContentService extends BaseApiService
             'ids' => implode(',', $curationIds) ]);
     }
 
-    public function updateCuration($changerId, $curationId, $isActive)
+    public function updateCuration($changerId, $curationId, $title)
     {
         return $this->put("curation/{$curationId}", ['changer_id' => $changerId,
+            'title' => $title]);
+    }
+
+    public function updateCurationisActive($changerId, $curationId, $isActive)
+    {
+        return $this->put("curation/{$curationId}/is_active", ['changer_id' => $changerId,
             'is_active' => $isActive]);
     }
 
     public function deleteCuration($changerId, $curationId)
     {
-        return $this->put("curation/{$curationId}/delete", ['changer_id' => $changerId]);
+        return $this->post("curation/{$curationId}/delete", ['changer_id' => $changerId]);
+    }
+
+    public function createSetCuration($changerId, $curationId, $setId)
+    {
+        return $this->post("set_curation/", ['changer_id' => $changerId,
+            'set_id' => $setId,
+            'curation_id' => $curationId ]);
+    }
+
+    public function removeSetCuration($changerId, $curationId, $setCurationId)
+    {
+        return $this->post("set_curation/{$setCurationId}/delete", ['changer_id' => $changerId,
+            'curation_id' => $curationId]);
+    }
+
+    public function getSetCurationsByCurationId($curationId, $filterArray)
+    {
+        return $this->get("set_curation/{$curationId}", $filterArray);
+    }
+
+    public function updateSetCurationOrder($changerId, $curationId, $setCurationIds)
+    {
+        return $this->put("set_curation/order", [ 'changer_id' => $changerId,
+            'curation_id' => $curationId,
+            'ids' => implode(',', $setCurationIds) ]);
     }
 }
