@@ -578,6 +578,25 @@ class PublyContentService extends BaseApiService
     }
 
     /*
+     * Set Order Count Related Functions
+     */
+    public function getSetOrderCount($setId)
+    {
+        return $this->get("set_order_count/{$setId}");
+    }
+    
+    public function updateAllSetOrderCounts()
+    {
+        return $this->put("set_order_count/all");
+    }
+
+    public function getSetOrderCountBySetIds($setIds, $filterArray = [])
+    {
+        $filterArray['set_ids'] = implode(',', $setIds);
+        return $this->get("set_order_count/by_set_ids", $filterArray);
+    }
+
+    /*
      * User Content Progress Related Functions
      */
     public function createUserContentProgress($userId, $contentId)
