@@ -1,6 +1,7 @@
 BASEDIR=$(dirname "$0")
 
 admin_l5=$BASEDIR"/../admin-l5";
+auth_service=$BASEDIR"/../auth-service";
 batch_service=$BASEDIR"/../batch-service";
 content_service=$BASEDIR"/../content-service";
 payment_service=$BASEDIR"/../payment-service";
@@ -19,6 +20,7 @@ copy_src_to_vendor () {
 }
 
 copy_src_to_vendor $admin_l5
+copy_src_to_vendor $auth_service
 copy_src_to_vendor $batch_service
 copy_src_to_vendor $content_service
 copy_src_to_vendor $payment_service
