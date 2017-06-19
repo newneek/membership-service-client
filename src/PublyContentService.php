@@ -622,6 +622,13 @@ class PublyContentService extends BaseApiService
         return $this->get("user_content_progress/user/{$userId}/by_content_ids", $filterArray);
     }
 
+    public function getUserContentProgressesByUser($userId, $page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("user_content_progress/user/{$userId}", $filterArray);
+    }
+
     public function getUserContentProgress($userId, $contentId)
     {
         return $this->get("user_content_progress/user/{$userId}/content/{$contentId}");
