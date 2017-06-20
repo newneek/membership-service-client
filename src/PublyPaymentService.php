@@ -31,6 +31,10 @@ class PublyPaymentService extends BaseApiService
     const PAYMENT_STATUS_IN_PROGRESS = 4;
 
     const SUBSCRIPTION_STATUS_INIT = 1;
+    const SUBSCRIPTION_STATUS_RENEWED = 2;
+    const SUBSCRIPTION_STATUS_CANCELLED = 3;
+    const SUBSCRIPTION_STATUS_FAILED = 4;
+
     
     const STRING_ORDER_STATUS = [
         PublyPaymentService::ORDER_STATUS_CHECKEDOUT => "주문완료",
