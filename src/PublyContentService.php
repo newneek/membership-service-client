@@ -671,6 +671,13 @@ class PublyContentService extends BaseApiService
         return $this->put("set/{$setId}", [ 'changer_id' => $changerId,
                                             'title' => $title ]);
     }
+
+    public function updateSet2($setId, $changerId, $title, $publishAt)
+    {
+        return $this->put("set/{$setId}", [ 'changer_id' => $changerId,
+                                            'title' => $title,
+                                            'publish_at' => $publishAt ]);
+    }
     
     public function loadSetDataFromProject($changerId, $setId) 
     { 
