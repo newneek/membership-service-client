@@ -7,7 +7,6 @@ use Publy\ServiceClient\Api\ResponseException;
 
 class PublyPaymentService extends BaseApiService
 {
-
     const PAYMENT_TYPE_NICEPAY_CREDIT_CARD = 1;
     const PAYMENT_TYPE_ADMIN = 2;
     const PAYMENT_TYPE_BANK_TRANSFER = 3;
@@ -30,6 +29,8 @@ class PublyPaymentService extends BaseApiService
     const PAYMENT_STATUS_COMPLETED = 2;
     const PAYMENT_STATUS_FAILED = 3;
     const PAYMENT_STATUS_IN_PROGRESS = 4;
+
+    const SUBSCRIPTION_STATUS_INIT = 1;
     
     const STRING_ORDER_STATUS = [
         PublyPaymentService::ORDER_STATUS_CHECKEDOUT => "주문완료",
@@ -498,7 +499,7 @@ class PublyPaymentService extends BaseApiService
         }
 
         $order = $resultOrder['item'];
-        // 정상적으로 주문 되었음. 
+        // 정상적으로 주문 되었음.
 
         // payment
         $resultPayment = $this->pay2(
@@ -520,7 +521,7 @@ class PublyPaymentService extends BaseApiService
         }
 
         $payment = $resultPayment['item'];
-        
+
         $orderResult = $this->get("order/".$order['id'], []);
         $order = $orderResult['success']['data'];
 
@@ -1108,5 +1109,123 @@ class PublyPaymentService extends BaseApiService
         return $this->post("/order_comment/", [ 'changer_id' => $changerId,
                                                 'order_id' => $orderId, 
                                                 'comment' => $comment ]);
+    }
+
+    public function subscriptionAndPay($changerId, $userId, $creditCardId, $planId, $price)
+    {
+        $result = [ 'success' => false ];
+
+        // subscription
+        $resultSubscription= $this->subscription(
+            $changerId,
+            $userId,
+            $planId,
+            $price
+        );
+
+        if (!$resultSubscription['success']) {
+            $result['success'] = false;
+            $result['from'] = 'subscription';
+            $result['error_code'] = $resultSubscription['error_code'];
+            $result['message'] = $resultSubscription['message'];
+            return $result;
+        }
+
+        $subscription = $resultSubscription['item'];
+        // 정상적으로 주문 되었음.
+
+        // payment
+        $resultPayment = $this->paySubscription(
+            $changerId,
+            $userId,
+            $subscription['id'],
+            static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+            'credit_card_id',
+            $creditCardId,
+//            true,
+            '');
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $payment = $resultPayment['item'];
+
+        $orderResult = $this->get("order/".$order['id'], []);
+        $order = $orderResult['success']['data'];
+
+        $result['success'] = true;
+        $result['order'] = $order;
+        $result['payment'] = $payment;
+        return $result;
+    }
+
+    public function subscription(
+        $changerId,
+        $userId,
+        $planId,
+        $price)
+    {
+        $result = [ 'success' => false ];
+        try {
+            $inputs = [ 'changer_id' => $changerId,
+                'user_id' => $userId,
+                'plan_id' => $planId,
+                'price' => $price ];
+
+            $resultSubscription = $this->post('subscription', $inputs);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $result['success'] = true;
+        $result['item'] = $resultSubscription['success']['data'];
+
+        return $result;
+    }
+
+    public function paySubscription(
+        $changerId,
+        $userId,
+        $subscriptionId,
+        $pgType,
+        $paymentMethodIdName,
+        $paymentMethodId,
+//        $immediate,
+        $note
+    ) {
+        $result = [ 'success' => false ];
+        try {
+            $resultPayment =
+                $this->post('payment', [
+                    'changer_id' => $changerId,
+                    'user_id' => $userId,
+                    'subscription_id' => $subscriptionId,
+                    'pg_type' => $pgType,
+                    $paymentMethodIdName => $paymentMethodId,
+//                    'immediate' => $immediate, true
+                    'note' => $note
+                ]);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $result['success'] = true;
+        $result['item'] = $resultPayment['success']['data'];
+
+        return $result;
     }
 }
