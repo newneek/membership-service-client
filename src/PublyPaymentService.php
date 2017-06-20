@@ -1155,11 +1155,11 @@ class PublyPaymentService extends BaseApiService
 
         $payment = $resultPayment['item'];
 
-        $orderResult = $this->get("order/".$order['id'], []);
-        $order = $orderResult['success']['data'];
+        $subscriptionResult = $this->get("subscription/{$subscription['id']}", []);
+        $subscription = $subscriptionResult['success']['data'];
 
         $result['success'] = true;
-        $result['order'] = $order;
+        $result['subscription'] = $subscription;
         $result['payment'] = $payment;
         return $result;
     }
@@ -1199,7 +1199,6 @@ class PublyPaymentService extends BaseApiService
         $pgType,
         $paymentMethodIdName,
         $paymentMethodId,
-//        $immediate,
         $note
     ) {
         $result = [ 'success' => false ];
@@ -1211,7 +1210,7 @@ class PublyPaymentService extends BaseApiService
                     'subscription_id' => $subscriptionId,
                     'pg_type' => $pgType,
                     $paymentMethodIdName => $paymentMethodId,
-//                    'immediate' => $immediate, true
+                    'immediate' => true,
                     'note' => $note
                 ]);
         } catch (ResponseException $e) {
