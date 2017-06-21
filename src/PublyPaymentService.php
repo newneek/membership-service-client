@@ -1334,4 +1334,12 @@ class PublyPaymentService extends BaseApiService
     {
         return $this->get("subscription/user/{$userId}");
     }
+
+    public function cancelSubscription($changerId, $subscriptionId, $force = false)
+    {
+        return $this->put("/subscription/{$subscriptionId}",
+            [ 'changer_id' => $changerId,
+                'action' => 'cancel',
+                'force' => $force ? 1 : 0 ]);
+    }
 }
