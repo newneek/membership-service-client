@@ -1314,4 +1314,19 @@ class PublyPaymentService extends BaseApiService
 
         return $result;
     }
+
+    public function getSubscriptionsRenewalNeeded()
+    {
+        $filterArray['renewal_neeeded'] = 1;
+        return $this->get("subscription");
+    }
+
+    public function renewalSubscription($changerId, $paymentId)
+    {
+        $inputs = [];
+        $inputs['changer_id'] = $changerId;
+        $inputs['action'] = 'pay';
+
+        return $this->put("/payment/{$paymentId}", $inputs);
+    }
 }
