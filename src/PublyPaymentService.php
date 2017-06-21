@@ -1329,4 +1329,9 @@ class PublyPaymentService extends BaseApiService
 
         return $this->put("/payment/{$paymentId}", $inputs);
     }
+
+    public function getSubscriptionByUser($userId)
+    {
+        return $this->get("subscription/user/{$userId}");
+    }
 }
