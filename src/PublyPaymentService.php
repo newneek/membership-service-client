@@ -1371,7 +1371,7 @@ class PublyPaymentService extends BaseApiService
 
     public function renewalSubscription($changerId, $subscriptionId, $paymentId, $force = false)
     {
-        $result = $this->put("/subscription/{$subscriptionId}",
+        $this->put("/subscription/{$subscriptionId}",
             [ 'changer_id' => $changerId,
                 'action' => 'init',
                 'force' => $force ? 1 : 0 ]);
@@ -1381,6 +1381,14 @@ class PublyPaymentService extends BaseApiService
         $inputs['action'] = 'pay';
 
         return $this->put("/payment/{$paymentId}", $inputs);
+    }
+
+    public function resetSubscriptionRenewAt($changerId, $subscriptionId, $force = false)
+    {
+        return $this->put("subscription/{$subscriptionId}/", ['changer_id' => $changerId,
+            'action' => 'modify',
+            'renew_at' => null,
+            'force' => $force ? 1 : 0]);
     }
 
     public function getSubscriptionByUser($userId)
