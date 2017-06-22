@@ -11,7 +11,10 @@ class PublyContentService extends BaseApiService
 
     const SET_READER_SOURCE_TYPE_ADMIN = 1;
     const SET_READER_SOURCE_TYPE_ORDER = 2;
-    
+
+    const PACKAGE_READER_SOURCE_TYPE_ADMIN = 1;
+    const PACKAGE_READER_SOURCE_TYPE_SUBSCRIPTION = 2;
+
     const HOME_DISPLAY_TYPE_PROJECT = 1;
 
     const PROJECT_STATUS_UNDER_CONSIDERATION = 1;
@@ -1087,5 +1090,29 @@ class PublyContentService extends BaseApiService
         return $this->put("set_curation/order", [ 'changer_id' => $changerId,
             'curation_id' => $curationId,
             'ids' => implode(',', $setCurationIds) ]);
+    }
+
+    public function createPackageReader($changerId, $userId, $planId, $sourceType, $adminId, $subscriptionId, $note)
+    {
+        try {
+            return $this->post("package_reader", [  'changer_id' => $changerId,
+                'user_id' => $userId,
+                'plan_id' => $planId,
+                'source_type' => $sourceType,
+                'admin_id' => $adminId,
+                'subscription_id' => $subscriptionId,
+                'note' => $note ]);
+        } catch (\Exception $e) {
+            $result['success'] = false;
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+    }
+
+    public function deletePackageReader($params)
+    {
+        return $this->post("package_reader/delete", $params);
     }
 }
