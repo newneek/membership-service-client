@@ -1366,11 +1366,16 @@ class PublyPaymentService extends BaseApiService
     public function getSubscriptionsRenewalNeeded()
     {
         $filterArray['renewal_neeeded'] = 1;
-        return $this->get("subscription");
+        return $this->get("subscription", $filterArray);
     }
 
-    public function renewalSubscription($changerId, $paymentId)
+    public function renewalSubscription($changerId, $subscriptionId, $paymentId, $force = false)
     {
+        $result = $this->put("/subscription/{$subscriptionId}",
+            [ 'changer_id' => $changerId,
+                'action' => 'init',
+                'force' => $force ? 1 : 0 ]);
+
         $inputs = [];
         $inputs['changer_id'] = $changerId;
         $inputs['action'] = 'pay';
