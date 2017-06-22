@@ -6,6 +6,9 @@ use Publy\ServiceClient\Api\BaseApiService;
 
 class PublyContentService extends BaseApiService
 {
+    const CURATION_TYPE_LIST = 1;
+    const CURATION_TYPE_CAROUSEL = 2;
+
     const SET_READER_SOURCE_TYPE_ADMIN = 1;
     const SET_READER_SOURCE_TYPE_ORDER = 2;
 
@@ -674,6 +677,21 @@ class PublyContentService extends BaseApiService
         return $this->put("set/{$setId}", [ 'changer_id' => $changerId,
                                             'title' => $title ]);
     }
+
+    public function updateSet2($setId, $changerId, $title, $publishAt)
+    {
+        return $this->put("set/{$setId}", [ 'changer_id' => $changerId,
+                                            'title' => $title,
+                                            'publish_at' => $publishAt ]);
+    }
+
+    public function updateSet3($setId, $changerId, $title, $summary, $publishAt)
+    {
+        return $this->put("set/{$setId}", [ 'changer_id' => $changerId,
+                                            'title' => $title,
+                                            'summary' => $summary,
+                                            'publish_at' => $publishAt ]);
+    }
     
     public function loadSetDataFromProject($changerId, $setId) 
     { 
@@ -1031,10 +1049,17 @@ class PublyContentService extends BaseApiService
             'title' => $title]);
     }
 
+    public function updateCuration2($changerId, $curationId, $title, $type)
+    {
+        return $this->put("curation/{$curationId}", [ 'changer_id' => $changerId,
+                                                      'title' => $title,
+                                                      'type' => $type ]);
+    }
+
     public function updateCurationisActive($changerId, $curationId, $isActive)
     {
-        return $this->put("curation/{$curationId}/is_active", ['changer_id' => $changerId,
-            'is_active' => $isActive]);
+        return $this->put("curation/{$curationId}", [ 'changer_id' => $changerId,
+                                                      'is_active' => $isActive ]);
     }
 
     public function deleteCuration($changerId, $curationId)
