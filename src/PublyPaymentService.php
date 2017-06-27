@@ -1366,16 +1366,51 @@ class PublyPaymentService extends BaseApiService
     public function getSubscriptionsRenewalNeeded()
     {
         $filterArray['renewal_neeeded'] = 1;
-        return $this->get("subscription");
+        return $this->get("subscription", $filterArray);
     }
 
-    public function renewalSubscription($changerId, $paymentId)
+    public function keepSubscription($changerId, $subscriptionId, $force = false)
     {
+        return $this->put("/subscription/{$subscriptionId}",
+            [ 'changer_id' => $changerId,
+                'action' => 'renewal',
+                'force' => $force ? 1 : 0 ]);
+    }
+
+    public function recoverSubscription($changerId, $subscriptionId, $paymentId, $force = false)
+    {
+        $this->put("/subscription/{$subscriptionId}",
+            [ 'changer_id' => $changerId,
+                'action' => 'init',
+                'force' => $force ? 1 : 0 ]);
+
         $inputs = [];
         $inputs['changer_id'] = $changerId;
         $inputs['action'] = 'pay';
 
         return $this->put("/payment/{$paymentId}", $inputs);
+    }
+
+    public function renewalSubscription($changerId, $subscriptionId, $paymentId, $force = false)
+    {
+        $this->put("/subscription/{$subscriptionId}",
+            [ 'changer_id' => $changerId,
+                'action' => 'init',
+                'force' => $force ? 1 : 0 ]);
+
+        $inputs = [];
+        $inputs['changer_id'] = $changerId;
+        $inputs['action'] = 'pay';
+
+        return $this->put("/payment/{$paymentId}", $inputs);
+    }
+
+    public function resetSubscriptionRenewAt($changerId, $subscriptionId, $force = false)
+    {
+        return $this->put("subscription/{$subscriptionId}/", ['changer_id' => $changerId,
+            'action' => 'modify',
+            'renew_at' => null,
+            'force' => $force ? 1 : 0]);
     }
 
     public function getSubscriptionByUser($userId)
