@@ -7,10 +7,22 @@
     "license": "MIT",
     "authors": [
         {
+            "name": "sk Lee",
+            "email": "sk@publy.co",
+            "homepage": "https://publy.co",
+            "role": "Software Engineer"
+        },
+        {
             "name": "Yongsang Lee",
             "email": "yongsang@publy.co",
             "homepage": "https://publy.co",
-            "role": "Developer"
+            "role": "Software Engineer"
+        },
+        {
+            "name": "Saenal Cha",
+            "email": "saenal@publy.co",
+            "homepage": "https://publy.co",
+            "role": "Software Engineer"
         }
     ],
     "require": {
