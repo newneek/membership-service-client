@@ -1115,4 +1115,14 @@ class PublyContentService extends BaseApiService
     {
         return $this->post("package_reader/delete", $params);
     }
+
+    public function getTotalPackageReader($userId)
+    {
+        return $this->get("package_reader/total", ['user_id' => $userId]);
+    }
+
+    public function getPlan($planId)
+    {
+        return $this->get("plan/{$planId}");
+    }
 }
