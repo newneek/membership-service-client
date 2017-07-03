@@ -28,7 +28,7 @@ class PublySettlementService extends BaseApiService
             'settlement_year' => $settlementYear,
             'settlement_month' => $settlementMonth];
 
-        return $this->put("/subscription_user_content_view", $inputs);
+        return $this->put("subscription_user_content_view", $inputs);
     }
 
 }
