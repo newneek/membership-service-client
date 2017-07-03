@@ -28,7 +28,26 @@ class PublySettlementService extends BaseApiService
             'settlement_year' => $settlementYear,
             'settlement_month' => $settlementMonth];
 
-        return $this->put("/subscription_user_content_view", $inputs);
+        return $this->put("subscription_user_content_view", $inputs);
     }
 
+    public function addAuthorRate($changerId, $setId, $userId, $rate)
+    {
+        return $this->post("author_rate", [  'changer_id' => $changerId,
+            'author_id' => $userId,
+            'set_id' => $setId,
+            'rate' => $rate ]);
+    }
+
+    public function removeAuthorRate($changerId, $authorRateId)
+    {
+        return $this->post("author_rate/delete", [ 'changer_id' => $changerId,
+            'author_rate_id' => $authorRateId ]);
+    }
+
+    public function getAuthorRatesBySetId($setId, $filterArray = [])
+    {
+        $filterArray['set_id'] = $setId;
+        return $this->get("author_rate", $filterArray);
+    }
 }
