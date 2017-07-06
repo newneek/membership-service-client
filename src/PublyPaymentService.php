@@ -1425,4 +1425,12 @@ class PublyPaymentService extends BaseApiService
                 'action' => 'cancel',
                 'force' => $force ? 1 : 0 ]);
     }
+
+    public function getSubscriptionRenewalHistories($userId, $settlementYear, $settlementMonth, $filterArray = [])
+    {
+        $filterArray['user_id'] = $userId;
+        $filterArray['settlement_year'] = $settlementYear;
+        $filterArray['settlement_month'] = $settlementMonth;
+        return $this->get("subscription_renewal_history", $filterArray);
+    }
 }
