@@ -1369,6 +1369,12 @@ class PublyPaymentService extends BaseApiService
         return $this->get("subscription", $filterArray);
     }
 
+    public function getSubscriptionsResetNeeded()
+    {
+        $filterArray['reset_neeeded'] = 1;
+        return $this->get("subscription", $filterArray);
+    }
+
     public function keepSubscription($changerId, $subscriptionId, $force = false)
     {
         return $this->put("/subscription/{$subscriptionId}",
