@@ -1369,6 +1369,12 @@ class PublyPaymentService extends BaseApiService
         return $this->get("subscription", $filterArray);
     }
 
+    public function getSubscriptionsResetNeeded()
+    {
+        $filterArray['reset_neeeded'] = 1;
+        return $this->get("subscription", $filterArray);
+    }
+
     public function keepSubscription($changerId, $subscriptionId, $force = false)
     {
         return $this->put("/subscription/{$subscriptionId}",
@@ -1424,5 +1430,13 @@ class PublyPaymentService extends BaseApiService
             [ 'changer_id' => $changerId,
                 'action' => 'cancel',
                 'force' => $force ? 1 : 0 ]);
+    }
+
+    public function getSubscriptionRenewalHistories($userId, $settlementYear, $settlementMonth, $filterArray = [])
+    {
+        $filterArray['user_id'] = $userId;
+        $filterArray['settlement_year'] = $settlementYear;
+        $filterArray['settlement_month'] = $settlementMonth;
+        return $this->get("subscription_renewal_history", $filterArray);
     }
 }
