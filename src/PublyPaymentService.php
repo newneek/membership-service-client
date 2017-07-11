@@ -1439,4 +1439,14 @@ class PublyPaymentService extends BaseApiService
         $filterArray['settlement_month'] = $settlementMonth;
         return $this->get("subscription_renewal_history", $filterArray);
     }
+    
+    public function getPlans()
+    {
+        return $this->get("plan");
+    }
+
+    public function getPlan($planId)
+    {
+        return $this->get("plan/{$planId}");
+    }
 }
