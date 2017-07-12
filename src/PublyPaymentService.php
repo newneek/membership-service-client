@@ -34,8 +34,8 @@ class PublyPaymentService extends BaseApiService
     const SUBSCRIPTION_STATUS_RENEWED = 2;
     const SUBSCRIPTION_STATUS_CANCELLED = 3;
     const SUBSCRIPTION_STATUS_FAILED = 4;
+    const SUBSCRIPTION_STATUS_EXPIRED = 4;
 
-    
     const STRING_ORDER_STATUS = [
         PublyPaymentService::ORDER_STATUS_CHECKEDOUT => "주문완료",
         PublyPaymentService::ORDER_STATUS_WAITING_PAYMENT => "결제대기",
@@ -1363,15 +1363,20 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
-    public function getSubscriptionsRenewalNeeded()
+    public function getSubscriptionsRenewalNeeded($days)
     {
-        $filterArray['renewal_neeeded'] = 1;
+        $filterArray['renew_day'] = implode(',', $days);
+        $filterArray['status_in'] = implode(',',
+            [ static::SUBSCRIPTION_STATUS_RENEWED]);
         return $this->get("subscription", $filterArray);
     }
 
-    public function getSubscriptionsResetNeeded()
+    public function getSubscriptionsExpireNeeded($days)
     {
-        $filterArray['reset_neeeded'] = 1;
+        $filterArray['renew_day'] = implode(',', $days);
+        $filterArray['status_in'] = implode(',',
+            [ static::SUBSCRIPTION_STATUS_CANCELLED,
+                static::SUBSCRIPTION_STATUS_FAILED]);
         return $this->get("subscription", $filterArray);
     }
 
@@ -1399,10 +1404,10 @@ class PublyPaymentService extends BaseApiService
 
     public function renewalSubscription($changerId, $subscriptionId, $paymentId, $force = false)
     {
-        $this->put("/subscription/{$subscriptionId}",
-            [ 'changer_id' => $changerId,
-                'action' => 'init',
-                'force' => $force ? 1 : 0 ]);
+//        $this->put("/subscription/{$subscriptionId}",
+//            [ 'changer_id' => $changerId,
+//                'action' => 'init',
+//                'force' => $force ? 1 : 0 ]);
 
         $inputs = [];
         $inputs['changer_id'] = $changerId;
@@ -1414,8 +1419,7 @@ class PublyPaymentService extends BaseApiService
     public function resetSubscriptionRenewAt($changerId, $subscriptionId, $force = false)
     {
         return $this->put("subscription/{$subscriptionId}/", ['changer_id' => $changerId,
-            'action' => 'modify',
-            'renew_at' => null,
+            'action' => 'expired',
             'force' => $force ? 1 : 0]);
     }
 
