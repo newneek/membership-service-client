@@ -6,6 +6,7 @@ batch_service=$BASEDIR"/../batch-service";
 content_service=$BASEDIR"/../content-service";
 payment_service=$BASEDIR"/../payment-service";
 settlement_service=$BASEDIR"/../settlement-service";
+notification_service=$BASEDIR"/../notification-service";
 cow=$BASEDIR"/../cow";
 www_l5=$BASEDIR"/../www-l5";
 
@@ -26,6 +27,7 @@ copy_src_to_vendor $batch_service
 copy_src_to_vendor $content_service
 copy_src_to_vendor $payment_service
 copy_src_to_vendor $settlement_service
+copy_src_to_vendor $notification_service
 copy_src_to_vendor $cow
 copy_src_to_vendor $www_l5
 
