@@ -1390,10 +1390,10 @@ class PublyPaymentService extends BaseApiService
 
     public function recoverSubscription($changerId, $subscriptionId, $paymentId, $force = false)
     {
-        $this->put("/subscription/{$subscriptionId}",
-            [ 'changer_id' => $changerId,
-                'action' => 'init',
-                'force' => $force ? 1 : 0 ]);
+//        $this->put("/subscription/{$subscriptionId}",
+//            [ 'changer_id' => $changerId,
+//                'action' => 'init',
+//                'force' => $force ? 1 : 0 ]);
 
         $inputs = [];
         $inputs['changer_id'] = $changerId;
