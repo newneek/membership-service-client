@@ -1384,11 +1384,6 @@ class PublyPaymentService extends BaseApiService
 
     public function recoverSubscription($changerId, $subscriptionId, $paymentId, $force = false)
     {
-//        $this->put("/subscription/{$subscriptionId}",
-//            [ 'changer_id' => $changerId,
-//                'action' => 'init',
-//                'force' => $force ? 1 : 0 ]);
-
         $inputs = [];
         $inputs['changer_id'] = $changerId;
         $inputs['action'] = 'pay';
@@ -1410,14 +1405,6 @@ class PublyPaymentService extends BaseApiService
         return $this->put("subscription/{$subscriptionId}/", ['changer_id' => $changerId,
             'action' => 'expired',
             'force' => $force ? 1 : 0]);
-    }
-
-    public function updateSubscriptionStatusInProgress($changerId, $subscriptionId, $force = false)
-    {
-        return $this->put("/subscription/{$subscriptionId}",
-            [ 'changer_id' => $changerId,
-                'action' => 'in_progress',
-                'force' => $force ? 1 : 0 ]);
     }
 
     public function cancelSubscriptionReserved($changerId, $days)
