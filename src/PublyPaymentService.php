@@ -32,9 +32,11 @@ class PublyPaymentService extends BaseApiService
 
     const SUBSCRIPTION_STATUS_INIT = 1;
     const SUBSCRIPTION_STATUS_RENEWED = 2;
-    const SUBSCRIPTION_STATUS_CANCELLED = 3;
+    const SUBSCRIPTION_STATUS_CANCEL_RESERVED = 3;
     const SUBSCRIPTION_STATUS_FAILED = 4;
-    const SUBSCRIPTION_STATUS_EXPIRED = 4;
+    const SUBSCRIPTION_STATUS_EXPIRED = 5;
+    const SUBSCRIPTION_STATUS_CANCEL_COMPLETED = 6;
+    const SUBSCRIPTION_STATUS_IN_PROGRESS = 7;
 
     const STRING_ORDER_STATUS = [
         PublyPaymentService::ORDER_STATUS_CHECKEDOUT => "주문완료",
@@ -1363,19 +1365,11 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
-    public function getSubscriptionsRenewalNeeded($days)
-    {
-        $filterArray['renew_day'] = implode(',', $days);
-        $filterArray['status_in'] = implode(',',
-            [ static::SUBSCRIPTION_STATUS_RENEWED]);
-        return $this->get("subscription", $filterArray);
-    }
-
     public function getSubscriptionsExpireNeeded($days)
     {
         $filterArray['renew_day'] = implode(',', $days);
         $filterArray['status_in'] = implode(',',
-            [ static::SUBSCRIPTION_STATUS_CANCELLED,
+            [ static::SUBSCRIPTION_STATUS_CANCEL_RESERVED,
                 static::SUBSCRIPTION_STATUS_FAILED]);
         return $this->get("subscription", $filterArray);
     }
@@ -1390,11 +1384,6 @@ class PublyPaymentService extends BaseApiService
 
     public function recoverSubscription($changerId, $subscriptionId, $paymentId, $force = false)
     {
-//        $this->put("/subscription/{$subscriptionId}",
-//            [ 'changer_id' => $changerId,
-//                'action' => 'init',
-//                'force' => $force ? 1 : 0 ]);
-
         $inputs = [];
         $inputs['changer_id'] = $changerId;
         $inputs['action'] = 'pay';
@@ -1404,11 +1393,6 @@ class PublyPaymentService extends BaseApiService
 
     public function renewalSubscription($changerId, $subscriptionId, $paymentId, $force = false)
     {
-//        $this->put("/subscription/{$subscriptionId}",
-//            [ 'changer_id' => $changerId,
-//                'action' => 'init',
-//                'force' => $force ? 1 : 0 ]);
-
         $inputs = [];
         $inputs['changer_id'] = $changerId;
         $inputs['action'] = 'pay';
@@ -1421,6 +1405,20 @@ class PublyPaymentService extends BaseApiService
         return $this->put("subscription/{$subscriptionId}/", ['changer_id' => $changerId,
             'action' => 'expired',
             'force' => $force ? 1 : 0]);
+    }
+
+    public function cancelSubscriptionReserved($changerId, $days)
+    {
+        return $this->put("/subscription/cancel_subscription_reserved",
+            ['changer_id' => $changerId,
+                'renew_day' => implode(',', $days)]);
+    }
+
+    public function renewSubscriptions($changerId, $days)
+    {
+        return $this->put("/subscription/renew_subscriptions",
+            ['changer_id' => $changerId,
+                'renew_day' => implode(',', $days)]);
     }
 
     public function getSubscriptionByUser($userId)
