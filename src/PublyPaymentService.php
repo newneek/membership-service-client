@@ -1365,15 +1365,6 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
-    public function getSubscriptionsExpireNeeded($days)
-    {
-        $filterArray['renew_day'] = implode(',', $days);
-        $filterArray['status_in'] = implode(',',
-            [ static::SUBSCRIPTION_STATUS_CANCEL_RESERVED,
-                static::SUBSCRIPTION_STATUS_FAILED]);
-        return $this->get("subscription", $filterArray);
-    }
-
     public function keepSubscription($changerId, $subscriptionId, $force = false)
     {
         return $this->put("/subscription/{$subscriptionId}",
@@ -1417,6 +1408,13 @@ class PublyPaymentService extends BaseApiService
     public function renewSubscriptions($changerId, $days)
     {
         return $this->put("/subscription/renew_subscriptions",
+            ['changer_id' => $changerId,
+                'renew_day' => implode(',', $days)]);
+    }
+
+    public function expireSubscriptions($changerId, $days)
+    {
+        return $this->put("/subscription/expire_subscriptions",
             ['changer_id' => $changerId,
                 'renew_day' => implode(',', $days)]);
     }
