@@ -132,11 +132,14 @@ class PublyNotificationService extends BaseApiService
                                                             'new_status' => $newStatus ]);
     }
 
-    public function eventSubscriptionStatusChanged($subscription, $oldStatus, $newStatus, $withPayment)
+    public function eventSubscriptionStatusChanged($subscription, $nextPayment, $creditCard, $oldStatus, $newStatus, $withPayment)
     {
-        return $this->post("/event/subscription_status_changed", [ 'subscription' => $subscription,
-            'old_status' => $oldStatus,
-            'new_status' => $newStatus,
-            'with_payment' => $withPayment]);
+        return $this->post("/event/subscription_status_changed", 
+            [ 'subscription' => $subscription,
+              'next_payment' => $nextPayment,
+              'credit_card' => $creditCard,
+              'old_status' => $oldStatus,
+              'new_status' => $newStatus,
+              'with_payment' => $withPayment ]);
     }
 }
