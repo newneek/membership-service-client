@@ -30,12 +30,12 @@ class PublyPaymentService extends BaseApiService
     const PAYMENT_STATUS_FAILED = 3;
     const PAYMENT_STATUS_IN_PROGRESS = 4;
 
-    const SUBSCRIPTION_STATUS_INIT = 1;
-    const SUBSCRIPTION_STATUS_RENEWED = 2;
-    const SUBSCRIPTION_STATUS_CANCEL_RESERVED = 3;
-    const SUBSCRIPTION_STATUS_FAILED = 4;
-    const SUBSCRIPTION_STATUS_EXPIRED = 5;
-    const SUBSCRIPTION_STATUS_CANCEL_COMPLETED = 6;
+    const SUBSCRIPTION_STATUS_INIT = 1; 
+    const SUBSCRIPTION_STATUS_RENEWED = 2; // 결제 완료
+    const SUBSCRIPTION_STATUS_CANCEL_RESERVED = 3; // 결제 취소 예약
+    const SUBSCRIPTION_STATUS_FAILED = 4; // 결제 실패
+    const SUBSCRIPTION_STATUS_EXPIRED = 5; // 멤버십 기간 만료
+    const SUBSCRIPTION_STATUS_CANCEL_COMPLETED = 6; // 결제 취소 완료
     const SUBSCRIPTION_STATUS_IN_PROGRESS = 7;
 
     const STRING_ORDER_STATUS = [
@@ -1138,52 +1138,28 @@ class PublyPaymentService extends BaseApiService
         }
 
         $subscription = $resultSubscription['item'];
-        // 정상적으로 주문 되었음.
 
-        if ($subscription['next_payment_id']) {
-            $paymentId = $subscription['next_payment_id'];
-            if ($subscription['status'] == PublyPaymentService::SUBSCRIPTION_STATUS_RENEWED) {
-                $resultPayment = $this->get("/payment/{$paymentId}");
-                $payment = $resultPayment['success']['data'];
+        // payment
+        $resultPayment = $this->paySubscription(
+            $changerId,
+            $userId,
+            $subscription['id'],
+            static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+            'credit_card_id',
+            $creditCardId,
+            //            true,
+            '');
 
-            } else {
-                $inputs = [];
-                $inputs['changer_id'] = $changerId;
-                $inputs['action'] = 'pay';
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
 
-                $resultPayment = $this->put("/payment/{$paymentId}", $inputs);
-                if (!$resultPayment['success']) {
-                    $result['success'] = false;
-                    $result['from'] = 'payment';
-                    $result['error_code'] = $resultPayment['error_code'];
-                    $result['message'] = $resultPayment['message'];
-                    return $result;
-                }
-
-                $payment = $resultPayment['success']['data'];
-            }
-        } else {
-            // payment
-            $resultPayment = $this->paySubscription(
-                $changerId,
-                $userId,
-                $subscription['id'],
-                static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
-                'credit_card_id',
-                $creditCardId,
-//            true,
-                '');
-
-            if (!$resultPayment['success']) {
-                $result['success'] = false;
-                $result['from'] = 'payment';
-                $result['error_code'] = $resultPayment['error_code'];
-                $result['message'] = $resultPayment['message'];
-                return $result;
-            }
-
-            $payment = $resultPayment['item'];
+            return $result;
         }
+
+        $payment = $resultPayment['item'];
 
         $subscriptionResult = $this->get("subscription/{$subscription['id']}", []);
         $subscription = $subscriptionResult['success']['data'];
@@ -1244,52 +1220,28 @@ class PublyPaymentService extends BaseApiService
         }
 
         $subscription = $resultSubscription['item'];
-        // 정상적으로 주문 되었음.
 
-        if ($subscription['next_payment_id']) {
-            $paymentId = $subscription['next_payment_id'];
-            if ($subscription['status'] == PublyPaymentService::SUBSCRIPTION_STATUS_RENEWED) {
-                $resultPayment = $this->get("/payment/{$paymentId}");
-                $payment = $resultPayment['success']['data'];
+        // payment
+        $resultPayment = $this->paySubscription(
+            $changerId,
+            $userId,
+            $subscription['id'],
+            static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+            'credit_card_id',
+            $creditCardId,
+            //            true,
+            '');
 
-            } else {
-                $inputs = [];
-                $inputs['changer_id'] = $changerId;
-                $inputs['action'] = 'pay';
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
 
-                $resultPayment = $this->put("/payment/{$paymentId}", $inputs);
-                if (!$resultPayment['success']) {
-                    $result['success'] = false;
-                    $result['from'] = 'payment';
-                    $result['error_code'] = $resultPayment['error_code'];
-                    $result['message'] = $resultPayment['message'];
-                    return $result;
-                }
-
-                $payment = $resultPayment['success']['data'];
-            }
-        } else {
-            // payment
-            $resultPayment = $this->paySubscription(
-                $changerId,
-                $userId,
-                $subscription['id'],
-                static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
-                'credit_card_id',
-                $creditCardId,
-                //            true,
-                '');
-
-            if (!$resultPayment['success']) {
-                $result['success'] = false;
-                $result['from'] = 'payment';
-                $result['error_code'] = $resultPayment['error_code'];
-                $result['message'] = $resultPayment['message'];
-                return $result;
-            }
-
-            $payment = $resultPayment['item'];
+            return $result;
         }
+
+        $payment = $resultPayment['item'];
 
         $subscriptionResult = $this->get("subscription/{$subscription['id']}", []);
         $subscription = $subscriptionResult['success']['data'];
@@ -1298,6 +1250,21 @@ class PublyPaymentService extends BaseApiService
         $result['subscription'] = $subscription;
         $result['payment'] = $payment;
         $result['creditCard'] = $creditCard;
+        return $result;
+    }
+
+    public function deleteSubscription(
+        $changerId,
+        $subscriptionId)
+    {
+        try {
+            $this->post("subscription/{$subscriptionId}/delete", ['changer_id' => $changerId]);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            return $result;
+        }
+
+        $result['success'] = true;
         return $result;
     }
 
