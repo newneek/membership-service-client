@@ -1138,6 +1138,7 @@ class PublyPaymentService extends BaseApiService
         }
 
         $subscription = $resultSubscription['item'];
+        $result['subscription'] = $subscription;
 
         // payment
         $resultPayment = $this->paySubscription(
@@ -1201,7 +1202,7 @@ class PublyPaymentService extends BaseApiService
 
         $creditCard = $resultCreditCard['item'];
         $creditCardId = $creditCard['id'];
-        // 정상적으로 카드 등록 되었음.
+        $result['creditCard'] = $creditCard;
 
         // subscription
         $resultSubscription= $this->subscription(
@@ -1220,6 +1221,7 @@ class PublyPaymentService extends BaseApiService
         }
 
         $subscription = $resultSubscription['item'];
+        $result['subscription'] = $subscription;
 
         // payment
         $resultPayment = $this->paySubscription(
@@ -1242,14 +1244,13 @@ class PublyPaymentService extends BaseApiService
         }
 
         $payment = $resultPayment['item'];
+        $result['payment'] = $payment;
 
         $subscriptionResult = $this->get("subscription/{$subscription['id']}", []);
         $subscription = $subscriptionResult['success']['data'];
+        $result['subscription'] = $subscription; // refresh subscription after payment
 
         $result['success'] = true;
-        $result['subscription'] = $subscription;
-        $result['payment'] = $payment;
-        $result['creditCard'] = $creditCard;
         return $result;
     }
 
