@@ -1357,12 +1357,27 @@ class PublyPaymentService extends BaseApiService
             return $result;
         }
 
-        return $this->put("/subscription/{$subscriptionId}",
+        $resultPayment = $this->put("/subscription/{$subscriptionId}",
             [ 'changer_id' => $changerId,
                 'action' => 'renewal',
                 'force' => $force ? 1 : 0 ]);
-    }
 
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+
+            return $result;
+        }
+
+        $subscriptionResult = $this->get("subscription/{$subscriptionId}", []);
+        $subscription = $subscriptionResult['success']['data'];
+        $result['subscription'] = $subscription; // refresh subscription after payment
+
+        $result['success'] = true;
+        return $result;
+    }
 
     public function addCreditCardAndKeepSubscription(
         $changerId,
@@ -1412,10 +1427,26 @@ class PublyPaymentService extends BaseApiService
             return $result;
         }
 
-        return $this->put("/subscription/{$subscriptionId}",
+        $resultPayment = $this->put("/subscription/{$subscriptionId}",
             [ 'changer_id' => $changerId,
                 'action' => 'renewal',
                 'force' => $force ? 1 : 0 ]);
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+
+            return $result;
+        }
+
+        $subscriptionResult = $this->get("subscription/{$subscriptionId}", []);
+        $subscription = $subscriptionResult['success']['data'];
+        $result['subscription'] = $subscription; // refresh subscription after payment
+
+        $result['success'] = true;
+        return $result;
     }
 
     public function keepSubscription($changerId, $subscriptionId, $force = false)
@@ -1426,6 +1457,128 @@ class PublyPaymentService extends BaseApiService
                 'force' => $force ? 1 : 0 ]);
     }
 
+    public function changeCardAndRecoverSubscription($changerId,
+                                                     $subscriptionId,
+                                                     $paymentId,
+                                                     $creditCardId,
+                                                     $force = false)
+    {
+        $resultPayment = $this->updatePayment($changerId,
+            $paymentId,
+            [
+                'action' => 'change_payment_method',
+                'pg_type' => PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+                'credit_card_id' => $creditCardId
+            ]);
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $inputs = [];
+        $inputs['changer_id'] = $changerId;
+        $inputs['action'] = 'pay';
+
+        $resultPayment = $this->put("/payment/{$paymentId}", $inputs);
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+
+            return $result;
+        }
+
+        $payment = $resultPayment['success']['data'];
+        $result['payment'] = $payment;
+
+        $subscriptionResult = $this->get("subscription/{$subscriptionId}", []);
+        $subscription = $subscriptionResult['success']['data'];
+        $result['subscription'] = $subscription; // refresh subscription after payment
+
+        $result['success'] = true;
+        return $result;
+    }
+
+    public function addCreditCardAndRecoverSubscription($changerId,
+                                                        $userId,
+                                                        $subscriptionId,
+                                                        $paymentId,
+                                                        $creditCardNumber,
+                                                        $expireYear,
+                                                        $expireMonth,
+                                                        $id,
+                                                        $password,
+                                                        $force = false)
+    {
+        $resultCreditCard = $this->addCreditCard2(
+            $changerId,
+            $userId,
+            $creditCardNumber,
+            $expireYear,
+            $expireMonth,
+            $id,
+            $password);
+
+        if (!$resultCreditCard['success']) {
+            $result['success'] = false;
+            $result['from'] = 'credit_card';
+            $result['error_code'] = $resultCreditCard['error_code'];
+            $result['message'] = $resultCreditCard['message'];
+            return $result;
+        }
+
+        $creditCard = $resultCreditCard['item'];
+        $result['creditCard'] = $creditCard;
+        // 정상적으로 카드 등록 되었음.
+
+        $resultPayment = $this->updatePayment($changerId,
+            $paymentId,
+            [
+                'action' => 'change_payment_method',
+                'pg_type' => PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+                'credit_card_id' => $creditCard['id']
+            ]);
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $inputs = [];
+        $inputs['changer_id'] = $changerId;
+        $inputs['action'] = 'pay';
+
+        $resultPayment = $this->put("/payment/{$paymentId}", $inputs);
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+
+            return $result;
+        }
+
+        $payment = $resultPayment['success']['data'];
+        $result['payment'] = $payment;
+
+        $subscriptionResult = $this->get("subscription/{$subscriptionId}", []);
+        $subscription = $subscriptionResult['success']['data'];
+        $result['subscription'] = $subscription; // refresh subscription after payment
+
+        $result['success'] = true;
+        return $result;
+    }
+
     public function recoverSubscription($changerId, $subscriptionId, $paymentId, $force = false)
     {
         $inputs = [];
@@ -1433,6 +1586,14 @@ class PublyPaymentService extends BaseApiService
         $inputs['action'] = 'pay';
 
         return $this->put("/payment/{$paymentId}", $inputs);
+    }
+
+    public function expireSubscription($changerId, $subscriptionId, $force = false)
+    {
+        return $this->put("/subscription/{$subscriptionId}",
+            [ 'changer_id' => $changerId,
+                'action' => 'expired',
+                'force' => $force ? 1 : 0 ]);
     }
 
     public function renewalSubscription($changerId, $subscriptionId, $paymentId, $force = false)
