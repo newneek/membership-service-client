@@ -33,6 +33,9 @@ class PublyContentService extends BaseApiService
         PublyContentService::PROJECT_STATUS_DROP => "중단" 
     ];
 
+    const USER_CONTENT_PROGRESS_TYPE_INDIVIDUAL = 1;
+    const USER_CONTENT_PROGRESS_TYPE_PACKAGE = 2;
+
     public function __construct($domain)
     {
         parent::__construct();
@@ -611,14 +614,31 @@ class PublyContentService extends BaseApiService
                                                       'content_id' => $contentId ]);
     }
 
+    public function createUserContentProgress2($userId, $contentId, $type)
+    {
+        return $this->post("user_content_progress", [ 'user_id' => $userId,
+                                                      'content_id' => $contentId,
+                                                      'type' => $type ]);
+    }
+
     public function updateUserContentProgress($userId, $contentId)
     {
         return $this->put("user_content_progress/user/{$userId}/content/{$contentId}");
     }
 
+    public function updateUserContentProgress2($userId, $contentId, $type)
+    {
+        return $this->put("user_content_progress/user/{$userId}/content/{$contentId}/type/{$type}");
+    }
+
     public function resetUserContentProgress($userId, $contentId)
     {
         return $this->put("user_content_progress/user/{$userId}/content/{$contentId}/reset");
+    }
+
+    public function resetUserContentProgress2($userId, $contentId, $type)
+    {
+        return $this->put("user_content_progress/user/{$userId}/content/{$contentId}/type/{$type}/reset");
     }
     
     public function getUserContentProgressesByUserAndContentIds($userId, $contentIds)
@@ -626,6 +646,13 @@ class PublyContentService extends BaseApiService
         $filterArray = [];
         $filterArray['content_ids'] = implode(',', $contentIds);
         return $this->get("user_content_progress/user/{$userId}/by_content_ids", $filterArray);
+    }
+
+    public function getUserContentProgressesByUserAndTypeAndContentIds($userId, $type, $contentIds)
+    {
+        $filterArray = [];
+        $filterArray['content_ids'] = implode(',', $contentIds);
+        return $this->get("user_content_progress/user/{$userId}/type/{$type}/by_content_ids", $filterArray);
     }
 
     public function getUserContentProgressesByUser($userId, $page = 1, $limit = 10, $filterArray = [])
@@ -638,6 +665,11 @@ class PublyContentService extends BaseApiService
     public function getUserContentProgress($userId, $contentId)
     {
         return $this->get("user_content_progress/user/{$userId}/content/{$contentId}");
+    }
+
+    public function getUserContentProgress2($userId, $contentId, $type)
+    {
+        return $this->get("user_content_progress/user/{$userId}/content/{$contentId}/type/{$type}");
     }
 
     /*
