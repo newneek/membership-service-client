@@ -1643,6 +1643,18 @@ class PublyPaymentService extends BaseApiService
                 'renew_day' => implode(',', $days)]);
     }
 
+    public function getSubscriptions($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("subscription/", $filterArray);
+    }
+
+    public function getSubscription($subscriptionId)
+    {
+        return $this->get("subscription/{$subscriptionId}");
+    }
+
     public function getSubscriptionByUser($userId)
     {
         return $this->get("subscription/user/{$userId}");
@@ -1656,6 +1668,23 @@ class PublyPaymentService extends BaseApiService
                 'force' => $force ? 1 : 0 ]);
     }
 
+    public function getSubscriptionRenewalHistoriesBySubscription($subscriptionId, $page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        $filterArray['subscription_id'] = $subscriptionId;
+        return $this->get("subscription_renewal_history", $filterArray);
+    }
+
+    public function getSubscriptionRenewalHistoriesBySettlement($userId, $settlementYear, $settlementMonth, $filterArray = [])
+    {
+        $filterArray['user_id'] = $userId;
+        $filterArray['settlement_year'] = $settlementYear;
+        $filterArray['settlement_month'] = $settlementMonth;
+        return $this->get("subscription_renewal_history", $filterArray);
+    }
+
+    // deprecated
     public function getSubscriptionRenewalHistories($userId, $settlementYear, $settlementMonth, $filterArray = [])
     {
         $filterArray['user_id'] = $userId;
