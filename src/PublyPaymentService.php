@@ -58,6 +58,16 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::PAYMENT_TYPE_OLD_ADMIN => "구 관리자 추가"
         ];
 
+    const STRING_SUBSCRIPTION_TYPE = [
+        PublyPaymentService::SUBSCRIPTION_STATUS_INIT => "초기상태",
+        PublyPaymentService::SUBSCRIPTION_STATUS_RENEWED => "구독 중",
+        PublyPaymentService::SUBSCRIPTION_STATUS_CANCEL_RESERVED => "취소 신청",
+        PublyPaymentService::SUBSCRIPTION_STATUS_FAILED => "결제 실패",
+        PublyPaymentService::SUBSCRIPTION_STATUS_EXPIRED => "만료",
+        PublyPaymentService::SUBSCRIPTION_STATUS_CANCEL_COMPLETED => "취소 완료",
+        PublyPaymentService::SUBSCRIPTION_STATUS_IN_PROGRESS => "결제 중"
+    ];
+
     public function __construct($domain)
     {
         parent::__construct();
