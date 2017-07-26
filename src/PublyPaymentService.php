@@ -38,6 +38,10 @@ class PublyPaymentService extends BaseApiService
     const SUBSCRIPTION_STATUS_CANCEL_COMPLETED = 6; // 결제 취소 완료
     const SUBSCRIPTION_STATUS_IN_PROGRESS = 7;
 
+    const SUBSCRIPTION_RENEWAL_HISTORY_STATUS_RENEWED = 1;
+    const SUBSCRIPTION_RENEWAL_HISTORY_STATUS_REFUND_REQUESTED = 2;
+    const SUBSCRIPTION_RENEWAL_HISTORY_STATUS_REFUND_COMPLETED = 3;
+
     const STRING_ORDER_STATUS = [
         PublyPaymentService::ORDER_STATUS_CHECKEDOUT => "주문완료",
         PublyPaymentService::ORDER_STATUS_WAITING_PAYMENT => "결제대기",
@@ -47,7 +51,15 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::ORDER_STATUS_PAYMENT_IN_PROGRESS => "결제중",
         PublyPaymentService::ORDER_STATUS_PAYMENT_FAILED => "결제실패",
         PublyPaymentService::ORDER_STATUS_REFUND_REQUESTED => "환불 신청",
-        PublyPaymentService::ORDER_STATUS_REFUND_COMPLETED => "환불 완료" ];
+        PublyPaymentService::ORDER_STATUS_REFUND_COMPLETED => "환불 완료"
+    ];
+
+    const STRING_PAYMENT_STATUS = [
+        PublyPaymentService::PAYMENT_STATUS_WAITING => "결제대기",
+        PublyPaymentService::PAYMENT_STATUS_COMPLETED => "결제성공",
+        PublyPaymentService::PAYMENT_STATUS_FAILED => "결제실패",
+        PublyPaymentService::PAYMENT_STATUS_IN_PROGRESS => "결제중"
+    ];
 
     const STRING_PAYMENT_TYPE = [
         PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD => "Nicepay 신용카드",
@@ -56,7 +68,7 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::PAYMENT_TYPE_PAYPAL => "PayPal",
         PublyPaymentService::PAYMENT_TYPE_IAMPORT => "아임포트",
         PublyPaymentService::PAYMENT_TYPE_OLD_ADMIN => "구 관리자 추가"
-        ];
+    ];
 
     const STRING_SUBSCRIPTION_TYPE = [
         PublyPaymentService::SUBSCRIPTION_STATUS_INIT => "초기상태",
@@ -66,6 +78,12 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::SUBSCRIPTION_STATUS_EXPIRED => "만료",
         PublyPaymentService::SUBSCRIPTION_STATUS_CANCEL_COMPLETED => "취소 완료",
         PublyPaymentService::SUBSCRIPTION_STATUS_IN_PROGRESS => "결제 중"
+    ];
+
+    const STRING_SUBSCRIPTION_RENEWAL_HISTORY_STATUS = [
+        PublyPaymentService::SUBSCRIPTION_RENEWAL_HISTORY_STATUS_RENEWED => "결제성공",
+        PublyPaymentService::SUBSCRIPTION_RENEWAL_HISTORY_STATUS_REFUND_REQUESTED => "환불 신청",
+        PublyPaymentService::SUBSCRIPTION_RENEWAL_HISTORY_STATUS_REFUND_COMPLETED => "환불 완료"
     ];
 
     public function __construct($domain)
@@ -1691,6 +1709,30 @@ class PublyPaymentService extends BaseApiService
         $filterArray['settlement_year'] = $settlementYear;
         $filterArray['settlement_month'] = $settlementMonth;
         return $this->get("subscription_renewal_history", $filterArray);
+    }
+
+    public function requestRefundSubscriptionRenewalHistory($changerId,
+                                                            $subscriptionId,
+                                                            $subscriptionRenewalHistoryId,
+                                                            $force = false)
+    {
+        return $this->put("subscription_renewal_history/{$subscriptionRenewalHistoryId}",
+            ['changer_id' => $changerId,
+             'subscription_id' => $subscriptionId,
+             'action' => 'request-refund',
+             'force' => $force ? 1 : 0]);
+    }
+
+    public function completeRefundSubscriptionRenewalHistory($changerId,
+                                                             $subscriptionId,
+                                                             $subscriptionRenewalHistoryId,
+                                                             $force = false)
+    {
+        return $this->put("subscription_renewal_history/{$subscriptionRenewalHistoryId}",
+            ['changer_id' => $changerId,
+                'subscription_id' => $subscriptionId,
+                'action' => 'complete-refund',
+                'force' => $force ? 1 : 0]);
     }
     
     public function getPlans()
