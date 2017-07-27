@@ -1661,6 +1661,15 @@ class PublyPaymentService extends BaseApiService
                 'renew_day' => implode(',', $days)]);
     }
 
+    public function updateSubscription($changerId, $subscriptionId, $note, $force = false)
+    {
+        return $this->put("/subscription/{$subscriptionId}",
+            [ 'changer_id' => $changerId,
+                'action' => 'update',
+                'note' => $note,
+                'force' => $force ? 1 : 0 ]);
+    }
+
     public function getSubscriptions($page = 1, $limit = 10, $filterArray = [])
     {
         $filterArray['page'] = $page;
@@ -1734,7 +1743,7 @@ class PublyPaymentService extends BaseApiService
                 'action' => 'complete-refund',
                 'force' => $force ? 1 : 0]);
     }
-    
+
     public function getPlans()
     {
         return $this->get("plan");
