@@ -1754,4 +1754,76 @@ class PublyPaymentService extends BaseApiService
     {
         return $this->get("plan/{$planId}");
     }
+
+    public function changeSubscriptionCreditCard($changerId, $paymentId, $creditCardId)
+    {
+        $resultPayment = $this->updatePayment($changerId,
+            $paymentId,
+            [
+                'action' => 'change_payment_method',
+                'pg_type' => PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+                'credit_card_id' => $creditCardId
+            ]);
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $result['success'] = true;
+        return $result;
+    }
+
+    public function addCreditCardAndChangeSubscriptionCreditCard(
+        $changerId,
+        $userId,
+        $paymentId,
+        $creditCardNumber,
+        $expireYear,
+        $expireMonth,
+        $id,
+        $password)
+    {
+        $resultCreditCard = $this->addCreditCard2(
+            $changerId,
+            $userId,
+            $creditCardNumber,
+            $expireYear,
+            $expireMonth,
+            $id,
+            $password);
+
+        if (!$resultCreditCard['success']) {
+            $result['success'] = false;
+            $result['from'] = 'credit_card';
+            $result['error_code'] = $resultCreditCard['error_code'];
+            $result['message'] = $resultCreditCard['message'];
+            return $result;
+        }
+
+        $creditCard = $resultCreditCard['item'];
+        // 정상적으로 카드 등록 되었음.
+
+        $resultPayment = $this->updatePayment($changerId,
+            $paymentId,
+            [
+                'action' => 'change_payment_method',
+                'pg_type' => PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+                'credit_card_id' => $creditCard['id']
+            ]);
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $result['success'] = true;
+        return $result;
+    }
 }
