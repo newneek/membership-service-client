@@ -83,6 +83,32 @@ class PublyContentService extends BaseApiService
                                        'has_offline' => $hasOffline,
                                        'description' => $description ]);
     }
+
+    public function createReward3( $changerId,
+                                   $projectId,
+                                   $name,
+                                   $needDelivery,
+                                   $price,
+                                   $quantity,
+                                   $hasOffline,
+                                   $description,
+                                   $subscriptionName,
+                                   $subscriptionPrice,
+                                   $subscriptionDescription )
+    {
+        return $this->post("reward", [ 'changer_id' => $changerId,
+            'project_id' => $projectId,
+            'name' => $name,
+            'need_delivery' => $needDelivery,
+            'price' => $price,
+            'quantity' => $quantity,
+            'has_offline' => $hasOffline,
+            'description' => $description,
+            'subscription_name' => $subscriptionName,
+            'subscription_price' => $subscriptionPrice,
+            'subscription_description' => $subscriptionDescription ]);
+    }
+
     public function updateReward( $rewardId,
                                   $changerId,
                                   $name,
@@ -115,6 +141,30 @@ class PublyContentService extends BaseApiService
                                                   'quantity' => $quantity,
                                                   'has_offline' => $hasOffline,
                                                   'description' => $description ]);
+    }
+
+    public function updateReward3( $rewardId,
+                                   $changerId,
+                                   $name,
+                                   $needDelivery,
+                                   $price,
+                                   $quantity,
+                                   $hasOffline,
+                                   $description,
+                                   $subscriptionName,
+                                   $subscriptionPrice,
+                                   $subscriptionDescription )
+    {
+        return $this->put("reward/{$rewardId}", [ 'changer_id' => $changerId,
+            'name' => $name,
+            'need_delivery' => $needDelivery,
+            'price' => $price,
+            'quantity' => $quantity,
+            'has_offline' => $hasOffline,
+            'description' => $description,
+            'subscription_name' => $subscriptionName,
+            'subscription_price' => $subscriptionPrice,
+            'subscription_description' => $subscriptionDescription ]);
     }
 
     public function getReward($rewardId)
