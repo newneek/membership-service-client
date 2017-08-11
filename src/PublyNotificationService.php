@@ -142,4 +142,9 @@ class PublyNotificationService extends BaseApiService
               'new_status' => $newStatus,
               'with_payment' => $withPayment ]);
     }
+
+    public function notifyComingSubscriptionExpiration()
+    {
+        return $this->post("/event/coming_subscription_expiration", []);
+    }
 }
