@@ -265,6 +265,60 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
+    public function order3(
+        $changerId,
+        $userId,
+        $contentId,
+        $rewardId,
+        $price,
+        $usingSubscriptionReward,
+        $userName,
+        $userEmail,
+        $userPhone,
+        $deliveryName = null,
+        $deliveryPhone = null,
+        $deliveryZipcode = null,
+        $deliveryAddress = null,
+        $isPreorder = null)
+    {
+        $result = [ 'success' => false ];
+        try {
+            $inputs = [ 'changer_id' => $changerId,
+                        'content_id' => $contentId,
+                        'reward_id' => $rewardId,
+                        'user_id' => $userId,
+                        'price' => $price,
+                        'is_subscription' => $usingSubscriptionReward,
+                        'user_name' => $userName,
+                        'user_email' => $userEmail,
+                        'user_phone' => $userPhone ];
+            if ($deliveryName || $deliveryPhone || $deliveryZipcode || $deliveryAddress) {
+                $inputs = array_merge($inputs, [ 'delivery_name' => $deliveryName,
+                    'delivery_phone' => $deliveryPhone,
+                    'delivery_zipcode' => $deliveryZipcode,
+                    'delivery_address' => $deliveryAddress,
+                ]);
+            }
+
+            if (is_null($isPreorder) == false) {
+                $inputs = array_merge($inputs, [ 'is_preorder' => $isPreorder ]);
+            }
+
+            $resultOrder = $this->post('order', $inputs);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $result['success'] = true;
+        $result['item'] = $resultOrder['success']['data'];
+
+        return $result;
+    }
+
     /*
      * Helpers
      */
@@ -485,6 +539,74 @@ class PublyPaymentService extends BaseApiService
 
         $payment = $resultPayment['item'];
         //
+
+        $result['success'] = true;
+        $result['order'] = $order;
+        return $result;
+    }
+
+    public function orderAndReservePayment3(
+        $changerId,
+        $userId,
+        $creditCardId,
+        $contentId,
+        $rewardId,
+        $price,
+        $usingSubscriptionReward,
+        $userName,
+        $userEmail,
+        $userPhone,
+        $deliveryName = null,
+        $deliveryPhone = null,
+        $deliveryZipcode = null,
+        $deliveryAddress = null,
+        $isPreorder = null)
+    {
+        $result = [ 'success' => false ];
+
+        // order
+        $resultOrder = $this->order3(
+            $changerId,
+            $userId,
+            $contentId,
+            $rewardId,
+            $price,
+            $usingSubscriptionReward,
+            $userName,
+            $userEmail,
+            $userPhone,
+            $deliveryName,
+            $deliveryPhone,
+            $deliveryZipcode,
+            $deliveryAddress,
+            $isPreorder);
+
+        if (!$resultOrder['success']) {
+            $result['success'] = false;
+            $result['from'] = 'order';
+            $result['error_code'] = $resultOrder['error_code'];
+            $result['message'] = $resultOrder['message'];
+            return $result;
+        }
+
+        $order = $resultOrder['item'];
+        // 정상적으로 주문 되었음.
+
+        // reserve payment
+        $resultPayment = $this->reservePayment2(
+            $changerId,
+            $userId,
+            $order['id'],
+            static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+            $creditCardId);
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
 
         $result['success'] = true;
         $result['order'] = $order;
@@ -744,6 +866,103 @@ class PublyPaymentService extends BaseApiService
                                 $order['id'],
                                 static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
                                 $creditCard['id']);
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $payment = $resultPayment['item'];
+        //
+
+        $result['success'] = true;
+        $result['order'] = $order;
+        $result['creditCard'] = $creditCard;
+        return $result;
+    }
+
+    public function addCreditCardAndOrderAndReservePayment3(
+        $changerId,
+        $userId,
+        $creditCardNumber,
+        $expireYear,
+        $expireMonth,
+        $id,
+        $password,
+        $contentId,
+        $rewardId,
+        $price,
+        $usingSubscriptionReward,
+        $userName,
+        $userEmail,
+        $userPhone,
+        $deliveryName = null,
+        $deliveryPhone = null,
+        $deliveryZipcode = null,
+        $deliveryAddress = null,
+        $isPreorder = null)
+    {
+        $result = [ 'success' => false ];
+
+        // add credit card
+        $resultCreditCard = $this->addCreditCard2(
+            $changerId,
+            $userId,
+            $creditCardNumber,
+            $expireYear,
+            $expireMonth,
+            $id,
+            $password);
+
+        if (!$resultCreditCard['success']) {
+            $result['success'] = false;
+            $result['from'] = 'credit_card';
+            $result['error_code'] = $resultCreditCard['error_code'];
+            $result['message'] = $resultCreditCard['message'];
+            return $result;
+        }
+
+        $creditCard = $resultCreditCard['item'];
+        // 정상적으로 카드 등록 되었음.
+
+        // order
+        $resultOrder = $this->order3(
+            $changerId,
+            $userId,
+            $contentId,
+            $rewardId,
+            $price,
+            $usingSubscriptionReward,
+            $userName,
+            $userEmail,
+            $userPhone,
+            $deliveryName,
+            $deliveryPhone,
+            $deliveryZipcode,
+            $deliveryAddress,
+            $isPreorder);
+
+        if (!$resultOrder['success']) {
+            $result['success'] = false;
+            $result['from'] = 'order';
+            $result['error_code'] = $resultOrder['error_code'];
+            $result['message'] = $resultOrder['message'];
+            return $result;
+        }
+
+        $order = $resultOrder['item'];
+        // 정상적으로 주문 되었음.
+
+        // reserve payment
+        $resultPayment = $this->reservePayment2(
+            $changerId,
+            $userId,
+            $order['id'],
+            static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+            $creditCard['id']);
 
         if (!$resultPayment['success']) {
             $result['success'] = false;
