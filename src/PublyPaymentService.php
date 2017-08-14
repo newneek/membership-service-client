@@ -1907,6 +1907,12 @@ class PublyPaymentService extends BaseApiService
         return $this->get("subscription/user/{$userId}");
     }
 
+    public function getSubscriptionsByRenewDays($renewDays, $filterArray = [])
+    {
+        $filterArray['renew_day_in'] = implode(',', $renewDays);
+        return $this->get("subscription/renew_days/", $filterArray);
+    }
+
     public function cancelSubscription($changerId, $subscriptionId, $force = false)
     {
         return $this->put("/subscription/{$subscriptionId}",
