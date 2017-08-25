@@ -82,4 +82,11 @@ class PublySettlementService extends BaseApiService
             'settlement_year' => $settlementYear,
             'settlement_month' => $settlementMonth ]);
     }
+
+    public function finishSettlementAuthorResult($changerId,
+                                                 $settlementAuthorResultId)
+    {
+        return $this->post("settlement_author_result/{$settlementAuthorResultId}/finish",
+            ['changer_id' => $changerId]);
+    }
 }
