@@ -56,10 +56,10 @@ class PublySettlementService extends BaseApiService
         return $this->get("settlement_result", $filterArray);
     }
 
-    public function getSettlementAuthorResults($settlementYear, $settlementMonth, $filterArray = [])
+    public function getSettlementAuthorResults($page = 1,
+                                               $limit = 10,
+                                               $filterArray = [])
     {
-        $filterArray['settlement_year'] = $settlementYear;
-        $filterArray['settlement_month'] = $settlementMonth;
         return $this->get("settlement_author_result", $filterArray);
     }
 
