@@ -73,4 +73,13 @@ class PublySettlementService extends BaseApiService
         $filterArray['author_id'] = $authorId;
         return $this->get("settlement_detail", $filterArray);
     }
+
+    public function calculate($changerId,
+                              $settlementYear,
+                              $settlementMonth)
+    {
+        return $this->post("settlement_result/calculate", ['changer_id' => $changerId,
+            'settlement_year' => $settlementYear,
+            'settlement_month' => $settlementMonth ]);
+    }
 }
