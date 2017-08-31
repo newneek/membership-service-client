@@ -23,7 +23,8 @@ class PublyPaymentService extends BaseApiService
     const ORDER_STATUS_PAYMENT_FAILED = 7;
     const ORDER_STATUS_REFUND_REQUESTED = 8;
     const ORDER_STATUS_REFUND_COMPLETED = 9; // requested 단계를 무조건 거치고 이동해야 함
-    const ORDER_STATUS_MAX = 10;
+    const ORDER_STATUS_PROJECT_DROP = 10;
+    const ORDER_STATUS_MAX = 11;
 
     const PAYMENT_STATUS_WAITING = 1;
     const PAYMENT_STATUS_COMPLETED = 2;
@@ -52,7 +53,8 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::ORDER_STATUS_PAYMENT_IN_PROGRESS => "결제중",
         PublyPaymentService::ORDER_STATUS_PAYMENT_FAILED => "결제실패",
         PublyPaymentService::ORDER_STATUS_REFUND_REQUESTED => "환불 신청",
-        PublyPaymentService::ORDER_STATUS_REFUND_COMPLETED => "환불 완료"
+        PublyPaymentService::ORDER_STATUS_REFUND_COMPLETED => "환불 완료",
+        PublyPaymentService::ORDER_STATUS_PROJECT_DROP => "프로젝트 중단"
     ];
 
     const STRING_PAYMENT_STATUS = [
@@ -110,6 +112,13 @@ class PublyPaymentService extends BaseApiService
         return $this->put("order/content/{$contentId}",
                           [ 'changer_id' => $changerId,
                             'action' => 'fail' ]);
+    }
+
+    public function dropOrdersByProject($changerId, $projectId)
+    {
+        return $this->put("order/content/{$projectId}",
+            [ 'changer_id' => $changerId,
+                'action' => 'drop' ]);
     }
 
     public function getOrders($page, $limit, $filterArray = [])
