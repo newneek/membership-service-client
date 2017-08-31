@@ -3,6 +3,7 @@
 namespace Publy\ServiceClient\Libraries\Project;
 
 use Publy\ServiceClient\PublyContentService;
+use Publy\ServiceClient\Libraries\Events\ProjectWasDroped;
 
 class ProjectStateDrop implements ProjectState
 {
@@ -11,7 +12,8 @@ class ProjectStateDrop implements ProjectState
 
     public function onEnter($changerId, $project, $params)
     {
-    	
+        $event = new ProjectWasDroped($changerId, $project);
+        event($event);
     }
 
     public function canStatusEnter($project)
