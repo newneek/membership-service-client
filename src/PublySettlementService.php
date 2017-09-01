@@ -60,6 +60,8 @@ class PublySettlementService extends BaseApiService
                                                $limit = 10,
                                                $filterArray = [])
     {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
         return $this->get("settlement_author_result", $filterArray);
     }
 
