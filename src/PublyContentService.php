@@ -574,6 +574,7 @@ class PublyContentService extends BaseApiService
                                                                 'content' => $content]);
     }
 
+    // deprecated
     public function updateProjectSections($changerId, 
                                           $projectId, 
                                           $projectRecommnend, 
@@ -590,6 +591,7 @@ class PublyContentService extends BaseApiService
                                                             'project_reward_description' => $projectRewardDescription]);
     }
 
+    // deprecated
     public function updateProjectSections2($changerId,
                                            $projectId,
                                            $projectSummary,
@@ -609,6 +611,16 @@ class PublyContentService extends BaseApiService
               'project_detail' => $projectDetail,
               'project_table_of_contents' => $projectTableOfContents,
               'project_reward_description' => $projectRewardDescription
+            ]);
+    }
+
+    public function updateProjectRewardDescription($changerId,
+                                                   $projectId,
+                                                   $projectRewardDescription)
+    {
+        return $this->put("project/{$projectId}/sections",
+            [ 'changer_id' => $changerId,
+                'project_reward_description' => $projectRewardDescription
             ]);
     }
 
@@ -797,6 +809,24 @@ class PublyContentService extends BaseApiService
     {
         return $this->put("set/{$setId}/image", [ 'changer_id' => $changerId, 
                                                   'image_url' => $imageUrl ]);
+    }
+
+    public function updateSetSections($changerId,
+                                      $setId,
+                                      $summary,
+                                      $targetReader,
+                                      $contentDetail,
+                                      $tableOfContents,
+                                      $authorsDescription)
+    {
+        return $this->put("set/{$setId}",
+            [ 'changer_id' => $changerId,
+                'summary' => $summary,
+                'target_reader' => $targetReader,
+                'content_detail' => $contentDetail,
+                'table_of_contents' => $tableOfContents,
+                'authors_description' => $authorsDescription,
+            ]);
     }
 
     /*
