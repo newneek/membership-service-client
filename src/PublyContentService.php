@@ -801,7 +801,6 @@ class PublyContentService extends BaseApiService
 
     public function updateSetSections($changerId,
                                       $setId,
-                                      $summary,
                                       $targetReader,
                                       $contentDetail,
                                       $tableOfContents,
@@ -809,7 +808,6 @@ class PublyContentService extends BaseApiService
     {
         return $this->put("set/{$setId}",
             [ 'changer_id' => $changerId,
-                'summary' => $summary,
                 'target_reader' => $targetReader,
                 'content_detail' => $contentDetail,
                 'table_of_contents' => $tableOfContents,
