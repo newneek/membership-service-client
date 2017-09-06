@@ -799,6 +799,24 @@ class PublyContentService extends BaseApiService
                                                   'image_url' => $imageUrl ]);
     }
 
+    public function updateSetSections($changerId,
+                                      $setId,
+                                      $summary,
+                                      $targetReader,
+                                      $contentDetail,
+                                      $tableOfContents,
+                                      $authorsDescription)
+    {
+        return $this->put("set/{$setId}",
+            [ 'changer_id' => $changerId,
+                'summary' => $summary,
+                'target_reader' => $targetReader,
+                'content_detail' => $contentDetail,
+                'table_of_contents' => $tableOfContents,
+                'authors_description' => $authorsDescription,
+            ]);
+    }
+
     /*
      * SetReader Related Functions
      */
