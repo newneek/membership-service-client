@@ -20,8 +20,20 @@ class ResponseException extends \Exception
 
     public function __construct(RequestException $e)
     {
-        $response = $e->getResponse();
-        $message = $response->getBody()->getContents();
+        $message = '';
+        if ($e instanceof ClientException) {
+            $response = $e->getResponse();
+            $message .= $response->getBody()->getContents();
+        } elseif ($e instanceof ServerException) {
+            $response = $e->getResponse();
+            $message .= $response->getBody()->getContents();
+        } elseif (! $e->hasResponse()) {
+            $request = $e->getRequest();
+            //Unsuccessful response, log what we can
+            $message .= ' [url] ' . $request->getUri();
+            $message .= ' [http method] ' . $request->getMethod();
+            $message .= ' [body] ' . $request->getBody()->getContents();
+        }
 
         // $message = $e->getMessage();
         // if ($e instanceof ClientException) {
