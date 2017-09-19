@@ -30,9 +30,9 @@ class ResponseException extends \Exception
         } elseif (! $e->hasResponse()) {
             $request = $e->getRequest();
             //Unsuccessful response, log what we can
-            $message .= ' [url] ' . $request->getUri();
-            $message .= ' [http method] ' . $request->getMethod();
-            $message .= ' [body] ' . $request->getBody()->getContents();
+            // $message .= ' [url] ' . $request->getUri();
+            // $message .= ' [http method] ' . $request->getMethod();
+            $message .= $request->getBody()->getContents();
         }
 
         // $message = $e->getMessage();
