@@ -8,9 +8,19 @@ use Publy\ServiceClient\Api\ResponseException;
 class PublyAuthService extends BaseApiService {
 
     const GROUP_ADMIN = 1;
+    const GROUP_NORMAL = 2;
     const GROUP_MANAGER = 3;
     const GROUP_AUTHOR = 4;
     const GROUP_EDITOR = 5;
+    const GROUP_MAX = 6;
+
+    const STRING_GROUP = [
+        PublyAuthService::GROUP_ADMIN => "최고관리자",
+        PublyAuthService::GROUP_NORMAL => "일반회원",
+        PublyAuthService::GROUP_MANAGER => "관리자",
+        PublyAuthService::GROUP_AUTHOR => "저자",
+        PublyAuthService::GROUP_EDITOR => "에디터"
+    ];
 
     public function __construct($domain) {
         parent::__construct();
@@ -41,6 +51,14 @@ class PublyAuthService extends BaseApiService {
         return $this->get("user/by_ids", $filterArray);
     }
 
+    public function createUser($changerId, $name, $email, $password)
+    {
+        return $this->post("signup_by_admin", [ 'changer_id' => $changerId,
+                                            'name' => $name,
+                                            'email' => $email,
+                                            'password' => $password ]);
+    }
+
     public function updateUser($changerId, $userId, $name, $email, $phone)
     {
         return $this->put("user/{$userId}", [ 'changer_id' => $changerId,
@@ -65,6 +83,33 @@ class PublyAuthService extends BaseApiService {
         }
 
         return $this->put("user/{$userId}", array_merge([ 'changer_id' => $changerId], $inputs));
+    }
+
+    public function updateUser3($changerId, $userId, $name, $email, $phone, $groups)
+    {
+        $inputs = [];
+        if ($name !== null) {
+            $inputs['name'] = $name;
+        }
+
+        if ($email !== null) {
+            $inputs['email'] = $email;
+        }
+
+        if ($phone !== null) {
+            $inputs['phone'] = $phone;
+        }
+
+        if ($groups !== null) {
+            $inputs['groups'] = $groups;
+        }
+
+        return $this->put("user/{$userId}", array_merge([ 'changer_id' => $changerId], $inputs));
+    }
+
+    public function deleteUser($changerId, $userId)
+    {
+        return $this->post("user/{$userId}/delete", [ 'changer_id' => $changerId ]);
     }
 
     /*
