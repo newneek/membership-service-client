@@ -232,5 +232,14 @@ class PublyAuthService extends BaseApiService {
         return $this->post('reset_password', array('id' => $id,
                                                    'password_token' => $passwordToken,
                                                    'new_password' => $newPassword));
-    }   
+    }
+
+    public function createUserLoginHistory($userId, $ipAddress)
+    {
+        return $this->post('user_login_history',
+            [
+                'user_id' => $userId,
+                'ip_address' => $ipAddress]
+        );
+    }
 }
