@@ -107,6 +107,19 @@ class PublyAuthService extends BaseApiService {
         return $this->put("user/{$userId}", array_merge([ 'changer_id' => $changerId], $inputs));
     }
 
+    public function updateUser4($changerId, $userId, $name, $email, $phone, $groups, $linkUrls)
+    {
+        $inputs = ['changer_id' => $changerId,
+                   'name' => $name,
+                   'email' => $email,
+                   'phone' => $phone,
+                   'groups' => $groups,
+                   'link_urls' => $linkUrls
+        ];
+
+        return $this->put("user/{$userId}", $inputs);
+    }
+
     public function deleteUser($changerId, $userId)
     {
         return $this->post("user/{$userId}/delete", [ 'changer_id' => $changerId ]);
@@ -142,6 +155,12 @@ class PublyAuthService extends BaseApiService {
     {
     	return $this->post('update_remember_token', array('id'=> $id, 
     	 											      'token' => $token));
+    }
+
+    public function deleteUserRememberToken($id, $token)
+    {
+        return $this->post('delete_remember_token', array('id'=> $id,
+            'token' => $token));
     }
 
     public function retrieveByEmail($email)
