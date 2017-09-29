@@ -107,14 +107,22 @@ class PublyAuthService extends BaseApiService {
         return $this->put("user/{$userId}", array_merge([ 'changer_id' => $changerId], $inputs));
     }
 
-    public function updateUser4($changerId, $userId, $name, $email, $phone, $groups, $linkUrls)
+    public function updateUser4($changerId,
+                                $userId,
+                                $name,
+                                $email,
+                                $phone,
+                                $groups,
+                                $linkUrls,
+                                $imageUrl)
     {
         $inputs = ['changer_id' => $changerId,
                    'name' => $name,
                    'email' => $email,
                    'phone' => $phone,
                    'groups' => $groups,
-                   'link_urls' => $linkUrls
+                   'link_urls' => $linkUrls,
+                   'image_url' => $imageUrl
         ];
 
         return $this->put("user/{$userId}", $inputs);
