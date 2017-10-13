@@ -107,6 +107,31 @@ class PublyAuthService extends BaseApiService {
         return $this->put("user/{$userId}", array_merge([ 'changer_id' => $changerId], $inputs));
     }
 
+    public function updateUser4($changerId,
+                                $userId,
+                                $name,
+                                $email,
+                                $password,
+                                $passwordConfirm,
+                                $phone,
+                                $groups,
+                                $linkUrls,
+                                $imageUrl)
+    {
+        $inputs = ['changer_id' => $changerId,
+                   'name' => $name,
+                   'email' => $email,
+                   'password' => $password,
+                   'password_confirmation' => $passwordConfirm,
+                   'phone' => $phone,
+                   'groups' => $groups,
+                   'link_urls' => $linkUrls,
+                   'image_url' => $imageUrl
+        ];
+
+        return $this->put("user/{$userId}", $inputs);
+    }
+
     public function deleteUser($changerId, $userId)
     {
         return $this->post("user/{$userId}/delete", [ 'changer_id' => $changerId ]);
@@ -142,6 +167,12 @@ class PublyAuthService extends BaseApiService {
     {
     	return $this->post('update_remember_token', array('id'=> $id, 
     	 											      'token' => $token));
+    }
+
+    public function deleteUserRememberToken($id, $token)
+    {
+        return $this->post('delete_remember_token', array('id'=> $id,
+            'token' => $token));
     }
 
     public function retrieveByEmail($email)
@@ -232,5 +263,14 @@ class PublyAuthService extends BaseApiService {
         return $this->post('reset_password', array('id' => $id,
                                                    'password_token' => $passwordToken,
                                                    'new_password' => $newPassword));
-    }   
+    }
+
+    public function createUserLoginHistory($userId, $ipAddress)
+    {
+        return $this->post('user_login_history',
+            [
+                'user_id' => $userId,
+                'ip_address' => $ipAddress]
+        );
+    }
 }
