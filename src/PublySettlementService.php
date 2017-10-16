@@ -7,6 +7,8 @@ use Publy\ServiceClient\Api\ResponseException;
 
 class PublySettlementService extends BaseApiService
 {
+    const TAX_PAYER_TYPE_DIRECTION_AUTHOR_TO_COMPANY = 1;
+    const TAX_PAYER_TYPE_DIRECTION_COMPANY_TO_AUTHOR = 2;    
 
     public function __construct($domain)
     {
