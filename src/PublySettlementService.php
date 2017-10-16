@@ -89,4 +89,23 @@ class PublySettlementService extends BaseApiService
         return $this->post("settlement_author_result/{$settlementAuthorResultId}/finish",
             ['changer_id' => $changerId]);
     }
+
+    public function getTaxPayerTypes()
+    {
+        return $this->get("tax_payer_type");
+    }
+
+    public function addTaxPayerType($changerId, $name, $taxName, $ratePermille, $direction)
+    {
+        return $this->post("tax_payer_type", [  'name' => $name,
+                                                'tax_name' => $taxName,
+                                                'rate_permille' => $ratePermille,
+                                                'direction' => $direction ]);
+    }
+
+    public function deleteTaxPayerType($changerId, $taxPayerTypeId)
+    {
+        return $this->post("tax_payer_type/delete", [ 'changer_id' => $changerId,
+                                                      'tax_payer_type_id' => $taxPayerTypeId ]);
+    }
 }
