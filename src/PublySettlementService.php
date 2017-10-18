@@ -117,14 +117,7 @@ class PublySettlementService extends BaseApiService
         return $this->get("author_settlement_profile/{$authorId}");
     }
 
-    public function createAuthorSettlementProfile($changerId, $authorId, $taxPayerTypeId)
-    {
-        return $this->post("author_settlement_profile", [  'changer_id' => $changerId,
-                                                           'author_id' => $authorId,
-                                                           'tax_payer_type_id' => $taxPayerTypeId ]);
-    }
-
-    public function updateAuthorSettlementProfile($changerId, $authorId, $taxPayerTypeId)
+    public function updateOrCreateAuthorSettlementProfile($changerId, $authorId, $taxPayerTypeId)
     {
         return $this->put("author_settlement_profile/{$authorId}", [ 'changer_id' => $changerId,
                                                                      'tax_payer_type_id' => $taxPayerTypeId ]);
