@@ -1302,4 +1302,19 @@ class PublyContentService extends BaseApiService
     {
         return $this->get("package_reader/total", ['user_id' => $userId]);
     }
+
+    public function addSetLike($changerId, $userId, $setId)
+    {
+        return $this->post("set_like", [ 'changer_id' => $changerId,
+            'user_id' => $userId,
+            'set_id' => $setId ]);
+    }
+
+    public function removeSetLike($changerId, $userId, $setId)
+    {
+        return $this->post("set_like/delete", [ 'changer_id' => $changerId,
+            'user_id' => $userId,
+            'set_id' => $setId ]);
+    }
+
 }
