@@ -252,6 +252,12 @@ class PublyContentService extends BaseApiService
         return $this->get("content/set/{$setId}", $filterArray);
     }
 
+    public function getContentsBySetIds($setIds, $filterArray)
+    {
+        $filterArray['set_ids'] = implode(',', $setIds);
+        return $this->get("content/by_set_ids/", $filterArray);
+    }
+
     public function updateContent($contentId, $isPaid)
     {
         return $this->put("content/{$contentId}", [ 'is_paid' => $isPaid ]);
@@ -722,6 +728,13 @@ class PublyContentService extends BaseApiService
         $filterArray = [];
         $filterArray['content_ids'] = implode(',', $contentIds);
         return $this->get("user_content_progress/user/{$userId}/type/{$type}/by_content_ids", $filterArray);
+    }
+
+    public function getUserContentProgressesByUserAndTypeAndSetIds($userId, $type, $setIds)
+    {
+        $filterArray = [];
+        $filterArray['set_ids'] = implode(',', $setIds);
+        return $this->get("user_content_progress/user/{$userId}/type/{$type}/by_set_ids", $filterArray);
     }
 
     public function getUserContentProgressesByUser($userId, $page = 1, $limit = 10, $filterArray = [])
@@ -1317,4 +1330,9 @@ class PublyContentService extends BaseApiService
             'set_id' => $setId ]);
     }
 
+    public function getSetLikesByUser($userId, $filterArray = [])
+    {
+        $filterArray['user_id'] = $userId;
+        return $this->get("set_like", $filterArray);
+    }
 }
