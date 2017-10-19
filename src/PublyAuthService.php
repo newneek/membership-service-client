@@ -51,14 +51,6 @@ class PublyAuthService extends BaseApiService {
         return $this->get("user/by_ids", $filterArray);
     }
 
-    public function createUser($changerId, $name, $email, $password)
-    {
-        return $this->post("signup_by_admin", [ 'changer_id' => $changerId,
-                                            'name' => $name,
-                                            'email' => $email,
-                                            'password' => $password ]);
-    }
-
     public function updateUser($changerId, $userId, $name, $email, $phone)
     {
         return $this->put("user/{$userId}", [ 'changer_id' => $changerId,
@@ -196,10 +188,14 @@ class PublyAuthService extends BaseApiService {
     												     'password' => $password));
     }
 
-    public function signup($userData)
+    public function signup($changerId, $name, $email, $password, $subscribeToWeeklyLetter = 0)
     {
-        return $this->post('signup', $userData);
-    }
+        return $this->post("signup", [ 'changer_id' => $changerId,
+                                       'name' => $name,
+                                       'email' => $email,
+                                       'password' => $password,
+                                       'subscribe_to_weekly_letter' => $subscribeToWeeklyLetter]);
+    }    
 
     public function signupByFacebookToken($accessToken, $ipAddress)
     {
