@@ -119,6 +119,11 @@ class PublySettlementService extends BaseApiService
                                                       'tax_payer_type_id' => $taxPayerTypeId ]);
     }
 
+    public function getAuthorSettlementProfiles()
+    {
+        return $this->get("author_settlement_profile");
+    }
+
     public function getAuthorSettlementProfile($authorId)
     {
         return $this->get("author_settlement_profile/{$authorId}");
