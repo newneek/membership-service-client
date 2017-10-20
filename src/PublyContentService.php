@@ -1339,4 +1339,10 @@ class PublyContentService extends BaseApiService
         $filterArray['user_id'] = $userId;
         return $this->get("set_like", $filterArray);
     }
+
+    public function getSetLikesBySetIds($setIds, $filterArray = [])
+    {
+        $filterArray['set_ids'] = implode(',', $setIds);
+        return $this->get("set_like/by_set_ids", $filterArray);
+    }
 }
