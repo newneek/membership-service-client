@@ -67,6 +67,11 @@ class PublySettlementService extends BaseApiService
         return $this->get("settlement_author_result", $filterArray);
     }
 
+    public function getSettlementAuthorResultsTotalPriceGroupByAuthor($filterArray = [])
+    {
+        return $this->get("settlement_author_result/total_price_group_by_author", $filterArray);
+    }
+
     public function getSettlementAuthorResult($settlementYear,
                                               $settlementMonth,
                                               $authorId)
