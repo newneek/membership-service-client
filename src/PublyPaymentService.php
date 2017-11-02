@@ -2068,9 +2068,10 @@ class PublyPaymentService extends BaseApiService
         return $this->get("coupon_use_history/code/{$code}/total", $filterArray);
     }
 
-    public function registerCouponByCode($code, $userId)
+    public function registerCouponByCode($changerId, $code, $userId)
     {
         $inputs = [
+            'changer_id' => $changerId,
             'user_id' => $userId
         ];
 
