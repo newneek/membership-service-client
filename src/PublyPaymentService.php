@@ -2057,4 +2057,15 @@ class PublyPaymentService extends BaseApiService
         $result['success'] = true;
         return $result;
     }
+
+    public function getCouponByCode($code)
+    {
+        return $this->get("coupon/code/{$code}");
+    }
+
+    public function registerCoupon($code, $userId)
+    {
+        return $this->get("coupon/{$code}");
+    }
+
 }

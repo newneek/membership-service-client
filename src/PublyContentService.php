@@ -14,6 +14,7 @@ class PublyContentService extends BaseApiService
 
     const PACKAGE_READER_SOURCE_TYPE_ADMIN = 1;
     const PACKAGE_READER_SOURCE_TYPE_SUBSCRIPTION = 2;
+    const PACKAGE_READER_SOURCE_TYPE_COUPON = 3;
 
     const HOME_DISPLAY_TYPE_PROJECT = 1;
 
@@ -1321,6 +1322,31 @@ class PublyContentService extends BaseApiService
                 'note' => $note,
                 'settlement_year' => $settlementYear,
                 'settlement_month' => $settlementMonth]);
+        } catch (\Exception $e) {
+            $result['success'] = false;
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+    }
+
+    public function updateOrCreatePackageReader2($changerId,
+                                                $userId,
+                                                $sourceType,
+                                                $adminId,
+                                                $subscriptionId,
+                                                $couponId,
+                                                $note)
+    {
+        try {
+            return $this->put("package_reader/{$userId}", [  'changer_id' => $changerId,
+                'source_type' => $sourceType,
+                'admin_id' => $adminId,
+                'subscription_id' => $subscriptionId,
+                'coupon_id' => $couponId,
+                'note' => $note
+            ]);
         } catch (\Exception $e) {
             $result['success'] = false;
             $result['error_code'] = $e->getCode();
