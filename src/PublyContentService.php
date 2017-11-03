@@ -1336,7 +1336,7 @@ class PublyContentService extends BaseApiService
                                                 $sourceType,
                                                 $adminId,
                                                 $subscriptionId,
-                                                $couponId,
+                                                $couponUseHistoryId,
                                                 $note)
     {
         try {
@@ -1344,7 +1344,7 @@ class PublyContentService extends BaseApiService
                 'source_type' => $sourceType,
                 'admin_id' => $adminId,
                 'subscription_id' => $subscriptionId,
-                'coupon_id' => $couponId,
+                'coupon_use_history_id' => $couponUseHistoryId,
                 'note' => $note
             ]);
         } catch (\Exception $e) {
