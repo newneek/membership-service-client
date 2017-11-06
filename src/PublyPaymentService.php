@@ -2078,4 +2078,9 @@ class PublyPaymentService extends BaseApiService
         return $this->post("/coupon_use_history/code/{$code}", $inputs);
     }
 
+    public function expireCouponUseHistories($changerId)
+    {
+        return $this->post("/coupon_use_history/expire_items", ['changer_id' => $changerId]);
+    }
+
 }
