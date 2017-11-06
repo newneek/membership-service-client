@@ -2057,4 +2057,30 @@ class PublyPaymentService extends BaseApiService
         $result['success'] = true;
         return $result;
     }
+
+    public function getCouponByCode($code, $filterArray = [])
+    {
+        return $this->get("coupon/code/{$code}", $filterArray);
+    }
+
+    public function getTotalCouponUseByCode($code, $filterArray = [])
+    {
+        return $this->get("coupon_use_history/code/{$code}/total", $filterArray);
+    }
+
+    public function registerCouponByCode($changerId, $code, $userId)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId
+        ];
+
+        return $this->post("/coupon_use_history/code/{$code}", $inputs);
+    }
+
+    public function expireCouponUseHistories($changerId)
+    {
+        return $this->post("/coupon_use_history/expire_items", ['changer_id' => $changerId]);
+    }
+
 }
