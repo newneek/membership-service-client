@@ -2077,10 +2077,27 @@ class PublyPaymentService extends BaseApiService
             ]);
     }
 
+    public function updateCoupon($changerId,
+                                 $couponId,
+                                 $description,
+                                 $quantity,
+                                 $durationMinutes,
+                                 $expireAt,
+                                 $settlementPrice)
+    {
+        return $this->put("coupon/{$couponId}",
+            [ 'changer_id' => $changerId,
+                'description' => $description,
+                'quantity' => $quantity,
+                'duration_minutes' => $durationMinutes,
+                'expire_at' => $expireAt,
+                'settlement_price' => $settlementPrice
+            ]);
+    }
+
     public function deleteCoupon($changerId, $couponId)
     {
-        return $this->post("coupon/delete", [ 'changer_id' => $changerId,
-            'coupon_id' => $couponId ]);
+        return $this->post("coupon/{$couponId}/delete", [ 'changer_id' => $changerId ]);
     }
 
     public function getCoupons($page, $limit, $filterArray = [])
@@ -2088,6 +2105,11 @@ class PublyPaymentService extends BaseApiService
         $filterArray['page'] = $page;
         $filterArray['limit'] = $limit;
         return $this->get("coupon/", $filterArray);
+    }
+
+    public function getCoupon($couponId, $filterArray = [])
+    {
+        return $this->get("coupon/{$couponId}", $filterArray);
     }
 
     public function getCouponByCode($code, $filterArray = [])
