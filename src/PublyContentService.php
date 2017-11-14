@@ -1412,4 +1412,12 @@ class PublyContentService extends BaseApiService
         return $this->post("coupon_exception_set", [ 'changer_id' => $changerId,
             'set_id' => $setId ]);
     }
+
+    public function deleteCouponExceptionSets($changerId, $setId)
+    {
+        return $this->post("coupon_exception_set/delete", [ 'changer_id' => $changerId,
+            'set_id' => $setId ]);
+    }
+
+
 }
