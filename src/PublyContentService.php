@@ -1407,13 +1407,13 @@ class PublyContentService extends BaseApiService
         return $this->get("coupon_exception_set", $filterArray);
     }
 
-    public function createCouponExceptionSets($changerId, $setId)
+    public function createCouponExceptionSet($changerId, $setId)
     {
         return $this->post("coupon_exception_set", [ 'changer_id' => $changerId,
             'set_id' => $setId ]);
     }
 
-    public function deleteCouponExceptionSets($changerId, $setId)
+    public function deleteCouponExceptionSet($changerId, $setId)
     {
         return $this->post("coupon_exception_set/delete", [ 'changer_id' => $changerId,
             'set_id' => $setId ]);
