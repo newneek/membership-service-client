@@ -2058,6 +2058,13 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
+    public function getCoupons($page, $limit, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("coupon/", $filterArray);
+    }
+
     public function getCouponByCode($code, $filterArray = [])
     {
         return $this->get("coupon/code/{$code}", $filterArray);
@@ -2081,6 +2088,11 @@ class PublyPaymentService extends BaseApiService
     public function expireCouponUseHistories($changerId)
     {
         return $this->post("/coupon_use_history/expire_items", ['changer_id' => $changerId]);
+    }
+
+    public function getCouponUseHistoriesBySettlement($settlementYear, $settlementMonth, $filterArray = [])
+    {
+        return $this->get("/coupon_use_history/settlement_year/{$settlementYear}/settlement_month/{$settlementMonth}", $filterArray);
     }
 
 }
