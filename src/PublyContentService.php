@@ -1399,4 +1399,17 @@ class PublyContentService extends BaseApiService
         $filterArray['set_ids'] = implode(',', $setIds);
         return $this->get("set_like/by_set_ids", $filterArray);
     }
+
+    public function getCouponExceptionSets($page, $limit, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("coupon_exception_set", $filterArray);
+    }
+
+    public function createCouponExceptionSets($changerId, $setId)
+    {
+        return $this->post("coupon_exception_set", [ 'changer_id' => $changerId,
+            'set_id' => $setId ]);
+    }
 }
