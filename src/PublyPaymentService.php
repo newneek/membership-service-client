@@ -2058,11 +2058,58 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
+    public function createCoupon($changerId,
+                                 $code,
+                                 $description,
+                                 $quantity,
+                                 $durationMinutes,
+                                 $expireAt,
+                                 $settlementPrice)
+    {
+        return $this->post("coupon",
+            [ 'changer_id' => $changerId,
+                'code' => $code,
+                'description' => $description,
+                'quantity' => $quantity,
+                'duration_minutes' => $durationMinutes,
+                'expire_at' => $expireAt,
+                'settlement_price' => $settlementPrice
+            ]);
+    }
+
+    public function updateCoupon($changerId,
+                                 $couponId,
+                                 $description,
+                                 $quantity,
+                                 $durationMinutes,
+                                 $expireAt,
+                                 $settlementPrice)
+    {
+        return $this->put("coupon/{$couponId}",
+            [ 'changer_id' => $changerId,
+                'description' => $description,
+                'quantity' => $quantity,
+                'duration_minutes' => $durationMinutes,
+                'expire_at' => $expireAt,
+                'settlement_price' => $settlementPrice
+            ]);
+    }
+
+    public function deleteCoupon($changerId, $couponId)
+    {
+        return $this->post("coupon/{$couponId}/delete", [ 'changer_id' => $changerId ]);
+    }
+
     public function getCoupons($page, $limit, $filterArray = [])
     {
         $filterArray['page'] = $page;
         $filterArray['limit'] = $limit;
         return $this->get("coupon/", $filterArray);
+    }
+
+    public function getCoupon($couponId, $filterArray = [])
+    {
+        return $this->get("coupon/{$couponId}", $filterArray);
     }
 
     public function getCouponByCode($code, $filterArray = [])
