@@ -1407,6 +1407,18 @@ class PublyContentService extends BaseApiService
         return $this->get("coupon_exception_set", $filterArray);
     }
 
+    public function isCouponExceptionSet($setId)
+    {
+        $filterArray['set_id'] = $setId;
+        $result = $this->get("coupon_exception_set", $filterArray);
+
+        if (count($result['data']) > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function createCouponExceptionSet($changerId, $setId)
     {
         return $this->post("coupon_exception_set", [ 'changer_id' => $changerId,
