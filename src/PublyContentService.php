@@ -1400,10 +1400,8 @@ class PublyContentService extends BaseApiService
         return $this->get("set_like/by_set_ids", $filterArray);
     }
 
-    public function getCouponExceptionSets($page, $limit, $filterArray = [])
+    public function getCouponExceptionSets($filterArray = [])
     {
-        $filterArray['page'] = $page;
-        $filterArray['limit'] = $limit;
         return $this->get("coupon_exception_set", $filterArray);
     }
 
