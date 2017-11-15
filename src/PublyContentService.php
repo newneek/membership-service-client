@@ -1410,7 +1410,7 @@ class PublyContentService extends BaseApiService
         $filterArray['set_id'] = $setId;
         $result = $this->get("coupon_exception_set", $filterArray);
 
-        if (count($result['data']) > 0) {
+        if (count($result['success']['data']) > 0) {
             return true;
         }
 
