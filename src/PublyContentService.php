@@ -317,9 +317,27 @@ class PublyContentService extends BaseApiService
                                                         'order_in_set' => $orderInSet ]);
     }
 
+    public function updateContentSet2($changerId,
+                                      $contentId,
+                                      $setId,
+                                      $orderInSet)
+    {
+        return $this->put("content/{$contentId}/set",
+            [ 'changer_id' => $changerId,
+              'set_id' => $setId,
+              'order_in_set' => $orderInSet ]);
+    }
+
     public function updateContentProjectId($contentId, $projectId)
     {
         return $this->put("content/{$contentId}/project", [ 'project_id' => $projectId ]);
+    }
+
+    public function updateContentProjectId2($changerId, $contentId, $projectId)
+    {
+        return $this->put("content/{$contentId}/project",
+            [ 'changer_id' => $changerId,
+              'project_id' => $projectId ]);
     }
 
     public function updateContentsOrderInSet($setId, $contentIds)
