@@ -322,7 +322,7 @@ class PublyContentService extends BaseApiService
                                       $setId,
                                       $orderInSet)
     {
-        return $this->put("content/{$contentId}/set",
+        return $this->put("content/{$contentId}",
             [ 'changer_id' => $changerId,
               'set_id' => $setId,
               'order_in_set' => $orderInSet ]);
@@ -335,7 +335,7 @@ class PublyContentService extends BaseApiService
 
     public function updateContentProjectId2($changerId, $contentId, $projectId)
     {
-        return $this->put("content/{$contentId}/project",
+        return $this->put("content/{$contentId}",
             [ 'changer_id' => $changerId,
               'project_id' => $projectId ]);
     }
