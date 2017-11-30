@@ -15,10 +15,15 @@ class FacebookEmbeddedService extends BaseApiService
         $this->apiUrl = "$this->domain";
     }
 
-    public function getEmbeddedHtml($link) {
+    public function getEmbeddedHtml($link, $contentMaxWidht) {
 
+        // https://developers.facebook.com/docs/plugins/oembed-endpoints
         $result = $this->get('/plugins/post/oembed.json',
-            [ 'url' => $link ]
+            [
+                'url' => $link,
+                'omitscript' => true,
+                'maxwidth' => $contentMaxWidht
+            ]
         );
 
         return $result['html'];
@@ -36,10 +41,15 @@ class TwitterEmbeddedService extends BaseApiService
 
     }
 
-    public function getEmbeddedHtml($link) {
+    public function getEmbeddedHtml($link, $contentMaxWidht) {
 
+        // https://dev.twitter.com/web/embedded-tweets
+        // https://developer.twitter.com/en/docs/tweets/post-and-engage/api-reference/get-statuses-oembed
         $result = $this->get('/oembed',
-            [ 'url' => $link ]
+            [
+                'url' => $link,
+                'maxwidth' => $contentMaxWidht
+            ]
         );
 
         return $result['html'];
@@ -57,10 +67,14 @@ class InstagramEmbeddedService extends BaseApiService
         $this->apiUrl = "$this->domain";
     }
 
-    public function getEmbeddedHtml($link) {
+    public function getEmbeddedHtml($link, $contentMaxWidht) {
 
+        // https://www.instagram.com/developer/embedding/
         $result = $this->get('/oembed',
-            [ 'url' => $link ]
+            [
+                'url' => $link,
+                'maxwidth' => $contentMaxWidht
+            ]
         );
 
         return $result['html'];
@@ -80,14 +94,14 @@ class SocialEmbeddedService{
 
     }
 
-    public function getEmbeddedHtml($type, $link) {
+    public function getEmbeddedHtml($type, $link, $contentMaxWidht = 320) {
         switch ($type) {
             case PublyExtraService::SOCIAL_PROOF_TYPE_FACEBOOK:
-                return $this->facebookEmbeddedService->getEmbeddedHtml($link);
+                return $this->facebookEmbeddedService->getEmbeddedHtml($link, $contentMaxWidht);
             case PublyExtraService::SOCIAL_PROOF_TYPE_TWITTER:
-                return $this->twitterEmbeddedService->getEmbeddedHtml($link);
+                return $this->twitterEmbeddedService->getEmbeddedHtml($link, $contentMaxWidht);
             case PublyExtraService::SOCIAL_PROOF_TYPE_INSTAGRAM:
-                return $this->instagramEmbeddedService->getEmbeddedHtml($link);
+                return $this->instagramEmbeddedService->getEmbeddedHtml($link, $contentMaxWidht);
             default:
                 throw new \Exception('Unknown type');
         }
