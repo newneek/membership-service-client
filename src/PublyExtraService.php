@@ -60,7 +60,7 @@ class PublyExtraService extends BaseApiService
 
     public function deleteSocialProof($changerId, $socialProofId)
     {
-        return $this->post("social_proof/{$socialProofId}",
+        return $this->post("social_proof/{$socialProofId}/delete",
             [ 'changer_id' => $changerId ]
         );
     }
