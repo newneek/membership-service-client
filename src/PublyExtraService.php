@@ -20,11 +20,12 @@ class PublyExtraService extends BaseApiService
         $this->apiUrl = "$this->domain/";
     }
 
-    public function createSocialProof($changerId, $type, $link)
+    public function createSocialProof($changerId, $type, $order, $link)
     {
         $inputs = [
             'changer_id' => $changerId,
             'type' => $type,
+            'order' => $order,
             'link' => $link
         ];
 
@@ -59,7 +60,7 @@ class PublyExtraService extends BaseApiService
 
     public function deleteSocialProof($changerId, $socialProofId)
     {
-        return $this->post("social_proof/{$socialProofId}",
+        return $this->post("social_proof/{$socialProofId}/delete",
             [ 'changer_id' => $changerId ]
         );
     }
