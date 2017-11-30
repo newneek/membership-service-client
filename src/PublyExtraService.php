@@ -20,11 +20,12 @@ class PublyExtraService extends BaseApiService
         $this->apiUrl = "$this->domain/";
     }
 
-    public function createSocialProof($changerId, $type, $link)
+    public function createSocialProof($changerId, $type, $order, $link)
     {
         $inputs = [
             'changer_id' => $changerId,
             'type' => $type,
+            'order' => $order,
             'link' => $link
         ];
 
