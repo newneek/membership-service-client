@@ -2,6 +2,10 @@
 
 namespace Publy\ServiceClient\Api;
 
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Psr7\Request as Psr7Request;
+use GuzzleHttp\Psr7\Response as Psr7Response;
 use GuzzleHttp\Psr7\LazyOpenStream;
 use GuzzleHttp\Psr7\Request;
 
@@ -10,11 +14,60 @@ class BaseApiService {
     public $guzzle;
 
     protected $domain;
-    protected $apiUrl;    
+    protected $apiUrl;
 
-    public function __construct() 
+    protected $timeout;
+    protected $maxRetryCount;
+
+    public function __construct()
     {
-        $this->guzzle = new \GuzzleHttp\Client();        
+        // https://gist.github.com/gunnarlium/665fc1a2f6dd69dfba65
+        $stack = \GuzzleHttp\HandlerStack::create(new \GuzzleHttp\Handler\CurlHandler());
+        $stack->push(\GuzzleHttp\Middleware::retry($this->createRetryHandler()));
+        $this->guzzle = new \GuzzleHttp\Client([
+            'handler' => $stack,
+        ]);
+
+        $this->timeout = 30;
+        $this->maxRetryCount = 1;
+    }
+
+    function createRetryHandler()
+    {
+        return function (
+            $retries,
+            Psr7Request $request,
+            Psr7Response $response = null,
+            RequestException $exception = null
+        ) {
+
+            if ($retries >= $this->maxRetryCount) {
+                return false;
+            }
+
+            if (!($this->isServerError($response) || $this->isConnectError($exception))) {
+                return false;
+            }
+
+            return true;
+        };
+    }
+
+    /**
+     * @param Psr7Response $response
+     * @return bool
+     */
+    function isServerError(Psr7Response $response = null)
+    {
+        return $response && $response->getStatusCode() >= 500;
+    }
+    /**
+     * @param RequestException $exception
+     * @return bool
+     */
+    function isConnectError(RequestException $exception = null)
+    {
+        return $exception instanceof ConnectException;
     }
 
     /**
@@ -32,7 +85,10 @@ class BaseApiService {
         $response = Http::send(
             $this,
             $endpoint,
-            ['queryParams' => $queryParams]
+            [
+                'queryParams' => $queryParams,
+                'timeout' => $this->timeout
+            ]
         );
 
         return $response;
@@ -54,7 +110,8 @@ class BaseApiService {
             $endpoint,
             [
                 'postFields' => $postData,
-                'method'     => 'POST'
+                'method'     => 'POST',
+                'timeout' => $this->timeout
             ]
         );
 
@@ -75,7 +132,11 @@ class BaseApiService {
         $response = Http::send(
             $this,
             $endpoint,
-            ['postFields' => $putData, 'method' => 'PUT']
+            [
+                'postFields' => $putData,
+                'method' => 'PUT',
+                'timeout' => $this->timeout
+            ]
         );
 
         return $response;
@@ -94,7 +155,10 @@ class BaseApiService {
         $response = Http::send(
             $this,
             $endpoint,
-            ['method' => 'DELETE']
+            [
+                'method' => 'DELETE',
+                'timeout' => $this->timeout
+            ]
         );
 
         return $response;

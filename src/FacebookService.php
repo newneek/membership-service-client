@@ -11,6 +11,9 @@ class FacebookService extends BaseApiService {
 
         $this->domain = 'https://graph.facebook.com';
         $this->apiUrl = "$this->domain/";
+
+        $this->timeout = 1;
+        $this->maxRetryCount = 10;
     }
 
     public function getUserInfo($accessToken, $fields) {
