@@ -51,6 +51,10 @@ class Http {
 
         $requestOptions = [];
 
+        if (! empty($options['timeout'])) {
+            $requestOptions['timeout'] = $options['timeout'];
+        }
+
         if (! empty($options['multipart'])) {
             $request                     = $request->withoutHeader('Content-Type');
             $requestOptions['multipart'] = $options['multipart'];
