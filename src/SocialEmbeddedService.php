@@ -21,7 +21,6 @@ class FacebookEmbeddedService extends BaseApiService
         $result = $this->get('/plugins/post/oembed.json',
             [
                 'url' => $link,
-                'omitscript' => true,
                 'maxwidth' => $contentMaxWidht
             ]
         );
