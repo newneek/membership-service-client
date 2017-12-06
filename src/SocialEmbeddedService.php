@@ -48,6 +48,7 @@ class TwitterEmbeddedService extends BaseApiService
         $result = $this->get('/oembed',
             [
                 'url' => $link,
+                'omitscript' => true,
                 'maxwidth' => $contentMaxWidht
             ]
         );
@@ -73,6 +74,7 @@ class InstagramEmbeddedService extends BaseApiService
         $result = $this->get('/oembed',
             [
                 'url' => $link,
+                'omitscript' => true,
                 'maxwidth' => $contentMaxWidht
             ]
         );
