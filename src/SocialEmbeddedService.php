@@ -15,14 +15,14 @@ class FacebookEmbeddedService extends BaseApiService
         $this->apiUrl = "$this->domain";
     }
 
-    public function getEmbeddedHtml($link, $contentMaxWidht) {
+    public function getEmbeddedHtml($link, $contentMaxWidth) {
 
         // https://developers.facebook.com/docs/plugins/oembed-endpoints
         $result = $this->get('/plugins/post/oembed.json',
             [
                 'url' => $link,
                 'omitscript' => true,
-                'maxwidth' => $contentMaxWidht
+                'maxwidth' => $contentMaxWidth
             ]
         );
 
@@ -41,7 +41,7 @@ class TwitterEmbeddedService extends BaseApiService
 
     }
 
-    public function getEmbeddedHtml($link, $contentMaxWidht) {
+    public function getEmbeddedHtml($link, $contentMaxWidth) {
 
         // https://dev.twitter.com/web/embedded-tweets
         // https://developer.twitter.com/en/docs/tweets/post-and-engage/api-reference/get-statuses-oembed
@@ -49,7 +49,7 @@ class TwitterEmbeddedService extends BaseApiService
             [
                 'url' => $link,
                 'omitscript' => true,
-                'maxwidth' => $contentMaxWidht
+                'maxwidth' => $contentMaxWidth
             ]
         );
 
@@ -68,14 +68,14 @@ class InstagramEmbeddedService extends BaseApiService
         $this->apiUrl = "$this->domain";
     }
 
-    public function getEmbeddedHtml($link, $contentMaxWidht) {
+    public function getEmbeddedHtml($link, $contentMaxWidth) {
 
         // https://www.instagram.com/developer/embedding/
         $result = $this->get('/oembed',
             [
                 'url' => $link,
                 'omitscript' => true,
-                'maxwidth' => $contentMaxWidht
+                'maxwidth' => $contentMaxWidth
             ]
         );
 
@@ -96,14 +96,14 @@ class SocialEmbeddedService{
 
     }
 
-    public function getEmbeddedHtml($type, $link, $contentMaxWidht = 320) {
+    public function getEmbeddedHtml($type, $link, $contentMaxWidth = null) {
         switch ($type) {
             case PublyExtraService::SOCIAL_PROOF_TYPE_FACEBOOK:
-                return $this->facebookEmbeddedService->getEmbeddedHtml($link, $contentMaxWidht);
+                return $this->facebookEmbeddedService->getEmbeddedHtml($link, $contentMaxWidth);
             case PublyExtraService::SOCIAL_PROOF_TYPE_TWITTER:
-                return $this->twitterEmbeddedService->getEmbeddedHtml($link, $contentMaxWidht);
+                return $this->twitterEmbeddedService->getEmbeddedHtml($link, $contentMaxWidth);
             case PublyExtraService::SOCIAL_PROOF_TYPE_INSTAGRAM:
-                return $this->instagramEmbeddedService->getEmbeddedHtml($link, $contentMaxWidht);
+                return $this->instagramEmbeddedService->getEmbeddedHtml($link, $contentMaxWidth);
             default:
                 throw new \Exception('Unknown type');
         }
