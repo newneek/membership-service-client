@@ -2175,7 +2175,7 @@ class PublyPaymentService extends BaseApiService
             'changer_id' => $changerId,
             'set_id' => $setId,
             'title' => $title,
-            'condition' => $condition,
+            'order_condition' => $condition,
             'price' => $price,
             'quantity' => $quantity
         ];
@@ -2197,13 +2197,23 @@ class PublyPaymentService extends BaseApiService
         return $this->get("event/{$eventId}");
     }
 
-    public function updateEvent($changerId, $eventId, $type, $order, $link)
+    public function updateEvent(
+        $changerId,
+        $eventId,
+        $setId,
+        $title,
+        $condition,
+        $price,
+        $quantity
+    )
     {
         $inputs = [
             'changer_id' => $changerId,
-            'type' => $type,
-            'order' => $order,
-            'link' => $link
+            'set_id' => $setId,
+            'title' => $title,
+            'order_condition' => $condition,
+            'price' => $price,
+            'quantity' => $quantity
         ];
 
         return $this->post("event/{$eventId}", $inputs);
