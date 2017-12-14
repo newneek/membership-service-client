@@ -2166,6 +2166,7 @@ class PublyPaymentService extends BaseApiService
         $changerId,
         $setId,
         $title,
+        $description,
         $condition,
         $price,
         $quantity
@@ -2175,6 +2176,7 @@ class PublyPaymentService extends BaseApiService
             'changer_id' => $changerId,
             'set_id' => $setId,
             'title' => $title,
+            'description' => $description,
             'order_condition' => $condition,
             'price' => $price,
             'quantity' => $quantity
@@ -2202,6 +2204,7 @@ class PublyPaymentService extends BaseApiService
         $eventId,
         $setId,
         $title,
+        $description,
         $condition,
         $price,
         $quantity
@@ -2211,6 +2214,7 @@ class PublyPaymentService extends BaseApiService
             'changer_id' => $changerId,
             'set_id' => $setId,
             'title' => $title,
+            'description' => $description,
             'order_condition' => $condition,
             'price' => $price,
             'quantity' => $quantity
