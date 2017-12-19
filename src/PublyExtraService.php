@@ -64,4 +64,61 @@ class PublyExtraService extends BaseApiService
             [ 'changer_id' => $changerId ]
         );
     }
+
+
+    public function createMeeting($changerId,
+                                  $eventId,
+                                  $place,
+                                  $placeLink,
+                                  $startAt,
+                                  $finishAt)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'event_id' => $eventId,
+            'place' => $place,
+            'place_link' => $placeLink,
+            'start_at' => $startAt,
+            'finish_at' => $finishAt
+        ];
+
+        return $this->put("meeting", $inputs);
+    }
+
+    public function getMeetingsByEvent($eventId, $filterArray = [])
+    {
+        return $this->get("meeting/event/{$eventId}", $filterArray);
+    }
+
+    public function getMeeting($meetingId)
+    {
+        return $this->get("meeting/{$meetingId}");
+    }
+
+    public function updateMeeting($changerId,
+                                  $meetingId,
+                                  $eventId,
+                                  $place,
+                                  $placeLink,
+                                  $startAt,
+                                  $finishAt)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'event_id' => $eventId,
+            'place' => $place,
+            'place_link' => $placeLink,
+            'start_at' => $startAt,
+            'finish_at' => $finishAt
+        ];
+
+        return $this->post("meeting/{$meetingId}", $inputs);
+    }
+
+    public function deleteMeetingByEvent($changerId, $eventId)
+    {
+        return $this->post("meeting/delete/event/{$eventId}",
+            [ 'changer_id' => $changerId ]
+        );
+    }
 }
