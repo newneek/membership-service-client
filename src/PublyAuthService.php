@@ -231,10 +231,11 @@ class PublyAuthService extends BaseApiService {
                                                    'new_password' => $newPassword));
     }
 
-    public function createUserLoginHistory($userId, $ipAddress, $browser, $deviceId)
+    public function createUserLoginHistory($userId, $ipAddress, $os, $browser, $deviceId)
     {
         return $this->post('user_login_history', array( 'user_id' => $userId,
                                                         'ip_address' => $ipAddress,
+                                                        'os' => $os,
                                                         'browser' => $browser,
                                                         'device_id' => $deviceId ));
     }
