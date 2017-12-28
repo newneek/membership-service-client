@@ -115,6 +115,11 @@ class PublyNotificationService extends BaseApiService
         return $this->get("/sms/logs", $filterArray);
     }
 
+    public function getSmsLog($smsLogId)
+    {
+        return $this->get("/sms/log/{$smsLogId}");
+    }
+
     public function eventSetReviewCreated($setReview)
     {
         return $this->post("/event/set_review_created", [ 'set_review' => $setReview ]);
