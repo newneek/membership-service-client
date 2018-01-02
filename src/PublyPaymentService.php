@@ -14,35 +14,38 @@ class PublyPaymentService extends BaseApiService
     const PAYMENT_TYPE_IAMPORT = 90;
     const PAYMENT_TYPE_OLD_ADMIN = 91;
 
+    const PAYMENT_STATUS_WAITING = 1;
+    const PAYMENT_STATUS_COMPLETED = 2;
+    const PAYMENT_STATUS_FAILED = 3;
+    const PAYMENT_STATUS_IN_PROGRESS = 4;
+
     const ORDER_STATUS_CHECKEDOUT = 1; // no payment was assigned.
     const ORDER_STATUS_WAITING_PAYMENT = 2; // Reserved Payment. payment can be canceled, changed.
     const ORDER_STATUS_PAID = 3;
     const ORDER_STATUS_CANCELLED = 4;
     const ORDER_STATUS_PROJECT_FAILED = 5;
-    const ORDER_STATUS_PAYMENT_IN_PROGRESS = 6; // Right before to make payment from reserved status(user can't change or cancel payment) 
+    const ORDER_STATUS_PAYMENT_IN_PROGRESS = 6; // Right before to make payment from reserved status(user can't change or cancel payment)
     const ORDER_STATUS_PAYMENT_FAILED = 7;
     const ORDER_STATUS_REFUND_REQUESTED = 8;
     const ORDER_STATUS_REFUND_COMPLETED = 9; // requested 단계를 무조건 거치고 이동해야 함
     const ORDER_STATUS_PROJECT_DROP = 10;
     const ORDER_STATUS_MAX = 11;
 
-    const PAYMENT_STATUS_WAITING = 1;
-    const PAYMENT_STATUS_COMPLETED = 2;
-    const PAYMENT_STATUS_FAILED = 3;
-    const PAYMENT_STATUS_IN_PROGRESS = 4;
+    const STRING_PAYMENT_TYPE = [
+        PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD => "Nicepay 신용카드",
+        PublyPaymentService::PAYMENT_TYPE_ADMIN => "관리자 추가",
+        PublyPaymentService::PAYMENT_TYPE_BANK_TRANSFER => "계좌이체",
+        PublyPaymentService::PAYMENT_TYPE_PAYPAL => "PayPal",
+        PublyPaymentService::PAYMENT_TYPE_IAMPORT => "아임포트",
+        PublyPaymentService::PAYMENT_TYPE_OLD_ADMIN => "구 관리자 추가"
+    ];
 
-    const SUBSCRIPTION_STATUS_INIT = 1; 
-    const SUBSCRIPTION_STATUS_RENEWED = 2; // 결제 완료
-    const SUBSCRIPTION_STATUS_CANCEL_RESERVED = 3; // 결제 취소 예약
-    const SUBSCRIPTION_STATUS_FAILED = 4; // 결제 실패
-    const SUBSCRIPTION_STATUS_EXPIRED = 5; // 멤버십 기간 만료
-    const SUBSCRIPTION_STATUS_CANCEL_COMPLETED = 6; // 결제 취소 완료
-    const SUBSCRIPTION_STATUS_IN_PROGRESS = 7;
-    const SUBSCRIPTION_STATUS_MAX = 8;
-
-    const SUBSCRIPTION_RENEWAL_HISTORY_STATUS_RENEWED = 1;
-    const SUBSCRIPTION_RENEWAL_HISTORY_STATUS_REFUND_REQUESTED = 2;
-    const SUBSCRIPTION_RENEWAL_HISTORY_STATUS_REFUND_COMPLETED = 3;
+    const STRING_PAYMENT_STATUS = [
+        PublyPaymentService::PAYMENT_STATUS_WAITING => "결제대기",
+        PublyPaymentService::PAYMENT_STATUS_COMPLETED => "결제성공",
+        PublyPaymentService::PAYMENT_STATUS_FAILED => "결제실패",
+        PublyPaymentService::PAYMENT_STATUS_IN_PROGRESS => "결제중"
+    ];
 
     const STRING_ORDER_STATUS = [
         PublyPaymentService::ORDER_STATUS_CHECKEDOUT => "주문완료",
@@ -57,21 +60,20 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::ORDER_STATUS_PROJECT_DROP => "프로젝트 중단"
     ];
 
-    const STRING_PAYMENT_STATUS = [
-        PublyPaymentService::PAYMENT_STATUS_WAITING => "결제대기",
-        PublyPaymentService::PAYMENT_STATUS_COMPLETED => "결제성공",
-        PublyPaymentService::PAYMENT_STATUS_FAILED => "결제실패",
-        PublyPaymentService::PAYMENT_STATUS_IN_PROGRESS => "결제중"
-    ];
 
-    const STRING_PAYMENT_TYPE = [
-        PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD => "Nicepay 신용카드",
-        PublyPaymentService::PAYMENT_TYPE_ADMIN => "관리자 추가",
-        PublyPaymentService::PAYMENT_TYPE_BANK_TRANSFER => "계좌이체",
-        PublyPaymentService::PAYMENT_TYPE_PAYPAL => "PayPal",
-        PublyPaymentService::PAYMENT_TYPE_IAMPORT => "아임포트",
-        PublyPaymentService::PAYMENT_TYPE_OLD_ADMIN => "구 관리자 추가"
-    ];
+
+    const SUBSCRIPTION_STATUS_INIT = 1;
+    const SUBSCRIPTION_STATUS_RENEWED = 2; // 결제 완료
+    const SUBSCRIPTION_STATUS_CANCEL_RESERVED = 3; // 결제 취소 예약
+    const SUBSCRIPTION_STATUS_FAILED = 4; // 결제 실패
+    const SUBSCRIPTION_STATUS_EXPIRED = 5; // 멤버십 기간 만료
+    const SUBSCRIPTION_STATUS_CANCEL_COMPLETED = 6; // 결제 취소 완료
+    const SUBSCRIPTION_STATUS_IN_PROGRESS = 7;
+    const SUBSCRIPTION_STATUS_MAX = 8;
+
+    const SUBSCRIPTION_RENEWAL_HISTORY_STATUS_RENEWED = 1;
+    const SUBSCRIPTION_RENEWAL_HISTORY_STATUS_REFUND_REQUESTED = 2;
+    const SUBSCRIPTION_RENEWAL_HISTORY_STATUS_REFUND_COMPLETED = 3;
 
     const STRING_SUBSCRIPTION_TYPE = [
         PublyPaymentService::SUBSCRIPTION_STATUS_INIT => "초기상태",
@@ -88,6 +90,23 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::SUBSCRIPTION_RENEWAL_HISTORY_STATUS_REFUND_REQUESTED => "환불 신청",
         PublyPaymentService::SUBSCRIPTION_RENEWAL_HISTORY_STATUS_REFUND_COMPLETED => "환불 완료"
     ];
+
+
+
+    const EVENT_CONDITION_ALL = 1;
+    const EVENT_CONDITION_SUBSCRIPTION = 2;
+    const EVENT_CONDITION_ORDER = 3;
+    const EVENT_CONDITION_ORDER_AND_SUBSCRIPTION = 4;
+    const EVENT_CONDITION_MAX = 5;
+
+    const STRING_EVENT_CONDITION = [
+        PublyPaymentService::EVENT_CONDITION_ALL => "전부(조건없음)",
+        PublyPaymentService::EVENT_CONDITION_SUBSCRIPTION => "멤버십 가입자만",
+        PublyPaymentService::EVENT_CONDITION_ORDER => "프로젝트 구매자만",
+        PublyPaymentService::EVENT_CONDITION_ORDER_AND_SUBSCRIPTION => "프로젝트 구매자 혹은 멤버십 가입자"
+    ];
+
+
 
     public function __construct($domain)
     {
@@ -2142,4 +2161,68 @@ class PublyPaymentService extends BaseApiService
         return $this->get("/coupon_use_history/settlement_year/{$settlementYear}/settlement_month/{$settlementMonth}", $filterArray);
     }
 
+
+    public function createEvent(
+        $changerId,
+        $setId,
+        $meta,
+        $condition,
+        $price,
+        $quantity
+    )
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'set_id' => $setId,
+            'meta' => $meta,
+            'order_condition' => $condition,
+            'price' => $price,
+            'quantity' => $quantity
+        ];
+
+        return $this->put("event", $inputs);
+    }
+
+    public function getEvents($page = 1,
+                                    $limit = 10,
+                                    $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("event", $filterArray);
+    }
+
+    public function getEvent($eventId)
+    {
+        return $this->get("event/{$eventId}");
+    }
+
+    public function updateEvent(
+        $changerId,
+        $eventId,
+        $setId,
+        $meta,
+        $condition,
+        $price,
+        $quantity
+    )
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'set_id' => $setId,
+            'meta' => $meta,
+            'order_condition' => $condition,
+            'price' => $price,
+            'quantity' => $quantity
+        ];
+
+        return $this->post("event/{$eventId}", $inputs);
+    }
+
+    public function deleteEvent($changerId, $eventId)
+    {
+        return $this->post("event/{$eventId}/delete",
+            [ 'changer_id' => $changerId ]
+        );
+    }
 }

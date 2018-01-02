@@ -64,4 +64,113 @@ class PublyExtraService extends BaseApiService
             [ 'changer_id' => $changerId ]
         );
     }
+
+
+    public function createMeeting($changerId,
+                                  $eventId,
+                                  $place,
+                                  $placeLink,
+                                  $startAt,
+                                  $finishAt)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'event_id' => $eventId,
+            'place' => $place,
+            'place_link' => $placeLink,
+            'start_at' => $startAt,
+            'finish_at' => $finishAt
+        ];
+
+        return $this->put("meeting", $inputs);
+    }
+
+    public function getMeetingsByEvent($eventId, $filterArray = [])
+    {
+        return $this->get("meeting/event/{$eventId}", $filterArray);
+    }
+
+    public function getMeeting($meetingId)
+    {
+        return $this->get("meeting/{$meetingId}");
+    }
+
+    public function updateMeeting($changerId,
+                                  $meetingId,
+                                  $eventId,
+                                  $place,
+                                  $placeLink,
+                                  $startAt,
+                                  $finishAt)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'event_id' => $eventId,
+            'place' => $place,
+            'place_link' => $placeLink,
+            'start_at' => $startAt,
+            'finish_at' => $finishAt
+        ];
+
+        return $this->post("meeting/{$meetingId}", $inputs);
+    }
+
+    public function deleteMeetingByEvent($changerId, $eventId)
+    {
+        return $this->post("meeting/delete/event/{$eventId}",
+            [ 'changer_id' => $changerId ]
+        );
+    }
+
+
+    public function createSetEventDisplay($changerId,
+                                          $setId,
+                                          $order)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'set_id' => $setId,
+            'order' => $order
+        ];
+
+        return $this->put("set_event_display", $inputs);
+    }
+
+    public function getSetEventDisplays($filterArray = [])
+    {
+        return $this->get("set_event_display/", $filterArray);
+    }
+
+    public function getSetEventDisplay($setEventDisplayId)
+    {
+        return $this->get("set_event_display/{$setEventDisplayId}");
+    }
+
+    public function updateSetEventDisplay($changerId,
+                                          $setEventDisplayId,
+                                          $setId,
+                                          $order)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'set_id' => $setId,
+            'order' => $order
+        ];
+
+        return $this->post("set_event_display/{$setEventDisplayId}", $inputs);
+    }
+
+    public function updateSetEventDisplayOrder($changerId, $setEventDisplayIds)
+    {
+        return $this->post("set_event_display/order",
+            [ 'changer_id' => $changerId,
+                'ids' => implode(',', $setEventDisplayIds) ]);
+    }
+
+    public function deleteSetEventDisplay($changerId, $setEventDisplayId)
+    {
+        return $this->post("set_event_display/{$setEventDisplayId}/delete/",
+            [ 'changer_id' => $changerId ]
+        );
+    }
 }
