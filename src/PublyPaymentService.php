@@ -2165,8 +2165,7 @@ class PublyPaymentService extends BaseApiService
     public function createEvent(
         $changerId,
         $setId,
-        $title,
-        $description,
+        $meta,
         $condition,
         $price,
         $quantity
@@ -2175,8 +2174,7 @@ class PublyPaymentService extends BaseApiService
         $inputs = [
             'changer_id' => $changerId,
             'set_id' => $setId,
-            'title' => $title,
-            'description' => $description,
+            'meta' => $meta,
             'order_condition' => $condition,
             'price' => $price,
             'quantity' => $quantity
@@ -2203,8 +2201,7 @@ class PublyPaymentService extends BaseApiService
         $changerId,
         $eventId,
         $setId,
-        $title,
-        $description,
+        $meta,
         $condition,
         $price,
         $quantity
@@ -2213,8 +2210,7 @@ class PublyPaymentService extends BaseApiService
         $inputs = [
             'changer_id' => $changerId,
             'set_id' => $setId,
-            'title' => $title,
-            'description' => $description,
+            'meta' => $meta,
             'order_condition' => $condition,
             'price' => $price,
             'quantity' => $quantity
