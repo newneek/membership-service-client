@@ -28,8 +28,8 @@ class BaseApiService {
             'handler' => $stack,
         ]);
 
-        $this->timeout = 30;
-        $this->maxRetryCount = 1;
+        $this->timeout = 3000;
+        $this->maxRetryCount = 0;
     }
 
     function createRetryHandler()
