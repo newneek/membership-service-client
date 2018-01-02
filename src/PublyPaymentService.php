@@ -2192,6 +2192,12 @@ class PublyPaymentService extends BaseApiService
         return $this->get("event", $filterArray);
     }
 
+    public function getEventsBySetId($setId, $filterArray = [])
+    {
+        return $this->get("event/set/{$setId}", $filterArray);
+    }
+
+
     public function getEvent($eventId)
     {
         return $this->get("event/{$eventId}");
