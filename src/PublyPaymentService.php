@@ -2320,7 +2320,9 @@ class PublyPaymentService extends BaseApiService
         $meta,
         $condition,
         $price,
-        $quantity
+        $quantity,
+        $isShow,
+        $isActive
     )
     {
         $inputs = [
@@ -2331,7 +2333,9 @@ class PublyPaymentService extends BaseApiService
             'meta' => $meta,
             'order_condition' => $condition,
             'price' => $price,
-            'quantity' => $quantity
+            'quantity' => $quantity,
+            'is_show' => $isShow,
+            'is_active' => $isActive
         ];
 
         return $this->put("event", $inputs);
@@ -2366,7 +2370,9 @@ class PublyPaymentService extends BaseApiService
         $meta,
         $condition,
         $price,
-        $quantity
+        $quantity,
+        $isShow,
+        $isActive
     )
     {
         $inputs = [
@@ -2377,7 +2383,9 @@ class PublyPaymentService extends BaseApiService
             'meta' => $meta,
             'order_condition' => $condition,
             'price' => $price,
-            'quantity' => $quantity
+            'quantity' => $quantity,
+            'is_show' => $isShow,
+            'is_active' => $isActive
         ];
 
         return $this->post("event/{$eventId}", $inputs);
