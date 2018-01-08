@@ -147,6 +147,11 @@ class PublyExtraService extends BaseApiService
         return $this->get("set_event_display/{$setEventDisplayId}");
     }
 
+    public function getSetEventDisplayBySetId($setId)
+    {
+        return $this->get("set_event_display/set/{$setId}");
+    }
+
     public function updateSetEventDisplay($changerId,
                                           $setEventDisplayId,
                                           $setId,
