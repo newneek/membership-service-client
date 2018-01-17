@@ -207,14 +207,15 @@ class PublyAuthService extends BaseApiService {
                                        'subscribe_to_weekly_letter' => $subscribeToWeeklyLetter]);
     }
 
-    public function signup2($changerId, $name, $email, $password, $margetingEmailAgree, $subscribeToWeeklyLetter = 0)
+    public function signup2($changerId, $name, $email, $password, $subscribeToWeeklyLetter, $margetingEmailAgree)
     {
         return $this->post("signup", [ 'changer_id' => $changerId,
             'name' => $name,
             'email' => $email,
             'password' => $password,
-            'marketing_email_agree' => $margetingEmailAgree,
-            'subscribe_to_weekly_letter' => $subscribeToWeeklyLetter]);
+            'subscribe_to_weekly_letter' => $subscribeToWeeklyLetter,
+            'marketing_email_agree' => $margetingEmailAgree
+        ]);
     }
 
     public function signupByFacebookToken($accessToken, $ipAddress)
