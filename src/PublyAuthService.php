@@ -124,7 +124,7 @@ class PublyAuthService extends BaseApiService {
         return $this->put("user/{$userId}", $inputs);
     }
 
-    public function updateUserMarketingAgree($changerId, $margetingEmailAgree)
+    public function updateUserMarketingAgree($changerId, $userId, $margetingEmailAgree)
     {
         $inputs = [
             'changer_id' => $changerId,
