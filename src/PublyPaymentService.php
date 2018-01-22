@@ -2150,6 +2150,11 @@ class PublyPaymentService extends BaseApiService
         return $this->get("plan");
     }
 
+    public function getDefaultPlan()
+    {
+        return $this->get("plan/default");
+    }
+
     public function getPlan($planId)
     {
         return $this->get("plan/{$planId}");
