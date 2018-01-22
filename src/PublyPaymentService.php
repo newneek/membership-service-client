@@ -2402,4 +2402,16 @@ class PublyPaymentService extends BaseApiService
             [ 'changer_id' => $changerId ]
         );
     }
+
+    public function addPlanToken($changerId, $userId, $planId, $expireDate)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'plan_id' => $planId,
+            'expire_date' => $expireDate
+        ];
+
+        return $this->put("plan_token", $inputs);
+    }
 }
