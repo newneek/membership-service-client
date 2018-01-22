@@ -164,4 +164,9 @@ class PublyNotificationService extends BaseApiService
         ];
         return $this->put("/reserved_alarm", $inputs);
     }
+
+    public function alarmReservedAlarms()
+    {
+        return $this->post("/reserved_alarm/alarm");
+    }
 }
