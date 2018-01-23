@@ -2424,4 +2424,9 @@ class PublyPaymentService extends BaseApiService
     {
         return $this->get("plan_token/token/{$token}");
     }
+
+    public function getPlanTokenByUser($userId)
+    {
+        return $this->get("plan_token/user/{$userId}");
+    }
 }
