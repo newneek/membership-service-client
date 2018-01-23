@@ -2429,4 +2429,16 @@ class PublyPaymentService extends BaseApiService
     {
         return $this->get("plan_token/user/{$userId}");
     }
+
+    public function expirePlanToken($changerId, $userId, $token, $expiredAt)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'token' => $token,
+            'expired_at' => $expiredAt
+        ];
+
+        return $this->post("plan_token/token", $inputs);
+    }
 }
