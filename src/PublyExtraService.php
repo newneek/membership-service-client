@@ -85,9 +85,10 @@ class PublyExtraService extends BaseApiService
         return $this->put("meeting", $inputs);
     }
 
-    public function getMeetingsByEvent($eventId, $filterArray = [])
+    public function getMeetingsByEventIds($eventIds, $filterArray = [])
     {
-        return $this->get("meeting/event/{$eventId}", $filterArray);
+        $filterArray['ids'] = implode(',', $eventIds);
+        return $this->get("meeting/event", $filterArray);
     }
 
     public function getMeeting($meetingId)
@@ -144,6 +145,11 @@ class PublyExtraService extends BaseApiService
     public function getSetEventDisplay($setEventDisplayId)
     {
         return $this->get("set_event_display/{$setEventDisplayId}");
+    }
+
+    public function getSetEventDisplayBySetId($setId)
+    {
+        return $this->get("set_event_display/set/{$setId}");
     }
 
     public function updateSetEventDisplay($changerId,

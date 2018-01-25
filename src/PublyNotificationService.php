@@ -68,6 +68,7 @@ class PublyNotificationService extends BaseApiService
                                           ]);
     }
 
+    // TODO : deprecated
     public function sendNotificationTemplateByUser($templateType, $userId, $variables)
     {
         return $this->post("/template/send/byUserId", [ 'template_type' => $templateType,
@@ -151,5 +152,21 @@ class PublyNotificationService extends BaseApiService
     public function notifyComingSubscriptionExpiration()
     {
         return $this->post("/event/coming_subscription_expiration", []);
+    }
+
+    public function reserveAlarm($changerId, $type, $userId, $alarmDate)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'type' => $type,
+            'user_id' => $userId,
+            'alarm_date' => $alarmDate
+        ];
+        return $this->put("/reserved_alarm", $inputs);
+    }
+
+    public function alarmReservedAlarms()
+    {
+        return $this->post("/reserved_alarm/alarm");
     }
 }

@@ -172,6 +172,11 @@ class PublyPaymentService extends BaseApiService
         return $this->get("order/reward/{$rewardId}/total", $filterArray);
     }
 
+    public function getTotalOrdersByEventId($eventId, $filterArray = [])
+    {
+        return $this->get("order/event/{$eventId}/total", $filterArray);
+    }
+
     public function getTotalOrdersByProject($projectId, $filterArray = [])
     {
         return $this->get("order/project/{$projectId}/total", $filterArray);
@@ -638,6 +643,151 @@ class PublyPaymentService extends BaseApiService
 
         $result['success'] = true;
         $result['order'] = $order;
+        return $result;
+    }
+
+    public function orderAndPayEvent(
+        $changerId,
+        $userId,
+        $creditCardId,
+        $price,
+        $eventId)
+    {
+        $result = [ 'success' => false ];
+
+        try {
+            $inputs = [ 'changer_id' => $changerId,
+                'event_id' => $eventId,
+                'user_id' => $userId,
+                'price' => $price
+            ];
+
+            $resultOrder = $this->post('order', $inputs);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['from'] = 'order';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+            return $result;
+        }
+
+        // order
+        $order = $resultOrder['success']['data'];
+        // 정상적으로 주문 되었음.
+
+        // payment
+        $resultPayment = $this->pay2(
+            $changerId,
+            $userId,
+            $order['id'],
+            static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+            'credit_card_id',
+            $creditCardId,
+            true,
+            '');
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $payment = $resultPayment['item'];
+
+        $orderResult = $this->get("order/".$order['id'], []);
+        $order = $orderResult['success']['data'];
+
+        $result['success'] = true;
+        $result['order'] = $order;
+        $result['payment'] = $payment;
+        return $result;
+    }
+
+    public function addCreditCardAndOrderAndPayEvent(
+        $changerId,
+        $userId,
+        $creditCardNumber,
+        $expireYear,
+        $expireMonth,
+        $id,
+        $password,
+        $price,
+        $eventId)
+    {
+        $result = [ 'success' => false ];
+
+        // add credit card
+        $resultCreditCard = $this->addCreditCard2(
+            $changerId,
+            $userId,
+            $creditCardNumber,
+            $expireYear,
+            $expireMonth,
+            $id,
+            $password);
+
+        if (!$resultCreditCard['success']) {
+            $result['success'] = false;
+            $result['from'] = 'credit_card';
+            $result['error_code'] = $resultCreditCard['error_code'];
+            $result['message'] = $resultCreditCard['message'];
+            return $result;
+        }
+
+        $creditCard = $resultCreditCard['item'];
+        $result['creditCard'] = $creditCard;
+        // 정상적으로 카드 등록 되었음.
+
+        try {
+            $inputs = [ 'changer_id' => $changerId,
+                'event_id' => $eventId,
+                'user_id' => $userId,
+                'price' => $price
+            ];
+
+            $resultOrder = $this->post('order', $inputs);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['from'] = 'order';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+            return $result;
+        }
+
+        // order
+        $order = $resultOrder['success']['data'];
+        // 정상적으로 주문 되었음.
+
+        // payment
+        $resultPayment = $this->pay2(
+            $changerId,
+            $userId,
+            $order['id'],
+            static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+            'credit_card_id',
+            $creditCard['id'],
+            true,
+            '');
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $payment = $resultPayment['item'];
+
+        $orderResult = $this->get("order/".$order['id'], []);
+        $order = $orderResult['success']['data'];
+
+        $result['success'] = true;
+        $result['order'] = $order;
+        $result['payment'] = $payment;
+        $result['creditCard'] = $creditCard;
         return $result;
     }
 
@@ -2000,6 +2150,11 @@ class PublyPaymentService extends BaseApiService
         return $this->get("plan");
     }
 
+    public function getDefaultPlan()
+    {
+        return $this->get("plan/default");
+    }
+
     public function getPlan($planId)
     {
         return $this->get("plan/{$planId}");
@@ -2165,19 +2320,27 @@ class PublyPaymentService extends BaseApiService
     public function createEvent(
         $changerId,
         $setId,
+        $title,
+        $description,
         $meta,
         $condition,
         $price,
-        $quantity
+        $quantity,
+        $isShow,
+        $isActive
     )
     {
         $inputs = [
             'changer_id' => $changerId,
             'set_id' => $setId,
+            'title' => $title,
+            'description' => $description,
             'meta' => $meta,
             'order_condition' => $condition,
             'price' => $price,
-            'quantity' => $quantity
+            'quantity' => $quantity,
+            'is_show' => $isShow,
+            'is_active' => $isActive
         ];
 
         return $this->put("event", $inputs);
@@ -2192,6 +2355,17 @@ class PublyPaymentService extends BaseApiService
         return $this->get("event", $filterArray);
     }
 
+    public function getEventsBySetId($setId, $filterArray = [])
+    {
+        return $this->get("event/set/{$setId}", $filterArray);
+    }
+
+    public function getEventsBySetIds($setIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $setIds);
+        return $this->get("event/set_ids", $filterArray);
+    }
+
     public function getEvent($eventId)
     {
         return $this->get("event/{$eventId}");
@@ -2201,19 +2375,27 @@ class PublyPaymentService extends BaseApiService
         $changerId,
         $eventId,
         $setId,
+        $title,
+        $description,
         $meta,
         $condition,
         $price,
-        $quantity
+        $quantity,
+        $isShow,
+        $isActive
     )
     {
         $inputs = [
             'changer_id' => $changerId,
             'set_id' => $setId,
+            'title' => $title,
+            'description' => $description,
             'meta' => $meta,
             'order_condition' => $condition,
             'price' => $price,
-            'quantity' => $quantity
+            'quantity' => $quantity,
+            'is_show' => $isShow,
+            'is_active' => $isActive
         ];
 
         return $this->post("event/{$eventId}", $inputs);
@@ -2224,5 +2406,39 @@ class PublyPaymentService extends BaseApiService
         return $this->post("event/{$eventId}/delete",
             [ 'changer_id' => $changerId ]
         );
+    }
+
+    public function addPlanToken($changerId, $userId, $planId, $expireDate)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'plan_id' => $planId,
+            'expire_date' => $expireDate
+        ];
+
+        return $this->put("plan_token", $inputs);
+    }
+
+    public function getPlanTokenByToken($token)
+    {
+        return $this->get("plan_token/token/{$token}");
+    }
+
+    public function getPlanTokenByUser($userId)
+    {
+        return $this->get("plan_token/user/{$userId}");
+    }
+
+    public function expirePlanToken($changerId, $userId, $token, $expiredAt)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'token' => $token,
+            'expired_at' => $expiredAt
+        ];
+
+        return $this->post("plan_token/token", $inputs);
     }
 }

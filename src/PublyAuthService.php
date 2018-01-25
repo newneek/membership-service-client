@@ -124,6 +124,16 @@ class PublyAuthService extends BaseApiService {
         return $this->put("user/{$userId}", $inputs);
     }
 
+    public function updateUserMarketingAgree($changerId, $userId, $margetingEmailAgree)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'marketing_email_agree' => $margetingEmailAgree
+        ];
+
+        return $this->put("user/{$userId}", $inputs);
+    }
+
     public function deleteUser($changerId, $userId)
     {
         return $this->post("user/{$userId}/delete", [ 'changer_id' => $changerId ]);
@@ -195,7 +205,18 @@ class PublyAuthService extends BaseApiService {
                                        'email' => $email,
                                        'password' => $password,
                                        'subscribe_to_weekly_letter' => $subscribeToWeeklyLetter]);
-    }    
+    }
+
+    public function signup2($changerId, $name, $email, $password, $subscribeToWeeklyLetter, $margetingEmailAgree)
+    {
+        return $this->post("signup", [ 'changer_id' => $changerId,
+            'name' => $name,
+            'email' => $email,
+            'password' => $password,
+            'subscribe_to_weekly_letter' => $subscribeToWeeklyLetter,
+            'marketing_email_agree' => $margetingEmailAgree
+        ]);
+    }
 
     public function signupByFacebookToken($accessToken, $ipAddress)
     {
