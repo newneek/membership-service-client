@@ -2311,11 +2311,15 @@ class PublyPaymentService extends BaseApiService
         return $this->post("/coupon_use_history/expire_items", ['changer_id' => $changerId]);
     }
 
+    public function getCouponUseHistory($couponUseHistoryId)
+    {
+        return $this->get("/coupon_use_history/{$couponUseHistoryId}");
+    }
+
     public function getCouponUseHistoriesBySettlement($settlementYear, $settlementMonth, $filterArray = [])
     {
         return $this->get("/coupon_use_history/settlement_year/{$settlementYear}/settlement_month/{$settlementMonth}", $filterArray);
     }
-
 
     public function createEvent(
         $changerId,
