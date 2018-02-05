@@ -2052,6 +2052,14 @@ class PublyPaymentService extends BaseApiService
                 'renew_day' => implode(',', $days)]);
     }
 
+    public function changeSubscriptionPlanId($changerId, $subscriptionId, $planId)
+    {
+        return $this->put("/subscription/{$subscriptionId}",
+            [ 'changer_id' => $changerId,
+                'action' => 'change_plan',
+                'plan_id' => $planId ]);
+    }
+
     public function expireSubscriptions($changerId, $days)
     {
         return $this->put("/subscription/expire_subscriptions",
