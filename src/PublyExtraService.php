@@ -179,4 +179,36 @@ class PublyExtraService extends BaseApiService
             [ 'changer_id' => $changerId ]
         );
     }
+
+    public function addSearchableObject($indexName, $objectId, $record)
+    {
+        $inputs = [
+            'index_name' => $indexName,
+            'object_id' => $objectId,
+            'record' => $record
+        ];
+
+        return $this->put("/searchable_object", $inputs);
+    }
+
+    public function updateSearchableObject($indexName, $objectId, $record)
+    {
+        $inputs = [
+            'index_name' => $indexName,
+            'object_id' => $objectId,
+            'record' => $record
+        ];
+
+        return $this->post("/searchable_object", $inputs);
+    }
+
+    public function deleteSearchableObject($indexName, $objectId)
+    {
+        $inputs = [
+            'index_name' => $indexName,
+            'object_id' => $objectId
+        ];
+
+        return $this->delete("/searchable_object", $inputs);
+    }
 }
