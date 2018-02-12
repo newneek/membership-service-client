@@ -209,6 +209,6 @@ class PublyExtraService extends BaseApiService
             'object_id' => $objectId
         ];
 
-        return $this->delete("/searchable_object", $inputs);
+        return $this->post("/searchable_object/delete", $inputs);
     }
 }
