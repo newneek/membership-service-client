@@ -169,4 +169,9 @@ class PublyNotificationService extends BaseApiService
     {
         return $this->post("/reserved_alarm/alarm");
     }
+
+    public function triggerNotificationTemplate()
+    {
+        return $this->post("/trigger/all");
+    }
 }
