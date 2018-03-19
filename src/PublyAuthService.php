@@ -192,6 +192,11 @@ class PublyAuthService extends BaseApiService {
         return $this->get('retrieve_by_facebook_token', array('access_token' => $accessToken));
     }
 
+    public function retrieveByCode($code)
+    {
+        return $this->get('retrieve_by_code', array('code'=> $code));
+    }
+
     public function overwriteUserByFacebookToken($accessToken)
     {
         return $this->post('overwrite_user_by_facebook_token', array('access_token' => $accessToken));
