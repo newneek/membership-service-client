@@ -106,7 +106,9 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::EVENT_CONDITION_ORDER_AND_SUBSCRIPTION => "프로젝트 구매자 혹은 멤버십 가입자"
     ];
 
-
+    const TRANSACTION_TYPE_USED_FOR_PAYMENT = 1;
+    const TRANSACTION_TYPE_ADJUSTED_BY_ADMIN = 2;
+    const TRANSACTION_TYPE_REWORDED_BY_REFERER = 3;
 
     public function __construct($domain)
     {
@@ -2452,5 +2454,86 @@ class PublyPaymentService extends BaseApiService
         ];
 
         return $this->post("plan_token/token", $inputs);
+    }
+
+    public function getPointHistoriesByUserId($userId, $page =1, $limit = 10, $filterArray)
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        $filterArray['user_id'] = $userId;
+        return $this->get("point_history/", $filterArray);
+    }
+
+    public function getPointHistoriesSumByUserId($userId)
+    {
+        return $this->get("point_history/{$userId}/sum");
+    }
+
+    public function getPointHistory($pointHistoryId)
+    {
+        return $this->get("point_history/{$pointHistoryId}");
+    }
+
+    public function createPointHistoryByAdmin(
+        $userId,
+        $delta,
+        $adminId,
+        $note
+    )
+    {
+        $input = [
+            'user_id' => $userId,
+            'delta' => $delta,
+            'transaction_type' => static::TRANSACTION_TYPE_ADJUSTED_BY_ADMIN,
+            'admin_id' => $adminId,
+            'note' => $note
+        ];
+
+        return $this->post("point_history", $input);
+    }
+
+    public function createPointHistoryByReferee(
+        $userId,
+        $delta,
+        $note,
+        $refereeId
+    )
+    {
+        $input = [
+            'user_id' => $userId,
+            'delta' => $delta,
+            'transaction_type' => static::TRANSACTION_TYPE_REWORDED_BY_REFERER,
+            'referee_id' => $refereeId,
+            'note' => $note
+        ];
+
+        return $this->post("point_history", $input);
+    }
+
+    public function createPointHistoryByPayment(
+        $userId,
+        $delta,
+        $note,
+        $paymentId = null
+    )
+    {
+        $input = [
+            'user_id' => $userId,
+            'delta' => $delta,
+            'transaction_type' => static::TRANSACTION_TYPE_USED_FOR_PAYMENT,
+            'payment_id' => $paymentId,
+            'note' => $note
+        ];
+
+        return $this->post("point_history", $input);
+    }
+
+    public function updatePointHistory($pointHistoryId, $note)
+    {
+        $input = [
+            'note' => $note
+        ];
+
+        return $this->put("point_history/{$pointHistoryId}", $input);
     }
 }
