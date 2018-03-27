@@ -40,61 +40,67 @@ class PublyNotificationService extends BaseApiService
 
     public function notifyByTemplate($templateType, $destEmail, $destName, $destPhone, $variables)
     {
-        return $this->post("/template/send", [ 'template_type' => $templateType,
-                                               'dest_email' => $destEmail, 
-                                               'dest_name' => $destName, 
-                                               'dest_phone' => $destPhone, 
-                                               'variables' => $variables, 
-                                               ]);
+        return $this->post("/template/send", [
+            'template_type' => $templateType,
+            'dest_email' => $destEmail,
+            'dest_name' => $destName,
+            'dest_phone' => $destPhone,
+            'variables' => $variables,
+        ]);
     }
 
     public function sendEmail($destEmails, $subject, $body, $isAuto, $sourceEmail = null)
     {
-        return $this->post("/email/send", [ 'dest_emails' => $destEmails, 
-                                            'subject' => $subject, 
-                                            'body' => $body, 
-                                            'is_auto' => $isAuto, 
-                                            'source_email' => $sourceEmail, 
-                                            ]);
+        return $this->post("/email/send", [
+            'dest_emails' => $destEmails,
+            'subject' => $subject,
+            'body' => $body,
+            'is_auto' => $isAuto,
+            'source_email' => $sourceEmail,
+        ]);
     }
 
     public function sendSMS($destPhones, $body, $sendTime, $isAuto, $sourcePhone = null)
     {
-        return $this->post("/sms/send", [ 'dest_phones' => $destPhones, 
-                                          'body' => $body, 
-                                          'send_time' => $sendTime, 
-                                          'is_auto' => $isAuto, 
-                                          'source_phone' => $sourcePhone, 
-                                          ]);
+        return $this->post("/sms/send", [
+            'dest_phones' => $destPhones,
+            'body' => $body,
+            'send_time' => $sendTime,
+            'is_auto' => $isAuto,
+            'source_phone' => $sourcePhone,
+        ]);
     }
 
     // TODO : deprecated
     public function sendNotificationTemplateByUser($templateType, $userId, $variables)
     {
-        return $this->post("/template/send/byUserId", [ 'template_type' => $templateType,
-                                                        'user_id' => $userId, 
-                                                        'variables' => $variables, 
-                                                        ]);
+        return $this->post("/template/send/byUserId", [
+            'template_type' => $templateType,
+            'user_id' => $userId,
+            'variables' => $variables,
+        ]);
     }
 
     public function sendEmailByUsers($userIds, $subject, $body, $isAuto, $sourceEmail = null)
     {
-        return $this->post("/email/send/byUserId", [ 'user_ids' => $userIds, 
-                                                     'subject' => $subject, 
-                                                     'body' => $body, 
-                                                     'is_auto' => $isAuto, 
-                                                     'source_email' => $sourceEmail, 
-                                                     ]);
+        return $this->post("/email/send/byUserId", [
+            'user_ids' => $userIds,
+            'subject' => $subject,
+            'body' => $body,
+            'is_auto' => $isAuto,
+            'source_email' => $sourceEmail,
+        ]);
     }
 
     public function sendSMSByUsers($userIds, $body, $sendTime, $isAuto, $sourcePhone = null)
     {
-        return $this->post("/sms/send/byUserId", [ 'user_ids' => $userIds, 
-                                                   'body' => $body, 
-                                                   'send_time' => $sendTime, 
-                                                   'is_auto' => $isAuto, 
-                                                   'source_phone' => $sourcePhone, 
-                                                   ]);
+        return $this->post("/sms/send/byUserId", [
+            'user_ids' => $userIds,
+            'body' => $body,
+            'send_time' => $sendTime,
+            'is_auto' => $isAuto,
+            'source_phone' => $sourcePhone,
+        ]);
     }
 
     public function getEmailLogs($page, $limit, $filterArray = [])
@@ -123,30 +129,42 @@ class PublyNotificationService extends BaseApiService
 
     public function eventSetReviewCreated($setReview)
     {
-        return $this->post("/event/set_review_created", [ 'set_review' => $setReview ]);
+        return $this->post("/event/set_review_created", ['set_review' => $setReview]);
     }
 
     public function eventSetReviewUpdated($setReview)
     {
-        return $this->post("/event/set_review_updated", [ 'set_review' => $setReview ]);
+        return $this->post("/event/set_review_updated", ['set_review' => $setReview]);
     }
 
     public function eventOrderStatusChanged($order, $oldStatus, $newStatus)
     {
-        return $this->post("/event/order_status_changed", [ 'order' => $order, 
-                                                            'old_status' => $oldStatus, 
-                                                            'new_status' => $newStatus ]);
+        return $this->post("/event/order_status_changed", [
+            'order' => $order,
+            'old_status' => $oldStatus,
+            'new_status' => $newStatus
+        ]);
     }
 
-    public function eventSubscriptionStatusChanged($subscription, $nextPayment, $creditCard, $oldStatus, $newStatus, $withPayment)
-    {
-        return $this->post("/event/subscription_status_changed", 
-            [ 'subscription' => $subscription,
-              'next_payment' => $nextPayment,
-              'credit_card' => $creditCard,
-              'old_status' => $oldStatus,
-              'new_status' => $newStatus,
-              'with_payment' => $withPayment ]);
+    public function eventSubscriptionStatusChanged(
+        $subscription,
+        $nextPayment,
+        $creditCard,
+        $oldStatus,
+        $newStatus,
+        $withPayment,
+        $usedPoints
+    ) {
+        return $this->post("/event/subscription_status_changed",
+            [
+                'subscription' => $subscription,
+                'next_payment' => $nextPayment,
+                'credit_card' => $creditCard,
+                'old_status' => $oldStatus,
+                'new_status' => $newStatus,
+                'with_payment' => $withPayment,
+                'used_points' => $usedPoints
+            ]);
     }
 
     public function notifyComingSubscriptionExpiration()
