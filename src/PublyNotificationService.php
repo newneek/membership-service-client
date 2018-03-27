@@ -152,6 +152,25 @@ class PublyNotificationService extends BaseApiService
         $creditCard,
         $oldStatus,
         $newStatus,
+        $withPayment
+    ) {
+        return $this->post("/event/subscription_status_changed",
+            [
+                'subscription' => $subscription,
+                'next_payment' => $nextPayment,
+                'credit_card' => $creditCard,
+                'old_status' => $oldStatus,
+                'new_status' => $newStatus,
+                'with_payment' => $withPayment
+            ]);
+    }
+
+    public function eventSubscriptionStatusChanged2(
+        $subscription,
+        $nextPayment,
+        $creditCard,
+        $oldStatus,
+        $newStatus,
         $withPayment,
         $usedPoints
     ) {
