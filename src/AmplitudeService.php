@@ -3,6 +3,7 @@
 namespace Publy\ServiceClient;
 
 use Publy\ServiceClient\Api\BaseApiService;
+use Publy\ServiceClient\Api\ResponseException;
 
 class AmplitudeService extends BaseApiService
 {
@@ -19,14 +20,26 @@ class AmplitudeService extends BaseApiService
 
     public function identify($userId, $userProperties)
     {
-        return $this->get("identify",
-            [
-                'api_key' => $this->apiKey,
-                'identification' => json_encode(
+        $retryCount = 3;
+        while ($retryCount > 0) {
+            try {
+                $result = $this->get("identify",
                     [
-                        'user_id' => $userId,
-                        'user_properties' => $userProperties
-                    ])
-            ]);
+                        'api_key' => $this->apiKey,
+                        'identification' => json_encode(
+                            [
+                                'user_id' => $userId,
+                                'user_properties' => $userProperties
+                            ])
+                    ]);
+                return $result;
+            } catch (ResponseException $e) {
+                // for any response exception, retry
+                $retryCount--;
+                if ($retryCount == 0) {
+                    throw $e;
+                }
+            }
+        }
     }
 }
