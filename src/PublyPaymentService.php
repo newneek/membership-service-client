@@ -2333,7 +2333,6 @@ class PublyPaymentService extends BaseApiService
 
     public function createEvent(
         $changerId,
-        $setId,
         $title,
         $description,
         $meta,
@@ -2347,7 +2346,6 @@ class PublyPaymentService extends BaseApiService
     {
         $inputs = [
             'changer_id' => $changerId,
-            'set_id' => $setId,
             'title' => $title,
             'description' => $description,
             'meta' => $meta,
@@ -2371,11 +2369,13 @@ class PublyPaymentService extends BaseApiService
         return $this->get("event", $filterArray);
     }
 
+    // deprecated
     public function getEventsBySetId($setId, $filterArray = [])
     {
         return $this->get("event/set/{$setId}", $filterArray);
     }
 
+    // deprecated 
     public function getEventsBySetIds($setIds, $filterArray = [])
     {
         $filterArray['ids'] = implode(',', $setIds);
