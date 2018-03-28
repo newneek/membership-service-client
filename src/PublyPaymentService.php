@@ -2401,7 +2401,6 @@ class PublyPaymentService extends BaseApiService
     public function updateEvent(
         $changerId,
         $eventId,
-        $setId,
         $title,
         $description,
         $meta,
@@ -2414,7 +2413,6 @@ class PublyPaymentService extends BaseApiService
     {
         $inputs = [
             'changer_id' => $changerId,
-            'set_id' => $setId,
             'title' => $title,
             'description' => $description,
             'meta' => $meta,
