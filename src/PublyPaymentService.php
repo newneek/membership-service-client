@@ -109,8 +109,8 @@ class PublyPaymentService extends BaseApiService
     const ERROR_MESSAGE_EVENT_CONDITION = [
         PublyPaymentService::EVENT_CONDITION_ALL => "",
         PublyPaymentService::EVENT_CONDITION_SUBSCRIPTION => "멤버십 이용자만 구매할 수 있습니다",
-        PublyPaymentService::EVENT_CONDITION_ORDER => "해당 콘텐츠를 예약 구매한 독자만 구매할 수 있습니다",
-        PublyPaymentService::EVENT_CONDITION_ORDER_AND_SUBSCRIPTION => "멤버십 이용자 또는 해당 콘텐츠를 예약 구매한 독자만 구매할 수 있습니다"
+        PublyPaymentService::EVENT_CONDITION_ORDER => "연관 콘텐츠를 예약 구매한 독자만 구매할 수 있습니다",
+        PublyPaymentService::EVENT_CONDITION_ORDER_AND_SUBSCRIPTION => "멤버십 이용자 또는 연관 콘텐츠를 예약 구매한 독자만 구매할 수 있습니다"
     ];
 
     const TRANSACTION_TYPE_USED_FOR_PAYMENT = 1;
