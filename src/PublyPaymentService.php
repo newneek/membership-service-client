@@ -2333,7 +2333,6 @@ class PublyPaymentService extends BaseApiService
 
     public function createEvent(
         $changerId,
-        $setId,
         $title,
         $description,
         $meta,
@@ -2341,12 +2340,12 @@ class PublyPaymentService extends BaseApiService
         $price,
         $quantity,
         $isShow,
-        $isActive
+        $isActive,
+        $group_id
     )
     {
         $inputs = [
             'changer_id' => $changerId,
-            'set_id' => $setId,
             'title' => $title,
             'description' => $description,
             'meta' => $meta,
@@ -2354,7 +2353,8 @@ class PublyPaymentService extends BaseApiService
             'price' => $price,
             'quantity' => $quantity,
             'is_show' => $isShow,
-            'is_active' => $isActive
+            'is_active' => $isActive,
+            'group_id' => $group_id
         ];
 
         return $this->put("event", $inputs);
@@ -2369,15 +2369,28 @@ class PublyPaymentService extends BaseApiService
         return $this->get("event", $filterArray);
     }
 
+    // deprecated
     public function getEventsBySetId($setId, $filterArray = [])
     {
         return $this->get("event/set/{$setId}", $filterArray);
     }
 
+    // deprecated 
     public function getEventsBySetIds($setIds, $filterArray = [])
     {
         $filterArray['ids'] = implode(',', $setIds);
         return $this->get("event/set_ids", $filterArray);
+    }
+
+    public function getEventsByGroupId($groupId, $filterArray = [])
+    {
+        return $this->get("event/group/{$groupId}", $filterArray);
+    }
+
+    public function getEventsByGroupIds($groupIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $groupIds);
+        return $this->get("event/group_ids", $filterArray);
     }
 
     public function getEvent($eventId)
@@ -2388,7 +2401,6 @@ class PublyPaymentService extends BaseApiService
     public function updateEvent(
         $changerId,
         $eventId,
-        $setId,
         $title,
         $description,
         $meta,
@@ -2401,7 +2413,6 @@ class PublyPaymentService extends BaseApiService
     {
         $inputs = [
             'changer_id' => $changerId,
-            'set_id' => $setId,
             'title' => $title,
             'description' => $description,
             'meta' => $meta,

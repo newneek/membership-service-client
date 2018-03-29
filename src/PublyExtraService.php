@@ -222,6 +222,79 @@ class PublyExtraService extends BaseApiService
         return $this->post("/searchable_object/deleteByQuery", $inputs);
     }
 
+    public function createEventGroup($changerId,
+                                     $title,
+                                     $order)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'title' => $title,
+            'order' => $order
+        ];
+
+        return $this->post("event_group",$inputs);
+    }
+
+    public function getEventGroups($filterArray = [])
+    {
+        return $this->get("event_group", $filterArray);
+    }
+
+    public function getEventGroup($eventGroupId)
+    {
+        return $this->get("event_group/{$eventGroupId}");
+    }
+
+    public function updateEventGroup($changerId,
+                                     $eventGroupId,
+                                     $title,
+                                     $imageUrl,
+                                     $isShow)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'title' => $title,
+            'image_url' => $imageUrl,
+            'is_show' => $isShow
+        ];
+        return $this->put("event_group/{$eventGroupId}", $inputs);
+    }
+
+    public function updateEventGroupOrder($changerId, $eventGroupIds)
+    {
+        return $this->put("event_group/order",
+            [ 'changer_id' => $changerId,
+                'ids' => implode(',', $eventGroupIds) ]);
+    }
+
+    public function deleteEventGroup($changerId, $eventGroupId)
+    {
+        return $this->post("event_group/{$eventGroupId}/delete",
+            [ 'changer_id' => $changerId ]
+        );
+    }
+
+    public function createEventGroupSet($changerId, $eventGroupId, $setId)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'event_group_id' => $eventGroupId,
+            'set_id' => $setId
+        ];
+
+        return $this->post("event_group_set", $inputs);
+    }
+
+    public function deleteEventGroupSet($changerId, $eventGroupId, $setId)
+    {
+        $inputs = [
+            'changer_id' => $changerId
+        ];
+
+        return $this->post("/event_group_set/event_group/{$eventGroupId}/set/{$setId}/delete", $inputs);
+    }
+
+
     public function getSharedContentByUserAndContent($userId, $contentId)
     {
         return $this->get("/shared_content/user/{$userId}/content/{$contentId}");
