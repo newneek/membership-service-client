@@ -221,4 +221,39 @@ class PublyExtraService extends BaseApiService
 
         return $this->post("/searchable_object/deleteByQuery", $inputs);
     }
+
+    public function getSharedContentByUserAndContent($userId, $contentId)
+    {
+        return $this->get("/shared_content/user/{$userId}/content/{$contentId}");
+    }
+
+    public function getSharedContentByCode($code)
+    {
+        return $this->get("/shared_content/code/{$code}");
+    }
+
+    public function createSharedContentByUserAndContent($userId, $contentId)
+    {
+        $inputs = [
+            'user_id' => $userId,
+            'content_id' => $contentId
+        ];
+
+        return $this->post("/shared_content", $inputs);
+    }
+
+    public function getContentShareCount($userId)
+    {
+        return $this->get("/content_share_count/user/{$userId}");
+    }
+
+    public function updateOrCreateContentShareCount($userId, $remainingCount)
+    {
+        $inputs = [
+            'user_id' => $userId,
+            'remaining_count' => $remainingCount
+        ];
+
+        return $this->put("/content_share_count/user/{$userId}", $inputs);
+    }
 }
