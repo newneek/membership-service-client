@@ -124,13 +124,11 @@ class PublyExtraService extends BaseApiService
     }
 
     public function createEventDisplay($changerId,
-                                          $eventtId,
-                                          $order)
+                                       $eventId)
     {
         $inputs = [
             'changer_id' => $changerId,
-            'event_id' => $eventtId,
-            'order' => $order
+            'event_id' => $eventId
         ];
 
         return $this->put("event_display", $inputs);
