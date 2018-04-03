@@ -123,6 +123,38 @@ class PublyExtraService extends BaseApiService
         );
     }
 
+    public function createEventDisplay($changerId,
+                                          $eventtId,
+                                          $order)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'event_id' => $eventtId,
+            'order' => $order
+        ];
+
+        return $this->put("event_display", $inputs);
+    }
+
+    public function getEventDisplays($filterArray = [])
+    {
+        return $this->get("event_display/", $filterArray);
+    }
+
+    public function updateEventDisplayOrder($changerId, $eventDisplayIds)
+    {
+        return $this->post("event_display/order",
+            [ 'changer_id' => $changerId,
+                'ids' => implode(',', $eventDisplayIds) ]);
+    }
+
+    public function deleteEventDisplay($changerId, $eventDisplayId)
+    {
+        return $this->post("event_display/{$eventDisplayId}/delete",
+            [ 'changer_id' => $changerId ]
+        );
+    }
+
     public function addSearchableObject($indexName, $objectId, $record)
     {
         $inputs = [
