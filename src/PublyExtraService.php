@@ -302,4 +302,29 @@ class PublyExtraService extends BaseApiService
 
         return $this->put("/content_share_count/user/{$userId}", $inputs);
     }
+
+    public function getEventSetsByEventId($eventId)
+    {
+        return $this->get("/event_set/{$eventId}");
+    }
+
+    public function createEventSet($changerId, $eventId, $setId)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'event_id' => $eventId,
+            'set_id' => $setId
+        ];
+
+        return $this->post("event_set", $inputs);
+    }
+
+    public function deleteEventSet($changerId, $eventId, $setId)
+    {
+        $inputs = [
+            'changer_id' => $changerId
+        ];
+
+        return $this->post("/event_set/event/{$eventId}/set/{$setId}/delete", $inputs);
+    }
 }
