@@ -12,6 +12,8 @@ class PublyExtraService extends BaseApiService
     const SOCIAL_PROOF_TYPE_INSTAGRAM = 3;
     const SOCIAL_PROOF_TYPE_MAX = 4;
 
+    const MAXIMUM_SHAREABLE_COUNT = 5;
+
     public function __construct($domain)
     {
         parent::__construct();
@@ -326,5 +328,18 @@ class PublyExtraService extends BaseApiService
         ];
 
         return $this->post("/event_set/event/{$eventId}/set/{$setId}/delete", $inputs);
+    }
+
+    public function updateOrCreateContentShareCountByUser($userId, $remainingCount)
+    {
+        $inputs = [
+            'remaining_count' => $remainingCount
+        ];
+        return $this->put("content_share_count/user/{$userId}", $inputs);
+    }
+
+    public function rechargeContentShareCountByUser($userId, $rechargingCount = self::MAXIMUM_SHAREABLE_COUNT)
+    {
+        return $this->updateOrCreateContentShareCountByUser($userId, $rechargingCount);
     }
 }
