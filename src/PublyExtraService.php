@@ -12,6 +12,8 @@ class PublyExtraService extends BaseApiService
     const SOCIAL_PROOF_TYPE_INSTAGRAM = 3;
     const SOCIAL_PROOF_TYPE_MAX = 4;
 
+    const MAXIMUM_SHAREABLE_COUNT = 5;
+
     public function __construct($domain)
     {
         parent::__construct();
@@ -123,59 +125,32 @@ class PublyExtraService extends BaseApiService
         );
     }
 
-
-    public function createSetEventDisplay($changerId,
-                                          $setId,
-                                          $order)
+    public function createEventDisplay($changerId,
+                                       $eventId)
     {
         $inputs = [
             'changer_id' => $changerId,
-            'set_id' => $setId,
-            'order' => $order
+            'event_id' => $eventId
         ];
 
-        return $this->put("set_event_display", $inputs);
+        return $this->put("event_display", $inputs);
     }
 
-    public function getSetEventDisplays($filterArray = [])
+    public function getEventDisplays($filterArray = [])
     {
-        return $this->get("set_event_display/", $filterArray);
+        return $this->get("event_display/", $filterArray);
     }
 
-    public function getSetEventDisplay($setEventDisplayId)
+    public function updateEventDisplayOrder($changerId, $eventDisplayIds)
     {
-        return $this->get("set_event_display/{$setEventDisplayId}");
-    }
-
-    public function getSetEventDisplayBySetId($setId)
-    {
-        return $this->get("set_event_display/set/{$setId}");
-    }
-
-    public function updateSetEventDisplay($changerId,
-                                          $setEventDisplayId,
-                                          $setId,
-                                          $order)
-    {
-        $inputs = [
-            'changer_id' => $changerId,
-            'set_id' => $setId,
-            'order' => $order
-        ];
-
-        return $this->post("set_event_display/{$setEventDisplayId}", $inputs);
-    }
-
-    public function updateSetEventDisplayOrder($changerId, $setEventDisplayIds)
-    {
-        return $this->post("set_event_display/order",
+        return $this->post("event_display/order",
             [ 'changer_id' => $changerId,
-                'ids' => implode(',', $setEventDisplayIds) ]);
+                'ids' => implode(',', $eventDisplayIds) ]);
     }
 
-    public function deleteSetEventDisplay($changerId, $setEventDisplayId)
+    public function deleteEventDisplay($changerId, $eventDisplayId)
     {
-        return $this->post("set_event_display/{$setEventDisplayId}/delete/",
+        return $this->post("event_display/{$eventDisplayId}/delete",
             [ 'changer_id' => $changerId ]
         );
     }
@@ -328,5 +303,43 @@ class PublyExtraService extends BaseApiService
         ];
 
         return $this->put("/content_share_count/user/{$userId}", $inputs);
+    }
+
+    public function getEventSetsByEventId($eventId)
+    {
+        return $this->get("/event_set/{$eventId}");
+    }
+
+    public function createEventSet($changerId, $eventId, $setId)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'event_id' => $eventId,
+            'set_id' => $setId
+        ];
+
+        return $this->post("event_set", $inputs);
+    }
+
+    public function deleteEventSet($changerId, $eventId, $setId)
+    {
+        $inputs = [
+            'changer_id' => $changerId
+        ];
+
+        return $this->post("/event_set/event/{$eventId}/set/{$setId}/delete", $inputs);
+    }
+
+    public function updateOrCreateContentShareCountByUser($userId, $remainingCount)
+    {
+        $inputs = [
+            'remaining_count' => $remainingCount
+        ];
+        return $this->put("content_share_count/user/{$userId}", $inputs);
+    }
+
+    public function rechargeContentShareCountByUser($userId, $rechargingCount = self::MAXIMUM_SHAREABLE_COUNT)
+    {
+        return $this->updateOrCreateContentShareCountByUser($userId, $rechargingCount);
     }
 }
