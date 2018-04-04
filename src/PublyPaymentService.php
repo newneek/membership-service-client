@@ -2455,6 +2455,35 @@ class PublyPaymentService extends BaseApiService
         return $this->put("event", $inputs);
     }
 
+    public function createEvent2(
+        $changerId,
+        $title,
+        $description,
+        $meta,
+        $condition,
+        $price,
+        $quantity,
+        $isShow,
+        $isActive,
+        $imageUrl
+    )
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'title' => $title,
+            'description' => $description,
+            'meta' => $meta,
+            'order_condition' => $condition,
+            'price' => $price,
+            'quantity' => $quantity,
+            'is_show' => $isShow,
+            'is_active' => $isActive,
+            'image_url' => $imageUrl
+        ];
+
+        return $this->put("event", $inputs);
+    }
+
     public function getEvents($page = 1,
                               $limit = 10,
                               $filterArray = [])
@@ -2522,6 +2551,36 @@ class PublyPaymentService extends BaseApiService
             'quantity' => $quantity,
             'is_show' => $isShow,
             'is_active' => $isActive
+        ];
+
+        return $this->post("event/{$eventId}", $inputs);
+    }
+
+    public function updateEvent2(
+        $changerId,
+        $eventId,
+        $title,
+        $description,
+        $meta,
+        $condition,
+        $price,
+        $quantity,
+        $isShow,
+        $isActive,
+        $imageUrl
+    )
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'title' => $title,
+            'description' => $description,
+            'meta' => $meta,
+            'order_condition' => $condition,
+            'price' => $price,
+            'quantity' => $quantity,
+            'is_show' => $isShow,
+            'is_active' => $isActive,
+            'image_url' => $imageUrl,
         ];
 
         return $this->post("event/{$eventId}", $inputs);
