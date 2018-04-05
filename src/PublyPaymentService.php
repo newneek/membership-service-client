@@ -2730,4 +2730,16 @@ class PublyPaymentService extends BaseApiService
     {
         return $this->get("referral_relation/referee/{$userId}");
     }
+
+    public function getPointSumByUser($userId)
+    {
+        return $this->get("point_history/user/{$userId}/sum");
+    }
+
+    public function getPointSumByPayment($paymentId)
+    {
+        return $this->get("point_history/payment/{$paymentId}/sum");
+    }
+
+
 }
