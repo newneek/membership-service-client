@@ -2726,7 +2726,12 @@ class PublyPaymentService extends BaseApiService
         return $this->put("referral_relation", $inputs);
     }
 
-    public function getReferralRelationByUser($userId)
+    public function getReferralRelationByUser($userId) // getReferralRelationByReferee 로 대체됨 사용되는 곳이 없을시 지웁니다.
+    {
+        return $this->get("referral_relation/referee/{$userId}");
+    }
+
+    public function getReferralRelationByReferee($userId)
     {
         return $this->get("referral_relation/referee/{$userId}");
     }
@@ -2741,5 +2746,8 @@ class PublyPaymentService extends BaseApiService
         return $this->get("point_history/payment/{$paymentId}/sum");
     }
 
-
+    public function getReferralProgram($referralProgramId)
+    {
+        return $this->get("referral_program/{$referralProgramId}");
+    }
 }
