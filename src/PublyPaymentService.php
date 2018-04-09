@@ -1753,6 +1753,91 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
+    public function addCreditCardAndSubscriptionAndPay2($changerId,
+                                                        $userId,
+                                                        $creditCardNumber,
+                                                        $expireYear,
+                                                        $expireMonth,
+                                                        $id,
+                                                        $password,
+                                                        $planId,
+                                                        $price,
+                                                        $useReferralPlanIfPossible)
+    {
+        $result = [ 'success' => false ];
+
+        // add credit card
+        $resultCreditCard = $this->addCreditCard(
+            $userId,
+            $creditCardNumber,
+            $expireYear,
+            $expireMonth,
+            $id,
+            $password);
+
+        if (!$resultCreditCard['success']) {
+            $result['success'] = false;
+            $result['from'] = 'credit_card';
+            $result['error_code'] = $resultCreditCard['error_code'];
+            $result['message'] = $resultCreditCard['message'];
+            return $result;
+        }
+
+        $creditCard = $resultCreditCard['item'];
+        $creditCardId = $creditCard['id'];
+        $result['creditCard'] = $creditCard;
+
+        // subscription
+        $resultSubscription= $this->subscription2(
+            $changerId,
+            $userId,
+            $planId,
+            $price,
+            $useReferralPlanIfPossible
+        );
+
+        if (!$resultSubscription['success']) {
+            $result['success'] = false;
+            $result['from'] = 'subscription';
+            $result['error_code'] = $resultSubscription['error_code'];
+            $result['message'] = $resultSubscription['message'];
+            return $result;
+        }
+
+        $subscription = $resultSubscription['item'];
+        $result['subscription'] = $subscription;
+
+        // payment
+        $resultPayment = $this->paySubscription(
+            $changerId,
+            $userId,
+            $subscription['id'],
+            static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+            'credit_card_id',
+            $creditCardId,
+            //            true,
+            '');
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+
+            return $result;
+        }
+
+        $payment = $resultPayment['item'];
+        $result['payment'] = $payment;
+
+        $subscriptionResult = $this->get("subscription/{$subscription['id']}", []);
+        $subscription = $subscriptionResult['success']['data'];
+        $result['subscription'] = $subscription; // refresh subscription after payment
+
+        $result['success'] = true;
+        return $result;
+    }
+
     public function deleteSubscription(
         $changerId,
         $subscriptionId)
