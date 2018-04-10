@@ -117,6 +117,13 @@ class PublyPaymentService extends BaseApiService
     const TRANSACTION_TYPE_ADJUSTED_BY_ADMIN = 2;
     const TRANSACTION_TYPE_REWORDED_BY_REFERER = 3;
 
+    const PAY_WITHOUT_POINT = 0;
+    const PAY_WITH_POINT = 1;
+
+    const USE_POINT_ON_SUBSCRIPTION = self::PAY_WITH_POINT;
+    const USE_POINT_ON_ORDER = self::PAY_WITHOUT_POINT;
+    const USE_POINT_ON_RESERVE = self::PAY_WITHOUT_POINT;
+
     public function __construct($domain)
     {
         parent::__construct();
@@ -1193,7 +1200,8 @@ class PublyPaymentService extends BaseApiService
                     'order_id' => $orderId,
                     'pg_type' => $pgType,
                     'credit_card_id' => $creditCardId,
-                    'immediate' => false
+                    'immediate' => false,
+                    'use_point' => static::USE_POINT_ON_RESERVE
                 ]);
         } catch (ResponseException $e) {
             $result['success'] = false;
@@ -1226,7 +1234,8 @@ class PublyPaymentService extends BaseApiService
                     'order_id' => $orderId,
                     'pg_type' => $pgType,
                     'credit_card_id' => $creditCardId,
-                    'immediate' => false
+                    'immediate' => false,
+                    'use_point' => static::USE_POINT_ON_RESERVE
                 ]);
         } catch (ResponseException $e) {
             $result['success'] = false;
@@ -1266,7 +1275,8 @@ class PublyPaymentService extends BaseApiService
                     'pg_type' => $pgType,
                     $paymentMethodIdName => $paymentMethodId,
                     'immediate' => $immediate,
-                    'note' => $note
+                    'note' => $note,
+                    'use_point' => static::USE_POINT_ON_ORDER
                 ]);
         } catch (ResponseException $e) {
             $result['success'] = false;
@@ -1931,7 +1941,8 @@ class PublyPaymentService extends BaseApiService
                     'pg_type' => $pgType,
                     $paymentMethodIdName => $paymentMethodId,
                     'immediate' => true,
-                    'note' => $note
+                    'note' => $note,
+                    'use_point' => static::USE_POINT_ON_SUBSCRIPTION
                 ]);
         } catch (ResponseException $e) {
             $result['success'] = false;
