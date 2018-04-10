@@ -1139,6 +1139,12 @@ class PublyContentService extends BaseApiService
 
         return $this->get("/set_review/set/{$setId}", $filterArray);
     }
+
+    public function getSetReviewsByIds($setReviewIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $setReviewIds);
+        return $this->get("/set_review/by_ids", $filterArray);
+    }
     
     public function getSetReviewSummary($setId)
     {

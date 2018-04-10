@@ -342,4 +342,26 @@ class PublyExtraService extends BaseApiService
     {
         return $this->updateOrCreateContentShareCountByUser($userId, $rechargingCount);
     }
+
+    public function createMarketingSetReview($changerId, $setId, $setReviewId)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'set_id' => $setId,
+            'set_review_id' => $setReviewId
+        ];
+
+        return $this->post("marketing_set_review", $inputs);
+    }
+
+    public function getMarketingSetReviewsBySetId($setId)
+    {
+        return $this->get("marketing_set_review/set/{$setId}");
+    }
+
+    public function deleteMarketingSetReview($changerId, $marketingSetReviewId)
+    {
+        return $this->post("marketing_set_review/{$marketingSetReviewId}/delete",
+            ['changer_id' => $changerId]);
+    }
 }
