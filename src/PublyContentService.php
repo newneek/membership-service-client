@@ -787,6 +787,11 @@ class PublyContentService extends BaseApiService
         return $this->get("user_content_progress/user/{$userId}/content/{$contentId}/type/{$type}");
     }
 
+    public function getTotalUserContentProgressByContentAndType($contentId, $type)
+    {
+        return $this->get("user_content_progress/content/{$contentId}/type/{$type}/total");
+    }
+
     /*
      * Set Related Functions
      */
@@ -1138,6 +1143,12 @@ class PublyContentService extends BaseApiService
         $filterArray['limit'] = $limit;
 
         return $this->get("/set_review/set/{$setId}", $filterArray);
+    }
+
+    public function getSetReviewsByIds($setReviewIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $setReviewIds);
+        return $this->get("/set_review/by_ids", $filterArray);
     }
     
     public function getSetReviewSummary($setId)
