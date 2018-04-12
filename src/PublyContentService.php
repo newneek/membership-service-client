@@ -709,37 +709,18 @@ class PublyContentService extends BaseApiService
     /*
      * User Content Progress Related Functions
      */
-    public function createUserContentProgress($userId, $contentId)
-    {
-        return $this->post("user_content_progress", [ 'user_id' => $userId,
-                                                      'content_id' => $contentId ]);
-    }
+    const USER_CONTENT_PROGRESS_COMPLETE = 'complete';
+    const USER_CONTENT_PROGRESS_RESET_COMPLETE = 'reset_complete';
 
-    public function createUserContentProgress2($userId, $contentId, $type)
+    public function updateOrCreateUserContentProgress($userId, $contentId, $type, $action, $sectionIndex, $paragraphIndex)
     {
-        return $this->post("user_content_progress", [ 'user_id' => $userId,
-                                                      'content_id' => $contentId,
-                                                      'type' => $type ]);
-    }
+        $inpust = [
+            'action' => $action,
+            'section_index' => $sectionIndex,
+            'paragraph_index' => $paragraphIndex,
+        ];
 
-    public function updateUserContentProgress($userId, $contentId)
-    {
-        return $this->put("user_content_progress/user/{$userId}/content/{$contentId}");
-    }
-
-    public function updateUserContentProgress2($userId, $contentId, $type)
-    {
-        return $this->put("user_content_progress/user/{$userId}/content/{$contentId}/type/{$type}");
-    }
-
-    public function resetUserContentProgress($userId, $contentId)
-    {
-        return $this->put("user_content_progress/user/{$userId}/content/{$contentId}/reset");
-    }
-
-    public function resetUserContentProgress2($userId, $contentId, $type)
-    {
-        return $this->put("user_content_progress/user/{$userId}/content/{$contentId}/type/{$type}/reset");
+        return $this->put("user_content_progress/user/{$userId}/content/{$contentId}/type/{$type}/reset", $inpust);
     }
     
     public function getUserContentProgressesByUserAndContentIds($userId, $contentIds)
