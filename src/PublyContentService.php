@@ -714,13 +714,13 @@ class PublyContentService extends BaseApiService
 
     public function updateOrCreateUserContentProgress($userId, $contentId, $type, $action, $sectionIndex, $paragraphIndex)
     {
-        $inpust = [
+        $inputs = [
             'action' => $action,
             'section_index' => $sectionIndex,
             'paragraph_index' => $paragraphIndex,
         ];
 
-        return $this->put("user_content_progress/user/{$userId}/content/{$contentId}/type/{$type}", $inpust);
+        return $this->put("user_content_progress/user/{$userId}/content/{$contentId}/type/{$type}", $inputs);
     }
     
     public function getUserContentProgressesByUserAndContentIds($userId, $contentIds)
