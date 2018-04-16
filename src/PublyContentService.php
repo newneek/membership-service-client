@@ -720,7 +720,7 @@ class PublyContentService extends BaseApiService
             'paragraph_index' => $paragraphIndex,
         ];
 
-        return $this->put("user_content_progress/user/{$userId}/content/{$contentId}/type/{$type}/reset", $inpust);
+        return $this->put("user_content_progress/user/{$userId}/content/{$contentId}/type/{$type}", $inpust);
     }
     
     public function getUserContentProgressesByUserAndContentIds($userId, $contentIds)
