@@ -78,7 +78,6 @@ class AmplitudeService extends BaseApiService
                 $result = $this->get("httpapi",
                     [
                         'api_key' => $this->apiKey,
-                        'insert_id' => $insertId,
                         'event' => json_encode(
                             [
                                 'user_id' => $userId,
@@ -86,6 +85,7 @@ class AmplitudeService extends BaseApiService
                                 'price' => $price,
                                 'productId' => $productId,
                                 'revenueType' => $revenueType,
+                                'insert_id' => $insertId,
                                 'event_properties' => $eventProperties
                             ])
                     ]);
