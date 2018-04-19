@@ -42,4 +42,61 @@ class AmplitudeService extends BaseApiService
             }
         }
     }
+
+    public function event($userId, $eventType, $eventProperties, $userProperties)
+    {
+        $retryCount = 3;
+        while ($retryCount > 0) {
+            try {
+                $result = $this->get("httpapi",
+                    [
+                        'api_key' => $this->apiKey,
+                        'event' => json_encode(
+                            [
+                                'user_id' => $userId,
+                                'event_type' => $eventType,
+                                'event_properties' => $eventProperties,
+                                'user_properties' => $userProperties
+                            ])
+                    ]);
+                return $result;
+            } catch (ResponseException $e) {
+                // for any response exception, retry
+                $retryCount--;
+                if ($retryCount == 0) {
+                    throw $e;
+                }
+            }
+        }
+    }
+
+    public function revenue($userId, $revenueType, $price, $productId, $insertId, $eventProperties = null)
+    {
+        $retryCount = 3;
+        while ($retryCount > 0) {
+            try {
+                $result = $this->get("httpapi",
+                    [
+                        'api_key' => $this->apiKey,
+                        'insert_id' => $insertId,
+                        'event' => json_encode(
+                            [
+                                'user_id' => $userId,
+                                'event_type' => 'Revenue',
+                                'price' => $price,
+                                'productId' => $productId,
+                                'revenueType' => $revenueType,
+                                'event_properties' => $eventProperties
+                            ])
+                    ]);
+                return $result;
+            } catch (ResponseException $e) {
+                // for any response exception, retry
+                $retryCount--;
+                if ($retryCount == 0) {
+                    throw $e;
+                }
+            }
+        }
+    }
 }
