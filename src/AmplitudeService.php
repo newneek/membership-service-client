@@ -70,7 +70,7 @@ class AmplitudeService extends BaseApiService
         }
     }
 
-    public function revenue($userId, $revenueType, $price, $productId, $insertId, $eventProperties = null)
+    public function revenue($userId, $revenueType, $eventType, $price, $productId, $insertId, $time, $eventProperties = null)
     {
         $retryCount = 3;
         while ($retryCount > 0) {
@@ -81,11 +81,12 @@ class AmplitudeService extends BaseApiService
                         'event' => json_encode(
                             [
                                 'user_id' => $userId,
-                                'event_type' => 'Revenue',
                                 'price' => $price,
                                 'productId' => $productId,
                                 'revenueType' => $revenueType,
+                                'event_type' => $eventType,
                                 'insert_id' => $insertId,
+                                'time' => $time,
                                 'event_properties' => $eventProperties
                             ])
                     ]);
