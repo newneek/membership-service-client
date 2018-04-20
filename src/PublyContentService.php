@@ -709,39 +709,30 @@ class PublyContentService extends BaseApiService
     /*
      * User Content Progress Related Functions
      */
-    public function createUserContentProgress($userId, $contentId)
+    const USER_CONTENT_PROGRESS_COMPLETE = 'complete';
+    const USER_CONTENT_PROGRESS_RESET_COMPLETE = 'reset_complete';
+
+    public function updateOrCreateUserContentProgress($userId, $contentId, $type, $action, $sectionIndex, $paragraphIndex)
     {
-        return $this->post("user_content_progress", [ 'user_id' => $userId,
-                                                      'content_id' => $contentId ]);
+        $inputs = [
+            'action' => $action,
+            'section_index' => $sectionIndex,
+            'paragraph_index' => $paragraphIndex,
+        ];
+
+        return $this->put("user_content_progress/user/{$userId}/content/{$contentId}/type/{$type}", $inputs);
     }
 
-    public function createUserContentProgress2($userId, $contentId, $type)
+    public function getLatestUserContentProgressByUserAndContent($userId, $contentId)
     {
-        return $this->post("user_content_progress", [ 'user_id' => $userId,
-                                                      'content_id' => $contentId,
-                                                      'type' => $type ]);
+        return $this->get("user_content_progress/user/{$userId}/content/{$contentId}/latest");
     }
 
-    public function updateUserContentProgress($userId, $contentId)
+    public function getLatestUserContentProgressByUserAndSet($userId, $setId)
     {
-        return $this->put("user_content_progress/user/{$userId}/content/{$contentId}");
+        return $this->get("user_content_progress/user/{$userId}/set/{$setId}/latest");
     }
 
-    public function updateUserContentProgress2($userId, $contentId, $type)
-    {
-        return $this->put("user_content_progress/user/{$userId}/content/{$contentId}/type/{$type}");
-    }
-
-    public function resetUserContentProgress($userId, $contentId)
-    {
-        return $this->put("user_content_progress/user/{$userId}/content/{$contentId}/reset");
-    }
-
-    public function resetUserContentProgress2($userId, $contentId, $type)
-    {
-        return $this->put("user_content_progress/user/{$userId}/content/{$contentId}/type/{$type}/reset");
-    }
-    
     public function getUserContentProgressesByUserAndContentIds($userId, $contentIds)
     {
         $filterArray = [];
@@ -792,6 +783,11 @@ class PublyContentService extends BaseApiService
         return $this->get("user_content_progress/content/{$contentId}/type/{$type}/total");
     }
 
+    public function getLatestUserContentProgressesByUserAndSets($userId, $setIds)
+    {
+        $filterArray['set_ids'] = implode(',', $setIds);
+        return $this->get("user_content_progress/user/{$userId}/latest/by_set_ids", $filterArray);
+    }
     /*
      * Set Related Functions
      */
