@@ -224,6 +224,12 @@ class PublyPaymentService extends BaseApiService
         return $this->get("order/project_ids", $filterArray);
     }
 
+    public function getOrdersByEventIds($eventIds, $filterArray = [])
+    {
+        $filterArray['event_ids'] = implode(',', $eventIds);
+        return $this->get("order/event_ids", $filterArray);
+    }
+
     public function order(
         $userId,
         $contentId,
