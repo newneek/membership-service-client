@@ -733,7 +733,7 @@ class PublyContentService extends BaseApiService
         return $this->get("user_content_progress/user/{$userId}/set/{$setId}/latest");
     }
 
-    public function getContentProgressByType($type)
+    public function getUserContentProgressByType($type)
     {
         return $this->get("/user_content_progress/type/{$type}");
     }
