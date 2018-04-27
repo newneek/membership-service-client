@@ -364,4 +364,9 @@ class PublyExtraService extends BaseApiService
         return $this->post("marketing_set_review/{$marketingSetReviewId}/delete",
             ['changer_id' => $changerId]);
     }
+
+    public function getSetSimilarityCoefficientBySetId($setId)
+    {
+        return $this->get("set_similarity_coefficient/set/{$setId}");
+    }
 }
