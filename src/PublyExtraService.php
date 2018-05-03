@@ -365,11 +365,9 @@ class PublyExtraService extends BaseApiService
             ['changer_id' => $changerId]);
     }
 
-    public function createSetSimilarityCoefficient($type)
+    public function calculateSetSimilarityCoefficient()
     {
-        return $this->post("set_similarity_coefficient",
-            [ 'type' => $type ]
-        );
+        return $this->post("set_similarity_coefficient");
     }
 
     public function getSetSimilarityCoefficientBySetId($setId)
