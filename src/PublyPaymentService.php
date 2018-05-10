@@ -116,6 +116,14 @@ class PublyPaymentService extends BaseApiService
     const TRANSACTION_TYPE_USED_FOR_PAYMENT = 1;
     const TRANSACTION_TYPE_ADJUSTED_BY_ADMIN = 2;
     const TRANSACTION_TYPE_REWORDED_BY_REFERER = 3;
+    const TRANSACTION_TYPE_FAILED_IN_PAYMENT = 4;
+
+    const STRING_TRANSACTION_TYPE = [
+        PublyPaymentService::TRANSACTION_TYPE_USED_FOR_PAYMENT => "포인트 사용",
+        PublyPaymentService::TRANSACTION_TYPE_ADJUSTED_BY_ADMIN => "어드민 포인트 적립",
+        PublyPaymentService::TRANSACTION_TYPE_REWORDED_BY_REFERER => "포인트 적립",
+        PublyPaymentService::TRANSACTION_TYPE_FAILED_IN_PAYMENT => "포인트 결제 취소"
+    ];
 
     const PAY_WITHOUT_POINT = 0;
     const PAY_WITH_POINT = 1;
