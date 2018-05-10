@@ -1133,6 +1133,13 @@ class PublyContentService extends BaseApiService
                                                     'project_id' => $projectId ]);
     }
 
+    public function removeProjectLikesByUser($changerId, $userId)
+    {
+        return $this->delete("project_like/user/{$userId}", [
+            'changer_id' => $changerId
+        ]);
+    }
+
     public function getSetReviewsBySetId($setId, $page = 1, $limit = 10, $filterArray = [])
     {
         $filterArray['page'] = $page;
