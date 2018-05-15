@@ -2865,4 +2865,9 @@ class PublyPaymentService extends BaseApiService
     {
         return $this->get("referral_program/{$referralProgramId}");
     }
+
+    public function getPayment($paymentId)
+    {
+        return $this->get("payment/{$paymentId}");
+    }
 }
