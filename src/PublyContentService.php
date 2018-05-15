@@ -1142,7 +1142,7 @@ class PublyContentService extends BaseApiService
 
     public function removeProjectLikesByUser($changerId, $userId)
     {
-        return $this->delete("project_like/user/{$userId}", [
+        return $this->put("project_like/user/{$userId}/delete", [
             'changer_id' => $changerId
         ]);
     }
