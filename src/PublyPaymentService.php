@@ -124,6 +124,8 @@ class PublyPaymentService extends BaseApiService
     const USE_POINT_ON_ORDER = self::PAY_WITHOUT_POINT;
     const USE_POINT_ON_RESERVE = self::PAY_WITHOUT_POINT;
 
+    const NO_PAGE_LIMIT = 0;
+
     public function __construct($domain)
     {
         parent::__construct();
