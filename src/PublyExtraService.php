@@ -63,7 +63,7 @@ class PublyExtraService extends BaseApiService
     public function deleteSocialProof($changerId, $socialProofId)
     {
         return $this->post("social_proof/{$socialProofId}/delete",
-            [ 'changer_id' => $changerId ]
+            ['changer_id' => $changerId]
         );
     }
 
@@ -121,7 +121,7 @@ class PublyExtraService extends BaseApiService
     public function deleteMeetingByEvent($changerId, $eventId)
     {
         return $this->post("meeting/delete/event/{$eventId}",
-            [ 'changer_id' => $changerId ]
+            ['changer_id' => $changerId]
         );
     }
 
@@ -144,14 +144,14 @@ class PublyExtraService extends BaseApiService
     public function updateEventDisplayOrder($changerId, $eventDisplayIds)
     {
         return $this->post("event_display/order",
-            [ 'changer_id' => $changerId,
-                'ids' => implode(',', $eventDisplayIds) ]);
+            ['changer_id' => $changerId,
+                'ids' => implode(',', $eventDisplayIds)]);
     }
 
     public function deleteEventDisplay($changerId, $eventDisplayId)
     {
         return $this->post("event_display/{$eventDisplayId}/delete",
-            [ 'changer_id' => $changerId ]
+            ['changer_id' => $changerId]
         );
     }
 
@@ -207,7 +207,7 @@ class PublyExtraService extends BaseApiService
             'order' => $order
         ];
 
-        return $this->post("event_group",$inputs);
+        return $this->post("event_group", $inputs);
     }
 
     public function getEventGroups($filterArray = [])
@@ -238,14 +238,14 @@ class PublyExtraService extends BaseApiService
     public function updateEventGroupOrder($changerId, $eventGroupIds)
     {
         return $this->put("event_group/order",
-            [ 'changer_id' => $changerId,
-                'ids' => implode(',', $eventGroupIds) ]);
+            ['changer_id' => $changerId,
+                'ids' => implode(',', $eventGroupIds)]);
     }
 
     public function deleteEventGroup($changerId, $eventGroupId)
     {
         return $this->post("event_group/{$eventGroupId}/delete",
-            [ 'changer_id' => $changerId ]
+            ['changer_id' => $changerId]
         );
     }
 
@@ -362,6 +362,42 @@ class PublyExtraService extends BaseApiService
     public function deleteMarketingSetReview($changerId, $marketingSetReviewId)
     {
         return $this->post("marketing_set_review/{$marketingSetReviewId}/delete",
+            ['changer_id' => $changerId]);
+    }
+
+    public function getShowAllContents($page = 1,
+                                       $limit = 10,
+                                       $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("show_all_content", $filterArray);
+    }
+
+    public function getShowAllContentByContent($contentId)
+    {
+        return $this->get("show_all_content/content/{$contentId}");
+    }
+
+    public function getShowAllContentByContents($contentIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $contentIds);
+        return $this->get("show_all_content/content_ids", $filterArray);
+    }
+
+
+    public function createShowAllContent($changerId, $contentId)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'content_id' => $contentId,
+        ];
+        return $this->put("show_all_content", $inputs);
+    }
+
+    public function deleteShowAllContent($changerId, $showAllContentId)
+    {
+        return $this->post("show_all_content/{$showAllContentId}/delete",
             ['changer_id' => $changerId]);
     }
 
