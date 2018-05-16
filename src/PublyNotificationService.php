@@ -211,4 +211,15 @@ class PublyNotificationService extends BaseApiService
     {
         return $this->post("/trigger/all");
     }
+
+    public function eventReferralSuccess($userId, $refereeId, $delta)
+    {
+        return $this->post("/event/referral_success",
+            [
+                'referrer_id' => $userId,
+                'referee_id' => $refereeId,
+                'point' => $delta
+            ]
+        );
+    }
 }
