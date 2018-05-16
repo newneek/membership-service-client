@@ -379,6 +379,13 @@ class PublyExtraService extends BaseApiService
         return $this->get("show_all_content/content/{$contentId}");
     }
 
+    public function getShowAllContentByContents($contentIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $contentIds);
+        return $this->get("show_all_content/content_ids");
+    }
+
+
     public function createShowAllContent($changerId, $contentId)
     {
         $inputs = [
