@@ -6,8 +6,6 @@ use Publy\ServiceClient\Api\BaseApiService;
 
 class Amplitude2Service extends BaseApiService
 {
-    protected $apiKey;
-
     public function __construct($apiKey, $secretKey)
     {
         parent::__construct();
@@ -21,7 +19,6 @@ class Amplitude2Service extends BaseApiService
 
         $this->domain = 'https://amplitude.com/api/2';
         $this->apiUrl = "$this->domain/";
-        $this->apiKey = $apiKey;
     }
 
     public function funnel($events, $segment, $start, $end, $conversionDays, $newOrActive)
