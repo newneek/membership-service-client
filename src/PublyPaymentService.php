@@ -18,6 +18,7 @@ class PublyPaymentService extends BaseApiService
     const PAYMENT_STATUS_COMPLETED = 2;
     const PAYMENT_STATUS_FAILED = 3;
     const PAYMENT_STATUS_IN_PROGRESS = 4;
+    const PAYMENT_STATUS_REFUNDED = 5;
 
     const ORDER_STATUS_CHECKEDOUT = 1; // no payment was assigned.
     const ORDER_STATUS_WAITING_PAYMENT = 2; // Reserved Payment. payment can be canceled, changed.
@@ -44,7 +45,8 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::PAYMENT_STATUS_WAITING => "결제대기",
         PublyPaymentService::PAYMENT_STATUS_COMPLETED => "결제성공",
         PublyPaymentService::PAYMENT_STATUS_FAILED => "결제실패",
-        PublyPaymentService::PAYMENT_STATUS_IN_PROGRESS => "결제중"
+        PublyPaymentService::PAYMENT_STATUS_IN_PROGRESS => "결제중",
+        PublyPayMentService::PAYMENT_STATUS_REFUNDED => "결제환불"
     ];
 
     const STRING_ORDER_STATUS = [
