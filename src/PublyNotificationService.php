@@ -127,6 +127,16 @@ class PublyNotificationService extends BaseApiService
         return $this->get("/sms/log/{$smsLogId}");
     }
 
+    public function eventUserSignup($userId)
+    {
+        return $this->post("/event/user_signup", ['user_id' => $userId]);
+    }
+
+    public function eventUserLogin($userId)
+    {
+        return $this->post("/event/user_login", ['user_id' => $userId]);
+    }
+
     public function eventSetReviewCreated($setReview)
     {
         return $this->post("/event/set_review_created", ['set_review' => $setReview]);
