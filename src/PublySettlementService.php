@@ -10,6 +10,9 @@ class PublySettlementService extends BaseApiService
     const TAX_PAYER_TYPE_DIRECTION_AUTHOR_TO_COMPANY = 1;
     const TAX_PAYER_TYPE_DIRECTION_COMPANY_TO_AUTHOR = 2;
 
+    const SETTLEMENT_RESULT_STATUS_CALCULATED = 1;
+    const SETTLEMENT_RESULT_STATUS_CALCULATING = 2;
+    
     public function __construct($domain)
     {
         parent::__construct();
