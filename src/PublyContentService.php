@@ -506,6 +506,33 @@ class PublyContentService extends BaseApiService
                                                      ]);
     }
 
+    public function updateProject4(
+        $changerId,
+        $projectId,
+        $title,
+        $imageUrl,
+        $imageVerticalUrl,
+        $preorderStartAt,
+        $preorderFinishAt,
+        $preorderGoalPrice,
+        $basePrice,
+        $summary,
+        $memo )
+    {
+        return $this->put("project/{$projectId}", [ 'changer_id' => $changerId,
+            'title' => $title,
+            'image' => $imageUrl,
+            'image_vertical' => $imageVerticalUrl,
+            'preorder_start_at' => $preorderStartAt,
+            'preorder_finish_at' => $preorderFinishAt,
+            'preorder_goal_price' => $preorderGoalPrice,
+            'base_price' => $basePrice,
+            'summary' => $summary,
+            'memo' => $memo
+        ]);
+    }
+
+
     public function updateProjectIsActive($changerId, $projectId, $isActive)
     {
         return $this->put("project/{$projectId}", [ 'changer_id' => $changerId,
