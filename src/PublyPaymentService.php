@@ -2829,22 +2829,6 @@ class PublyPaymentService extends BaseApiService
         return $this->post("point_history", $input);
     }
 
-    public function createPointHistoryByReturnedContent(
-        $userId,
-        $delta,
-        $orderId
-    )
-    {
-        $input = [
-            'user_id' => $userId,
-            'delta' => $delta,
-            'transaction_type' => static::TRANSACTION_TYPE_CONTENT_RETURNED,
-            'order_id' => $orderId
-        ];
-
-        return $this->post("point_history", $input);
-    }
-
     public function updatePointHistory($pointHistoryId, $note)
     {
         $input = [
