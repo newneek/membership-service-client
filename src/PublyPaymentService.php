@@ -1572,6 +1572,14 @@ class PublyPaymentService extends BaseApiService
                 'force' => $force ? 1 : 0 ]);
     }
 
+    public function returnContent($changerId, $orderId, $force = false)
+    {
+        return $this->put("/order/{$orderId}",
+            [ 'changer_id' => $changerId,
+                'action' => 'return-content',
+                'force' => $force ? 1 : 0 ]);
+    }
+
     public function refreshSetReaderByProject($projectId)
     {
         return $this->post("/order/refresh_set_reader", ['project_id' => $projectId]);
