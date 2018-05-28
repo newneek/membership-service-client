@@ -12,6 +12,7 @@ class PublySettlementService extends BaseApiService
 
     const SETTLEMENT_RESULT_STATUS_CALCULATED = 1;
     const SETTLEMENT_RESULT_STATUS_CALCULATING = 2;
+    const SETTLEMENT_RESULT_STATUS_FAIL_TO_CALCULATE = 3;
     
     public function __construct($domain)
     {
