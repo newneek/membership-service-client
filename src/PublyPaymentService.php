@@ -30,7 +30,8 @@ class PublyPaymentService extends BaseApiService
     const ORDER_STATUS_REFUND_REQUESTED = 8;
     const ORDER_STATUS_REFUND_COMPLETED = 9; // requested 단계를 무조건 거치고 이동해야 함
     const ORDER_STATUS_PROJECT_DROP = 10;
-    const ORDER_STATUS_MAX = 11;
+    const ORDER_STATUS_CONTENT_RETURNED = 11;
+    const ORDER_STATUS_MAX = 12;
 
     const STRING_PAYMENT_TYPE = [
         PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD => "Nicepay 신용카드",
@@ -59,7 +60,8 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::ORDER_STATUS_PAYMENT_FAILED => "결제실패",
         PublyPaymentService::ORDER_STATUS_REFUND_REQUESTED => "환불 신청",
         PublyPaymentService::ORDER_STATUS_REFUND_COMPLETED => "환불 완료",
-        PublyPaymentService::ORDER_STATUS_PROJECT_DROP => "프로젝트 중단"
+        PublyPaymentService::ORDER_STATUS_PROJECT_DROP => "프로젝트 중단",
+        PublyPaymentService::ORDER_STATUS_CONTENT_RETURNED => "포인트 환급"
     ];
 
 
@@ -119,12 +121,14 @@ class PublyPaymentService extends BaseApiService
     const TRANSACTION_TYPE_ADJUSTED_BY_ADMIN = 2;
     const TRANSACTION_TYPE_REWORDED_BY_REFERER = 3;
     const TRANSACTION_TYPE_FAILED_IN_PAYMENT = 4;
+    const TRANSACTION_TYPE_CONTENT_RETURNED = 5;
 
     const STRING_TRANSACTION_TYPE = [
         PublyPaymentService::TRANSACTION_TYPE_USED_FOR_PAYMENT => "포인트 사용",
         PublyPaymentService::TRANSACTION_TYPE_ADJUSTED_BY_ADMIN => "어드민 포인트 적립",
         PublyPaymentService::TRANSACTION_TYPE_REWORDED_BY_REFERER => "포인트 적립",
-        PublyPaymentService::TRANSACTION_TYPE_FAILED_IN_PAYMENT => "포인트 결제 취소"
+        PublyPaymentService::TRANSACTION_TYPE_FAILED_IN_PAYMENT => "포인트 결제 취소",
+        PublyPaymentService::TRANSACTION_TYPE_CONTENT_RETURNED => "환급 포인트 적립"
     ];
 
     const PAY_WITHOUT_POINT = 0;
@@ -1565,6 +1569,14 @@ class PublyPaymentService extends BaseApiService
         return $this->put("/order/{$orderId}",
             [ 'changer_id' => $changerId,
                 'action' => 'complete-refund',
+                'force' => $force ? 1 : 0 ]);
+    }
+
+    public function returnContent($changerId, $orderId, $force = false)
+    {
+        return $this->put("/order/{$orderId}",
+            [ 'changer_id' => $changerId,
+                'action' => 'return-content',
                 'force' => $force ? 1 : 0 ]);
     }
 
