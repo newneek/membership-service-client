@@ -141,6 +141,12 @@ class PublyExtraService extends BaseApiService
         return $this->get("event_display/", $filterArray);
     }
 
+    public function getEventDisplaysByEvents($eventIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $eventIds);
+        return $this->get("event_display/event", $filterArray);
+    }
+
     public function updateEventDisplayOrder($changerId, $eventDisplayIds)
     {
         return $this->post("event_display/order",
