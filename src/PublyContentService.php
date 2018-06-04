@@ -413,13 +413,15 @@ class PublyContentService extends BaseApiService
         $contentId,
         $contentListIdArray,
         $contentTitleArray,
-        $contentArray
+        $contentArray,
+        $randomStringIdArray
     ) {
         $inputs = [
             'changer_id' => $changerId,
             'content_list_id' => implode(',', $contentListIdArray),
             'content_title' => $contentTitleArray,
-            'content' => $contentArray
+            'content' => $contentArray,
+            'random_string_id' => implode(',', $randomStringIdArray)
         ];
 
         return $this->put("content/{$contentId}/content_lists", $inputs);
