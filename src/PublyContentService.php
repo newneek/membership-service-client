@@ -212,6 +212,11 @@ class PublyContentService extends BaseApiService
         }
     }
 
+    public function getAllRewardsByProject($projectId)
+    {
+        return $this->get("reward/project/{$projectId}", ['show_all' => true]);
+    }
+
     public function getOfflineRewardsByProject($projectId, $includeHidden = false)
     {
         $filterArray = ['has_offline' => 1];
