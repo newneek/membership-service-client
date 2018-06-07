@@ -1488,6 +1488,15 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
+    public function toggleUsePoint($changerId, $paymentId) {
+
+        $result = $this->post("/payment/{$paymentId}/toggle_use_point", [
+            'changer_id' => $changerId
+        ]);
+
+        return $result;
+    }
+
     public function updateOrder($changerId,
                                 $orderId,
                                 $userName,
