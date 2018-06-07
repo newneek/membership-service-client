@@ -445,6 +445,14 @@ class PublyContentService extends BaseApiService
         return $this->get("content/project/{$projectId}", $filterArray);
     }
 
+    public function getTotalContentCount() {
+        return $this->get("content/total");
+    }
+
+    public function getTotalSetCount() {
+        return $this->get("set/total");
+    }
+
     public function createContentList($changerId, $contentId, $title)
     {
         return $this->post("content/{$contentId}/content_list", [
