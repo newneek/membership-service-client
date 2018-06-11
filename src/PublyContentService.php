@@ -203,13 +203,29 @@ class PublyContentService extends BaseApiService
         }
     }
 
+    public function getRewardsByIds2($rewardIds, $filters = [])
+    {
+        $filters = array_merge($filters, [
+            'ids' => implode(',', $rewardIds)
+        ]);
+
+        return $this->get("reward/by_ids", $filters);
+    }
+
     public function getRewardsByProject($projectId, $includeHidden = false)
     {
         if ($includeHidden) {
             return $this->get("reward/project/{$projectId}");
         } else {
-            return $this->get("reward/project/{$projectId}", ['is_visible' => 1]);
+            return $this->get("reward/project/{$projectId}", [
+                'is_visible' => 1
+            ]);
         }
+    }
+
+    public function getRewardsByProject2($projectId, $filters = [])
+    {
+        return $this->get("reward/project/{$projectId}", $filters);
     }
 
     public function getAllRewardsByProject($projectId)
@@ -222,10 +238,19 @@ class PublyContentService extends BaseApiService
         $filterArray = ['has_offline' => 1];
 
         if ($includeHidden == false) {
-            $filterArray = array_merge($filterArray, ['is_visible' => 1]);
+            $filterArray = array_merge($filterArray, [
+                'is_visible' => 1,
+            ]);
         }
 
         return $this->get("reward/project/{$projectId}", $filterArray);
+    }
+
+    public function getOfflineRewardsByProject2($projectId, $filters = [])
+    {
+        $filters['has_offline'] = 1;
+
+        return $this->get("reward/project/{$projectId}", $filters);
     }
 
     public function getContentRewardsByProject($projectId, $includeHidden = false)
@@ -238,6 +263,14 @@ class PublyContentService extends BaseApiService
 
         return $this->get("reward/project/{$projectId}", $filterArray);
     }
+
+    public function getContentRewardsByProject2($projectId, $filters = [])
+    {
+        $filters['has_offline'] = 0;
+
+        return $this->get("reward/project/{$projectId}", $filters);
+    }
+
 
     public function toggleRewardActive($rewardId)
     {
