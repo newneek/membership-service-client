@@ -717,6 +717,7 @@ class PublyContentService extends BaseApiService
         return $this->put("project/{$projectId}/image", ['mobile_image' => $imageUrl]);
     }
 
+    // deprecated
     public function updateProjectContent($changerId, $projectId, $content)
     {
         return $this->put("project/{$projectId}/content_list", [
@@ -775,10 +776,10 @@ class PublyContentService extends BaseApiService
         $projectId,
         $projectRewardDescription
     ) {
-        return $this->put("project/{$projectId}/sections",
+        return $this->put("project/{$projectId}/reward_description",
             [
                 'changer_id' => $changerId,
-                'project_reward_description' => $projectRewardDescription
+                'reward_description' => $projectRewardDescription
             ]);
     }
 
