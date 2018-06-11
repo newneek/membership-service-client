@@ -198,7 +198,7 @@ class PublyContentService extends BaseApiService
         } else {
             return $this->get("reward/by_ids", [
                 'ids' => implode(',', $rewardIds),
-                'is_hidden' => 0
+                'is_visible' => 1
             ]);
         }
     }
@@ -208,7 +208,7 @@ class PublyContentService extends BaseApiService
         if ($includeHidden) {
             return $this->get("reward/project/{$projectId}");
         } else {
-            return $this->get("reward/project/{$projectId}", ['is_hidden' => 0]);
+            return $this->get("reward/project/{$projectId}", ['is_visible' => 1]);
         }
     }
 
@@ -222,7 +222,7 @@ class PublyContentService extends BaseApiService
         $filterArray = ['has_offline' => 1];
 
         if ($includeHidden == false) {
-            $filterArray = array_merge($filterArray, ['is_hidden' => 0]);
+            $filterArray = array_merge($filterArray, ['is_visible' => 1]);
         }
 
         return $this->get("reward/project/{$projectId}", $filterArray);
@@ -233,7 +233,7 @@ class PublyContentService extends BaseApiService
         $filterArray = ['has_offline' => 0];
 
         if ($includeHidden == false) {
-            $filterArray = array_merge($filterArray, ['is_hidden' => 0]);
+            $filterArray = array_merge($filterArray, ['is_visible' => 1]);
         }
 
         return $this->get("reward/project/{$projectId}", $filterArray);
