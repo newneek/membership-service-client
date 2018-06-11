@@ -1475,8 +1475,7 @@ class PublyPaymentService extends BaseApiService
 
         $result = [ 'success' => false ];
         try {
-            $resultApi =
-                $this->put("/payment/{$paymentId}", $inputs);
+            $resultApi = $this->put("/payment/{$paymentId}", $inputs);
             $result['success'] = true;
         } catch (ResponseException $e) {
             $result['success'] = false;
@@ -1484,15 +1483,6 @@ class PublyPaymentService extends BaseApiService
             $result['error_code'] = $e->getCode();
             $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
         }
-
-        return $result;
-    }
-
-    public function toggleUsePoint($changerId, $paymentId) {
-
-        $result = $this->post("/payment/{$paymentId}/toggle_use_point", [
-            'changer_id' => $changerId
-        ]);
 
         return $result;
     }
