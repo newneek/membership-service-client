@@ -453,6 +453,10 @@ class PublyContentService extends BaseApiService
         return $this->get("set/total");
     }
 
+    public function getTotalAuthorCount() {
+        return $this->get("writer/total");
+    }
+
     public function createContentList($changerId, $contentId, $title)
     {
         return $this->post("content/{$contentId}/content_list", [
