@@ -186,6 +186,11 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
+    public function updateReward4($changerId, $rewardId, $inputs = []) {
+        $inputs = array_merge($inputs, ['changer_id' => $changerId]);
+        return $this->put("reward/{$rewardId}", $inputs);
+    }
+
     public function getReward($rewardId)
     {
         return $this->get("reward/{$rewardId}");
@@ -281,6 +286,7 @@ class PublyContentService extends BaseApiService
     {
         return $this->put("reward/{$rewardId}/toggle_visible");
     }
+
 
     public function updateRewardsOrderInProject($projectId, $rewardIds)
     {
