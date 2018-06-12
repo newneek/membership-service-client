@@ -132,6 +132,11 @@ class PublySettlementService extends BaseApiService
     {
         return $this->get("settlement_result", $filterArray);
     }
+    public function updateSettlementResult($changerId, $inputs = [])
+    {
+        $inputs = array_merge($inputs, ["changer_id" => $changerId]);
+        return $this->post("settlement_result", $inputs);
+    }
 
     public function getSettlementAuthorResults(
         $page = 1,
