@@ -528,6 +528,25 @@ class PublyContentService extends BaseApiService
         );
     }
 
+    public function updateContentItem(
+        $changerId,
+        $contentId,
+        $contentItemIds,
+        $contentItemTitles,
+        $descriptions,
+        $randomStringIds
+    ) {
+        $inputs = [
+            'changer_id' => $changerId,
+            'content_item_ids' => implode(',', $contentItemIds),
+            'content_item_titles' => $contentItemTitles,
+            'content_item_description' => $descriptions,
+            'random_string_ids' => implode(',', $randomStringIds)
+        ];
+
+        return $this->put("content_item/{$contentId}/content_items", $inputs);
+    }
+
     // deprecated
     public function createContentList($changerId, $contentId, $title)
     {
@@ -1784,26 +1803,4 @@ class PublyContentService extends BaseApiService
             'set_id' => $setId
         ]);
     }
-
-    public function updateContentItem(
-        $changerId,
-        $contentId,
-        $contentItemIds,
-        $contentItemTitles,
-        $descriptions,
-        $randomStringIds
-    ) {
-        $inputs = [
-            'changer_id' => $changerId,
-            'content_item_ids' => implode(',', $contentItemIds),
-            'content_item_titles' => $contentItemTitles,
-            'content_item_description' => $descriptions,
-            'random_string_ids' => implode(',', $randomStringIds)
-
-        ];
-
-        return $this->put("content/{$contentId}/content_items", $inputs);
-    }
-
-
 }
