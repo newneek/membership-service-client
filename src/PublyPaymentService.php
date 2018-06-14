@@ -117,19 +117,19 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::EVENT_CONDITION_ORDER_AND_SUBSCRIPTION => "멤버십 이용자 또는 연관 콘텐츠를 예약 구매한 독자만 구매할 수 있습니다."
     ];
 
-    const TRANSACTION_TYPE_USED_FOR_PAYMENT = 1;
-    const TRANSACTION_TYPE_ADJUSTED_BY_ADMIN = 2;
-    const TRANSACTION_TYPE_REWORDED_BY_REFERER = 3;
-    const TRANSACTION_TYPE_FAILED_IN_PAYMENT = 4;
-    const TRANSACTION_TYPE_CONTENT_RETURNED = 5;
-    const TRANSACTION_TYPE_MAX = 6;
+    const POINT_HISTORY_TRANSACTION_TYPE_USED_FOR_PAYMENT = 1;
+    const POINT_HISTORY_TRANSACTION_TYPE_ADJUSTED_BY_ADMIN = 2;
+    const POINT_HISTORY_TRANSACTION_TYPE_REWORDED_BY_REFERER = 3;
+    const POINT_HISTORY_TRANSACTION_TYPE_FAILED_IN_PAYMENT = 4;
+    const POINT_HISTORY_TRANSACTION_TYPE_CONTENT_RETURNED = 5;
+    const POINT_HISTORY_TRANSACTION_TYPE_MAX = 6;
     
     const STRING_TRANSACTION_TYPE = [
-        PublyPaymentService::TRANSACTION_TYPE_USED_FOR_PAYMENT => "포인트 사용",
-        PublyPaymentService::TRANSACTION_TYPE_ADJUSTED_BY_ADMIN => "어드민 포인트 적립",
-        PublyPaymentService::TRANSACTION_TYPE_REWORDED_BY_REFERER => "포인트 적립",
-        PublyPaymentService::TRANSACTION_TYPE_FAILED_IN_PAYMENT => "포인트 결제 취소",
-        PublyPaymentService::TRANSACTION_TYPE_CONTENT_RETURNED => "콘텐츠 환급 포인트"
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_USED_FOR_PAYMENT => "포인트 사용",
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_ADJUSTED_BY_ADMIN => "어드민 포인트 적립",
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWORDED_BY_REFERER => "포인트 적립",
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_FAILED_IN_PAYMENT => "포인트 결제 취소",
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_CONTENT_RETURNED => "콘텐츠 환급 포인트"
     ];
 
     const PAY_WITHOUT_POINT = 0;
@@ -1475,8 +1475,7 @@ class PublyPaymentService extends BaseApiService
 
         $result = [ 'success' => false ];
         try {
-            $resultApi =
-                $this->put("/payment/{$paymentId}", $inputs);
+            $resultApi = $this->put("/payment/{$paymentId}", $inputs);
             $result['success'] = true;
         } catch (ResponseException $e) {
             $result['success'] = false;
@@ -1484,15 +1483,6 @@ class PublyPaymentService extends BaseApiService
             $result['error_code'] = $e->getCode();
             $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
         }
-
-        return $result;
-    }
-
-    public function toggleUsePoint($changerId, $paymentId) {
-
-        $result = $this->post("/payment/{$paymentId}/toggle_use_point", [
-            'changer_id' => $changerId
-        ]);
 
         return $result;
     }
@@ -2803,7 +2793,7 @@ class PublyPaymentService extends BaseApiService
         $input = [
             'user_id' => $userId,
             'delta' => $delta,
-            'transaction_type' => static::TRANSACTION_TYPE_ADJUSTED_BY_ADMIN,
+            'transaction_type' => static::POINT_HISTORY_TRANSACTION_TYPE_ADJUSTED_BY_ADMIN,
             'admin_id' => $adminId,
             'note' => $note
         ];
@@ -2821,7 +2811,7 @@ class PublyPaymentService extends BaseApiService
         $input = [
             'user_id' => $referrerId,
             'delta' => $delta,
-            'transaction_type' => static::TRANSACTION_TYPE_REWORDED_BY_REFERER,
+            'transaction_type' => static::POINT_HISTORY_TRANSACTION_TYPE_REWORDED_BY_REFERER,
             'referee_id' => $refereeId,
             'note' => $note
         ];
@@ -2839,7 +2829,7 @@ class PublyPaymentService extends BaseApiService
         $input = [
             'user_id' => $userId,
             'delta' => $delta,
-            'transaction_type' => static::TRANSACTION_TYPE_USED_FOR_PAYMENT,
+            'transaction_type' => static::POINT_HISTORY_TRANSACTION_TYPE_USED_FOR_PAYMENT,
             'payment_id' => $paymentId,
             'note' => $note
         ];
