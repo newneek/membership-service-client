@@ -442,28 +442,33 @@ class PublyContentService extends BaseApiService
             ]);
     }
 
+    // deprecated
     public function updateContentCoverImage($contentId, $imageUrl)
     {
         return $this->put("content/{$contentId}/image", ['cover_image' => $imageUrl]);
     }
 
+    // deprecated
     public function updateContentListImage($contentId, $imageUrl)
     {
         return $this->put("content/{$contentId}/image", ['list_image' => $imageUrl]);
     }
 
+    // deprecated
     public function updateContentContentList(
         $changerId,
         $contentId,
         $contentListIdArray,
         $contentTitleArray,
-        $contentArray
+        $contentArray,
+        $randomStringIdArray
     ) {
         $inputs = [
             'changer_id' => $changerId,
             'content_list_id' => implode(',', $contentListIdArray),
             'content_title' => $contentTitleArray,
-            'content' => $contentArray
+            'content' => $contentArray,
+            'random_string_id' => implode(',', $randomStringIdArray)
         ];
 
         return $this->put("content/{$contentId}/content_lists", $inputs);
@@ -492,6 +497,57 @@ class PublyContentService extends BaseApiService
         return $this->get("set/total");
     }
 
+    public function createContentItem($changerId, $contentId, $title)
+    {
+        return $this->post("content/{$contentId}/content_item", [
+            'changer_id' => $changerId,
+            'title' => $title
+        ]);
+    }
+
+    public function deleteContentItem($changerId, $contentId, $contentItemId)
+    {
+        return $this->post("content/{$contentId}/content_item/delete", [
+            'changer_id' => $changerId,
+            'content_item_id' => $contentItemId
+        ]);
+    }
+
+    /*
+     * Content Related Functions
+     */
+    public function getContentItemsByContent($contentId)
+    {
+        return $this->get("content_item/content/{$contentId}");
+    }
+
+    public function getContentItemsByContentIds($contentIds)
+    {
+        return $this->get("content_item/content_ids",
+            ['content_ids' => implode(',', $contentIds)]
+        );
+    }
+
+    public function updateContentItem(
+        $changerId,
+        $contentId,
+        $contentItemIds,
+        $contentItemTitles,
+        $descriptions,
+        $randomStringIds
+    ) {
+        $inputs = [
+            'changer_id' => $changerId,
+            'content_item_ids' => implode(',', $contentItemIds),
+            'content_item_titles' => $contentItemTitles,
+            'content_item_description' => $descriptions,
+            'random_string_ids' => implode(',', $randomStringIds)
+        ];
+
+        return $this->put("content_item/{$contentId}/content_items", $inputs);
+    }
+
+    // deprecated
     public function createContentList($changerId, $contentId, $title)
     {
         return $this->post("content/{$contentId}/content_list", [
@@ -500,6 +556,7 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
+    // deprecated
     public function deleteContentList($changerId, $contentId, $listId)
     {
         return $this->post("content/{$contentId}/content_list/delete", [
@@ -756,6 +813,7 @@ class PublyContentService extends BaseApiService
         return $this->put("project/{$projectId}/image", ['mobile_image' => $imageUrl]);
     }
 
+    // deprecated
     public function updateProjectContent($changerId, $projectId, $content)
     {
         return $this->put("project/{$projectId}/content_list", [
@@ -814,10 +872,10 @@ class PublyContentService extends BaseApiService
         $projectId,
         $projectRewardDescription
     ) {
-        return $this->put("project/{$projectId}/sections",
+        return $this->put("project/{$projectId}/reward_description",
             [
                 'changer_id' => $changerId,
-                'project_reward_description' => $projectRewardDescription
+                'reward_description' => $projectRewardDescription
             ]);
     }
 
@@ -1745,6 +1803,4 @@ class PublyContentService extends BaseApiService
             'set_id' => $setId
         ]);
     }
-
-
 }
