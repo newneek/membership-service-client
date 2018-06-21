@@ -1586,7 +1586,7 @@ class PublyPaymentService extends BaseApiService
         $inputs['order_ids'] = implode(',', $orderIds);
         $inputs['changer_id'] = $changerId;
 
-        return $this->put("/order/content_return", $inputs);
+        return $this->put("/order/contents_return", $inputs);
     }
 
     public function refreshSetReaderByProject($projectId)
