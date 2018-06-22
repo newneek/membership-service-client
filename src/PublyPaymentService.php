@@ -43,7 +43,7 @@ class PublyPaymentService extends BaseApiService
     ];
 
     const STRING_PAYMENT_STATUS = [
-        PublyPaymentService::PAYMENT_STATUS_WAITING => "결제대기",
+        PublyPaymentService::PAYMENT_STATUS_WAITING => "예약 완료",
         PublyPaymentService::PAYMENT_STATUS_COMPLETED => "결제성공",
         PublyPaymentService::PAYMENT_STATUS_FAILED => "결제실패",
         PublyPaymentService::PAYMENT_STATUS_IN_PROGRESS => "결제중",
@@ -52,10 +52,10 @@ class PublyPaymentService extends BaseApiService
 
     const STRING_ORDER_STATUS = [
         PublyPaymentService::ORDER_STATUS_CHECKEDOUT => "주문완료",
-        PublyPaymentService::ORDER_STATUS_WAITING_PAYMENT => "결제대기",
+        PublyPaymentService::ORDER_STATUS_WAITING_PAYMENT => "예약 완료",
         PublyPaymentService::ORDER_STATUS_PAID => "결제성공",
-        PublyPaymentService::ORDER_STATUS_CANCELLED => "결제전 취소",
-        PublyPaymentService::ORDER_STATUS_PROJECT_FAILED => "프로젝트 실패",
+        PublyPaymentService::ORDER_STATUS_CANCELLED => "예약 취소",
+        PublyPaymentService::ORDER_STATUS_PROJECT_FAILED => "중단",
         PublyPaymentService::ORDER_STATUS_PAYMENT_IN_PROGRESS => "결제중",
         PublyPaymentService::ORDER_STATUS_PAYMENT_FAILED => "결제실패",
         PublyPaymentService::ORDER_STATUS_REFUND_REQUESTED => "환불 신청",
