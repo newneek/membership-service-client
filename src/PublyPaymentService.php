@@ -180,6 +180,12 @@ class PublyPaymentService extends BaseApiService
         return $this->get("order", $filterArray);
     }
 
+    public function getOrdersByIds($orderIds, $filterArray = [])
+    {
+        $filterArray['order_ids' ] = implode(',', $orderIds);
+        return $this->get("order/order_ids", $filterArray);
+    }
+
     public function getOrdersByUser($userId, $page, $limit, $filterArray = [])
     {
         $filterArray['page'] = $page;
