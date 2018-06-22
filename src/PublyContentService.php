@@ -1746,6 +1746,11 @@ class PublyContentService extends BaseApiService
         return $this->get("package_reader/", $filterArray);
     }
 
+    public function getPackageReadersByUser($userId, $filterArray = [])
+    {
+        return $this->get("package_reader/user/{$userId}", $filterArray);
+    }
+
     public function getTotalPackageReader($userId)
     {
         return $this->get("package_reader/total", ['user_id' => $userId]);
