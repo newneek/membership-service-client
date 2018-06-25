@@ -49,7 +49,7 @@ class PublyNotificationService extends BaseApiService
         ]);
     }
 
-    public function sendEmail($destEmails, $subject, $body, $isAuto, $sourceEmail = null)
+    public function sendEmail($destEmails, $subject, $body, $isAuto, $sourceEmail = null, $sourceName = null)
     {
         return $this->post("/email/send", [
             'dest_emails' => $destEmails,
@@ -57,6 +57,7 @@ class PublyNotificationService extends BaseApiService
             'body' => $body,
             'is_auto' => $isAuto,
             'source_email' => $sourceEmail,
+            'source_name' => $sourceName
         ]);
     }
 
@@ -81,7 +82,7 @@ class PublyNotificationService extends BaseApiService
         ]);
     }
 
-    public function sendEmailByUsers($userIds, $subject, $body, $isAuto, $sourceEmail = null)
+    public function sendEmailByUsers($userIds, $subject, $body, $isAuto, $sourceEmail = null, $sourceName = null)
     {
         return $this->post("/email/send/byUserId", [
             'user_ids' => $userIds,
@@ -89,6 +90,7 @@ class PublyNotificationService extends BaseApiService
             'body' => $body,
             'is_auto' => $isAuto,
             'source_email' => $sourceEmail,
+            'source_name' => $sourceName
         ]);
     }
 
