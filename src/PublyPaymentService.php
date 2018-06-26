@@ -182,7 +182,7 @@ class PublyPaymentService extends BaseApiService
 
     public function getOrdersByIds($orderIds, $filterArray = [])
     {
-        $filterArray['order_ids' ] = implode(',', $orderIds);
+        $filterArray['order_ids'] = implode(',', $orderIds);
         return $this->get("order/order_ids", $filterArray);
     }
 
