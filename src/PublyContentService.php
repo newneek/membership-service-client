@@ -1196,6 +1196,11 @@ class PublyContentService extends BaseApiService
         return $this->get("set_reader/set_ids", $filterArray);
     }
 
+    public function getSetReadersBySetId2($setId, $filterArray = [])
+    {
+        return $this->get("set_reader/set/{$setId}", $filterArray);
+    }
+
     public function getSetReadersByUserId2($userId, $filterArray = [])
     {
         return $this->get("set_reader/user/{$userId}", $filterArray);
