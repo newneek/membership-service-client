@@ -180,6 +180,12 @@ class PublyPaymentService extends BaseApiService
         return $this->get("order", $filterArray);
     }
 
+    public function getOrdersByIds($orderIds, $filterArray = [])
+    {
+        $filterArray['order_ids'] = implode(',', $orderIds);
+        return $this->get("order/order_ids", $filterArray);
+    }
+
     public function getOrdersByUser($userId, $page, $limit, $filterArray = [])
     {
         $filterArray['page'] = $page;
@@ -1578,6 +1584,15 @@ class PublyPaymentService extends BaseApiService
             [ 'changer_id' => $changerId,
                 'action' => 'return-content',
                 'force' => $force ? 1 : 0 ]);
+    }
+
+    public function returnContents($changerId, $orderIds)
+    {
+        $inputs = [];
+        $inputs['order_ids'] = implode(',', $orderIds);
+        $inputs['changer_id'] = $changerId;
+
+        return $this->post("/order/contents_return", $inputs);
     }
 
     public function refreshSetReaderByProject($projectId)
