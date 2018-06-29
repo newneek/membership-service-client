@@ -1117,11 +1117,12 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function updateSetIsActive($setId, $changerId, $isActive)
+    public function updateSetIsActive($setId, $changerId, $isActive, $publishAt)
     {
         return $this->put("set/{$setId}", [
             'changer_id' => $changerId,
-            'is_active' => $isActive
+            'is_active' => $isActive,
+            'publish_at' => $publishAt
         ]);
     }
 
