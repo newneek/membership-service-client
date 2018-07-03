@@ -1123,6 +1123,15 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
+    public function updateSetIsActive($setId, $changerId, $isActive, $publishAt)
+    {
+        return $this->put("set/{$setId}", [
+            'changer_id' => $changerId,
+            'is_active' => $isActive,
+            'publish_at' => $publishAt
+        ]);
+    }
+
     public function loadSetDataFromProject($changerId, $setId)
     {
         return $this->post("set/{$setId}/load_data_from_project", ['changer_id' => $changerId]);
@@ -1192,6 +1201,11 @@ class PublyContentService extends BaseApiService
     {
         $filterArray['set_ids'] = implode(',', $setIds);
         return $this->get("set_reader/set_ids", $filterArray);
+    }
+
+    public function getSetReadersBySetId2($setId, $filterArray = [])
+    {
+        return $this->get("set_reader/set/{$setId}", $filterArray);
     }
 
     public function getSetReadersByUserId2($userId, $filterArray = [])
