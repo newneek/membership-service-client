@@ -122,7 +122,7 @@ class PublyPaymentService extends BaseApiService
     const POINT_HISTORY_TRANSACTION_TYPE_REWORDED_BY_REFERER = 3;
     const POINT_HISTORY_TRANSACTION_TYPE_FAILED_IN_PAYMENT = 4;
     const POINT_HISTORY_TRANSACTION_TYPE_CONTENT_RETURNED = 5;
-    const POINT_HISTORY_TRANSACTION_TYPE_SPONSOR = 6;
+    const POINT_HISTORY_TRANSACTION_TYPE_PROJECT_SPONSOR = 6;
     const POINT_HISTORY_TRANSACTION_TYPE_MAX = 7;
     
     const STRING_TRANSACTION_TYPE = [
@@ -131,7 +131,7 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWORDED_BY_REFERER => "포인트 적립",
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_FAILED_IN_PAYMENT => "포인트 결제 취소",
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_CONTENT_RETURNED => "콘텐츠 환급 포인트",
-        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_SPONSOR => "후원 하기 포인트"
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_PROJECT_SPONSOR => "후원 하기 포인트"
     ];
 
     const PAY_WITHOUT_POINT = 0;
