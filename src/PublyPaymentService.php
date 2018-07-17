@@ -139,8 +139,8 @@ class PublyPaymentService extends BaseApiService
     const USER_DEFAULT_PLAN_TYPE_CONTENT_RETURN = 3;
 
     const STRING_USER_DEFAULT_PLAN_TYPE = [
-        PublyPaymentService::USER_DEFAULT_PLAN_TYPE_ADMIN => "관리자",
-        PublyPaymentService::USER_DEFAULT_PLAN_TYPE_REFERRAL => "추천인",
+        PublyPaymentService::USER_DEFAULT_PLAN_TYPE_ADMIN => "관리자 추가",
+        PublyPaymentService::USER_DEFAULT_PLAN_TYPE_REFERRAL => "공유 콘텐츠 읽음",
         PublyPaymentService::USER_DEFAULT_PLAN_TYPE_CONTENT_RETURN => "콘텐츠 환급"
     ];
 
@@ -2915,7 +2915,7 @@ class PublyPaymentService extends BaseApiService
     }
 
     //    user default plan
-    public function getUserDefaultPlansByUser($userId, $page =1, $limit = 10, $filterArray)
+    public function getUserDefaultPlansByUser($userId, $page =1, $limit = 10, $filterArray = [])
     {
         $filterArray['page'] = $page;
         $filterArray['limit'] = $limit;
@@ -2927,27 +2927,16 @@ class PublyPaymentService extends BaseApiService
         return $this->get("user_default_plan/{$userDefaultPlanId}");
     }
 
-    public function createUserDefaultPlanByUser($changerId, $userId, $type, $planId)
+    public function createUserDefaultPlan($changerId, $inputs)
     {
-        $inputs = [
-            'changer_id' => $changerId,
-            'user_id' => $userId,
-            'type' => $type,
-            'plan_id' => $planId
-        ];
+        $inputs['changer_id'] = $changerId;
 
         return $this->post("user_default_plan", $inputs);
     }
 
-    public function updateUserDefaultPlanByUserDefaultPlan($changerId, $userDefaultPlanId, $type, $planId)
+    public function updateUserDefaultPlanByUserDefaultPlan($changerId, $userDefaultPlanId, $inputs)
     {
-        $inputs = [
-            'changer_id' => $changerId,
-            'user_default_plan_id' => $userDefaultPlanId,
-            'type' => $type,
-            'plan_id' => $planId
-        ];
-
-        return $this->put("user_default_plan", $inputs);
+        $inputs['changer_id'] = $changerId;
+        return $this->put("user_default_plan/{$userDefaultPlanId}", $inputs);
     }
 }
