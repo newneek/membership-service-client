@@ -2770,9 +2770,9 @@ class PublyPaymentService extends BaseApiService
         return $this->put("plan_token", $inputs);
     }
 
-    public function getPlanTokenByToken($token)
+    public function getPlanTokenByToken($token, $filterArray)
     {
-        return $this->get("plan_token/token/{$token}");
+        return $this->get("plan_token/token/{$token}", $filterArray);
     }
 
     public function getPlanTokenByUser($userId)
@@ -2938,5 +2938,15 @@ class PublyPaymentService extends BaseApiService
     {
         $inputs['changer_id'] = $changerId;
         return $this->put("user_default_plan/{$userDefaultPlanId}", $inputs);
+    }
+
+    public function getPlanByToken($token, $filterArray = [])
+    {
+        return $this->get("plan/token/{$token}", $filterArray);
+    }
+
+    public function getCheapestPlanByUser($userId, $filterArray = [])
+    {
+        return $this->get("plan/user/{$userId}/cheapest", $filterArray);
     }
 }
