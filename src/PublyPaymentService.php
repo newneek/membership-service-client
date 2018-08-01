@@ -2425,9 +2425,9 @@ class PublyPaymentService extends BaseApiService
                 'force' => $force ? 1 : 0]);
     }
 
-    public function getPlans()
+    public function getPlans($filterArray = [])
     {
-        return $this->get("plan");
+        return $this->get("plan", $filterArray);
     }
 
     public function getDefaultPlan()
