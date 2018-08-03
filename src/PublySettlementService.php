@@ -244,4 +244,9 @@ class PublySettlementService extends BaseApiService
             'changer_id' => $changerId
         ]);
     }
+
+    public function getSetUniqueReaderCount($filterArray = [])
+    {
+        return $this->get("subscription_user_content_view/count", $filterArray);
+    }
 }
