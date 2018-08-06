@@ -1851,11 +1851,4 @@ class PublyContentService extends BaseApiService
             'set_id' => $setId
         ]);
     }
-
-    public function updateAutoSetCurationByType($changerId, $type)
-    {
-        return $this->put("/auto_set_curation/type/{$type}", [
-            'changer_id' => $changerId
-        ]);
-    }
 }
