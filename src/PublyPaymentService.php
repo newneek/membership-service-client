@@ -95,6 +95,16 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::SUBSCRIPTION_RENEWAL_HISTORY_STATUS_REFUND_COMPLETED => "환불 완료"
     ];
 
+    const PLAN_TYPE_ONE_MONTH = 1;
+    const PLAN_TYPE_SIX_MONTHS = 2;
+    const PLAN_TYPE_TWELVE_MONTHS = 3;
+
+    const STRING_PLAN_TYPE = [
+        PublyPaymentService::PLAN_TYPE_ONE_MONTH => "1개월마다",
+        PublyPaymentService::PLAN_TYPE_SIX_MONTHS => "6개월마다",
+        PublyPaymentService::PLAN_TYPE_TWELVE_MONTHS => "12개월마다"
+    ];
+
 
 
     const EVENT_CONDITION_ALL = 1;
@@ -2415,9 +2425,9 @@ class PublyPaymentService extends BaseApiService
                 'force' => $force ? 1 : 0]);
     }
 
-    public function getPlans()
+    public function getPlans($filterArray = [])
     {
-        return $this->get("plan");
+        return $this->get("plan", $filterArray);
     }
 
     public function getDefaultPlan()
