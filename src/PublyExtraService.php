@@ -425,4 +425,18 @@ class PublyExtraService extends BaseApiService
 
         return $this->get("set_similarity_coefficient/set/{$setId}", $filterArray);
     }
+
+    public function createRankingByType($changerId, $type, $filterArray = [])
+    {
+        if (!$type) {
+            $type = 1;
+        }
+        $filterArray['changer_id'] = $changerId;
+        return $this->post("ranking/type/{$type}/create", $filterArray);
+    }
+    
+    public function getLatestRankings($filterArray = [])
+    {
+        return $this->get("ranking/latest", $filterArray);
+    }
 }
