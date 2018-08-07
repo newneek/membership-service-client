@@ -429,11 +429,11 @@ class PublyExtraService extends BaseApiService
     public function createRankingByType($changerId, $type, $filterArray)
     {
         $filterArray['changer_id'] = $changerId;
-        return $this->post("/ranking/type/{$type}/create", $filterArray);
+        return $this->post("ranking/type/{$type}/create", $filterArray);
     }
     
     public function getLatestRankings($filterArray = [])
     {
-        return $this->get("/ranking/latest", $filterArray);
+        return $this->get("ranking/latest", $filterArray);
     }
 }
