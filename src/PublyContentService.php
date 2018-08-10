@@ -6,6 +6,9 @@ use Publy\ServiceClient\Api\BaseApiService;
 
 class PublyContentService extends BaseApiService
 {
+    const REVIEW_LIKE_TYPE_LIKE = 1;
+    const REVIEW_LIKE_TYPE_DISLIKE = 2;
+
     const CURATION_TYPE_LIST = 1;
     const CURATION_TYPE_CAROUSEL = 2;
     const CURATION_TYPE_RANK_UNIQUE_SET_READER = 3;
@@ -1850,5 +1853,21 @@ class PublyContentService extends BaseApiService
             'changer_id' => $changerId,
             'set_id' => $setId
         ]);
+    }
+
+    public function getReviewLikesBySetAndUser($setId, $userId)
+    {
+        return $this->get("review_like/set/{$setId}/user/{$userId}");
+    }
+
+    public function updateOrCreateReveiwLike($changerId, $reviewLikeId, $inputs)
+    {
+        $inputs['changer_id'] = $changerId;
+        return $this->put("review_like/{$reviewLikeId}", $inputs);
+    }
+
+    public function deleteReveiwLike($changerId, $reviewLikeId)
+    {
+        return $this->delete("review_like/{$reviewLikeId}");
     }
 }
