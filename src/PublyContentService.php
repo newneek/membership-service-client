@@ -6,6 +6,9 @@ use Publy\ServiceClient\Api\BaseApiService;
 
 class PublyContentService extends BaseApiService
 {
+    const SET_REVIEW_IS_HIDDEN_FALSE = 0;
+    const SET_REVIEW_IS_HIDDEN_TRUE = 1;
+    
     const REVIEW_LIKE_TYPE_LIKE = 1;
     const REVIEW_LIKE_TYPE_DISLIKE = 2;
 
@@ -1510,6 +1513,12 @@ class PublyContentService extends BaseApiService
         }
 
         return $this->put("/set_review/user/{$userId}/set/{$setId}", $inputs);
+    }
+
+    public function updateSetReview2($changerId, $setReviewId, $inputs)
+    {
+        $inputs['changer_id'] = $changerId;
+        return $this->put("/set_review/{$setReviewId}", $inputs);
     }
 
     public function getAuthorGuides($page = 1, $limit = 10, $filterArray = [])
