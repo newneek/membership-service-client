@@ -249,4 +249,9 @@ class PublySettlementService extends BaseApiService
     {
         return $this->get("subscription_user_content_view/count", $filterArray);
     }
+
+    public function getUniqueReaderCountBySet($setId, $filterArray = [])
+    {
+        return $this->get("subscription_user_content_view/{$setId}/count", $filterArray);
+    }
 }
