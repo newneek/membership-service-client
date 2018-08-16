@@ -1864,9 +1864,9 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function getReviewLikesBySetAndUser($setId, $userId)
+    public function getReviewLikesBySetAndUser($setId, $userId, $filterArray = [])
     {
-        return $this->get("review_like/set/{$setId}/user/{$userId}");
+        return $this->get("review_like/set/{$setId}/user/{$userId}", $filterArray);
     }
 
     public function updateOrCreateReveiwLike($changerId, $reviewLikeId, $inputs)
