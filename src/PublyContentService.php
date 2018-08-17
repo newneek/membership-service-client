@@ -1512,6 +1512,12 @@ class PublyContentService extends BaseApiService
         return $this->put("/set_review/user/{$userId}/set/{$setId}", $inputs);
     }
 
+    public function updateSetReviewBySetAndUser($changerId, $userId, $setId, $inputs)
+    {
+        $inputs['changer_id'] = $changerId;
+        return $this->put("/set_review/user/{$userId}/set/{$setId}", $inputs);
+    }
+
     public function updateSetReview2($changerId, $setReviewId, $inputs)
     {
         $inputs['changer_id'] = $changerId;
@@ -1859,5 +1865,22 @@ class PublyContentService extends BaseApiService
             'changer_id' => $changerId,
             'set_id' => $setId
         ]);
+    }
+
+    public function getReviewLikesBySetAndUser($setId, $userId, $filterArray = [])
+    {
+        return $this->get("review_like/set/{$setId}/user/{$userId}", $filterArray);
+    }
+
+    public function updateOrCreateReviewLikeByReviewAndUser($changerId, $reviewId, $userId, $inputs)
+    {
+        $inputs['changer_id'] = $changerId;
+        return $this->put("review_like/review_id/{$reviewId}/user/{$userId}", $inputs);
+    }
+
+    public function deleteReviewLikeByReviewAndUser($changerId, $reviewId, $userId)
+    {
+        $inputs = [ 'changer_id' => $changerId ];
+        return $this->put("review_like/review_id/{$reviewId}/user/{$userId}/delete", $inputs);
     }
 }
