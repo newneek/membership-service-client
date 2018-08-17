@@ -443,19 +443,20 @@ class PublyExtraService extends BaseApiService
         return $this->get("ranking/latest", $filterArray);
     }
 
-    public function getReviewLikesBySetAndUser($setId, $userId)
+    public function getReviewLikesBySetAndUser($setId, $userId, $filterArray = [])
     {
-        return $this->get("review_like/set/{$setId}/user/{$userId}");
+        return $this->get("review_like/set/{$setId}/user/{$userId}", $filterArray);
     }
 
-    public function updateOrCreateReveiwLike($changerId, $reviewLikeId, $inputs)
+    public function updateOrCreateReviewLikeByReviewAndUser($changerId, $reviewId, $userId, $inputs)
     {
         $inputs['changer_id'] = $changerId;
-        return $this->put("review_like/{$reviewLikeId}", $inputs);
+        return $this->put("review_like/review_id/{$reviewId}/user/{$userId}", $inputs);
     }
 
-    public function deleteReveiwLike($changerId, $reviewLikeId)
+    public function deleteReviewLikeByReviewAndUser($changerId, $reviewId, $userId)
     {
-        return $this->delete("review_like/{$reviewLikeId}");
+        $inputs = [ 'changer_id' => $changerId ];
+        return $this->put("review_like/review_id/{$reviewId}/user/{$userId}/delete", $inputs);
     }
 }
