@@ -7,6 +7,9 @@ use Publy\ServiceClient\Api\ResponseException;
 
 class PublyExtraService extends BaseApiService
 {
+    const REVIEW_LIKE_TYPE_LIKE = 1;
+    const REVIEW_LIKE_TYPE_DISLIKE = 2;
+
     const SOCIAL_PROOF_TYPE_FACEBOOK = 1;
     const SOCIAL_PROOF_TYPE_TWITTER = 2;
     const SOCIAL_PROOF_TYPE_INSTAGRAM = 3;
@@ -438,5 +441,21 @@ class PublyExtraService extends BaseApiService
     public function getLatestRankings($filterArray = [])
     {
         return $this->get("ranking/latest", $filterArray);
+    }
+
+    public function getReviewLikesBySetAndUser($setId, $userId)
+    {
+        return $this->get("review_like/set/{$setId}/user/{$userId}");
+    }
+
+    public function updateOrCreateReveiwLike($changerId, $reviewLikeId, $inputs)
+    {
+        $inputs['changer_id'] = $changerId;
+        return $this->put("review_like/{$reviewLikeId}", $inputs);
+    }
+
+    public function deleteReveiwLike($changerId, $reviewLikeId)
+    {
+        return $this->delete("review_like/{$reviewLikeId}");
     }
 }
