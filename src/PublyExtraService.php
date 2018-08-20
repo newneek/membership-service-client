@@ -459,4 +459,10 @@ class PublyExtraService extends BaseApiService
         $inputs = [ 'changer_id' => $changerId ];
         return $this->put("review_like/review_id/{$reviewId}/user/{$userId}/delete", $inputs);
     }
+
+    public function updateAllSetReviewScores($changerId)
+    {
+        $inputs = [ 'changer_id' => $changerId ];
+        return $this->put("review_score/all", $inputs);
+    }
 }
