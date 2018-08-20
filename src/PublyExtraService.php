@@ -465,4 +465,9 @@ class PublyExtraService extends BaseApiService
         $inputs = [ 'changer_id' => $changerId ];
         return $this->put("review_score/all", $inputs);
     }
+
+    public function getReviewLikeCountOfReviewBySet($setId, $filterArray = [])
+    {
+        return $this->get("review_like/set/{$setId}/counts", $filterArray);
+    }
 }
