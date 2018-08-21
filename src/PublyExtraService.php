@@ -7,6 +7,9 @@ use Publy\ServiceClient\Api\ResponseException;
 
 class PublyExtraService extends BaseApiService
 {
+    const REVIEW_LIKE_TYPE_LIKE = 1;
+    const REVIEW_LIKE_TYPE_DISLIKE = 2;
+
     const SOCIAL_PROOF_TYPE_FACEBOOK = 1;
     const SOCIAL_PROOF_TYPE_TWITTER = 2;
     const SOCIAL_PROOF_TYPE_INSTAGRAM = 3;
@@ -443,5 +446,41 @@ class PublyExtraService extends BaseApiService
     public function getLatestRankings($filterArray = [])
     {
         return $this->get("ranking/latest", $filterArray);
+    }
+
+    public function getReviewLikesBySetAndUser($setId, $userId, $filterArray = [])
+    {
+        return $this->get("review_like/set/{$setId}/user/{$userId}", $filterArray);
+    }
+
+    public function updateOrCreateReviewLikeByReviewAndUser($changerId, $reviewId, $userId, $inputs)
+    {
+        $inputs['changer_id'] = $changerId;
+        return $this->put("review_like/review_id/{$reviewId}/user/{$userId}", $inputs);
+    }
+
+    public function deleteReviewLikeByReviewAndUser($changerId, $reviewId, $userId)
+    {
+        $inputs = [ 'changer_id' => $changerId ];
+        return $this->put("review_like/review_id/{$reviewId}/user/{$userId}/delete", $inputs);
+    }
+
+    public function updateAllSetReviewScores($changerId)
+    {
+        $inputs = [ 'changer_id' => $changerId ];
+        return $this->put("review_score/all", $inputs);
+    }
+
+    public function getReviewLikeCountsOfReviewBySet($setId, $filterArray = [])
+    {
+        return $this->get("review_like/set/{$setId}/counts", $filterArray);
+    }
+
+    public function getReviewScoreBySet($setId, $page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+
+       return $this->get("review_score/set/{$setId}", $filterArray);
     }
 }
