@@ -1499,6 +1499,15 @@ class PublyContentService extends BaseApiService
         return $this->get("/set_review/user/{$userId}/set/{$setId}", $filterArray);
     }
 
+    public function getAllSetReviews()
+    {
+        $filterArray = [
+            'page' => 1,
+            'limit' => 0
+        ];
+        return $this->get("/set_review", $filterArray);
+    }
+
     public function updateSetReview($changerId, $userId, $setId, $rating, $comment)
     {
         $inputs = ['changer_id' => $changerId];
