@@ -13,6 +13,7 @@ class PublySettlementService extends BaseApiService
     const SETTLEMENT_RESULT_STATUS_CALCULATED = 1;
     const SETTLEMENT_RESULT_STATUS_CALCULATING = 2;
     const SETTLEMENT_RESULT_STATUS_FAIL_TO_CALCULATE = 3;
+    const SETTLEMENT_RESULT_STATUS_CONFIRMED = 4;
 
     const AUTHOR_SETTLEMENT_TRANSFER_STATUS_COMPLETED = 1;
     const AUTHOR_SETTLEMENT_TRANSFER_STATUS_REQUESTED = 2;
@@ -257,5 +258,48 @@ class PublySettlementService extends BaseApiService
     public function getUniqueReaderCountBySet($setId, $filterArray = [])
     {
         return $this->get("subscription_user_content_view/set/{$setId}/count", $filterArray);
+    }
+
+    public function createAuthorSettlementTransfer(
+        $changerId,
+        $authorId,
+        $price,
+        $note,
+        $status
+    ) {
+        $inputs = [
+            'changer_id' => $changerId,
+            'author_id' => $authorId,
+            'price' => $price,
+            'note' => $note,
+            'status' => $status
+        ];
+
+        return $this->post("author_settlement_transfer", $inputs);
+    }
+
+    public function getAuthorSettlementTransfers($filterArray = [])
+    {
+        return $this->get("author_settlement_transfer", $filterArray);
+    }
+
+    public function getAuthorSettlementTransfersByAuthor($authorId, $filterArray = [])
+    {
+        return $this->get("author_settlement_transfer/author/{$authorId}", $filterArray);
+    }
+
+    public function updateAuthorSettlementTransfer($changerId, $authorSettlementTransferId)
+    {
+        return $this->put("author_settlement_transfer/{$authorSettlementTransferId}/update", [
+            'changer_id' => $changerId,
+            'action' => 'modify'
+        ]);
+    }
+
+    public function deleteAuthorSettlementTransfer($changerId, $authorSettlementTransferId)
+    {
+        return $this->post("author_settlement_transfer/{$authorSettlementTransferId}/delete", [
+            'changer_id' => $changerId
+        ]);
     }
 }
