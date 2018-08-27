@@ -18,6 +18,12 @@ class PublySettlementService extends BaseApiService
     const AUTHOR_SETTLEMENT_TRANSFER_STATUS_COMPLETED = 1;
     const AUTHOR_SETTLEMENT_TRANSFER_STATUS_REQUESTED = 2;
     const AUTHOR_SETTLEMENT_TRANSFER_STATUS_REJECTED = 3;
+
+    const STRING_AUTHOR_SETTLEMENT_TRANSFER_STATUS = [
+        PublySettlementService::AUTHOR_SETTLEMENT_TRANSFER_STATUS_COMPLETED => "지급 완료",
+        PublySettlementService::AUTHOR_SETTLEMENT_TRANSFER_STATUS_REQUESTED => "지급 신청",
+        PublySettlementService::AUTHOR_SETTLEMENT_TRANSFER_STATUS_REJECTED => "지급 반려"
+    ];
     
     public function __construct($domain)
     {
@@ -137,6 +143,15 @@ class PublySettlementService extends BaseApiService
     {
         return $this->get("settlement_result", $filterArray);
     }
+
+    public function getSettlementResultByYearAndMonth(
+        $settlementYear,
+        $settlementMonth,
+        $filterArray = []
+    ) {
+        return $this->get("settlement_result/settlement_year/{$settlementYear}/settlement_month/$settlementMonth", $filterArray);
+    }
+
     public function updateSettlementResult($changerId, $inputs = [])
     {
         $inputs = array_merge($inputs, ["changer_id" => $changerId]);
