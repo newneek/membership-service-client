@@ -2026,7 +2026,7 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
-    public function changeCardAndKeepSubscription(
+    public function changeCardAndResumeSubscription(
         $changerId,
         $paymentId,
         $subscriptionId,
@@ -2050,16 +2050,13 @@ class PublyPaymentService extends BaseApiService
             return $result;
         }
 
-        $resultPayment = $this->put("/subscription/{$subscriptionId}",
-            [ 'changer_id' => $changerId,
-                'action' => 'renewal',
-                'force' => $force ? 1 : 0 ]);
-
-        if (!$resultPayment['success']) {
+        try {
+            $resultSubscription = $this->resumeSubscription($changerId, $subscriptionId, $force);
+        } catch (ResponseException $e) {
             $result['success'] = false;
-            $result['from'] = 'payment';
-            $result['error_code'] = $resultPayment['error_code'];
-            $result['message'] = $resultPayment['message'];
+            $result['from'] = 'subscription';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
 
             return $result;
         }
@@ -2072,7 +2069,7 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
-    public function addCreditCardAndKeepSubscription(
+    public function addCreditCardAndResumeSubscription(
         $changerId,
         $userId,
         $paymentId,
@@ -2120,16 +2117,13 @@ class PublyPaymentService extends BaseApiService
             return $result;
         }
 
-        $resultPayment = $this->put("/subscription/{$subscriptionId}",
-            [ 'changer_id' => $changerId,
-                'action' => 'renewal',
-                'force' => $force ? 1 : 0 ]);
-
-        if (!$resultPayment['success']) {
+        try {
+            $resultSubscription = $this->resumeSubscription($changerId, $subscriptionId, $force);
+        } catch (ResponseException $e) {
             $result['success'] = false;
-            $result['from'] = 'payment';
-            $result['error_code'] = $resultPayment['error_code'];
-            $result['message'] = $resultPayment['message'];
+            $result['from'] = 'subscription';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
 
             return $result;
         }
@@ -2142,11 +2136,11 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
-    public function keepSubscription($changerId, $subscriptionId, $force = false)
+    public function resumeSubscription($changerId, $subscriptionId, $force = false)
     {
         return $this->put("/subscription/{$subscriptionId}",
             [ 'changer_id' => $changerId,
-                'action' => 'renewal',
+                'action' => 'resume',
                 'force' => $force ? 1 : 0 ]);
     }
 
