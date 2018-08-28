@@ -19,6 +19,13 @@ class PublySettlementService extends BaseApiService
     const AUTHOR_SETTLEMENT_TRANSFER_STATUS_REQUESTED = 2;
     const AUTHOR_SETTLEMENT_TRANSFER_STATUS_REJECTED = 3;
 
+    const STRING_SETTLEMENT_RESULT_STATUS = [
+        PublySettlementService::SETTLEMENT_RESULT_STATUS_CALCULATED => "정산 완료",
+        PublySettlementService::SETTLEMENT_RESULT_STATUS_CALCULATING => "정산중",
+        PublySettlementService::SETTLEMENT_RESULT_STATUS_FAIL_TO_CALCULATE => "정산 실패(취소)",
+        PublySettlementService::SETTLEMENT_RESULT_STATUS_CONFIRMED => "확인 완료"
+    ];
+    
     const STRING_AUTHOR_SETTLEMENT_TRANSFER_STATUS = [
         PublySettlementService::AUTHOR_SETTLEMENT_TRANSFER_STATUS_COMPLETED => "지급 완료",
         PublySettlementService::AUTHOR_SETTLEMENT_TRANSFER_STATUS_REQUESTED => "지급 신청",
