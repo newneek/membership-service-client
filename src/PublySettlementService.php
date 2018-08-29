@@ -300,8 +300,14 @@ class PublySettlementService extends BaseApiService
         return $this->post("author_settlement_transfer", $inputs);
     }
 
-    public function getAuthorSettlementTransfers($filterArray = [])
+    public function getAuthorSettlementTransfers(
+        $page = 1,
+        $limit = 10,
+        $filterArray = []
+    )
     {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
         return $this->get("author_settlement_transfer", $filterArray);
     }
 
@@ -342,6 +348,57 @@ class PublySettlementService extends BaseApiService
     public function deleteAuthorSettlementTransfer($changerId, $authorSettlementTransferId)
     {
         return $this->post("author_settlement_transfer/{$authorSettlementTransferId}/delete", [
+            'changer_id' => $changerId
+        ]);
+    }
+
+    public function createOtherAuthorSettlement(
+        $changerId,
+        $authorId,
+        $price,
+        $note
+    ) {
+        $inputs = [
+            'changer_id' => $changerId,
+            'author_id' => $authorId,
+            'price' => $price,
+            'note' => $note
+        ];
+
+        return $this->post("other_author_settlement", $inputs);
+    }
+
+    public function getOtherAuthorSettlements(
+        $page = 1,
+        $limit = 10,
+        $filterArray = []
+    )
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("other_author_settlement", $filterArray);
+    }
+
+    public function getOtherAuthorSettlementsByAuthor($authorId, $filterArray = [])
+    {
+        return $this->get("other_author_settlement/author/{$authorId}", $filterArray);
+    }
+
+    public function getOtherAuthorSettlementTotalPriceGroupByAuhor($filterArray = [])
+    {
+        return $this->get("other_author_settlement/total_price_group_by_author", $filterArray);
+    }
+
+    public function updateOtherAuthorSettlement($changerId, $otherAuthorSettlementId)
+    {
+        return $this->put("other_author_settlement/{$otherAuthorSettlementId}/update", [
+            'changer_id' => $changerId,
+        ]);
+    }
+
+    public function deleteOtherAuthorSettlement($changerId, $otherAuthorSettlementId)
+    {
+        return $this->post("other_author_settlement/{$otherAuthorSettlementId}/delete", [
             'changer_id' => $changerId
         ]);
     }
