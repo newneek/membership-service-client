@@ -321,9 +321,9 @@ class PublySettlementService extends BaseApiService
         return $this->get("author_settlement_transfer/total_price_group_by_author", $filterArray);
     }
 
-    public function updateAuthorSettlementTransfer($changerId, $authorSettlementTransferId)
+    public function modifyAuthorSettlementTransfer($changerId, $authorSettlementTransferId)
     {
-        return $this->put("author_settlement_transfer/{$authorSettlementTransferId}/update", [
+        return $this->put("author_settlement_transfer/{$authorSettlementTransferId}", [
             'changer_id' => $changerId,
             'action' => 'modify'
         ]);
@@ -331,7 +331,7 @@ class PublySettlementService extends BaseApiService
 
     public function completeAuthorSettlementTransfer($changerId, $authorSettlementTransferId)
     {
-        return $this->put("author_settlement_transfer/{$authorSettlementTransferId}/update", [
+        return $this->put("author_settlement_transfer/{$authorSettlementTransferId}", [
             'changer_id' => $changerId,
             'action' => 'complete'
         ]);
@@ -339,7 +339,7 @@ class PublySettlementService extends BaseApiService
 
     public function rejectAuthorSettlementTransfer($changerId, $authorSettlementTransferId)
     {
-        return $this->put("author_settlement_transfer/{$authorSettlementTransferId}/update", [
+        return $this->put("author_settlement_transfer/{$authorSettlementTransferId}", [
             'changer_id' => $changerId,
             'action' => 'reject'
         ]);
