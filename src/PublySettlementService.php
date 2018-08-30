@@ -287,14 +287,14 @@ class PublySettlementService extends BaseApiService
         $authorId,
         $price,
         $note,
-        $status
+        $force = false
     ) {
         $inputs = [
             'changer_id' => $changerId,
             'author_id' => $authorId,
             'price' => $price,
             'note' => $note,
-            'status' => $status
+            'force' => $force
         ];
 
         return $this->post("author_settlement_transfer", $inputs);
