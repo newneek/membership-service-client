@@ -1875,4 +1875,19 @@ class PublyContentService extends BaseApiService
             'set_id' => $setId
         ]);
     }
+
+    public function createCategory($changerId, $name)
+    {
+        return $this->post("category", [
+            'changer_id' => $changerId,
+            'name' => $name
+        ]);
+    }
+
+    public function getCategories($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("category", $filterArray);
+    }
 }
