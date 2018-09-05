@@ -1070,6 +1070,11 @@ class PublyContentService extends BaseApiService
         return $this->get("/set/project_ids", $filterArray);
     }
 
+    public function getSetsByCategory($categoryId)
+    {
+        return $this->get("set/category/{$categoryId}");
+    }
+
     public function getSet($setId, $filterArray = [])
     {
         return $this->get("set/{$setId}", $filterArray);
@@ -1889,5 +1894,15 @@ class PublyContentService extends BaseApiService
         $filterArray['page'] = $page;
         $filterArray['limit'] = $limit;
         return $this->get("category", $filterArray);
+    }
+
+    public function getCategory($categoryId)
+    {
+        return $this->get("category/{$categoryId}");
+    }
+
+    public function createSetCategory($setId, $categoryId)
+    {
+        return $this->post("category/{$categoryId}/set/{$setId}");
     }
 }
