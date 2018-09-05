@@ -1901,11 +1901,14 @@ class PublyContentService extends BaseApiService
         return $this->get("category/{$categoryId}");
     }
 
-    public function createSetCategory($changerId, $setId, $categoryId)
+    public function createCategorySet($changerId, $setId, $categoryId)
     {
-        return $this->post("category/{$categoryId}/set/{$setId}", [
-            'changer_id' => $changerId
-        ]);
+        $inputs = [
+            'changer_id' => $changerId,
+            'set_id' => $setId,
+            'category_id' => $categoryId
+        ];
+        return $this->post("category_set", $inputs);
     }
 
     public function updateCategory($changerId, $categoryId, $name)
