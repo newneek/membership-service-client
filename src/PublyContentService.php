@@ -1070,9 +1070,9 @@ class PublyContentService extends BaseApiService
         return $this->get("/set/project_ids", $filterArray);
     }
 
-    public function getSetsByCategory($categoryId)
+    public function getSetsByCategory($categoryId, $filterArray = [])
     {
-        return $this->get("set/category/{$categoryId}");
+        return $this->get("set/category/{$categoryId}", $filterArray);
     }
 
     public function getSet($setId, $filterArray = [])
