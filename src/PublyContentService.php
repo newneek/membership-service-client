@@ -1922,4 +1922,11 @@ class PublyContentService extends BaseApiService
             'changer_id' => $changerId, 'name' => $name
         ]);
     }
+
+    public function removeCategorySet($changerId, $categoryId, $setId)
+    {
+        return $this->post("category_set/category/{$categoryId}/set/{$setId}", [
+            'changer_id' => $changerId
+        ]);
+    }
 }
