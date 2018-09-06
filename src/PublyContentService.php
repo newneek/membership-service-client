@@ -1913,6 +1913,12 @@ class PublyContentService extends BaseApiService
         return $this->get("category/set/{$setId}", $filterArray);
     }
 
+    public function getCategoriesBySetCountAndLimit($limit, $filterArray = [])
+    {
+        $filterArray['limit'] = $limit;
+        return $this->get("category/order_by_set_count_and_limit", $filterArray);
+    }
+
     public function createCategorySet($changerId, $categoryId, $setId)
     {
         $inputs = [
