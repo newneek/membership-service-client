@@ -1901,6 +1901,13 @@ class PublyContentService extends BaseApiService
         return $this->get("category/{$categoryId}");
     }
 
+    public function deleteCategory($changerId, $categoryId)
+    {
+        return $this->post("category/{$categoryId}/delete", [
+            'changer_id' => $changerId
+        ]);
+    }
+
     public function getCategoriesBySet($setId, $filterArray = [])
     {
         return $this->get("category/set/{$setId}", $filterArray);
