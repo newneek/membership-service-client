@@ -196,6 +196,16 @@ class PublyExtraService extends BaseApiService
         return $this->post("/searchable_object/delete", $inputs);
     }
 
+    public function deleteSearchableObjectByFilter($indexName, $filter)
+    {
+        $inputs = [
+            'index_name' => $indexName,
+            'filter' => json_encode($filter)
+        ];
+
+        return $this->post("/searchable_object/delete", $inputs);
+    }
+
     public function createEventGroup($changerId,
                                      $title,
                                      $order)
