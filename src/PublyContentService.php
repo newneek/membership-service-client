@@ -1889,10 +1889,8 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function getCategories($page = 1, $limit = 10, $filterArray = [])
+    public function getCategories($filterArray = [])
     {
-        $filterArray['page'] = $page;
-        $filterArray['limit'] = $limit;
         return $this->get("category", $filterArray);
     }
 
