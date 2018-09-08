@@ -1911,22 +1911,6 @@ class PublyContentService extends BaseApiService
         return $this->get("category/set/{$setId}", $filterArray);
     }
 
-    public function getCategoriesBySetCountAndLimit($limit, $filterArray = [])
-    {
-        $filterArray['limit'] = $limit;
-        return $this->get("category/order_by_set_count_and_limit", $filterArray);
-    }
-
-    public function createCategorySet($changerId, $categoryId, $setId)
-    {
-        $inputs = [
-            'changer_id' => $changerId,
-            'set_id' => $setId,
-            'category_id' => $categoryId
-        ];
-        return $this->post("category_set", $inputs);
-    }
-
     public function updateCategory($changerId, $categoryId, $name)
     {
         return $this->put("category/{$categoryId}", [
@@ -1934,10 +1918,13 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function removeCategorySet($changerId, $categoryId, $setId)
+    public function attachSetToCategory($changerId, $categoryId, $setId)
     {
-        return $this->post("category_set/category/{$categoryId}/set/{$setId}", [
-            'changer_id' => $changerId
-        ]);
+        return $this->post("category/{$categoryId}/set/{$setId}/attach", ['changer_id' => $changerId]);
+    }
+
+    public function detachSetFromCategory($changerId, $categoryId, $setId)
+    {
+        return $this->post("category/{$categoryId}/set/{$setId}/detach", ['changer_id' => $changerId]);
     }
 }
