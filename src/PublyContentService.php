@@ -1070,6 +1070,11 @@ class PublyContentService extends BaseApiService
         return $this->get("/set/project_ids", $filterArray);
     }
 
+    public function getSetsByCategory($categoryId, $filterArray = [])
+    {
+        return $this->get("set/category/{$categoryId}", $filterArray);
+    }
+
     public function getSet($setId, $filterArray = [])
     {
         return $this->get("set/{$setId}", $filterArray);
@@ -1874,5 +1879,52 @@ class PublyContentService extends BaseApiService
             'changer_id' => $changerId,
             'set_id' => $setId
         ]);
+    }
+
+    public function createCategory($changerId, $name)
+    {
+        return $this->post("category", [
+            'changer_id' => $changerId,
+            'name' => $name
+        ]);
+    }
+
+    public function getCategories($filterArray = [])
+    {
+        return $this->get("category", $filterArray);
+    }
+
+    public function getCategory($categoryId)
+    {
+        return $this->get("category/{$categoryId}");
+    }
+
+    public function deleteCategory($changerId, $categoryId)
+    {
+        return $this->post("category/{$categoryId}/delete", [
+            'changer_id' => $changerId
+        ]);
+    }
+
+    public function getCategoriesBySet($setId, $filterArray = [])
+    {
+        return $this->get("category/set/{$setId}", $filterArray);
+    }
+
+    public function updateCategory($changerId, $categoryId, $name)
+    {
+        return $this->put("category/{$categoryId}", [
+            'changer_id' => $changerId, 'name' => $name
+        ]);
+    }
+
+    public function attachSetToCategory($changerId, $categoryId, $setId)
+    {
+        return $this->post("category/{$categoryId}/set/{$setId}/attach", ['changer_id' => $changerId]);
+    }
+
+    public function detachSetFromCategory($changerId, $categoryId, $setId)
+    {
+        return $this->post("category/{$categoryId}/set/{$setId}/detach", ['changer_id' => $changerId]);
     }
 }
