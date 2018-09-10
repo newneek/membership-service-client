@@ -285,14 +285,14 @@ class PublySettlementService extends BaseApiService
     public function createAuthorSettlementTransfer(
         $changerId,
         $authorId,
-        $price,
+        $priceBeforeTax,
         $note,
         $force = false
     ) {
         $inputs = [
             'changer_id' => $changerId,
             'author_id' => $authorId,
-            'price' => $price,
+            'price_before_tax' => $priceBeforeTax,
             'note' => $note,
             'force' => $force
         ];
