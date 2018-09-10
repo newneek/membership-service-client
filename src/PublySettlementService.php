@@ -316,9 +316,9 @@ class PublySettlementService extends BaseApiService
         return $this->get("author_settlement_transfer/author/{$authorId}", $filterArray);
     }
 
-    public function getAuthorSettlementTransferTotalPriceGroupByAuhor($filterArray = [])
+    public function getAuthorSettlementTransferTotalPriceBeforeTaxGroupByAuthor($filterArray = [])
     {
-        return $this->get("author_settlement_transfer/total_price_group_by_author", $filterArray);
+        return $this->get("author_settlement_transfer/total_price_before_tax_group_by_author", $filterArray);
     }
 
     public function modifyAuthorSettlementTransfer($changerId, $authorSettlementTransferId)
@@ -385,7 +385,7 @@ class PublySettlementService extends BaseApiService
         return $this->get("other_author_settlement/author/{$authorId}", $filterArray);
     }
 
-    public function getOtherAuthorSettlementTotalPriceGroupByAuhor($filterArray = [])
+    public function getOtherAuthorSettlementTotalPriceGroupByAuthor($filterArray = [])
     {
         return $this->get("other_author_settlement/total_price_group_by_author", $filterArray);
     }
