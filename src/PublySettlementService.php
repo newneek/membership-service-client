@@ -220,6 +220,11 @@ class PublySettlementService extends BaseApiService
         return $this->get("tax_payer_type");
     }
 
+    public function getTaxPayerType($taxPayerTypeId)
+    {
+        return $this->get("tax_payer_type/{$taxPayerTypeId}");
+    }
+
     public function addTaxPayerType($changerId, $name, $taxName, $ratePermille, $direction)
     {
         return $this->post("tax_payer_type", [
