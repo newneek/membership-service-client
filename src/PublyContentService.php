@@ -1954,4 +1954,9 @@ class PublyContentService extends BaseApiService
     {
         return $this->post("category/{$categoryId}/set/{$setId}/detach", ['changer_id' => $changerId]);
     }
+
+    public function getUserSetProgressesByUser($userId, $filterArray = [])
+    {
+        return $this->get("user_set_progress/user/{$userId}", $filterArray);
+    }
 }
