@@ -154,6 +154,11 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::USER_DEFAULT_PLAN_TYPE_CONTENT_RETURN => "콘텐츠 환급"
     ];
 
+
+    const VOUCHER_STATUS_INVITATION_REQUESTED = 1;
+    const VOUCHER_STATUS_INVITATION_ACCEPTED = 2;
+    const VOUCHER_STATUS_CANCELLED = 3;
+
     const PAY_WITHOUT_POINT = 0;
     const PAY_WITH_POINT = 1;
 
