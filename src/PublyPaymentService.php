@@ -3046,4 +3046,17 @@ class PublyPaymentService extends BaseApiService
         $result['creditCard'] = $creditCard;
         return $result;
     }
+
+    public function createVoucher($changerId, $userId, $voucherOptionId, $planId, $sentTo)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'voucher_option_id' => $voucherOptionId,
+            'plan_id' => $planId,
+            'sent_to' => $sentTo
+        ];
+
+        return $this->post("voucher", $inputs);
+    }
 }
