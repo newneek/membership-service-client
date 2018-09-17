@@ -531,6 +531,13 @@ class PublyContentService extends BaseApiService
         return $this->get("content/total");
     }
 
+    public function getTotalContentCount2() {
+        $totalContentCountResult = $this->get("content/total");
+        $totalContentCount = $totalContentCountResult['success']['data'];
+
+        return $totalContentCount;
+    }
+
     public function getTotalSetCount() {
         return $this->get("set/total");
     }
@@ -539,21 +546,21 @@ class PublyContentService extends BaseApiService
         return $this->get("writer/total");
     }
 
+    public function getTotalAuthorCount2() {
+        return $this->get("writer/total");
+    }
+
     public function getTotalContentCountByCache() {
         $cacheKey = 'TOTAL_CONTENT_COUNT';
         try {
             $totalContentCount = \Cache::remember($cacheKey, 60, function() {
-                $totalContentCountResult = $this->get("content/total");
-                $totalContentCount = $totalContentCountResult['success']['data'];
-
-                return $totalContentCount;
+                return $this->getTotalContentCount2();
             });
         } catch(\Exception $e) {
             if ($e instanceof ResponseException) {
                 throw $e;
             } else {// ignore Cache Exception
-                $totalContentCountResult = $this->get("content/total");
-                $totalContentCount = $totalContentCountResult['success']['data'];
+                $totalContentCount = $this->getTotalContentCount2();
             }
         }
 
@@ -562,13 +569,13 @@ class PublyContentService extends BaseApiService
 
     public function getTotalPackageSetCountByCache() {
         $cacheKey = 'TOTAL_PACKAGE_SET_COUNT';
+        $latestPackageSetFilter =
+            [
+                'is_package' => 1,
+                'publish_after' => 1,
+            ];
         try {
-            $totalPackageSetCount = \Cache::remember($cacheKey, 60, function() {
-                $latestPackageSetFilter =
-                    [
-                        'is_package' => 1,
-                        'publish_after' => 1,
-                    ];
+            $totalPackageSetCount = \Cache::remember($cacheKey, 60, function() use ($latestPackageSetFilter) {
                 $latestPackageSetResult = $this->getSets(1, 1, $latestPackageSetFilter);
                 $totalPackageSetCount = $latestPackageSetResult['paginator']['total_count'];
 
@@ -578,11 +585,6 @@ class PublyContentService extends BaseApiService
             if ($e instanceof ResponseException) {
                 throw $e;
             } else {// ignore Cache Exception
-                $latestPackageSetFilter =
-                    [
-                        'is_package' => 1,
-                        'publish_after' => 1,
-                    ];
                 $latestPackageSetResult = $this->getSets(1, 1, $latestPackageSetFilter);
                 $totalPackageSetCount = $latestPackageSetResult['paginator']['total_count'];
             }
@@ -595,17 +597,13 @@ class PublyContentService extends BaseApiService
         $cacheKey = 'TOTAL_AUTHOR_COUNT';
         try {
             $totalAuthorCount = \Cache::remember($cacheKey, 60, function() {
-                $totalAuthorCountResult = $this->get("writer/total");
-                $totalAuthorCount = $totalAuthorCountResult['success']['data'];
-
-                return $totalAuthorCount;
+                return $this->getTotalAuthorCount2();
             });
         } catch(\Exception $e) {
             if ($e instanceof ResponseException) {
                 throw $e;
             } else {// ignore Cache Exception
-                $totalAuthorCountResult = $this->get("writer/total");
-                $totalAuthorCount = $totalAuthorCountResult['success']['data'];
+                $totalAuthorCount = $this->getTotalAuthorCount2();
             }
         }
 
