@@ -532,10 +532,7 @@ class PublyContentService extends BaseApiService
     }
 
     public function getTotalContentCount2() {
-        $totalContentCountResult = $this->get("content/total");
-        $totalContentCount = $totalContentCountResult['success']['data'];
-
-        return $totalContentCount;
+        return $this->get("content/total")['success']['data'];
     }
 
     public function getTotalSetCount() {
@@ -547,7 +544,7 @@ class PublyContentService extends BaseApiService
     }
 
     public function getTotalAuthorCount2() {
-        return $this->get("writer/total");
+        return $this->get("writer/total")['success']['data'];
     }
 
     public function getTotalContentCountByCache() {
