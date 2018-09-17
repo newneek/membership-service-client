@@ -538,6 +538,45 @@ class PublyContentService extends BaseApiService
         return $this->get("writer/total");
     }
 
+    public function getTotalContentCountByCache() {
+        $cacheKey = 'TOTAL_CONTENT_COUNT';
+        $totalContentCount = \Cache::remember($cacheKey, 60, function() {
+            $totalContentCountResult = $this->get("content/total");
+            $totalContentCount = $totalContentCountResult['success']['data'];
+
+            return $totalContentCount;
+        });
+
+        return $totalContentCount;
+    }
+
+    public function getTotalPackageSetCountByCache() {
+        $cacheKey = 'TOTAL_PACKAGE_SET_COUNT';
+        $totalPackageSetCount = \Cache::remember($cacheKey, 60, function() {
+            $latestPackageSetFilter =
+                [
+                    'is_package' => 1,
+                    'publish_after' => 1,
+                ];
+            $latestPackageSetResult = $this->getSets(1, 1, $latestPackageSetFilter);
+            return $latestPackageSetResult['paginator']['total_count'];
+        });
+
+        return $totalPackageSetCount;
+    }
+
+    public function getTotalAuthorCountByCache() {
+        $cacheKey = 'TOTAL_AUTHOR_COUNT';
+        $totalAuthorCount = \Cache::remember($cacheKey, 60, function() {
+            $totalAuthorCountResult = $this->get("writer/total");
+            $totalAuthorCount = $totalAuthorCountResult['success']['data'];
+
+            return $totalAuthorCount;
+        });
+
+        return $totalAuthorCount;
+    }
+
     public function createContentItem($changerId, $contentId, $title)
     {
         return $this->post("content/{$contentId}/content_item", [
