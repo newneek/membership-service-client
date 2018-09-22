@@ -3059,4 +3059,9 @@ class PublyPaymentService extends BaseApiService
 
         return $this->post("voucher", $inputs);
     }
+
+    public function getVoucherDiscountRates($filterArray = [])
+    {
+        return $this->get("voucher_discount_rate", $filterArray);
+    }
 }
