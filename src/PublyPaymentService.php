@@ -159,6 +159,9 @@ class PublyPaymentService extends BaseApiService
     const VOUCHER_STATUS_INVITATION_ACCEPTED = 2;
     const VOUCHER_STATUS_CANCELLED = 3;
 
+    const VOUCHER_USE_HISTORY_STATUS_ACTIVATED = 1;
+    const VOUCHER_USE_HISTORY_STATUS_EXPIRED = 2;
+
     const PAY_WITHOUT_POINT = 0;
     const PAY_WITH_POINT = 1;
 
