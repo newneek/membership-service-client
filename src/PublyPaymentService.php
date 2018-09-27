@@ -3047,6 +3047,67 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
+    public function orderAndPayVoucher(
+        $changerId,
+        $userId,
+        $creditCardId,
+        $price,
+        $planId,
+        $quantity)
+    {
+        $result = [ 'success' => false ];
+
+        try {
+            $inputs = [ 'changer_id' => $changerId,
+                'event_id' => $planId,
+                'user_id' => $userId,
+                'price' => $price,
+                'quantity' => $quantity
+            ];
+
+            $resultOrder = $this->post('order', $inputs);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['from'] = 'order';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+            return $result;
+        }
+
+        // order
+        $order = $resultOrder['success']['data'];
+        // 정상적으로 주문 되었음.
+
+        // payment
+        $resultPayment = $this->pay2(
+            $changerId,
+            $userId,
+            $order['id'],
+            static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+            'credit_card_id',
+            $creditCardId,
+            true,
+            '');
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $payment = $resultPayment['item'];
+
+        $orderResult = $this->get("order/".$order['id'], []);
+        $order = $orderResult['success']['data'];
+
+        $result['success'] = true;
+        $result['order'] = $order;
+        $result['payment'] = $payment;
+        return $result;
+    }
+
     public function createVoucher($changerId, $userId, $voucherOptionId, $planId, $sentTo)
     {
         $inputs = [
