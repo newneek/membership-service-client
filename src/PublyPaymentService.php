@@ -3062,7 +3062,7 @@ class PublyPaymentService extends BaseApiService
 
         try {
             $inputs = [ 'changer_id' => $changerId,
-                'event_id' => $planId,
+                'plan_id' => $planId,
                 'user_id' => $userId,
                 'price' => $price,
                 'quantity' => $quantity
