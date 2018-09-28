@@ -2432,6 +2432,12 @@ class PublyPaymentService extends BaseApiService
         return $this->get("plan", $filterArray);
     }
 
+    public function getPlansByIds($planIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $planIds);
+        return $this->get("plan/plan_ids", $filterArray);
+    }
+
     public function getDefaultPlan()
     {
         return $this->get("plan/default");
