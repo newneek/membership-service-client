@@ -79,7 +79,7 @@ class Http {
             //list ($request, $requestOptions) = $client->getAuth()->prepareRequest($request, $requestOptions);
             $response = $apiService->guzzle->send($request, $requestOptions);
         } catch (RequestException $e) {
-            throw new ResponseException($e);
+            throw new ResponseException($e, $options);
         } 
 
         if (isset($file)) {
