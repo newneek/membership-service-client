@@ -3142,6 +3142,14 @@ class PublyPaymentService extends BaseApiService
         return $this->post("voucher/store_vouchers_by_length_month", $inputs);
     }
 
+    public function cancelVoucher($changerId, $voucherId)
+    {
+        return $this->put("voucher/{$voucherId}", [
+            'changer_id' => $changerId,
+            'action' => 'cancel'
+        ]);
+    }
+
     public function getVoucherDiscountRates($filterArray = [])
     {
         return $this->get("voucher_discount_rate", $filterArray);
