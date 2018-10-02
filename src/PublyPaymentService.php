@@ -3150,6 +3150,13 @@ class PublyPaymentService extends BaseApiService
         ]);
     }
 
+    public function resendVoucher($changerId, $voucherId)
+    {
+        return $this->put("voucher/resend_voucher/{$voucherId}", [
+            'changer_id' => $changerId
+        ]);
+    }
+
     public function getVoucherDiscountRates($filterArray = [])
     {
         return $this->get("voucher_discount_rate", $filterArray);
