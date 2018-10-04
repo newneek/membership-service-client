@@ -3142,6 +3142,11 @@ class PublyPaymentService extends BaseApiService
         return $this->post("voucher/store_vouchers_by_length_month", $inputs);
     }
 
+    public function getVoucherByCode($code)
+    {
+        return $this->get("voucher/code/{$code}");
+    }
+
     public function cancelVoucher($changerId, $voucherId)
     {
         return $this->put("voucher/{$voucherId}", [
@@ -3173,7 +3178,7 @@ class PublyPaymentService extends BaseApiService
         return $this->get("voucher/voucher_options", $filterArray);
     }
 
-    public function registerVoucherByCode($changerId, $code, $userId)
+    public function registerVoucherByCode($changerId, $userId, $code)
     {
         $inputs = [
             'changer_id' => $changerId,
