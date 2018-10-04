@@ -1822,6 +1822,35 @@ class PublyContentService extends BaseApiService
         }
     }
 
+    public function updateOrCreatePackageReader3(
+        $changerId,
+        $userId,
+        $sourceType,
+        $adminId,
+        $subscriptionId,
+        $couponUseHistoryId,
+        $voucherUseHistoryId,
+        $note
+    ) {
+        try {
+            return $this->put("package_reader/{$userId}", [
+                'changer_id' => $changerId,
+                'source_type' => $sourceType,
+                'admin_id' => $adminId,
+                'subscription_id' => $subscriptionId,
+                'coupon_use_history_id' => $couponUseHistoryId,
+                'voucher_use_history_id' => $voucherUseHistoryId,
+                'note' => $note
+            ]);
+        } catch (\Exception $e) {
+            $result['success'] = false;
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+    }
+
     public function deletePackageReader($params)
     {
         return $this->post("package_reader/delete", $params);
