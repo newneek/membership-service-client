@@ -3172,4 +3172,14 @@ class PublyPaymentService extends BaseApiService
         $filterArray['voucher_option_ids'] = implode(',', $voucherOptionIds);
         return $this->get("voucher/voucher_options", $filterArray);
     }
+
+    public function registerVoucherByCode($changerId, $code, $userId)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId
+        ];
+
+        return $this->post("voucher_use_history/code/{$code}", $inputs);
+    }
 }
