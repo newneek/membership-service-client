@@ -3187,4 +3187,20 @@ class PublyPaymentService extends BaseApiService
 
         return $this->post("voucher_use_history/code/{$code}", $inputs);
     }
+
+    public function expireVoucherUseHistories($changerId, $days)
+    {
+        return $this->post("voucher_use_history/expire_voucher_use_histories", [
+            'changer_id' => $changerId,
+            'base_days' => $days
+        ]);
+    }
+
+    public function refreshVoucherUseHistories($changerId, $days)
+    {
+        return $this->post("voucher_use_history/refresh_voucher_use_histories", [
+            'changer_id' => $changerId,
+            'base_days' => $days
+        ]);
+    }
 }
