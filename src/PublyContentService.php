@@ -1830,7 +1830,9 @@ class PublyContentService extends BaseApiService
         $subscriptionId,
         $couponUseHistoryId,
         $voucherUseHistoryId,
-        $note
+        $note,
+        $settlementYear,
+        $settlementMonth
     ) {
         try {
             return $this->put("package_reader/{$userId}", [
@@ -1840,7 +1842,9 @@ class PublyContentService extends BaseApiService
                 'subscription_id' => $subscriptionId,
                 'coupon_use_history_id' => $couponUseHistoryId,
                 'voucher_use_history_id' => $voucherUseHistoryId,
-                'note' => $note
+                'note' => $note,
+                'settlement_year' => $settlementYear,
+                'settlement_month' => $settlementMonth
             ]);
         } catch (\Exception $e) {
             $result['success'] = false;
