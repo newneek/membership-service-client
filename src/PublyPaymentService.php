@@ -1461,6 +1461,30 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
+    public function addBankTransfer($changerId, $userId, $name)
+    {
+        $result['success'] = false;
+        try {
+            $inputs = [
+                'changer_id' => $changerId,
+                'user_id' => $userId,
+                'name' => $name
+            ];
+            $bankTransferResult = $this->post("bank_transfer", $inputs);
+        } catch (\Exception $e) {
+            $result['success'] = false;
+            $result['from'] = 'bank_transfer';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $result['item'] = $bankTransferResult['success']['data'];
+        $result['success'] = true;
+        return $result;
+    }
+
     /*
      * Main Payment Method related functions
      */
@@ -2968,14 +2992,10 @@ class PublyPaymentService extends BaseApiService
         return $this->get("plan/user/{$userId}/cheapest", $filterArray);
     }
 
-    public function addCreditCardAndOrderAndPayVoucher(
+    public function addBankTransferAndOrderAndPayVoucher(
         $changerId,
         $userId,
-        $creditCardNumber,
-        $expireYear,
-        $expireMonth,
-        $id,
-        $password,
+        $name,
         $price,
         $planId,
         $quantity)
@@ -2983,25 +3003,21 @@ class PublyPaymentService extends BaseApiService
         $result = [ 'success' => false ];
 
         // add credit card
-        $resultCreditCard = $this->addCreditCard2(
+        $resultBankTransfer = $this->addBankTransfer(
             $changerId,
             $userId,
-            $creditCardNumber,
-            $expireYear,
-            $expireMonth,
-            $id,
-            $password);
+            $name);
 
-        if (!$resultCreditCard['success']) {
+        if (!$resultBankTransfer['success']) {
             $result['success'] = false;
-            $result['from'] = 'credit_card';
-            $result['error_code'] = $resultCreditCard['error_code'];
-            $result['message'] = $resultCreditCard['message'];
+            $result['from'] = 'bank_transfer';
+            $result['error_code'] = $resultBankTransfer['error_code'];
+            $result['message'] = $resultBankTransfer['message'];
             return $result;
         }
 
-        $creditCard = $resultCreditCard['item'];
-        $result['creditCard'] = $creditCard;
+        $bankTransfer = $resultBankTransfer['item'];
+        $result['bank_transfer'] = $bankTransfer;
         // 정상적으로 카드 등록 되었음.
 
         try {
@@ -3030,10 +3046,10 @@ class PublyPaymentService extends BaseApiService
             $changerId,
             $userId,
             $order['id'],
-            static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
-            'credit_card_id',
-            $creditCard['id'],
-            true,
+            static::PAYMENT_TYPE_BANK_TRANSFER,
+            'bank_transfer_id',
+            $bankTransfer['id'],
+            false,
             '');
 
         if (!$resultPayment['success']) {
@@ -3052,68 +3068,7 @@ class PublyPaymentService extends BaseApiService
         $result['success'] = true;
         $result['order'] = $order;
         $result['payment'] = $payment;
-        $result['creditCard'] = $creditCard;
-        return $result;
-    }
-
-    public function orderAndPayVoucher(
-        $changerId,
-        $userId,
-        $creditCardId,
-        $price,
-        $planId,
-        $quantity)
-    {
-        $result = [ 'success' => false ];
-
-        try {
-            $inputs = [ 'changer_id' => $changerId,
-                'plan_id' => $planId,
-                'user_id' => $userId,
-                'price' => $price,
-                'quantity' => $quantity
-            ];
-
-            $resultOrder = $this->post('order', $inputs);
-        } catch (ResponseException $e) {
-            $result['success'] = false;
-            $result['from'] = 'order';
-            $result['error_code'] = $e->getCode();
-            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
-            return $result;
-        }
-
-        // order
-        $order = $resultOrder['success']['data'];
-        // 정상적으로 주문 되었음.
-
-        // payment
-        $resultPayment = $this->pay2(
-            $changerId,
-            $userId,
-            $order['id'],
-            static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
-            'credit_card_id',
-            $creditCardId,
-            true,
-            '');
-
-        if (!$resultPayment['success']) {
-            $result['success'] = false;
-            $result['from'] = 'payment';
-            $result['error_code'] = $resultPayment['error_code'];
-            $result['message'] = $resultPayment['message'];
-            return $result;
-        }
-
-        $payment = $resultPayment['item'];
-
-        $orderResult = $this->get("order/".$order['id'], []);
-        $order = $orderResult['success']['data'];
-
-        $result['success'] = true;
-        $result['order'] = $order;
-        $result['payment'] = $payment;
+        $result['bank_transfer'] = $bankTransfer;
         return $result;
     }
 
