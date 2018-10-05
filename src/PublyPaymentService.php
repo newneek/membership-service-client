@@ -1366,6 +1366,16 @@ class PublyPaymentService extends BaseApiService
         return $this->get("credit_card/user/{$userId}");
     }
 
+    public function getBankTransfer($bankTransferId)
+    {
+        return $this->get("bank_transfer/{$bankTransferId}");
+    }
+
+    public function getBankTransferByUser($userId, $filterArray = [])
+    {
+        return $this->get("bank_transfer/user/{$userId}", $filterArray);
+    }
+
     public function addCreditCard(
         $userId,
         $creditCardNumber,
