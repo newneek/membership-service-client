@@ -44,67 +44,8 @@ class PublySettlementService extends BaseApiService
         $userId,
         $setId,
         $contentId,
-        $settlementYear,
-        $settlementMonth
-    ) {
-        $inputs = [
-            'user_id' => $userId,
-            'set_id' => $setId,
-            'content_id' => $contentId,
-            'settlement_year' => $settlementYear,
-            'settlement_month' => $settlementMonth
-        ];
-
-        return $this->put("subscription_user_content_view", $inputs);
-    }
-
-    public function createSubscriptionUserContentView2(
-        $userId,
-        $setId,
-        $contentId,
-        $subscriptionId,
         $couponUseHistoryId,
-        $settlementYear,
-        $settlementMonth
-    ) {
-        $inputs = [
-            'user_id' => $userId,
-            'set_id' => $setId,
-            'content_id' => $contentId,
-            'subscription_id' => $subscriptionId,
-            'coupon_use_history_id' => $couponUseHistoryId,
-            'settlement_year' => $settlementYear,
-            'settlement_month' => $settlementMonth
-        ];
-
-        return $this->put("subscription_user_content_view", $inputs);
-    }
-
-    public function createSubscriptionUserContentView3(
-        $userId,
-        $setId,
-        $contentId,
-        $couponUseHistoryId,
-        $settlementYear,
-        $settlementMonth
-    ) {
-        $inputs = [
-            'user_id' => $userId,
-            'set_id' => $setId,
-            'content_id' => $contentId,
-            'coupon_use_history_id' => $couponUseHistoryId,
-            'settlement_year' => $settlementYear,
-            'settlement_month' => $settlementMonth
-        ];
-
-        return $this->put("subscription_user_content_view", $inputs);
-    }
-
-    public function createSubscriptionUserContentView4(
-        $userId,
-        $setId,
-        $contentId,
-        $couponUseHistoryId,
+        $voucherUseHistoryId,
         $settlementYear,
         $settlementMonth,
         $readerId
@@ -114,6 +55,7 @@ class PublySettlementService extends BaseApiService
             'set_id' => $setId,
             'content_id' => $contentId,
             'coupon_use_history_id' => $couponUseHistoryId,
+            'voucher_use_history_id' => $voucherUseHistoryId,
             'settlement_year' => $settlementYear,
             'settlement_month' => $settlementMonth,
             'reader_id' => $readerId
