@@ -2321,7 +2321,7 @@ class PublyPaymentService extends BaseApiService
     {
         return $this->put("/subscription/{$subscriptionId}",
             [ 'changer_id' => $changerId,
-                'action' => 'expired',
+                'action' => 'expire',
                 'force' => $force ? 1 : 0 ]);
     }
 

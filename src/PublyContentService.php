@@ -3,6 +3,7 @@
 namespace Publy\ServiceClient;
 
 use Publy\ServiceClient\Api\BaseApiService;
+use Publy\ServiceClient\Api\ResponseException;
 
 class PublyContentService extends BaseApiService
 {
@@ -299,9 +300,14 @@ class PublyContentService extends BaseApiService
     }
 
 
-    public function updateRewardsOrderInProject($projectId, $rewardIds)
+    public function updateRewardsOrderInProject($changerId, $projectId, $rewardIds)
     {
-        return $this->put("reward/project/{$projectId}", ['ids' => implode(',', $rewardIds)]);
+        return $this->put(
+            "reward/project/{$projectId}",
+            [
+                'changer_id' => $changerId,
+                'ids' => implode(',', $rewardIds)
+            ]);
     }
 
     /*
@@ -531,12 +537,80 @@ class PublyContentService extends BaseApiService
         return $this->get("content/total");
     }
 
+    public function getTotalContentCount2() {
+        return $this->get("content/total")['success']['data'];
+    }
+
     public function getTotalSetCount() {
         return $this->get("set/total");
     }
 
     public function getTotalAuthorCount() {
         return $this->get("writer/total");
+    }
+
+    public function getTotalAuthorCount2() {
+        return $this->get("writer/total")['success']['data'];
+    }
+
+    public function getTotalContentCountByCache() {
+        $cacheKey = 'TOTAL_CONTENT_COUNT';
+        try {
+            $totalContentCount = \Cache::remember($cacheKey, 60, function() {
+                return $this->getTotalContentCount2();
+            });
+        } catch(\Exception $e) {
+            if ($e instanceof ResponseException) {
+                throw $e;
+            } else {// ignore Cache Exception
+                $totalContentCount = $this->getTotalContentCount2();
+            }
+        }
+
+        return $totalContentCount;
+    }
+
+    public function getTotalPackageSetCountByCache() {
+        $cacheKey = 'TOTAL_PACKAGE_SET_COUNT';
+        $latestPackageSetFilter =
+            [
+                'is_package' => 1,
+                'publish_after' => 1,
+            ];
+        try {
+            $totalPackageSetCount = \Cache::remember($cacheKey, 60, function() use ($latestPackageSetFilter) {
+                $latestPackageSetResult = $this->getSets(1, 1, $latestPackageSetFilter);
+                $totalPackageSetCount = $latestPackageSetResult['paginator']['total_count'];
+
+                return $totalPackageSetCount;
+            });
+        } catch(\Exception $e) {
+            if ($e instanceof ResponseException) {
+                throw $e;
+            } else {// ignore Cache Exception
+                $latestPackageSetResult = $this->getSets(1, 1, $latestPackageSetFilter);
+                $totalPackageSetCount = $latestPackageSetResult['paginator']['total_count'];
+            }
+        }
+
+        return $totalPackageSetCount;
+    }
+
+    public function getTotalAuthorCountByCache() {
+        $cacheKey = 'TOTAL_AUTHOR_COUNT';
+        try {
+            $totalAuthorCount = \Cache::remember($cacheKey, 60, function() {
+                return $this->getTotalAuthorCount2();
+            });
+        } catch(\Exception $e) {
+            if ($e instanceof ResponseException) {
+                throw $e;
+            } else {// ignore Cache Exception
+                $totalAuthorCount = $this->getTotalAuthorCount2();
+            }
+        }
+
+        return $totalAuthorCount;
     }
 
     public function createContentItem($changerId, $contentId, $title)
