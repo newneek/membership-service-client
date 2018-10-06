@@ -3153,6 +3153,11 @@ class PublyPaymentService extends BaseApiService
         return $this->post("voucher_use_history/code/{$code}", $inputs);
     }
 
+    public function getVoucherUseHistoriesBySettlement($settlementYear, $settlementMonth, $filterArray = [])
+    {
+        return $this->get("voucher_use_history/settlement_year/{$settlementYear}/settlement_month/{$settlementMonth}", $filterArray);
+    }
+
     public function getVoucherUseHistoriesByUser($userId, $filterArray = [])
     {
         return $this->get("voucher_use_history/user/{$userId}", $filterArray);
