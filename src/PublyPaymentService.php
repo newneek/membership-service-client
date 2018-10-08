@@ -2966,6 +2966,13 @@ class PublyPaymentService extends BaseApiService
         return $this->get("payment/{$paymentId}");
     }
 
+    public function getPayments($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("payment", $filterArray);
+    }
+
     //    user default plan
     public function getUserDefaultPlansByUser($userId, $page =1, $limit = 10, $filterArray = [])
     {
