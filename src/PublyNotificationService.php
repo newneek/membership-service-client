@@ -253,4 +253,12 @@ class PublyNotificationService extends BaseApiService
             ]
         );
     }
+
+    public function sendVoucher($voucher)
+    {
+        return $this->post("/event/send_voucher",
+            [
+                'voucher' => $voucher
+            ]);
+    }
 }
