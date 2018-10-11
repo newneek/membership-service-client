@@ -2363,11 +2363,13 @@ class PublyPaymentService extends BaseApiService
                 'plan_id' => $planId ]);
     }
 
-    public function expireSubscriptions($changerId, $days)
+    public function expireSubscriptions($changerId)
     {
-        return $this->put("/subscription/expire_subscriptions",
-            ['changer_id' => $changerId,
-                'renew_day' => implode(',', $days)]);
+        return $this->put(
+            "/subscription/expire_subscriptions",
+            [
+                'changer_id' => $changerId
+            ]);
     }
 
     public function updateSubscription($changerId, $subscriptionId, $note, $force = false)
@@ -3178,9 +3180,11 @@ class PublyPaymentService extends BaseApiService
 
     public function expireVoucherUseHistories($changerId)
     {
-        return $this->post("voucher_use_history/expire_voucher_use_histories", [
-            'changer_id' => $changerId,
-        ]);
+        return $this->post(
+            "voucher_use_history/expire_voucher_use_histories",
+            [
+                'changer_id' => $changerId
+            ]);
     }
 
     public function refreshVoucherUseHistories($changerId, $days)
