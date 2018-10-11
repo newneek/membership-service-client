@@ -3114,7 +3114,7 @@ class PublyPaymentService extends BaseApiService
             'changer_id' => $changerId,
             'user_id' => $userId,
             'length_month' => $lengthMonth,
-            'emails' => $emails
+            'emails' => implode(',', $emails)
         ];
 
         return $this->post("voucher/store_vouchers_by_length_month", $inputs);
