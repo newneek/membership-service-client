@@ -2973,6 +2973,12 @@ class PublyPaymentService extends BaseApiService
         return $this->get("payment", $filterArray);
     }
 
+    public function getPaymentsNoPagination($filterArray = [])
+    {
+        $filterArray['limit'] = static::NO_PAGE_LIMIT;
+        return $this->get("payment", $filterArray);
+    }
+
     //    user default plan
     public function getUserDefaultPlansByUser($userId, $page =1, $limit = 10, $filterArray = [])
     {
