@@ -64,6 +64,28 @@ class PublySettlementService extends BaseApiService
         return $this->put("subscription_user_content_view", $inputs);
     }
 
+    public function createSubscriptionUserContentView4(
+        $userId,
+        $setId,
+        $contentId,
+        $couponUseHistoryId,
+        $settlementYear,
+        $settlementMonth,
+        $readerId
+    ) {
+        $inputs = [
+            'user_id' => $userId,
+            'set_id' => $setId,
+            'content_id' => $contentId,
+            'coupon_use_history_id' => $couponUseHistoryId,
+            'settlement_year' => $settlementYear,
+            'settlement_month' => $settlementMonth,
+            'reader_id' => $readerId
+        ];
+
+        return $this->put("subscription_user_content_view", $inputs);
+    }
+
     public function addAuthorRate($changerId, $setId, $userId, $rate)
     {
         return $this->post("author_rate", [
