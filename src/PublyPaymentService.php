@@ -52,7 +52,7 @@ class PublyPaymentService extends BaseApiService
 
     const STRING_ORDER_STATUS = [
         PublyPaymentService::ORDER_STATUS_CHECKEDOUT => "주문완료",
-        PublyPaymentService::ORDER_STATUS_WAITING_PAYMENT => "예약 완료",
+        PublyPaymentService::ORDER_STATUS_WAITING_PAYMENT => "결제 대기",
         PublyPaymentService::ORDER_STATUS_PAID => "결제성공",
         PublyPaymentService::ORDER_STATUS_CANCELLED => "예약 취소",
         PublyPaymentService::ORDER_STATUS_PROJECT_FAILED => "중단",
