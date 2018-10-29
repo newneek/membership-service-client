@@ -2076,10 +2076,11 @@ class PublyContentService extends BaseApiService
 
     public function createCategoryOrder($changerId, $categoryId)
     {
-        return $this->post("category_order", [
-            'category_id' => $categoryId,
-            'changer_id' => $changerId
-        ]);
+        return $this->post("category_order",
+            [
+                'category_id' => $categoryId,
+                'changer_id' => $changerId
+            ]);
     }
 
     public function getCategoryOrders($filterArray = [])
@@ -2089,6 +2090,18 @@ class PublyContentService extends BaseApiService
 
     public function deleteCategoryOrder($changerId, $categoryOrderId)
     {
-        return $this->post("category_order/$categoryOrderId/delete", ['changer_id' => $changerId]);
+        return $this->post("category_order/$categoryOrderId/delete",
+            [
+                'changer_id' => $changerId
+            ]);
+    }
+
+    public function updateCategoryOrderOrder($changerId, $categoryOrderIds)
+    {
+        return $this->put("category_order/update_order",
+            [
+                'changer_id'=> $changerId,
+                'ids' => implode(',', $categoryOrderIds)
+            ]);
     }
 }
