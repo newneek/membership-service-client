@@ -2081,9 +2081,14 @@ class PublyContentService extends BaseApiService
             'changer_id' => $changerId
         ]);
     }
-    
+
     public function getCategoryOrders($filterArray = [])
     {
         return $this->get("category_order", $filterArray);
+    }
+
+    public function deleteCategoryOrder($changerId, $categoryOrderId)
+    {
+        return $this->post("category_order/$categoryOrderId/delete", ['changer_id' => $changerId]);
     }
 }
