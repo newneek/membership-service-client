@@ -2073,4 +2073,12 @@ class PublyContentService extends BaseApiService
     {
         return $this->get("user_set_progress/user/{$userId}", $filterArray);
     }
+
+    public function createCategoryOrder($changerId, $categoryId)
+    {
+        return $this->post("category_order", [
+            'category_id' => $categoryId,
+            'changer_id' => $changerId
+        ]);
+    }
 }
