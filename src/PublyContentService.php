@@ -2046,6 +2046,12 @@ class PublyContentService extends BaseApiService
         return $this->get("category/set/{$setId}", $filterArray);
     }
 
+    public function getCategoriesByIds($categoryIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $categoryIds);
+        return $this->get("category/by_ids", $filterArray);
+    }
+
     public function updateCategory($changerId, $categoryId, $name)
     {
         return $this->put("category/{$categoryId}", [
@@ -2066,5 +2072,36 @@ class PublyContentService extends BaseApiService
     public function getUserSetProgressesByUser($userId, $filterArray = [])
     {
         return $this->get("user_set_progress/user/{$userId}", $filterArray);
+    }
+
+    public function createCategoryOrder($changerId, $categoryId)
+    {
+        return $this->post("category_order",
+            [
+                'category_id' => $categoryId,
+                'changer_id' => $changerId
+            ]);
+    }
+
+    public function getCategoryOrders($filterArray = [])
+    {
+        return $this->get("category_order", $filterArray);
+    }
+
+    public function deleteCategoryOrder($changerId, $categoryOrderId)
+    {
+        return $this->post("category_order/$categoryOrderId/delete",
+            [
+                'changer_id' => $changerId
+            ]);
+    }
+
+    public function updateCategoryOrderOrder($changerId, $categoryOrderIds)
+    {
+        return $this->put("category_order/update_order",
+            [
+                'changer_id'=> $changerId,
+                'ids' => implode(',', $categoryOrderIds)
+            ]);
     }
 }
