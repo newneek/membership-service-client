@@ -24,6 +24,7 @@ class PublyContentService extends BaseApiService
     const PACKAGE_READER_SOURCE_TYPE_ADMIN = 1;
     const PACKAGE_READER_SOURCE_TYPE_SUBSCRIPTION = 2;
     const PACKAGE_READER_SOURCE_TYPE_COUPON = 3;
+    const PACKAGE_READER_SOURCE_TYPE_VOUCHER = 4;
 
     const HOME_DISPLAY_TYPE_PROJECT = 1;
 
@@ -1895,6 +1896,39 @@ class PublyContentService extends BaseApiService
         }
     }
 
+    public function updateOrCreatePackageReader3(
+        $changerId,
+        $userId,
+        $sourceType,
+        $adminId,
+        $subscriptionId,
+        $couponUseHistoryId,
+        $voucherUseHistoryId,
+        $note,
+        $settlementYear,
+        $settlementMonth
+    ) {
+        try {
+            return $this->put("package_reader/{$userId}", [
+                'changer_id' => $changerId,
+                'source_type' => $sourceType,
+                'admin_id' => $adminId,
+                'subscription_id' => $subscriptionId,
+                'coupon_use_history_id' => $couponUseHistoryId,
+                'voucher_use_history_id' => $voucherUseHistoryId,
+                'note' => $note,
+                'settlement_year' => $settlementYear,
+                'settlement_month' => $settlementMonth
+            ]);
+        } catch (\Exception $e) {
+            $result['success'] = false;
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+    }
+
     public function deletePackageReader($params)
     {
         return $this->post("package_reader/delete", $params);
@@ -2012,6 +2046,12 @@ class PublyContentService extends BaseApiService
         return $this->get("category/set/{$setId}", $filterArray);
     }
 
+    public function getCategoriesByIds($categoryIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $categoryIds);
+        return $this->get("category/by_ids", $filterArray);
+    }
+
     public function updateCategory($changerId, $categoryId, $name)
     {
         return $this->put("category/{$categoryId}", [
@@ -2032,5 +2072,36 @@ class PublyContentService extends BaseApiService
     public function getUserSetProgressesByUser($userId, $filterArray = [])
     {
         return $this->get("user_set_progress/user/{$userId}", $filterArray);
+    }
+
+    public function createCategoryOrder($changerId, $categoryId)
+    {
+        return $this->post("category_order",
+            [
+                'category_id' => $categoryId,
+                'changer_id' => $changerId
+            ]);
+    }
+
+    public function getCategoryOrders($filterArray = [])
+    {
+        return $this->get("category_order", $filterArray);
+    }
+
+    public function deleteCategoryOrder($changerId, $categoryOrderId)
+    {
+        return $this->post("category_order/$categoryOrderId/delete",
+            [
+                'changer_id' => $changerId
+            ]);
+    }
+
+    public function updateCategoryOrderOrder($changerId, $categoryOrderIds)
+    {
+        return $this->put("category_order/update_order",
+            [
+                'changer_id'=> $changerId,
+                'ids' => implode(',', $categoryOrderIds)
+            ]);
     }
 }

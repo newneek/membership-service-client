@@ -52,9 +52,9 @@ class PublyPaymentService extends BaseApiService
 
     const STRING_ORDER_STATUS = [
         PublyPaymentService::ORDER_STATUS_CHECKEDOUT => "주문완료",
-        PublyPaymentService::ORDER_STATUS_WAITING_PAYMENT => "예약 완료",
-        PublyPaymentService::ORDER_STATUS_PAID => "결제성공",
-        PublyPaymentService::ORDER_STATUS_CANCELLED => "예약 취소",
+        PublyPaymentService::ORDER_STATUS_WAITING_PAYMENT => "결제 대기",
+        PublyPaymentService::ORDER_STATUS_PAID => "결제 완료",
+        PublyPaymentService::ORDER_STATUS_CANCELLED => "주문 취소",
         PublyPaymentService::ORDER_STATUS_PROJECT_FAILED => "중단",
         PublyPaymentService::ORDER_STATUS_PAYMENT_IN_PROGRESS => "결제중",
         PublyPaymentService::ORDER_STATUS_PAYMENT_FAILED => "결제실패",
@@ -153,6 +153,14 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::USER_DEFAULT_PLAN_TYPE_REFERRAL => "공유 콘텐츠 읽음",
         PublyPaymentService::USER_DEFAULT_PLAN_TYPE_CONTENT_RETURN => "콘텐츠 환급"
     ];
+
+
+    const VOUCHER_STATUS_INVITATION_REQUESTED = 1;
+    const VOUCHER_STATUS_INVITATION_ACCEPTED = 2;
+    const VOUCHER_STATUS_CANCELLED = 3;
+
+    const VOUCHER_USE_HISTORY_STATUS_ACTIVATED = 1;
+    const VOUCHER_USE_HISTORY_STATUS_EXPIRED = 2;
 
     const PAY_WITHOUT_POINT = 0;
     const PAY_WITH_POINT = 1;
@@ -1358,6 +1366,16 @@ class PublyPaymentService extends BaseApiService
         return $this->get("credit_card/user/{$userId}");
     }
 
+    public function getBankTransfer($bankTransferId)
+    {
+        return $this->get("bank_transfer/{$bankTransferId}");
+    }
+
+    public function getBankTransferByUser($userId, $filterArray = [])
+    {
+        return $this->get("bank_transfer/user/{$userId}", $filterArray);
+    }
+
     public function addCreditCard(
         $userId,
         $creditCardNumber,
@@ -1449,6 +1467,30 @@ class PublyPaymentService extends BaseApiService
             return $result;
         }
 
+        $result['success'] = true;
+        return $result;
+    }
+
+    public function addBankTransfer($changerId, $userId, $name)
+    {
+        $result['success'] = false;
+        try {
+            $inputs = [
+                'changer_id' => $changerId,
+                'user_id' => $userId,
+                'name' => $name
+            ];
+            $bankTransferResult = $this->post("bank_transfer", $inputs);
+        } catch (\Exception $e) {
+            $result['success'] = false;
+            $result['from'] = 'bank_transfer';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $result['item'] = $bankTransferResult['success']['data'];
         $result['success'] = true;
         return $result;
     }
@@ -2321,11 +2363,13 @@ class PublyPaymentService extends BaseApiService
                 'plan_id' => $planId ]);
     }
 
-    public function expireSubscriptions($changerId, $days)
+    public function expireSubscriptions($changerId)
     {
-        return $this->put("/subscription/expire_subscriptions",
-            ['changer_id' => $changerId,
-                'renew_day' => implode(',', $days)]);
+        return $this->put(
+            "/subscription/expire_subscriptions",
+            [
+                'changer_id' => $changerId
+            ]);
     }
 
     public function updateSubscription($changerId, $subscriptionId, $note, $force = false)
@@ -2422,6 +2466,12 @@ class PublyPaymentService extends BaseApiService
     public function getPlans($filterArray = [])
     {
         return $this->get("plan", $filterArray);
+    }
+
+    public function getPlansByIds($planIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $planIds);
+        return $this->get("plan/plan_ids", $filterArray);
     }
 
     public function getDefaultPlan()
@@ -2918,6 +2968,19 @@ class PublyPaymentService extends BaseApiService
         return $this->get("payment/{$paymentId}");
     }
 
+    public function getPayments($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("payment", $filterArray);
+    }
+
+    public function getPaymentsNoPagination($filterArray = [])
+    {
+        $filterArray['limit'] = static::NO_PAGE_LIMIT;
+        return $this->get("payment", $filterArray);
+    }
+
     //    user default plan
     public function getUserDefaultPlansByUser($userId, $page =1, $limit = 10, $filterArray = [])
     {
@@ -2952,5 +3015,183 @@ class PublyPaymentService extends BaseApiService
     public function getCheapestPlanByUser($userId, $filterArray = [])
     {
         return $this->get("plan/user/{$userId}/cheapest", $filterArray);
+    }
+
+    public function addBankTransferAndOrderAndPayVoucher(
+        $changerId,
+        $userId,
+        $name,
+        $price,
+        $planId,
+        $quantity)
+    {
+        $result = [ 'success' => false ];
+
+        // add credit card
+        $resultBankTransfer = $this->addBankTransfer(
+            $changerId,
+            $userId,
+            $name);
+
+        if (!$resultBankTransfer['success']) {
+            $result['success'] = false;
+            $result['from'] = 'bank_transfer';
+            $result['error_code'] = $resultBankTransfer['error_code'];
+            $result['message'] = $resultBankTransfer['message'];
+            return $result;
+        }
+
+        $bankTransfer = $resultBankTransfer['item'];
+        $result['bank_transfer'] = $bankTransfer;
+        // 정상적으로 카드 등록 되었음.
+
+        try {
+            $inputs = [ 'changer_id' => $changerId,
+                'plan_id' => $planId,
+                'user_id' => $userId,
+                'quantity' => $quantity,
+                'price' => $price
+            ];
+
+            $resultOrder = $this->post('order', $inputs);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['from'] = 'order';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+            return $result;
+        }
+
+        // order
+        $order = $resultOrder['success']['data'];
+        // 정상적으로 주문 되었음.
+
+        // payment
+        $resultPayment = $this->pay2(
+            $changerId,
+            $userId,
+            $order['id'],
+            static::PAYMENT_TYPE_BANK_TRANSFER,
+            'bank_transfer_id',
+            $bankTransfer['id'],
+            false,
+            '');
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $payment = $resultPayment['item'];
+
+        $orderResult = $this->get("order/".$order['id'], []);
+        $order = $orderResult['success']['data'];
+
+        $result['success'] = true;
+        $result['order'] = $order;
+        $result['payment'] = $payment;
+        $result['bank_transfer'] = $bankTransfer;
+        return $result;
+    }
+
+    public function createVoucher($changerId, $userId, $voucherOptionId, $planId, $sentTo)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'voucher_option_id' => $voucherOptionId,
+            'plan_id' => $planId,
+            'sent_to' => $sentTo
+        ];
+
+        return $this->post("voucher", $inputs);
+    }
+
+    public function createVouchersByLengthMonth($changerId, $userId, $lengthMonth, $emails)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'length_month' => $lengthMonth,
+            'emails' => implode(',', $emails)
+        ];
+
+        return $this->post("voucher/store_vouchers_by_length_month", $inputs);
+    }
+
+    public function getVoucherByCode($code)
+    {
+        return $this->get("voucher/code/{$code}");
+    }
+
+    public function cancelVoucher($changerId, $voucherId)
+    {
+        return $this->put("voucher/{$voucherId}", [
+            'changer_id' => $changerId,
+            'action' => 'cancel'
+        ]);
+    }
+
+    public function resendVoucher($changerId, $voucherId)
+    {
+        return $this->put("voucher/resend_voucher/{$voucherId}", [
+            'changer_id' => $changerId
+        ]);
+    }
+
+    public function getVoucherDiscountRates($filterArray = [])
+    {
+        return $this->get("voucher_discount_rate", $filterArray);
+    }
+
+    public function getVoucherOptionsByUser($userId, $filterArray = [])
+    {
+        return $this->get("voucher_option/user/{$userId}", $filterArray);
+    }
+
+    public function getVoucherByVoucherOptions($voucherOptionIds, $filterArray = [])
+    {
+        $filterArray['voucher_option_ids'] = implode(',', $voucherOptionIds);
+        return $this->get("voucher/voucher_options", $filterArray);
+    }
+
+    public function registerVoucherByCode($changerId, $userId, $code)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId
+        ];
+
+        return $this->post("voucher_use_history/code/{$code}", $inputs);
+    }
+
+    public function getVoucherUseHistoriesBySettlement($settlementYear, $settlementMonth, $filterArray = [])
+    {
+        return $this->get("voucher_use_history/settlement_year/{$settlementYear}/settlement_month/{$settlementMonth}", $filterArray);
+    }
+
+    public function getVoucherUseHistoriesByUser($userId, $filterArray = [])
+    {
+        return $this->get("voucher_use_history/user/{$userId}", $filterArray);
+    }
+
+    public function expireVoucherUseHistories($changerId)
+    {
+        return $this->post(
+            "voucher_use_history/expire_voucher_use_histories",
+            [
+                'changer_id' => $changerId
+            ]);
+    }
+
+    public function refreshVoucherUseHistories($changerId, $days)
+    {
+        return $this->post("voucher_use_history/refresh_voucher_use_histories", [
+            'changer_id' => $changerId,
+            'base_days' => $days
+        ]);
     }
 }
