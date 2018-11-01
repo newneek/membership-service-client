@@ -46,6 +46,7 @@ class RecombeeService
         } catch(\Exception $e) {
             report_async_error($e);
         }
+        return $result;
     }
 
     public function deleteBookmark($userId, $setId)
