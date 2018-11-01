@@ -43,10 +43,11 @@ class RecombeeService
                     [ 'cascadeCreate' => true ]
                 );
             $result = $this->client->send($request);
+
+            return $result;
         } catch(\Exception $e) {
             report_async_error($e);
         }
-        return $result;
     }
 
     public function deleteBookmark($userId, $setId)
@@ -77,10 +78,11 @@ class RecombeeService
                     [ 'cascadeCreate' => true ]
                 );
             $result = $this->client->send($request);
+            
+            return $result;
         } catch(\Exception $e) {
             report_async_error($e);
         }
-        return $result;
     }
 
     public function SetViewPortion($userId, $setId, $completedContents, $totalContents)
