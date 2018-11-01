@@ -80,6 +80,7 @@ class RecombeeService
         } catch(\Exception $e) {
             report_async_error($e);
         }
+        return $result;
     }
 
     public function SetViewPortion($userId, $setId, $completedContents, $totalContents)
