@@ -87,7 +87,7 @@ class RecombeeService
         }
     }
 
-    public function AddRating($userId, $setId, $publyRating)
+    public function addRating($userId, $setId, $publyRating)
     {
 
         $recombeeRating = $publyRating - 2;
@@ -114,7 +114,7 @@ class RecombeeService
         }
     }
 
-    public function SetViewPortion($userId, $setId, $completedContents, $totalContents)
+    public function setViewPortion($userId, $setId, $completedContents, $totalContents)
     {
         $retryCount = 3;
         while ($retryCount > 0) {
@@ -125,6 +125,32 @@ class RecombeeService
                         static::SET_ITEM_PREFIX . $setId,
                         $completedContents / $totalContents,
                         ['cascadeCreate' => true]
+                    );
+                $result = $this->client->send($request);
+
+                return $result;
+            } catch (\Exception $e) {
+                $retryCount--;
+                if ($retryCount == 0) {
+                    report_async_error($e);
+                    return null;
+                }
+            }
+        }
+    }
+
+    public function getRecommendItemsToUser($userId, $count)
+    {
+        $retryCount = 3;
+        while ($retryCount > 0) {
+            try {
+                $request =
+                    new RecombeeRequests\RecommendItemsToUser(
+                        $userId,
+                        $count,
+                        [
+                            'returnProperties' => true
+                        ]
                     );
                 $result = $this->client->send($request);
 
