@@ -18,87 +18,124 @@ class RecombeeService
     public function viewContent($userId, $setId, $contentId)
     {
         // contentId in not used currently
-        try
-        {
-            $request =
-                new RecombeeRequests\AddDetailView(
-                    $userId,
-                    static::SET_ITEM_PREFIX . $setId,
-                    [ 'cascadeCreate' => true ]
-                );
-            $result = $this->client->send($request);
-        } catch(\Exception $e) {
-            report_async_error($e);
+        $retryCount = 3;
+        while ($retryCount > 0) {
+            try {
+                $request =
+                    new RecombeeRequests\AddDetailView(
+                        $userId,
+                        static::SET_ITEM_PREFIX . $setId,
+                        ['cascadeCreate' => true]
+                    );
+                $result = $this->client->send($request);
+
+                return $result;
+            } catch (\Exception $e) {
+                $retryCount--;
+                if ($retryCount == 0) {
+                    report_async_error($e);
+                    return null;
+                }
+            }
         }
     }
 
     public function addBookmark($userId, $setId)
     {
-        try
-        {
-            $request =
-                new RecombeeRequests\AddBookmark(
-                    $userId,
-                    static::SET_ITEM_PREFIX . $setId,
-                    [ 'cascadeCreate' => true ]
-                );
-            $result = $this->client->send($request);
+        $retryCount = 3;
+        while ($retryCount > 0) {
+            try {
+                $request =
+                    new RecombeeRequests\AddBookmark(
+                        $userId,
+                        static::SET_ITEM_PREFIX . $setId,
+                        ['cascadeCreate' => true]
+                    );
+                $result = $this->client->send($request);
 
-            return $result;
-        } catch(\Exception $e) {
-            report_async_error($e);
+                return $result;
+            } catch (\Exception $e) {
+                $retryCount--;
+                if ($retryCount == 0) {
+                    report_async_error($e);
+                    return null;
+                }
+            }
         }
     }
 
     public function deleteBookmark($userId, $setId)
     {
-        try
-        {
-            $request =
-                new RecombeeRequests\DeleteBookmark(
-                    $userId,
-                    static::SET_ITEM_PREFIX . $setId
-                );
-            $result = $this->client->send($request);
-        } catch(\Exception $e) {
-            report_async_error($e);
+        $retryCount = 3;
+        while ($retryCount > 0) {
+            try {
+                $request =
+                    new RecombeeRequests\DeleteBookmark(
+                        $userId,
+                        static::SET_ITEM_PREFIX . $setId
+                    );
+                $result = $this->client->send($request);
+
+                return $result;
+            } catch (\Exception $e) {
+                $retryCount--;
+                if ($retryCount == 0) {
+                    report_async_error($e);
+                    return null;
+                }
+            }
         }
     }
 
     public function AddRating($userId, $setId, $publyRating)
     {
+
         $recombeeRating = $publyRating - 2;
-        try
-        {
-            $request =
-                new RecombeeRequests\AddRating(
-                    $userId,
-                    static::SET_ITEM_PREFIX . $setId,
-                    $recombeeRating,
-                    [ 'cascadeCreate' => true ]
-                );
-            $result = $this->client->send($request);
-            
-            return $result;
-        } catch(\Exception $e) {
-            report_async_error($e);
+        $retryCount = 3;
+        while ($retryCount > 0) {
+            try {
+                $request =
+                    new RecombeeRequests\AddRating(
+                        $userId,
+                        static::SET_ITEM_PREFIX . $setId,
+                        $recombeeRating,
+                        ['cascadeCreate' => true]
+                    );
+                $result = $this->client->send($request);
+
+                return $result;
+            } catch (\Exception $e) {
+                $retryCount--;
+                if ($retryCount == 0) {
+                    report_async_error($e);
+                    return null;
+                }
+            }
         }
     }
 
     public function SetViewPortion($userId, $setId, $completedContents, $totalContents)
     {
-        try
-        {
-            $request =
-                new RecombeeRequests\SetViewPortion(
-                    $userId,
-                    static::SET_ITEM_PREFIX . $setId,
-                    $completedContents / $totalContents,
-                    [ 'cascadeCreate' => true ]
-                );
-            $result = $this->client->send($request);
-        } catch(\Exception $e) {
-            report_async_error($e);
+        $retryCount = 3;
+        while ($retryCount > 0) {
+            try {
+                $request =
+                    new RecombeeRequests\SetViewPortion(
+                        $userId,
+                        static::SET_ITEM_PREFIX . $setId,
+                        $completedContents / $totalContents,
+                        ['cascadeCreate' => true]
+                    );
+                $result = $this->client->send($request);
+
+                return $result;
+            } catch (\Exception $e) {
+                $retryCount--;
+                if ($retryCount == 0) {
+                    report_async_error($e);
+                    return null;
+                }
+            }
         }
     }
 }
