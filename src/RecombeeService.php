@@ -141,27 +141,21 @@ class RecombeeService
 
     public function getRecommendItemsToUser($userId, $count)
     {
-        $retryCount = 3;
-        while ($retryCount > 0) {
-            try {
-                $request =
-                    new RecombeeRequests\RecommendItemsToUser(
-                        $userId,
-                        $count,
-                        [
-                            'returnProperties' => true
-                        ]
-                    );
-                $result = $this->client->send($request);
+        try {
+            $request =
+                new RecombeeRequests\RecommendItemsToUser(
+                    $userId,
+                    $count,
+                    [
+                        'returnProperties' => true
+                    ]
+                );
+            $result = $this->client->send($request);
 
-                return $result;
-            } catch (\Exception $e) {
-                $retryCount--;
-                if ($retryCount == 0) {
-                    report_async_error($e);
-                    return null;
-                }
-            }
+            return $result;
+        } catch (\Exception $e) {
+            report_async_error($e);
+            return null;
         }
     }
 }
