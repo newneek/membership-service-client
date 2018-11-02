@@ -139,16 +139,15 @@ class RecombeeService
         }
     }
 
-    public function getRecommendItemsToUser($userId, $count)
+    public function getRecommendItemsToUser($userId, $count, $options)
     {
         try {
+            $options['returnProperties'] = true;
             $request =
                 new RecombeeRequests\RecommendItemsToUser(
                     $userId,
                     $count,
-                    [
-                        'returnProperties' => true
-                    ]
+                    $options
                 );
             $result = $this->client->send($request);
 
