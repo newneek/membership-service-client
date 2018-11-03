@@ -2090,7 +2090,7 @@ class PublyContentService extends BaseApiService
 
     public function deleteCategoryOrder($changerId, $categoryOrderId)
     {
-        return $this->post("category_order/$categoryOrderId/delete",
+        return $this->post("category_order/{$categoryOrderId}/delete",
             [
                 'changer_id' => $changerId
             ]);
@@ -2107,6 +2107,19 @@ class PublyContentService extends BaseApiService
 
     public function getOnboardingSets($filterArray = [])
     {
-        return $this->get("category_order", $filterArray);
+        return $this->get("onboarding_set", $filterArray);
+    }
+
+    public function createOnboardingSet($setId)
+    {
+        return $this->post("onboarding_set",
+            [
+                'set_id' => $setId
+            ]);
+    }
+
+    public function deleteOnboardingSet($setId)
+    {
+        return $this->post("onboarding_set/{$setId}/delete");
     }
 }
