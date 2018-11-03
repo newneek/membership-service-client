@@ -2104,4 +2104,9 @@ class PublyContentService extends BaseApiService
                 'ids' => implode(',', $categoryOrderIds)
             ]);
     }
+
+    public function getOnboardingSets($filterArray = [])
+    {
+        return $this->get("category_order", $filterArray);
+    }
 }
