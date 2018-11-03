@@ -2120,7 +2120,7 @@ class PublyContentService extends BaseApiService
 
     public function deleteOnboardingSet($setId)
     {
-        return $this->post("onboarding_set/{$setId}onboarding_setdelete");
+        return $this->post("onboarding_set/{$setId}/delete");
     }
     public function updateOnboardingSetOrder($onboardingSetIds)
     {
@@ -2140,6 +2140,18 @@ class PublyContentService extends BaseApiService
         return $this->post("onboarding_category",
             [
                 'category_id' => $categoryId
+            ]);
+    }
+
+    public function deleteOnboardingCategory($categoryId)
+    {
+        return $this->post("onboarding_category/{$categoryId}/delete");
+    }
+    public function updateOnboardingCategoryOrder($onboardingCategoryIds)
+    {
+        return $this->put("onboarding_category/update_order",
+            [
+                'ids' => implode(',', $onboardingCategoryIds)
             ]);
     }
 }
