@@ -2120,6 +2120,13 @@ class PublyContentService extends BaseApiService
 
     public function deleteOnboardingSet($setId)
     {
-        return $this->post("onboarding_set/{$setId}/delete");
+        return $this->post("onboarding_set/{$setId}onboarding_setdelete");
+    }
+    public function updateOnboardingSetOrder($onboardingSetIds)
+    {
+        return $this->put("onboarding_set/update_order",
+            [
+                'ids' => implode(',', $onboardingSetIds)
+            ]);
     }
 }
