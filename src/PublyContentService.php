@@ -2129,4 +2129,17 @@ class PublyContentService extends BaseApiService
                 'ids' => implode(',', $onboardingSetIds)
             ]);
     }
+
+    public function getOnboardingCategories($filterArray = [])
+    {
+        return $this->get("onboarding_category", $filterArray);
+    }
+
+    public function createOnboardingCategory($categoryId)
+    {
+        return $this->post("onboarding_category",
+            [
+                'category_id' => $categoryId
+            ]);
+    }
 }
