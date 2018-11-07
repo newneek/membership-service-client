@@ -18,84 +18,137 @@ class RecombeeService
     public function viewContent($userId, $setId, $contentId)
     {
         // contentId in not used currently
-        try
-        {
-            $request =
-                new RecombeeRequests\AddDetailView(
-                    $userId,
-                    static::SET_ITEM_PREFIX . $setId,
-                    [ 'cascadeCreate' => true ]
-                );
-            $result = $this->client->send($request);
-        } catch(\Exception $e) {
-            report_async_error($e);
+        $retryCount = 3;
+        while ($retryCount > 0) {
+            try {
+                $request =
+                    new RecombeeRequests\AddDetailView(
+                        $userId,
+                        static::SET_ITEM_PREFIX . $setId,
+                        ['cascadeCreate' => true]
+                    );
+                $result = $this->client->send($request);
+
+                return $result;
+            } catch (\Exception $e) {
+                $retryCount--;
+                if ($retryCount == 0) {
+                    throw $e;
+                }
+            }
         }
     }
 
     public function addBookmark($userId, $setId)
     {
-        try
-        {
-            $request =
-                new RecombeeRequests\AddBookmark(
-                    $userId,
-                    static::SET_ITEM_PREFIX . $setId,
-                    [ 'cascadeCreate' => true ]
-                );
-            $result = $this->client->send($request);
-        } catch(\Exception $e) {
-            report_async_error($e);
+        $retryCount = 3;
+        while ($retryCount > 0) {
+            try {
+                $request =
+                    new RecombeeRequests\AddBookmark(
+                        $userId,
+                        static::SET_ITEM_PREFIX . $setId,
+                        ['cascadeCreate' => true]
+                    );
+                $result = $this->client->send($request);
+
+                return $result;
+            } catch (\Exception $e) {
+                $retryCount--;
+                if ($retryCount == 0) {
+                    throw $e;
+                }
+            }
         }
     }
 
     public function deleteBookmark($userId, $setId)
     {
-        try
-        {
-            $request =
-                new RecombeeRequests\DeleteBookmark(
-                    $userId,
-                    static::SET_ITEM_PREFIX . $setId,
-                    [ 'cascadeCreate' => true ]
-                );
-            $result = $this->client->send($request);
-        } catch(\Exception $e) {
-            report_async_error($e);
+        $retryCount = 3;
+        while ($retryCount > 0) {
+            try {
+                $request =
+                    new RecombeeRequests\DeleteBookmark(
+                        $userId,
+                        static::SET_ITEM_PREFIX . $setId
+                    );
+                $result = $this->client->send($request);
+
+                return $result;
+            } catch (\Exception $e) {
+                $retryCount--;
+                if ($retryCount == 0) {
+                    throw $e;
+                }
+            }
         }
     }
 
-    public function AddRating($userId, $setId, $publyRating)
+    public function addRating($userId, $setId, $publyRating)
     {
+
         $recombeeRating = $publyRating - 2;
-        try
-        {
-            $request =
-                new RecombeeRequests\AddRating(
-                    $userId,
-                    static::SET_ITEM_PREFIX . $setId,
-                    $recombeeRating,
-                    [ 'cascadeCreate' => true ]
-                );
-            $result = $this->client->send($request);
-        } catch(\Exception $e) {
-            report_async_error($e);
+        $retryCount = 3;
+        while ($retryCount > 0) {
+            try {
+                $request =
+                    new RecombeeRequests\AddRating(
+                        $userId,
+                        static::SET_ITEM_PREFIX . $setId,
+                        $recombeeRating,
+                        ['cascadeCreate' => true]
+                    );
+                $result = $this->client->send($request);
+
+                return $result;
+            } catch (\Exception $e) {
+                $retryCount--;
+                if ($retryCount == 0) {
+                    throw $e;
+                }
+            }
         }
     }
 
-    public function SetViewPortion($userId, $setId, $completedContents, $totalContents)
+    public function setViewPortion($userId, $setId, $completedContents, $totalContents)
     {
-        try
-        {
+        $retryCount = 3;
+        while ($retryCount > 0) {
+            try {
+                $request =
+                    new RecombeeRequests\SetViewPortion(
+                        $userId,
+                        static::SET_ITEM_PREFIX . $setId,
+                        $completedContents / $totalContents,
+                        ['cascadeCreate' => true]
+                    );
+                $result = $this->client->send($request);
+
+                return $result;
+            } catch (\Exception $e) {
+                $retryCount--;
+                if ($retryCount == 0) {
+                    throw $e;
+                }
+            }
+        }
+    }
+
+    public function getRecommendItemsToUser($userId, $count, $options)
+    {
+        try {
+            $options['returnProperties'] = true;
             $request =
-                new RecombeeRequests\SetViewPortion(
+                new RecombeeRequests\RecommendItemsToUser(
                     $userId,
-                    static::SET_ITEM_PREFIX . $setId,
-                    $completedContents / $totalContents,
-                    [ 'cascadeCreate' => true ]
+                    $count,
+                    $options
                 );
             $result = $this->client->send($request);
-        } catch(\Exception $e) {
-            report_async_error($e);
+
+            return $result;
+        } catch (\Exception $e) {
+            throw $e;
         }
     }
 }
