@@ -126,9 +126,13 @@ class RecombeeService
 
                 return $result;
             } catch (\Exception $e) {
-                $retryCount--;
-                if ($retryCount == 0) {
-                    throw $e;
+                if (str_contains($e->getMessage(), 'equal or greater portion already exists')) {
+                    //normal
+                } else {
+                    $retryCount--;
+                    if ($retryCount == 0) {
+                        throw $e;
+                    }
                 }
             }
         }
