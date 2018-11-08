@@ -33,8 +33,7 @@ class RecombeeService
             } catch (\Exception $e) {
                 $retryCount--;
                 if ($retryCount == 0) {
-                    report_async_error($e);
-                    return null;
+                    throw $e;
                 }
             }
         }
@@ -57,8 +56,7 @@ class RecombeeService
             } catch (\Exception $e) {
                 $retryCount--;
                 if ($retryCount == 0) {
-                    report_async_error($e);
-                    return null;
+                    throw $e;
                 }
             }
         }
@@ -80,8 +78,7 @@ class RecombeeService
             } catch (\Exception $e) {
                 $retryCount--;
                 if ($retryCount == 0) {
-                    report_async_error($e);
-                    return null;
+                    throw $e;
                 }
             }
         }
@@ -107,8 +104,7 @@ class RecombeeService
             } catch (\Exception $e) {
                 $retryCount--;
                 if ($retryCount == 0) {
-                    report_async_error($e);
-                    return null;
+                    throw $e;
                 }
             }
         }
@@ -132,8 +128,7 @@ class RecombeeService
             } catch (\Exception $e) {
                 $retryCount--;
                 if ($retryCount == 0) {
-                    report_async_error($e);
-                    return null;
+                    throw $e;
                 }
             }
         }
@@ -153,8 +148,7 @@ class RecombeeService
 
             return $result;
         } catch (\Exception $e) {
-            report_async_error($e);
-            return null;
+            throw $e;
         }
     }
 }
