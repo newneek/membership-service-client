@@ -116,7 +116,7 @@ class RecombeeService
         while ($retryCount > 0) {
             try {
                 if ($totalContents > 0) {
-                    $portion = max($completedContents / $totalContents, 1);
+                    $portion = min($completedContents / $totalContents, 1);
 
                     $request =
                         new RecombeeRequests\SetViewPortion(
