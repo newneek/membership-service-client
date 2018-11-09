@@ -13,7 +13,7 @@ class PublyContentService extends BaseApiService
     const CURATION_TYPE_LIST = 1;
     const CURATION_TYPE_CAROUSEL = 2;
     const CURATION_TYPE_RANK_UNIQUE_SET_READER = 3;
-    const CURATION_TYPE_RECOMMEND = 4;
+    const CURATION_TYPE_INDIVIDUAL_RECOMMEND = 4;
 
     const STRING_CURATION_TYPE = [
         PublyContentService::CURATION_TYPE_RANK_UNIQUE_SET_READER => '최근 인기 콘텐츠',
