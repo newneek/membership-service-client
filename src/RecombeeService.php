@@ -115,19 +115,23 @@ class RecombeeService
         $retryCount = 3;
         while ($retryCount > 0) {
             try {
-                $request =
-                    new RecombeeRequests\SetViewPortion(
-                        $userId,
-                        static::SET_ITEM_PREFIX . $setId,
-                        $completedContents / $totalContents,
-                        ['cascadeCreate' => true]
-                    );
-                $result = $this->client->send($request);
+                if ($totalContents > 0) {
+                    $portion = max($completedContents / $totalContents, 1);
 
-                return $result;
+                    $request =
+                        new RecombeeRequests\SetViewPortion(
+                            $userId,
+                            static::SET_ITEM_PREFIX . $setId,
+                            $portion,
+                            ['cascadeCreate' => true]
+                        );
+                    $result = $this->client->send($request);
+
+                    return $result;
+                }
             } catch (\Exception $e) {
                 if (str_contains($e->getMessage(), 'equal or greater portion already exists')) {
-                    //normal
+                    return null;
                 } else {
                     $retryCount--;
                     if ($retryCount == 0) {
@@ -136,6 +140,8 @@ class RecombeeService
                 }
             }
         }
+
+        return null;
     }
 
     public function getRecommendItemsToUser($userId, $count, $options)
