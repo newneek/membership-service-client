@@ -13,6 +13,7 @@ class PublyContentService extends BaseApiService
     const CURATION_TYPE_LIST = 1;
     const CURATION_TYPE_CAROUSEL = 2;
     const CURATION_TYPE_RANK_UNIQUE_SET_READER = 3;
+    const CURATION_TYPE_INDIVIDUAL_RECOMMEND = 4;
 
     const STRING_CURATION_TYPE = [
         PublyContentService::CURATION_TYPE_RANK_UNIQUE_SET_READER => '최근 인기 콘텐츠',
@@ -2090,7 +2091,7 @@ class PublyContentService extends BaseApiService
 
     public function deleteCategoryOrder($changerId, $categoryOrderId)
     {
-        return $this->post("category_order/$categoryOrderId/delete",
+        return $this->post("category_order/{$categoryOrderId}/delete",
             [
                 'changer_id' => $changerId
             ]);
@@ -2102,6 +2103,56 @@ class PublyContentService extends BaseApiService
             [
                 'changer_id'=> $changerId,
                 'ids' => implode(',', $categoryOrderIds)
+            ]);
+    }
+
+    public function getOnboardingSets($filterArray = [])
+    {
+        return $this->get("onboarding_set", $filterArray);
+    }
+
+    public function createOnboardingSet($setId)
+    {
+        return $this->post("onboarding_set",
+            [
+                'set_id' => $setId
+            ]);
+    }
+
+    public function deleteOnboardingSet($setId)
+    {
+        return $this->post("onboarding_set/{$setId}/delete");
+    }
+    public function updateOnboardingSetOrder($onboardingSetIds)
+    {
+        return $this->put("onboarding_set/update_order",
+            [
+                'ids' => implode(',', $onboardingSetIds)
+            ]);
+    }
+
+    public function getOnboardingCategories($filterArray = [])
+    {
+        return $this->get("onboarding_category", $filterArray);
+    }
+
+    public function createOnboardingCategory($categoryId)
+    {
+        return $this->post("onboarding_category",
+            [
+                'category_id' => $categoryId
+            ]);
+    }
+
+    public function deleteOnboardingCategory($categoryId)
+    {
+        return $this->post("onboarding_category/{$categoryId}/delete");
+    }
+    public function updateOnboardingCategoryOrder($onboardingCategoryIds)
+    {
+        return $this->put("onboarding_category/update_order",
+            [
+                'ids' => implode(',', $onboardingCategoryIds)
             ]);
     }
 }

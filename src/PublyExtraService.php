@@ -483,4 +483,21 @@ class PublyExtraService extends BaseApiService
 
        return $this->get("review_score/set/{$setId}", $filterArray);
     }
+
+    public function createOnboardingProcess($userId)
+    {
+        $inputs = ['user_id' => $userId];
+
+        return $this->post("onboarding_process", $inputs);
+    }
+
+    public function getOnboardingProcessByUser($userId, $filterArray = [])
+    {
+        return $this->get("onboarding_process/{$userId}", $filterArray);
+    }
+
+    public function updateOnboardingProcessByUser($userId, $inputs)
+    {
+        return $this->put("onboarding_process/{$userId}", $inputs);
+    }
 }
