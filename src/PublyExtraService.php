@@ -493,11 +493,11 @@ class PublyExtraService extends BaseApiService
 
     public function getOnboardingProcessByUser($userId, $filterArray = [])
     {
-        return $this->get("onboarding_process/{$userId}", $filterArray);
+        return $this->get("onboarding_process/user/{$userId}", $filterArray);
     }
 
     public function updateOnboardingProcessByUser($userId, $inputs)
     {
-        return $this->put("onboarding_process/{$userId}", $inputs);
+        return $this->put("onboarding_process/user/{$userId}", $inputs);
     }
 }
