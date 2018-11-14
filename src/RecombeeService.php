@@ -163,7 +163,7 @@ class RecombeeService
         }
     }
 
-    public function getRecommendSetsByUser($userId, $count, $options)
+    public function getRecommendedSetsByUser($userId, $count, $options)
     {
         $options['returnProperties'] = true;
         $request =
@@ -177,7 +177,7 @@ class RecombeeService
         return static::convertItemsToSetIds($result['recomms']);
     }
 
-    public function getRecommendSetsBySet($setId, $count, $options)
+    public function getRecommendedSetsBySet($setId, $count, $options)
     {
         $options['returnProperties'] = true;
         $request =
