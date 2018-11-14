@@ -161,4 +161,18 @@ class RecombeeService
             throw $e;
         }
     }
+
+    public function getRecommendSetsBySet($setId, $count, $options)
+    {
+        $options['returnProperties'] = true;
+        $request =
+            new RecombeeRequests\RecommendItemsToUser(
+                static::SET_ITEM_PREFIX . $setId,
+                $count,
+                $options
+            );
+        $result = $this->client->send($request);
+
+        return $result;
+    }
 }
