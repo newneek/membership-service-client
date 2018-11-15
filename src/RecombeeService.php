@@ -177,12 +177,13 @@ class RecombeeService
         return static::convertItemsToSetIds($result['recomms']);
     }
 
-    public function getRecommendedSetsBySet($setId, $count, $options)
+    public function getRecommendedSetsBySet($setId, $userId, $count, $options)
     {
         $options['returnProperties'] = true;
         $request =
             new RecombeeRequests\RecommendItemsToItem(
                 static::SET_ITEM_PREFIX . $setId,
+                $userId,
                 $count,
                 $options
             );
