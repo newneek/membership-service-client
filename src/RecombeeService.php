@@ -181,7 +181,7 @@ class RecombeeService
     {
         $options['returnProperties'] = true;
         $request =
-            new RecombeeRequests\RecommendItemsToUser(
+            new RecombeeRequests\RecommendItemsToItem(
                 static::SET_ITEM_PREFIX . $setId,
                 $count,
                 $options
