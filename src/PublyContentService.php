@@ -14,8 +14,8 @@ class PublyContentService extends BaseApiService
     const CURATION_TYPE_CAROUSEL = 2; //dep
 
     const CURATION_TYPE_RANK_UNIQUE_SET_READER = 3;
-    const CURATION_TYPE_MANUAL = 4;
-    const CURATION_TYPE_INDIVIDUAL_RECOMMEND = 5;
+    const CURATION_TYPE_INDIVIDUAL_RECOMMEND = 4;
+    const CURATION_TYPE_MANUAL = 5;
     const CURATION_TYPE_LIKE_SET = 6;
     const CURATION_TYPE_CONTINUE_TO_READ = 7;
 
