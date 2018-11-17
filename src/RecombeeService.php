@@ -144,6 +144,7 @@ class RecombeeService
         return null;
     }
 
+    // will be deprecated
     public function getRecommendItemsToUser($userId, $count, $options)
     {
         try {
@@ -160,5 +161,44 @@ class RecombeeService
         } catch (\Exception $e) {
             throw $e;
         }
+    }
+
+    public function getRecommendedSetsByUser($userId, $count, $options)
+    {
+        $options['returnProperties'] = true;
+        $request =
+            new RecombeeRequests\RecommendItemsToUser(
+                $userId,
+                $count,
+                $options
+            );
+        $result = $this->client->send($request);
+
+        return static::convertItemsToSetIds($result['recomms']);
+    }
+
+    public function getRecommendedSetsBySet($setId, $userId, $count, $options)
+    {
+        $options['returnProperties'] = true;
+        $request =
+            new RecombeeRequests\RecommendItemsToItem(
+                static::SET_ITEM_PREFIX . $setId,
+                $userId,
+                $count,
+                $options
+            );
+        $result = $this->client->send($request);
+
+        return static::convertItemsToSetIds($result['recomms']);
+    }
+
+    private static function convertItemsToSetIds($items)
+    {
+        $setIds = [];
+        foreach ($items as $item) {
+            array_push($setIds, ltrim($item['id'], static::SET_ITEM_PREFIX));
+        }
+
+        return $setIds;
     }
 }
