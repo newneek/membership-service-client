@@ -2188,7 +2188,7 @@ class PublyContentService extends BaseApiService
             'changer_id' => $changerId,
             'title' => $title,
             'type' => $type,
-            'setId' => $setId,
+            'set_id' => $setId,
             'pc_body' => $pcBody,
             'mobile_body' => $mobileBody
         ];
@@ -2209,7 +2209,7 @@ class PublyContentService extends BaseApiService
             'changer_id' => $changerId,
             'title' => $title,
             'type' => $type,
-            'setId' => $setId,
+            'set_id' => $setId,
             'pc_body' => $pcBody,
             'mobile_body' => $mobileBody
         ];
