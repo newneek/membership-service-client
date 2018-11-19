@@ -54,6 +54,9 @@ class PublyContentService extends BaseApiService
     const USER_CONTENT_PROGRESS_TYPE_INDIVIDUAL = 1;
     const USER_CONTENT_PROGRESS_TYPE_PACKAGE = 2;
 
+    const FEATURED_BANNER_ITEM_TYPE_SET = 1;
+    const FEATURED_BANNER_ITEM_TYPE_MANUAL = 2;
+
     const NO_PAGE_LIMIT = 0;
 
     public function __construct($domain)
@@ -2154,11 +2157,78 @@ class PublyContentService extends BaseApiService
     {
         return $this->post("onboarding_category/{$categoryId}/delete");
     }
+
     public function updateOnboardingCategoryOrder($onboardingCategoryIds)
     {
         return $this->put("onboarding_category/update_order",
             [
                 'ids' => implode(',', $onboardingCategoryIds)
             ]);
+    }
+
+    public function getFeaturedBannerItems($filterArray = [])
+    {
+        return $this->get("featured_banner_item", $filterArray);
+    }
+
+    public function getFeaturedBannerItem($featuredBannerItemId)
+    {
+        return $this->get("featured_banner_item/{$featuredBannerItemId}");
+    }
+
+    public function createFeaturedBannerItem(
+        $changerId,
+        $title,
+        $type,
+        $setId,
+        $pcBody,
+        $mobileBody
+    ) {
+        $inputs = [
+            'changer_id' => $changerId,
+            'title' => $title,
+            'type' => $type,
+            'setId' => $setId,
+            'pc_body' => $pcBody,
+            'mobile_body' => $mobileBody
+        ];
+
+        return $this->post("featured_banner_item", $inputs);
+    }
+
+    public function updateFeaturedBannerItem(
+        $changerId,
+        $featuredBannerItemId,
+        $title,
+        $type,
+        $setId,
+        $pcBody,
+        $mobileBody
+    ) {
+        $inputs = [
+            'changer_id' => $changerId,
+            'title' => $title,
+            'type' => $type,
+            'setId' => $setId,
+            'pc_body' => $pcBody,
+            'mobile_body' => $mobileBody
+        ];
+
+        return $this->put("featured_banner_item/{$featuredBannerItemId}", $inputs);
+    }
+
+    public function updateFeaturedBannerItemOrder($changerId, $featuredBannerItemIds)
+    {
+        return $this->put("featured_banner_item/update_order", [
+            'changer_id' => $changerId,
+            'ids' => implode(',', $featuredBannerItemIds)
+        ]);
+    }
+
+    public function deleteFeaturedBannerItem($changerId, $featurdBannerItemId)
+    {
+        return $this->post("featured_banner_item/{$featurdBannerItemId}/delete", [
+            'changer_id' => $changerId
+        ]);
     }
 }
