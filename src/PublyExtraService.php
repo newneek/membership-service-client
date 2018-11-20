@@ -17,6 +17,9 @@ class PublyExtraService extends BaseApiService
 
     const MAXIMUM_SHAREABLE_COUNT = 5;
 
+    const FEATURED_BANNER_ITEM_TYPE_SET = 1;
+    const FEATURED_BANNER_ITEM_TYPE_MANUAL = 2;
+
     public function __construct($domain)
     {
         parent::__construct();

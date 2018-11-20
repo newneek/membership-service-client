@@ -54,9 +54,6 @@ class PublyContentService extends BaseApiService
     const USER_CONTENT_PROGRESS_TYPE_INDIVIDUAL = 1;
     const USER_CONTENT_PROGRESS_TYPE_PACKAGE = 2;
 
-    const FEATURED_BANNER_ITEM_TYPE_SET = 1;
-    const FEATURED_BANNER_ITEM_TYPE_MANUAL = 2;
-
     const NO_PAGE_LIMIT = 0;
 
     public function __construct($domain)
