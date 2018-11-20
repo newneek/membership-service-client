@@ -17,6 +17,9 @@ class PublyExtraService extends BaseApiService
 
     const MAXIMUM_SHAREABLE_COUNT = 5;
 
+    const FEATURED_BANNER_ITEM_TYPE_SET = 1;
+    const FEATURED_BANNER_ITEM_TYPE_MANUAL = 2;
+
     public function __construct($domain)
     {
         parent::__construct();
@@ -499,5 +502,72 @@ class PublyExtraService extends BaseApiService
     public function updateOnboardingProcessByUser($userId, $inputs)
     {
         return $this->put("onboarding_process/user/{$userId}", $inputs);
+    }
+
+
+    public function getFeaturedBannerItems($filterArray = [])
+    {
+        return $this->get("featured_banner_item", $filterArray);
+    }
+
+    public function getFeaturedBannerItem($featuredBannerItemId)
+    {
+        return $this->get("featured_banner_item/{$featuredBannerItemId}");
+    }
+
+    public function createFeaturedBannerItem(
+        $changerId,
+        $note,
+        $type,
+        $setId,
+        $htmlPc,
+        $htmlMobile
+    ) {
+        $inputs = [
+            'changer_id' => $changerId,
+            'note' => $note,
+            'type' => $type,
+            'set_id' => $setId,
+            'html_pc' => $htmlPc,
+            'html_mobile' => $htmlMobile
+        ];
+
+        return $this->post("featured_banner_item", $inputs);
+    }
+
+    public function updateFeaturedBannerItem(
+        $changerId,
+        $featuredBannerItemId,
+        $note,
+        $type,
+        $setId,
+        $htmlPc,
+        $htmlMobile
+    ) {
+        $inputs = [
+            'changer_id' => $changerId,
+            'note' => $note,
+            'type' => $type,
+            'set_id' => $setId,
+            'html_pc' => $htmlPc,
+            'html_mobile' => $htmlMobile
+        ];
+
+        return $this->put("featured_banner_item/{$featuredBannerItemId}", $inputs);
+    }
+
+    public function updateFeaturedBannerItemOrder($changerId, $featuredBannerItemIds)
+    {
+        return $this->put("featured_banner_item/update_order", [
+            'changer_id' => $changerId,
+            'ids' => implode(',', $featuredBannerItemIds)
+        ]);
+    }
+
+    public function deleteFeaturedBannerItem($changerId, $featurdBannerItemId)
+    {
+        return $this->post("featured_banner_item/{$featurdBannerItemId}/delete", [
+            'changer_id' => $changerId
+        ]);
     }
 }

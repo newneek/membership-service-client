@@ -10,10 +10,16 @@ class PublyContentService extends BaseApiService
     const SET_REVIEW_IS_HIDDEN_FALSE = 0;
     const SET_REVIEW_IS_HIDDEN_TRUE = 1;
 
-    const CURATION_TYPE_LIST = 1;
-    const CURATION_TYPE_CAROUSEL = 2;
+    const CURATION_TYPE_LIST = 1; //dep
+    const CURATION_TYPE_CAROUSEL = 2; //dep
+
     const CURATION_TYPE_RANK_UNIQUE_SET_READER = 3;
     const CURATION_TYPE_INDIVIDUAL_RECOMMEND = 4;
+    const CURATION_TYPE_MANUAL = 5;
+    const CURATION_TYPE_LIKE_SET = 6;
+    const CURATION_TYPE_CONTINUE_TO_READ = 7;
+    const CURATION_TYPE_NEW_CONTENT = 8;
+    const CURATION_TYPE_PUBLISH_BEFORE = 9;
 
     const STRING_CURATION_TYPE = [
         PublyContentService::CURATION_TYPE_RANK_UNIQUE_SET_READER => '최근 인기 콘텐츠',
@@ -1709,6 +1715,12 @@ class PublyContentService extends BaseApiService
         return $this->get("curation/{$curationId}", $filterArray);
     }
 
+    public function getCurationsByIds($curationIds, $filterArray = [])
+    {
+        $filterArray['ids'] = $curationIds;
+        return $this->get("curation/by_ids", $filterArray);
+    }
+
     public function createCuration($changerId, $title)
     {
         return $this->post("curation", [
@@ -2148,6 +2160,7 @@ class PublyContentService extends BaseApiService
     {
         return $this->post("onboarding_category/{$categoryId}/delete");
     }
+
     public function updateOnboardingCategoryOrder($onboardingCategoryIds)
     {
         return $this->put("onboarding_category/update_order",
