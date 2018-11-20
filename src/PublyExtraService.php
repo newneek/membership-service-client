@@ -514,7 +514,7 @@ class PublyExtraService extends BaseApiService
 
     public function createFeaturedBannerItem(
         $changerId,
-        $title,
+        $note,
         $type,
         $setId,
         $htmlPc,
@@ -522,7 +522,7 @@ class PublyExtraService extends BaseApiService
     ) {
         $inputs = [
             'changer_id' => $changerId,
-            'title' => $title,
+            'note' => $note,
             'type' => $type,
             'set_id' => $setId,
             'html_pc' => $htmlPc,
@@ -535,7 +535,7 @@ class PublyExtraService extends BaseApiService
     public function updateFeaturedBannerItem(
         $changerId,
         $featuredBannerItemId,
-        $title,
+        $note,
         $type,
         $setId,
         $htmlPc,
@@ -543,7 +543,7 @@ class PublyExtraService extends BaseApiService
     ) {
         $inputs = [
             'changer_id' => $changerId,
-            'title' => $title,
+            'note' => $note,
             'type' => $type,
             'set_id' => $setId,
             'html_pc' => $htmlPc,
