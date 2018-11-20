@@ -1718,6 +1718,12 @@ class PublyContentService extends BaseApiService
         return $this->get("curation/{$curationId}", $filterArray);
     }
 
+    public function getCurationsByIds($curationIds, $filterArray = [])
+    {
+        $filterArray['ids'] = $curationIds;
+        return $this->get("curation/by_ids", $filterArray);
+    }
+
     public function createCuration($changerId, $title)
     {
         return $this->post("curation", [
