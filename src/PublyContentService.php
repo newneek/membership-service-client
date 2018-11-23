@@ -2168,4 +2168,16 @@ class PublyContentService extends BaseApiService
                 'ids' => implode(',', $onboardingCategoryIds)
             ]);
     }
+
+    public function getProfiles($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("profile", $filterArray);
+    }
+
+    public function getProfile($profileId)
+    {
+        return $this->get("/profile/{$profileId}");
+    }
 }
