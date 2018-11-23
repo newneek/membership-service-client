@@ -2178,6 +2178,39 @@ class PublyContentService extends BaseApiService
 
     public function getProfile($profileId)
     {
-        return $this->get("/profile/{$profileId}");
+        return $this->get("profile/{$profileId}");
+    }
+
+    public function createProfile($changerId, $name)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'name' => $name
+        ];
+
+        return $this->post("profile", $inputs);
+    }
+
+    public function updateProfile(
+        $changerId,
+        $profileId,
+        $name,
+        $imageUrl,
+        $title,
+        $description,
+        $note,
+        $links
+    ) {
+        $inputs = [
+            'changer_id' => $changerId,
+            'name' => $name,
+            'image_url' => $imageUrl,
+            'title' => $title,
+            'description' => $description,
+            'note' => $note,
+            'links' => $links
+        ];
+
+        return $this->put("profile/{$profileId}", $inputs);
     }
 }
