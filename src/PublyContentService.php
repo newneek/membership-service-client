@@ -2220,4 +2220,37 @@ class PublyContentService extends BaseApiService
 
         return $this->post("profile/{$profileId}/delete", $inputs);
     }
+
+    public function getWriterTypes($filterArray = [])
+    {
+        return $this->get("writer_type", $filterArray);
+    }
+
+    public function getWriterType($writerTypeId)
+    {
+        return $this->get("writer_type/{$writerTypeId}");
+    }
+
+    public function createWriterType($name)
+    {
+        $inputs = [
+            'name' => $name
+        ];
+
+        return $this->post("writer_type", $inputs);
+    }
+
+    public function updateWriterType($writerTypeId, $name)
+    {
+        $inputs = [
+            'name' => $name
+        ];
+
+        return $this->put("writer_type/{$writerTypeId}", $inputs);
+    }
+
+    public function deleteWriterType($writerTypeId)
+    {
+        return $this->post("writer_type/{$writerTypeId}/delete");
+    }
 }
