@@ -2213,4 +2213,11 @@ class PublyContentService extends BaseApiService
 
         return $this->put("profile/{$profileId}", $inputs);
     }
+
+    public function deleteProfile($changerId, $profileId)
+    {
+        $inputs = ['changer_id' => $changerId];
+
+        return $this->post("profile/{$profileId}/delete", $inputs);
+    }
 }
