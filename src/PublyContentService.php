@@ -1499,21 +1499,33 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function addContentAuthor($changerId, $contentId, $userId, $isHidden)
+    public function addContentAuthor($changerId, $contentId, $profileId, $writerTypeId, $isMain)
     {
         return $this->post("writer", [
             'changer_id' => $changerId,
-            'user_id' => $userId,
+            'profile_id' => $profileId,
             'content_id' => $contentId,
-            'is_hidden' => $isHidden
+            'writer_type_id' => $writerTypeId,
+            'is_main' => $isMain
         ]);
     }
 
-    public function removeContentAuthor($changerId, $contentId, $userId)
+    public function updateContentAuthor($changerId, $contentId, $profileId, $writerTypeId, $isMain)
+    {
+        return $this->put("writer/update", [
+            'changer_id' => $changerId,
+            'content_id' => $contentId,
+            'profile_id' => $profileId,
+            'writer_type_id' => $writerTypeId,
+            'is_main' => $isMain
+        ]);
+    }
+
+    public function removeContentAuthor($changerId, $contentId, $profileId)
     {
         return $this->post("writer/delete/", [
             'changer_id' => $changerId,
-            'user_id' => $userId,
+            'profile_id' => $profileId,
             'content_id' => $contentId
         ]);
     }
