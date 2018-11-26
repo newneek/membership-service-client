@@ -1506,22 +1506,34 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function addSetAuthor($changerId, $setId, $userId, $isHidden)
+    public function addSetAuthor($changerId, $setId, $profileId, $isMain, $writerTypeId)
     {
         return $this->post("writer", [
             'changer_id' => $changerId,
-            'user_id' => $userId,
+            'profile_id' => $profileId,
             'set_id' => $setId,
-            'is_hidden' => $isHidden
+            'is_main' => $isMain,
+            'writer_type_id' => $writerTypeId
         ]);
     }
 
-    public function removeSetAuthor($changerId, $setId, $userId)
+    public function removeSetAuthor($changerId, $setId, $profileId)
     {
         return $this->post("writer/delete/", [
             'changer_id' => $changerId,
-            'user_id' => $userId,
+            'profile_id' => $profileId,
             'set_id' => $setId
+        ]);
+    }
+
+    public function updateSetAuthor($changerId, $setId, $profileId, $writerTypeId, $isMain)
+    {
+        return $this->put("writer/update", [
+            'changer_id' => $changerId,
+            'set_id' => $setId,
+            'profile_id' => $profileId,
+            'writer_type_id' => $writerTypeId,
+            'is_main' => $isMain
         ]);
     }
 
@@ -2179,6 +2191,12 @@ class PublyContentService extends BaseApiService
     public function getProfile($profileId)
     {
         return $this->get("profile/{$profileId}");
+    }
+
+    public function getProfilesByIds($profileIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $profileIds);
+        return $this->get("profile/by_ids", $filterArray);
     }
 
     public function createProfile($changerId, $name)
