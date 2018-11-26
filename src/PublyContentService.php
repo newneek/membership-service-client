@@ -1584,6 +1584,11 @@ class PublyContentService extends BaseApiService
         return $this->get("writer/set/{$setId}", $filterArray);
     }
 
+    public function getWritersByProfileId($profileId, $filterArray = [])
+    {
+        return $this->get("writer/profile/{$profileId}", $filterArray);
+    }
+
     public function getWritersByProjectIds($projectIds, $filterArray = [])
     {
         $filterArray['ids'] = implode(',', $projectIds);
