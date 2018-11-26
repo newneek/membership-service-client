@@ -1468,21 +1468,33 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function addProjectAuthor($changerId, $projectId, $userId, $isHidden)
+    public function addProjectAuthor($changerId, $projectId, $profileId, $writerTypeId, $isMain)
     {
         return $this->post("writer", [
             'changer_id' => $changerId,
-            'user_id' => $userId,
+            'profile_id' => $profileId,
             'project_id' => $projectId,
-            'is_hidden' => $isHidden
+            'writer_type_id' => $writerTypeId,
+            'is_main' => $isMain
         ]);
     }
 
-    public function removeProjectAuthor($changerId, $projectId, $userId)
+    public function updateProjectAuthor($changerId, $projectId, $profileId, $writerTypeId, $isMain)
+    {
+        return $this->put("writer/update", [
+            'changer_id' => $changerId,
+            'project_id' => $projectId,
+            'profile_id' => $profileId,
+            'writer_type_id' => $writerTypeId,
+            'is_main' => $isMain
+        ]);
+    }
+
+    public function removeProjectAuthor($changerId, $projectId, $profileId)
     {
         return $this->post("writer/delete/", [
             'changer_id' => $changerId,
-            'user_id' => $userId,
+            'profile_id' => $profileId,
             'project_id' => $projectId
         ]);
     }
@@ -1534,6 +1546,14 @@ class PublyContentService extends BaseApiService
             'profile_id' => $profileId,
             'writer_type_id' => $writerTypeId,
             'is_main' => $isMain
+        ]);
+    }
+
+    public function updateWriterOrder($changerId, $ids)
+    {
+        return $this->put('writer/update_order', [
+            'changer_id' => $changerId,
+            'ids' => implode(',', $ids)
         ]);
     }
 
