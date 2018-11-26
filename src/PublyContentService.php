@@ -2276,6 +2276,12 @@ class PublyContentService extends BaseApiService
         return $this->get("writer_type", $filterArray);
     }
 
+    public function getWriterTypesByIds($writerIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $writerIds);
+        return $this->get("writer_type/by_ids", $filterArray);
+    }
+
     public function getWriterType($writerTypeId)
     {
         return $this->get("writer_type/{$writerTypeId}");
