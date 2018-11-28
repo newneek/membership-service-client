@@ -1479,26 +1479,6 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function updateProjectAuthor($changerId, $projectId, $profileId, $writerTypeId, $isMain)
-    {
-        return $this->put("writer/update", [
-            'changer_id' => $changerId,
-            'project_id' => $projectId,
-            'profile_id' => $profileId,
-            'writer_type_id' => $writerTypeId,
-            'is_main' => $isMain
-        ]);
-    }
-
-    public function removeProjectAuthor($changerId, $projectId, $profileId)
-    {
-        return $this->post("writer/delete/", [
-            'changer_id' => $changerId,
-            'profile_id' => $profileId,
-            'project_id' => $projectId
-        ]);
-    }
-
     public function addContentAuthor($changerId, $contentId, $profileId, $writerTypeId, $isMain)
     {
         return $this->post("writer", [
@@ -1507,26 +1487,6 @@ class PublyContentService extends BaseApiService
             'content_id' => $contentId,
             'writer_type_id' => $writerTypeId,
             'is_main' => $isMain
-        ]);
-    }
-
-    public function updateContentAuthor($changerId, $contentId, $profileId, $writerTypeId, $isMain)
-    {
-        return $this->put("writer/update", [
-            'changer_id' => $changerId,
-            'content_id' => $contentId,
-            'profile_id' => $profileId,
-            'writer_type_id' => $writerTypeId,
-            'is_main' => $isMain
-        ]);
-    }
-
-    public function removeContentAuthor($changerId, $contentId, $profileId)
-    {
-        return $this->post("writer/delete/", [
-            'changer_id' => $changerId,
-            'profile_id' => $profileId,
-            'content_id' => $contentId
         ]);
     }
 
@@ -1541,31 +1501,27 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function removeSetAuthor($changerId, $setId, $profileId)
-    {
-        return $this->post("writer/delete/", [
-            'changer_id' => $changerId,
-            'profile_id' => $profileId,
-            'set_id' => $setId
-        ]);
-    }
-
-    public function updateSetAuthor($changerId, $setId, $profileId, $writerTypeId, $isMain)
-    {
-        return $this->put("writer/update", [
-            'changer_id' => $changerId,
-            'set_id' => $setId,
-            'profile_id' => $profileId,
-            'writer_type_id' => $writerTypeId,
-            'is_main' => $isMain
-        ]);
-    }
-
     public function updateWriterOrder($changerId, $ids)
     {
         return $this->put('writer/update_order', [
             'changer_id' => $changerId,
             'ids' => implode(',', $ids)
+        ]);
+    }
+
+    public function updateAuthor($changerId, $writerId, $writerTypeId, $isMain)
+    {
+        return $this->put("writer/{$writerId}", [
+            'changer_id' => $changerId,
+            'writer_type_id' => $writerTypeId,
+            'is_main' => $isMain
+        ]);
+    }
+
+    public function removeAuthor($changerId, $writerId)
+    {
+        return $this->post("writer/{$writerId}/delete/", [
+            'changer_id' => $changerId
         ]);
     }
 
