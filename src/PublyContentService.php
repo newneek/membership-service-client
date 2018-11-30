@@ -1468,6 +1468,7 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
+    //deprecated
     public function addProjectAuthor($changerId, $projectId, $userId, $isHidden)
     {
         return $this->post("writer", [
@@ -1479,7 +1480,7 @@ class PublyContentService extends BaseApiService
     }
 
 
-    public function addProjectAuthor2($changerId, $projectId, $profileId, $writerTypeId, $isMain)
+    public function addProjectWriter($changerId, $projectId, $profileId, $writerTypeId, $isMain)
     {
         return $this->post("writer", [
             'changer_id' => $changerId,
@@ -1490,6 +1491,7 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
+    //deprecated
     public function removeProjectAuthor($changerId, $projectId, $userId)
     {
         return $this->post("writer/delete/", [
@@ -1499,6 +1501,7 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
+    //deprecated
     public function addContentAuthor($changerId, $contentId, $userId, $isHidden)
     {
         return $this->post("writer", [
@@ -1509,7 +1512,7 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function addContentAuthor2($changerId, $contentId, $profileId, $writerTypeId, $isMain)
+    public function addContentWriter($changerId, $contentId, $profileId, $writerTypeId, $isMain)
     {
         return $this->post("writer", [
             'changer_id' => $changerId,
@@ -1520,6 +1523,7 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
+    //deprecated
     public function removeContentAuthor($changerId, $contentId, $userId)
     {
         return $this->post("writer/delete/", [
@@ -1529,6 +1533,7 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
+    //deprecated
     public function addSetAuthor($changerId, $setId, $userId, $isHidden)
     {
         return $this->post("writer", [
@@ -1539,7 +1544,7 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function addSetAuthor2($changerId, $setId, $profileId, $isMain, $writerTypeId)
+    public function addSetWriter($changerId, $setId, $profileId, $isMain, $writerTypeId)
     {
         return $this->post("writer", [
             'changer_id' => $changerId,
@@ -1550,7 +1555,7 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-
+    //deprecated
     public function removeSetAuthor($changerId, $setId, $userId)
     {
         return $this->post("writer/delete/", [
@@ -1568,7 +1573,7 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function updateAuthor($changerId, $writerId, $writerTypeId, $isMain)
+    public function updateWriter($changerId, $writerId, $writerTypeId, $isMain)
     {
         return $this->put("writer/{$writerId}", [
             'changer_id' => $changerId,
@@ -1577,7 +1582,7 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function removeAuthor($changerId, $writerId)
+    public function removeWriter($changerId, $writerId)
     {
         return $this->post("writer/{$writerId}/delete/", [
             'changer_id' => $changerId
