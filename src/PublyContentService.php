@@ -1468,7 +1468,18 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function addProjectAuthor($changerId, $projectId, $profileId, $writerTypeId, $isMain)
+    public function addProjectAuthor($changerId, $projectId, $userId, $isHidden)
+    {
+        return $this->post("writer", [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'project_id' => $projectId,
+            'is_hidden' => $isHidden
+        ]);
+    }
+
+
+    public function addProjectAuthor2($changerId, $projectId, $profileId, $writerTypeId, $isMain)
     {
         return $this->post("writer", [
             'changer_id' => $changerId,
@@ -1479,7 +1490,26 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function addContentAuthor($changerId, $contentId, $profileId, $writerTypeId, $isMain)
+    public function removeProjectAuthor($changerId, $projectId, $userId)
+    {
+        return $this->post("writer/delete/", [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'project_id' => $projectId
+        ]);
+    }
+
+    public function addContentAuthor($changerId, $contentId, $userId, $isHidden)
+    {
+        return $this->post("writer", [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'content_id' => $contentId,
+            'is_hidden' => $isHidden
+        ]);
+    }
+
+    public function addContentAuthor2($changerId, $contentId, $profileId, $writerTypeId, $isMain)
     {
         return $this->post("writer", [
             'changer_id' => $changerId,
@@ -1490,7 +1520,26 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function addSetAuthor($changerId, $setId, $profileId, $isMain, $writerTypeId)
+    public function removeContentAuthor($changerId, $contentId, $userId)
+    {
+        return $this->post("writer/delete/", [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'content_id' => $contentId
+        ]);
+    }
+
+    public function addSetAuthor($changerId, $setId, $userId, $isHidden)
+    {
+        return $this->post("writer", [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'set_id' => $setId,
+            'is_hidden' => $isHidden
+        ]);
+    }
+
+    public function addSetAuthor2($changerId, $setId, $profileId, $isMain, $writerTypeId)
     {
         return $this->post("writer", [
             'changer_id' => $changerId,
@@ -1498,6 +1547,16 @@ class PublyContentService extends BaseApiService
             'set_id' => $setId,
             'is_main' => $isMain,
             'writer_type_id' => $writerTypeId
+        ]);
+    }
+
+
+    public function removeSetAuthor($changerId, $setId, $userId)
+    {
+        return $this->post("writer/delete/", [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'set_id' => $setId
         ]);
     }
 
