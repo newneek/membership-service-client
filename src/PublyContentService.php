@@ -2334,4 +2334,14 @@ class PublyContentService extends BaseApiService
     {
         return $this->post("writer_type/{$writerTypeId}/delete");
     }
+
+    public function getPermissionByUserAndSet($userId, $setId)
+    {
+        return $this->get("permission/user/{$userId}/set/{$setId}");
+    }
+
+    public function getPermissionByUserAndContent($userId, $contentId)
+    {
+        return $this->get("permission/user/{$userId}/content/{$contentId}");
+    }
 }
