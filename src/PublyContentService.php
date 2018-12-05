@@ -2334,4 +2334,50 @@ class PublyContentService extends BaseApiService
     {
         return $this->post("writer_type/{$writerTypeId}/delete");
     }
+
+    public function createPermission($userId, $setId, $contentId, $readable, $editable)
+    {
+        $inputs = [
+            'user_id' => $userId,
+            'set_id' => $setId,
+            'content_id' => $contentId,
+            'readable' => $readable,
+            'editable' => $editable
+        ];
+        return $this->post("permission", $inputs);
+    }
+
+    public function updatePermission($permissionId, $readable, $editable)
+    {
+        $inputs = [
+            'readable' => $readable,
+            'editable' => $editable
+        ];
+        return $this->put("permission/{$permissionId}", $inputs);
+    }
+
+    public function deletePermission($permissionId)
+    {
+        return $this->post("permission/{$permissionId}/delete");
+    }
+
+    public function getPermissionByUserAndSet($userId, $setId)
+    {
+        return $this->get("permission/user/{$userId}/set/{$setId}");
+    }
+
+    public function getPermissionByUserAndContent($userId, $contentId)
+    {
+        return $this->get("permission/user/{$userId}/content/{$contentId}");
+    }
+
+    public function getPermissionsBySet($setId, $filterArray = [])
+    {
+        return $this->get("permission/set/{$setId}", $filterArray);
+    }
+
+    public function getPermissionsByContent($contentId, $filterArray = [])
+    {
+        return $this->get("permission/content/{$contentId}", $filterArray);
+    }
 }
