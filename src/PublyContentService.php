@@ -494,6 +494,18 @@ class PublyContentService extends BaseApiService
             ]);
     }
 
+    public function updateContentIsPicked(
+        $changerId,
+        $contentId,
+        $isPicked
+    ) {
+        return $this->put("content/{$contentId}",
+            [
+                'changer_id' => $changerId,
+                'is_picked' => $isPicked
+            ]);
+    }
+
     public function updateContentProjectId($contentId, $projectId)
     {
         return $this->put("content/{$contentId}/project", ['project_id' => $projectId]);
