@@ -601,62 +601,37 @@ class PublyContentService extends BaseApiService
         return $this->get("writer/total")['success']['data'];
     }
 
-    public function getTotalContentCountByCache() {
+    public function getTotalContentCountFromCache() {
         $cacheKey = 'TOTAL_CONTENT_COUNT';
-        try {
-            $totalContentCount = \Cache::remember($cacheKey, 60, function() {
-                return $this->getTotalContentCount2();
-            });
-        } catch(\Exception $e) {
-            if ($e instanceof ResponseException) {
-                throw $e;
-            } else {// ignore Cache Exception
-                $totalContentCount = $this->getTotalContentCount2();
-            }
-        }
+        $totalContentCount = \Cache::remember($cacheKey, 60, function() {
+            return $this->getTotalContentCount2();
+        });
 
         return $totalContentCount;
     }
 
-    public function getTotalPackageSetCountByCache() {
+    public function getTotalPackageSetCountFromCache() {
         $cacheKey = 'TOTAL_PACKAGE_SET_COUNT';
         $latestPackageSetFilter =
             [
                 'is_package' => 1,
                 'publish_after' => 1,
             ];
-        try {
-            $totalPackageSetCount = \Cache::remember($cacheKey, 60, function() use ($latestPackageSetFilter) {
-                $latestPackageSetResult = $this->getSets(1, 1, $latestPackageSetFilter);
-                $totalPackageSetCount = $latestPackageSetResult['paginator']['total_count'];
+        $totalPackageSetCount = \Cache::remember($cacheKey, 60, function() use ($latestPackageSetFilter) {
+            $latestPackageSetResult = $this->getSets(1, 1, $latestPackageSetFilter);
+            $totalPackageSetCount = $latestPackageSetResult['paginator']['total_count'];
 
-                return $totalPackageSetCount;
-            });
-        } catch(\Exception $e) {
-            if ($e instanceof ResponseException) {
-                throw $e;
-            } else {// ignore Cache Exception
-                $latestPackageSetResult = $this->getSets(1, 1, $latestPackageSetFilter);
-                $totalPackageSetCount = $latestPackageSetResult['paginator']['total_count'];
-            }
-        }
+            return $totalPackageSetCount;
+        });
 
         return $totalPackageSetCount;
     }
 
-    public function getTotalAuthorCountByCache() {
+    public function getTotalAuthorCountFromCache() {
         $cacheKey = 'TOTAL_AUTHOR_COUNT';
-        try {
-            $totalAuthorCount = \Cache::remember($cacheKey, 60, function() {
-                return $this->getTotalAuthorCount2();
-            });
-        } catch(\Exception $e) {
-            if ($e instanceof ResponseException) {
-                throw $e;
-            } else {// ignore Cache Exception
-                $totalAuthorCount = $this->getTotalAuthorCount2();
-            }
-        }
+        $totalAuthorCount = \Cache::remember($cacheKey, 60, function() {
+            return $this->getTotalAuthorCount2();
+        });
 
         return $totalAuthorCount;
     }
@@ -2175,6 +2150,12 @@ class PublyContentService extends BaseApiService
         return $this->get("category/by_ids", $filterArray);
     }
 
+    public function getCategoriesByIds2($categoryIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $categoryIds);
+        return $this->get("category/by_ids", $filterArray)['success']['data'];
+    }
+
     public function updateCategory($changerId, $categoryId, $name)
     {
         return $this->put("category/{$categoryId}", [
@@ -2211,6 +2192,11 @@ class PublyContentService extends BaseApiService
         return $this->get("category_order", $filterArray);
     }
 
+    public function getCategoryOrders2($filterArray = [])
+    {
+        return $this->get("category_order", $filterArray)['success']['data'];
+    }
+
     public function deleteCategoryOrder($changerId, $categoryOrderId)
     {
         return $this->post("category_order/{$categoryOrderId}/delete",
@@ -2226,6 +2212,33 @@ class PublyContentService extends BaseApiService
                 'changer_id'=> $changerId,
                 'ids' => implode(',', $categoryOrderIds)
             ]);
+    }
+
+    public function getSortedCategoriesFromCache()
+    {
+        $cacheKey = 'SORTED_CATEGORIES';
+
+        $sortedCategories = \Cache::remember($cacheKey, 60, function () {
+            $takeLimit = 29;
+            $filterArray = ['order' => 'asc', 'take_limit' => $takeLimit];
+
+            $categoryOrders = $this->getCategoryOrders2($filterArray);
+            $categoryIds = array_unique_values_from_second_dimension($categoryOrders, 'category_id');
+
+            $categories = $this->getCategoriesByIds2($categoryIds);
+            $categories = array_make_key_from_second_dimension($categories, 'id');
+
+            $sortedCategories = [];
+            foreach ($categoryOrders as $categoryOrder) {
+                if (isset($categories[$categoryOrder['category_id']])) {
+                    array_push($sortedCategories, $categories[$categoryOrder['category_id']]);
+                }
+            }
+
+            return $sortedCategories;
+        });
+
+        return $sortedCategories;
     }
 
     public function getOnboardingSets($filterArray = [])
