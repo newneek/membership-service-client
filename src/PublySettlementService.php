@@ -293,11 +293,12 @@ class PublySettlementService extends BaseApiService
         ]);
     }
 
-    public function completeAuthorSettlementTransfer($changerId, $authorSettlementTransferId, $transferredAt = null)
+    public function completeAuthorSettlementTransfer($changerId, $authorSettlementTransferId, $tax, $transferredAt = null)
     {
         return $this->put("author_settlement_transfer/{$authorSettlementTransferId}", [
             'changer_id' => $changerId,
             'action' => 'complete',
+            'tax' => $tax,
             'transferred_at' => $transferredAt
         ]);
     }
