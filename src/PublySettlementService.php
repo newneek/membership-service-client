@@ -367,4 +367,27 @@ class PublySettlementService extends BaseApiService
             'changer_id' => $changerId
         ]);
     }
+
+    public function getSettlementAuthorSetResultsByAuthor($authorId, $filterArray = [])
+    {
+        return $this->get("settlement_author_set_result/author/{$authorId}", $filterArray);
+    }
+
+    public function getSettlementAuthorSetResultByYearAndMonthAndAuthorAndSet($settlementYear, $settlementMonth, $authorId, $setId)
+    {
+        return $this->get("/settlement_author_set_result/settlement_year/{$settlementYear}/settlement_month/{$settlementMonth}/author/{$authorId}/set/{$setId}");
+    }
+
+    public function getSettlementSetUserDetailsBySet($setId, $page, $limit, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("settlement_set_user_detail/set/{$setId}", $filterArray);
+    }
+
+    public function getSettlementSetUserDetailTotalUserViewCounts($userIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $userIds);
+        return $this->get("settlement_set_user_detail/user_total_view_count_by_users", $filterArray);
+    }
 }
