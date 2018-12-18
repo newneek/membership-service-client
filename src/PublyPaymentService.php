@@ -2855,6 +2855,13 @@ class PublyPaymentService extends BaseApiService
         return $this->get("point_history/", $filterArray);
     }
 
+    public function getPointHistoriesByTransactionType($transactionType, $page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("point_history/transaction_type/{$transactionType}", $filterArray);
+    }
+
     public function getPointHistoriesSumByUserId($userId)
     {
         return $this->get("point_history/user/{$userId}/sum");
@@ -2926,6 +2933,24 @@ class PublyPaymentService extends BaseApiService
         ];
 
         return $this->put("point_history/{$pointHistoryId}", $input);
+    }
+
+    public function createPointHistoriesByAdmin(
+        $userIds,
+        $delta,
+        $adminId,
+        $note
+    )
+    {
+        $input = [
+            'user_ids' => implode(',', $userIds),
+            'delta' => $delta,
+            'transaction_type' => static::POINT_HISTORY_TRANSACTION_TYPE_ADJUSTED_BY_ADMIN,
+            'admin_id' => $adminId,
+            'note' => $note
+        ];
+
+        return $this->post("point_history/store_point_histories_by_admin", $input);
     }
 
     public function updateOrCreateReferralRelation($referrerId, $refereeId, $referralProgramId)
