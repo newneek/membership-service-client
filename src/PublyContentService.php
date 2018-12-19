@@ -2389,12 +2389,13 @@ class PublyContentService extends BaseApiService
         return $this->post("writer_type/{$writerTypeId}/delete");
     }
 
-    public function createPermission($userId, $setId, $contentId, $readable, $editable)
+    public function createPermission($userId, $setId, $contentId, $projectId, $readable, $editable)
     {
         $inputs = [
             'user_id' => $userId,
             'set_id' => $setId,
             'content_id' => $contentId,
+            'project_id' => $projectId,
             'readable' => $readable,
             'editable' => $editable
         ];
@@ -2433,5 +2434,10 @@ class PublyContentService extends BaseApiService
     public function getPermissionsByContent($contentId, $filterArray = [])
     {
         return $this->get("permission/content/{$contentId}", $filterArray);
+    }
+
+    public function getPermissionsByProject($projectId, $filterArray = [])
+    {
+        return $this->get("permission/project/{$projectId}", $filterArray);
     }
 }
