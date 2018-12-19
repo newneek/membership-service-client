@@ -293,11 +293,12 @@ class PublySettlementService extends BaseApiService
         ]);
     }
 
-    public function completeAuthorSettlementTransfer($changerId, $authorSettlementTransferId, $transferredAt = null)
+    public function completeAuthorSettlementTransfer($changerId, $authorSettlementTransferId, $tax, $transferredAt = null)
     {
         return $this->put("author_settlement_transfer/{$authorSettlementTransferId}", [
             'changer_id' => $changerId,
             'action' => 'complete',
+            'tax' => $tax,
             'transferred_at' => $transferredAt
         ]);
     }
@@ -366,5 +367,34 @@ class PublySettlementService extends BaseApiService
         return $this->post("other_author_settlement/{$otherAuthorSettlementId}/delete", [
             'changer_id' => $changerId
         ]);
+    }
+
+    public function getSettlementAuthorSetResultsByAuthor($authorId, $filterArray = [])
+    {
+        return $this->get("settlement_author_set_result/author/{$authorId}", $filterArray);
+    }
+
+    public function getSettlementAuthorSetResultByYearAndMonthAndAuthorAndSet($settlementYear, $settlementMonth, $authorId, $setId)
+    {
+        return $this->get("/settlement_author_set_result/settlement_year/{$settlementYear}/settlement_month/{$settlementMonth}/author/{$authorId}/set/{$setId}");
+    }
+
+    public function getSettlementSetUserDetailsBySet($setId, $page, $limit, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("settlement_set_user_detail/set/{$setId}", $filterArray);
+    }
+
+    public function getSettlementSetUserDetailTotalUserViewCounts($userIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $userIds);
+        return $this->get("settlement_set_user_detail/user_total_view_count_by_users", $filterArray);
+    }
+
+    public function getSettlementSetUserDetailsBySetIds($setIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $setIds);
+        return $this->get("settlement_set_user_detail/by_set_ids", $filterArray);
     }
 }
