@@ -2426,6 +2426,11 @@ class PublyContentService extends BaseApiService
         return $this->get("permission/user/{$userId}/content/{$contentId}");
     }
 
+    public function getPermissionByUserAndProject($userId, $projectId)
+    {
+        return $this->get("permission/user/{$userId}/project/{$projectId}");
+    }
+
     public function getPermissionsBySet($setId, $filterArray = [])
     {
         return $this->get("permission/set/{$setId}", $filterArray);
