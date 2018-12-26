@@ -2847,19 +2847,18 @@ class PublyPaymentService extends BaseApiService
         return $this->post("plan_token/token", $inputs);
     }
 
-    public function getPointHistoriesByUserId($userId, $page =1, $limit = 10, $filterArray)
+    public function getPointHistories($page = 1, $limit = 10, $filterArray = [])
     {
         $filterArray['page'] = $page;
         $filterArray['limit'] = $limit;
-        $filterArray['user_id'] = $userId;
-        return $this->get("point_history/", $filterArray);
+        return $this->get("point_history", $filterArray);
     }
 
-    public function getPointHistoriesByTransactionType($transactionType, $page = 1, $limit = 10, $filterArray = [])
+    public function getPointHistoriesByUserId($userId, $page = 1, $limit = 10, $filterArray = [])
     {
         $filterArray['page'] = $page;
         $filterArray['limit'] = $limit;
-        return $this->get("point_history/transaction_type/{$transactionType}", $filterArray);
+        return $this->get("point_history/user/{$userId}", $filterArray);
     }
 
     public function getPointHistoriesSumByUserId($userId)
