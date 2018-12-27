@@ -70,7 +70,8 @@ class RecombeeService
                 $request =
                     new RecombeeRequests\DeleteBookmark(
                         $userId,
-                        static::SET_ITEM_PREFIX . $setId
+                        static::SET_ITEM_PREFIX . $setId,
+                        ['cascadeCreate' => true]
                     );
                 $result = $this->client->send($request);
 
