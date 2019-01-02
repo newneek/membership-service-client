@@ -597,8 +597,8 @@ class PublyContentService extends BaseApiService
         return $this->get("writer/total");
     }
 
-    public function getTotalAuthorCount2() {
-        return $this->get("writer/total")['success']['data'];
+    public function getTotalAuthorCount2($filterArray = []) {
+        return $this->get("writer/total", $filterArray)['success']['data'];
     }
 
     public function getTotalContentCountFromCache() {
@@ -627,10 +627,10 @@ class PublyContentService extends BaseApiService
         return $totalPackageSetCount;
     }
 
-    public function getTotalAuthorCountFromCache() {
+    public function getTotalAuthorCountFromCache($filterArray = []) {
         $cacheKey = 'TOTAL_AUTHOR_COUNT';
-        $totalAuthorCount = \Cache::remember($cacheKey, 60, function() {
-            return $this->getTotalAuthorCount2();
+        $totalAuthorCount = \Cache::remember($cacheKey, 60, function() use ($filterArray) {
+            return $this->getTotalAuthorCount2($filterArray);
         });
 
         return $totalAuthorCount;
