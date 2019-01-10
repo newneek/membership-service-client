@@ -598,4 +598,9 @@ class PublyExtraService extends BaseApiService
 
         return $this->post("highlight", $inputs);
     }
+
+    public function getHighlightsByUserAndContent($userId, $contentId)
+    {
+        return $this->get("highlight/user/{$userId}/content/{$contentId}");
+    }
 }
