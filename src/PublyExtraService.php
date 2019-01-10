@@ -445,7 +445,7 @@ class PublyExtraService extends BaseApiService
         $filterArray['changer_id'] = $changerId;
         return $this->post("ranking/type/{$type}/create", $filterArray);
     }
-    
+
     public function getLatestRankings($filterArray = [])
     {
         return $this->get("ranking/latest", $filterArray);
@@ -569,5 +569,33 @@ class PublyExtraService extends BaseApiService
         return $this->post("featured_banner_item/{$featurdBannerItemId}/delete", [
             'changer_id' => $changerId
         ]);
+    }
+
+    public function createHighlight(
+        $changerId,
+        $userId,
+        $setId,
+        $cotnentId,
+        $sectionIndex,
+        $paragraphIndex,
+        $isHighlighted,
+        $phrase,
+        $position,
+        $note
+    ) {
+        $inputs =  [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'set_id' => $setId,
+            'content_id' => $cotnentId,
+            'section_index' => $sectionIndex,
+            'paragraph_index' => $paragraphIndex,
+            'is_highlighted' => $isHighlighted,
+            'phrase' => $phrase,
+            'position' => $position,
+            'note' => $note
+        ];
+
+        return $this->post("highlight", $inputs);
     }
 }
