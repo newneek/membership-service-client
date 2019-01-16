@@ -604,6 +604,17 @@ class PublyExtraService extends BaseApiService
         return $this->get("highlight/user/{$userId}/content/{$contentId}");
     }
 
+    public function updateHighlight($changerId, $highlightId, $isHighlighted, $note)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'is_highlighted' => $isHighlighted,
+            'note' => $note
+        ];
+
+        return $this->put("highlight/{$highlightId}", $inputs);
+    }
+
     public function deleteHighlight($changerId, $highlightId)
     {
         $inputs = [
