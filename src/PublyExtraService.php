@@ -580,6 +580,7 @@ class PublyExtraService extends BaseApiService
         $paragraphIndex,
         $isHighlighted,
         $phrase,
+        $order,
         $position,
         $note
     ) {
@@ -592,6 +593,7 @@ class PublyExtraService extends BaseApiService
             'paragraph_index' => $paragraphIndex,
             'is_highlighted' => $isHighlighted,
             'phrase' => $phrase,
+            'order' => $order,
             'position' => $position,
             'note' => $note
         ];
