@@ -445,7 +445,7 @@ class PublyExtraService extends BaseApiService
         $filterArray['changer_id'] = $changerId;
         return $this->post("ranking/type/{$type}/create", $filterArray);
     }
-    
+
     public function getLatestRankings($filterArray = [])
     {
         return $this->get("ranking/latest", $filterArray);
@@ -569,5 +569,79 @@ class PublyExtraService extends BaseApiService
         return $this->post("featured_banner_item/{$featurdBannerItemId}/delete", [
             'changer_id' => $changerId
         ]);
+    }
+
+    public function createHighlight(
+        $changerId,
+        $userId,
+        $setId,
+        $contentId,
+        $sectionIndex,
+        $paragraphIndex,
+        $isHighlighted,
+        $phrase,
+        $order,
+        $position,
+        $note
+    ) {
+        $inputs =  [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'set_id' => $setId,
+            'content_id' => $contentId,
+            'section_index' => $sectionIndex,
+            'paragraph_index' => $paragraphIndex,
+            'is_highlighted' => $isHighlighted,
+            'phrase' => $phrase,
+            'order' => $order,
+            'position' => $position,
+            'note' => $note
+        ];
+
+        return $this->post("highlight", $inputs);
+    }
+
+    public function getHighlightsByUser($userId, $filterArray = [])
+    {
+        return $this->get("highlight/user/{$userId}", $filterArray);
+    }
+
+    public function getHighlightsByUserAndContent($userId, $contentId, $filterArray = [])
+    {
+        return $this->get("highlight/user/{$userId}/content/{$contentId}", $filterArray);
+    }
+
+    public function getHighlightsByUserAndSet($userId, $setId, $filterArray = [])
+    {
+        return $this->get("highlight/user/{$userId}/set/{$setId}", $filterArray);
+    }
+
+    public function updateHighlightNote($changerId, $highlightId, $note)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'note' => $note
+        ];
+
+        return $this->put("highlight/{$highlightId}", $inputs);
+    }
+
+    public function updateIsHighlighted($changerId, $highlightId, $isHighlighted)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'is_highlighted' => $isHighlighted
+        ];
+
+        return $this->put("highlight/{$highlightId}", $inputs);
+    }
+
+    public function deleteHighlight($changerId, $highlightId)
+    {
+        $inputs = [
+            'changer_id' => $changerId
+        ];
+
+        return $this->post("highlight/{$highlightId}/delete", $inputs);
     }
 }
