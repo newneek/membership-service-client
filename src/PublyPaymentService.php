@@ -2379,9 +2379,19 @@ class PublyPaymentService extends BaseApiService
             [ 'changer_id' => $changerId,
                 'action' => 'update',
                 'note' => $note,
-                'force' => $force ? 1 : 0 ]);
+                'force' => $force ? 1 : 0
+            ]);
     }
 
+    public function changeSubscriptionNextPlan($changerId, $subscriptionId, $plan_id, $force = false)
+    {
+        return $this->put("/subscription/{$subscriptionId}",
+            [ 'changer_id' => $changerId,
+                'action' => 'change_plan',
+                'plan_id'=> $plan_id,
+                'force' => $force ? 1 : 0
+            ]);
+    }
     public function getSubscriptions($page = 1, $limit = 10, $filterArray = [])
     {
         $filterArray['page'] = $page;
