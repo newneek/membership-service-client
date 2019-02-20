@@ -264,6 +264,26 @@ class PublySettlementService extends BaseApiService
         return $this->post("author_settlement_transfer", $inputs);
     }
 
+    public function createAuthorSettlementTransferWithRequestedAt(
+        $changerId,
+        $authorId,
+        $priceBeforeTax,
+        $note,
+        $requested_at,
+        $force = false
+    ) {
+        $inputs = [
+            'changer_id' => $changerId,
+            'author_id' => $authorId,
+            'price_before_tax' => $priceBeforeTax,
+            'note' => $note,
+            'requested_at' => $requested_at,
+            'force' => $force
+        ];
+
+        return $this->post("author_settlement_transfer", $inputs);
+    }
+
     public function getAuthorSettlementTransfers(
         $page = 1,
         $limit = 10,
