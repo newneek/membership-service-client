@@ -2356,14 +2356,6 @@ class PublyPaymentService extends BaseApiService
                 'renew_day' => implode(',', $days)]);
     }
 
-    public function changeSubscriptionPlanId($changerId, $subscriptionId, $planId)
-    {
-        return $this->put("/subscription/{$subscriptionId}",
-            [ 'changer_id' => $changerId,
-                'action' => 'change_plan',
-                'plan_id' => $planId ]);
-    }
-
     public function expireSubscriptions($changerId)
     {
         return $this->put(
@@ -2379,7 +2371,27 @@ class PublyPaymentService extends BaseApiService
             [ 'changer_id' => $changerId,
                 'action' => 'update',
                 'note' => $note,
-                'force' => $force ? 1 : 0 ]);
+                'force' => $force ? 1 : 0
+            ]);
+    }
+
+    // deprecated: SubscriptionController@www-l5 is using this
+    public function changeSubscriptionPlanId($changerId, $subscriptionId, $planId)
+    {
+        return $this->put("/subscription/{$subscriptionId}",
+            [ 'changer_id' => $changerId,
+                'action' => 'change_plan',
+                'plan_id' => $planId ]);
+    }
+
+    public function changeSubscriptionNextPlan($changerId, $subscriptionId, $plan_id, $force = false)
+    {
+        return $this->put("/subscription/{$subscriptionId}",
+            [ 'changer_id' => $changerId,
+                'action' => 'change_plan',
+                'plan_id'=> $plan_id,
+                'force' => $force ? 1 : 0
+            ]);
     }
 
     public function getSubscriptions($page = 1, $limit = 10, $filterArray = [])
