@@ -234,6 +234,13 @@ class PublyAuthService extends BaseApiService {
                                                              'ip_address' => $ipAddress));
     }
 
+    public function signupByPartnerUsers($changerId, $partnerUsers)
+    {
+        return $this->post('signup_by_partner_users', [
+            'partner_users' => $partnerUsers, 'changer_id' => $changerId
+        ]);
+    }
+
     public function changePassword($id, $currentPassword, $newPassword)
     {
         $result = [ 'success' => false ];
