@@ -234,10 +234,20 @@ class PublyAuthService extends BaseApiService {
                                                              'ip_address' => $ipAddress));
     }
 
-    public function signupByPartnerUsers($changerId, $partnerUsers)
+    public function signupByPartnerUser($changerId, $name)
     {
-        return $this->post('signup_by_partner_users', [
-            'partner_users' => $partnerUsers, 'changer_id' => $changerId
+        return $this->post('signup_by_partner_user', [
+            'name' => $name, 'changer_id' => $changerId
+        ]);
+    }
+
+    public function createPartnerUser($changerId, $partnerUserId, $userId, $planId)
+    {
+        return $this->post('partner_user', [
+            'changer_id' => $changerId,
+            'partner_user_id' => $partnerUserId,
+            'user_id' => $userId,
+            'plan_id' => $planId
         ]);
     }
 
