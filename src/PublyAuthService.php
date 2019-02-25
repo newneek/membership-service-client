@@ -298,4 +298,9 @@ class PublyAuthService extends BaseApiService {
             'device_id' => $deviceId
         ]);
     }
+
+    public function getPartnerUser($partnerUserId)
+    {
+        return $this->get("/partner_user/", ['partner_user_id' => $partnerUserId]);
+    }
 }
