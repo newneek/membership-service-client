@@ -304,6 +304,11 @@ class PublyAuthService extends BaseApiService {
         return $this->get("/partner_user/partner_user_id/{$partnerUserId}");
     }
 
+    public function getPartnerUserByUser($userId)
+    {
+        return $this->get("/partner_user/user/{$userId}");
+    }
+
     public function getPartnerUsers($page = 1, $limit = 10, $filterArray = [])
     {
         $filterArray['page'] = $page;
