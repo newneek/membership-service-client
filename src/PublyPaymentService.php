@@ -3206,7 +3206,7 @@ class PublyPaymentService extends BaseApiService
         return $this->post("voucher_use_history/code/{$code}", $inputs);
     }
 
-    public function registerVoucherByPartnerUser($changerId, $userId, $planId)
+    public function registerVoucherUseHistoryByPartnerUser($changerId, $userId, $planId)
     {
         $inputs = [
             'changer_id' => $changerId,

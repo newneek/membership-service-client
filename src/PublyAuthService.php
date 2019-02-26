@@ -234,9 +234,9 @@ class PublyAuthService extends BaseApiService {
                                                              'ip_address' => $ipAddress));
     }
 
-    public function signupByPartnerUser($changerId, $name)
+    public function createUser($changerId, $name)
     {
-        return $this->post('signup_by_partner_user', [
+        return $this->post('create_user', [
             'name' => $name, 'changer_id' => $changerId
         ]);
     }
@@ -302,5 +302,12 @@ class PublyAuthService extends BaseApiService {
     public function getPartnerUser($partnerUserId)
     {
         return $this->get("/partner_user/partner_user_id/{$partnerUserId}");
+    }
+
+    public function getPartnerUsers($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("/partner_user", $filterArray);
     }
 }
