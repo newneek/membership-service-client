@@ -234,6 +234,23 @@ class PublyAuthService extends BaseApiService {
                                                              'ip_address' => $ipAddress));
     }
 
+    public function createUser($changerId, $name)
+    {
+        return $this->post('create_user', [
+            'name' => $name, 'changer_id' => $changerId
+        ]);
+    }
+
+    public function createPartnerUser($changerId, $partnerUserId, $userId, $planId)
+    {
+        return $this->post('partner_user', [
+            'changer_id' => $changerId,
+            'partner_user_id' => $partnerUserId,
+            'user_id' => $userId,
+            'plan_id' => $planId
+        ]);
+    }
+
     public function changePassword($id, $currentPassword, $newPassword)
     {
         $result = [ 'success' => false ];
@@ -280,5 +297,22 @@ class PublyAuthService extends BaseApiService {
             'browser' => $browser,
             'device_id' => $deviceId
         ]);
+    }
+
+    public function getPartnerUser($partnerUserId)
+    {
+        return $this->get("/partner_user/partner_user_id/{$partnerUserId}");
+    }
+
+    public function getPartnerUserByUser($userId)
+    {
+        return $this->get("/partner_user/user/{$userId}");
+    }
+
+    public function getPartnerUsers($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("/partner_user", $filterArray);
     }
 }
