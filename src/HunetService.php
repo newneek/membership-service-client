@@ -13,7 +13,7 @@ class HunetService extends BaseApiService {
         $this->apiUrl = "$this->domain/";
     }
 
-    public function pageviewChapter($hunetId, $contentId, $setId)
+    public function viewContent($hunetId, $contentId, $setId)
     {
         $retryCount = 3;
         $properties = [
@@ -38,7 +38,7 @@ class HunetService extends BaseApiService {
         }
     }
 
-    public function completeChapter($hunetId, $setId, $contentId)
+    public function completeContent($hunetId, $contentId, $setId)
     {
         $retryCount = 3;
         $properties = [
@@ -88,7 +88,7 @@ class HunetService extends BaseApiService {
         }
     }
 
-    public function bookmark($hunetId, $setId)
+    public function addBookmark($hunetId, $setId)
     {
         $retryCount = 3;
         $properties = [
