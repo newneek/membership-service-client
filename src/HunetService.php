@@ -27,7 +27,7 @@ class HunetService extends BaseApiService {
 
         while ($retryCount > 0) {
             try {
-                $this->post('hunet_test', ['event' => 'pageview_chapter', 'properties' => $properties]);
+                $this->get('hunet_test', ['event' => 'pageview_chapter', 'properties' => $properties]);
                 return respond_success();
             } catch (\Exception $e) {
                 $retryCount--;
@@ -52,7 +52,7 @@ class HunetService extends BaseApiService {
 
         while ($retryCount > 0) {
             try {
-                $this->post('hunet_test', ['event' => 'complete_chapter', 'properties' => $properties]);
+                $this->get('hunet_test', ['event' => 'complete_chapter', 'properties' => $properties]);
                 return respond_success();
             } catch (\Exception $e) {
                 $retryCount--;
@@ -77,7 +77,7 @@ class HunetService extends BaseApiService {
 
         while ($retryCount > 0) {
             try {
-                $this->post('hunet_test', ['event' => 'rate_set', 'properties' => $properties]);
+                $this->get('hunet_test', ['event' => 'rate_set', 'properties' => $properties]);
                 return respond_success();
             } catch (\Exception $e) {
                 $retryCount--;
@@ -101,7 +101,7 @@ class HunetService extends BaseApiService {
 
         while ($retryCount > 0) {
             try {
-                $this->post('hunet_test', ['event' => 'bookmark', 'properties' => $properties]);
+                $this->get('hunet_test', ['event' => 'bookmark', 'properties' => $properties]);
                 return respond_success();
             } catch (\Exception $e) {
                 $retryCount--;
