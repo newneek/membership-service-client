@@ -3,14 +3,18 @@
 namespace Publy\ServiceClient;
 
 use Publy\ServiceClient\Api\BaseApiService;
+use GuzzleHttp\Psr7\Request;
 
 class HunetService extends BaseApiService {
+
+    protected $apiKey;
 
     public function __construct($domain) {
         parent::__construct();
 
         $this->domain = $domain;
         $this->apiUrl = "$this->domain/";
+        $this->apiToken = env('HUNET_API_TOKEN');
     }
 
     public function viewContent($hunetId, $contentId, $setId)
@@ -22,13 +26,15 @@ class HunetService extends BaseApiService {
             'set_id' => $setId,
             'com_id' => 'publy'
         ];
-
         $properties = json_encode($properties);
+        $queryParams = ['event' => 'pageview_chapter', 'properties' => $properties];
+
+        $request = $this->getRequest('hunet_test', $queryParams);
 
         while ($retryCount > 0) {
             try {
-                $this->get('hunet_test', ['event' => 'pageview_chapter', 'properties' => $properties]);
-                return respond_success();
+                $response = $this->guzzle->send($request);
+                return respond_success(json_decode($response->getBody(), true));
             } catch (\Exception $e) {
                 $retryCount--;
                 if ($retryCount == 0) {
@@ -38,7 +44,7 @@ class HunetService extends BaseApiService {
         }
     }
 
-    public function completeContent($hunetId, $contentId, $setId)
+    public function completeContent($hunetId, $setId, $contentId)
     {
         $retryCount = 3;
         $properties = [
@@ -47,13 +53,14 @@ class HunetService extends BaseApiService {
             'set_id' => $setId,
             'com_id' => 'publy'
         ];
+        $queryParams = ['event' => 'complete_chapter', 'properties' => json_encode($properties)];
 
-        $properties = json_encode($properties);
+        $request = $this->getRequest('hunet_test', $queryParams);
 
         while ($retryCount > 0) {
             try {
-                $this->get('hunet_test', ['event' => 'complete_chapter', 'properties' => $properties]);
-                return respond_success();
+                $response = $this->guzzle->send($request);
+                return respond_success(json_decode($response->getBody(), true));
             } catch (\Exception $e) {
                 $retryCount--;
                 if ($retryCount == 0) {
@@ -72,13 +79,14 @@ class HunetService extends BaseApiService {
             'rating' => $rating,
             'com_id' => 'publy'
         ];
+        $queryParams = ['event' => 'rate_set', 'properties' => json_encode($properties)];
 
-        $properties = json_encode($properties);
+        $request = $this->getRequest('hunet_test', $queryParams);
 
         while ($retryCount > 0) {
             try {
-                $this->get('hunet_test', ['event' => 'rate_set', 'properties' => $properties]);
-                return respond_success();
+                $response = $this->guzzle->send($request);
+                return respond_success(json_decode($response->getBody(), true));
             } catch (\Exception $e) {
                 $retryCount--;
                 if ($retryCount == 0) {
@@ -96,13 +104,14 @@ class HunetService extends BaseApiService {
             'set_id' => $setId,
             'com_id' => 'publy'
         ];
+        $queryParams = ['event' => 'bookmark', 'properties' => json_encode($properties)];
 
-        $properties = json_encode($properties);
+        $request = $this->getRequest('hunet_test', $queryParams);
 
         while ($retryCount > 0) {
             try {
-                $this->get('hunet_test', ['event' => 'bookmark', 'properties' => $properties]);
-                return respond_success();
+                $response = $this->guzzle->send($request);
+                return respond_success(json_decode($response->getBody(), true));
             } catch (\Exception $e) {
                 $retryCount--;
                 if ($retryCount == 0) {
@@ -110,5 +119,28 @@ class HunetService extends BaseApiService {
                 }
             }
         }
+    }
+
+    private function getRequest($endPoint, $queryParams)
+    {
+        $headers =
+            [
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer '. $this->apiToken
+            ];
+
+        $request = new Request(
+            'GET',
+            $this->getApiUrl() . $endPoint,
+            $headers
+        );
+
+        foreach ($queryParams as $queryKey => $queryValue) {
+            $uri = $request->getUri();
+            $uri = $uri->withQueryValue($uri, $queryKey, urlencode($queryValue));
+            $request = $request->withUri($uri, true);
+        }
+
+        return $request;
     }
 }
