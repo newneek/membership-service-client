@@ -29,12 +29,12 @@ class HunetService extends BaseApiService {
         $properties = json_encode($properties);
         $queryParams = ['event' => 'pageview_chapter', 'properties' => $properties];
 
-        $request = $this->getRequest('hunet_test', $queryParams);
+        $request = $this->getRequest('save/saveDataApi', $queryParams);
 
         while ($retryCount > 0) {
             try {
-                $response = $this->guzzle->send($request);
-                return respond_success(json_decode($response->getBody(), true));
+                $result = $this->guzzle->send($request);
+                return $result;
             } catch (\Exception $e) {
                 $retryCount--;
                 if ($retryCount == 0) {
@@ -55,12 +55,12 @@ class HunetService extends BaseApiService {
         ];
         $queryParams = ['event' => 'complete_chapter', 'properties' => json_encode($properties)];
 
-        $request = $this->getRequest('hunet_test', $queryParams);
+        $request = $this->getRequest('save/saveDataApi', $queryParams);
 
         while ($retryCount > 0) {
             try {
-                $response = $this->guzzle->send($request);
-                return respond_success(json_decode($response->getBody(), true));
+                $result = $this->guzzle->send($request);
+                return $result;
             } catch (\Exception $e) {
                 $retryCount--;
                 if ($retryCount == 0) {
@@ -81,12 +81,12 @@ class HunetService extends BaseApiService {
         ];
         $queryParams = ['event' => 'rate_set', 'properties' => json_encode($properties)];
 
-        $request = $this->getRequest('hunet_test', $queryParams);
+        $request = $this->getRequest('save/saveDataApi', $queryParams);
 
         while ($retryCount > 0) {
             try {
-                $response = $this->guzzle->send($request);
-                return respond_success(json_decode($response->getBody(), true));
+                $result = $this->guzzle->send($request);
+                return $result;
             } catch (\Exception $e) {
                 $retryCount--;
                 if ($retryCount == 0) {
@@ -106,12 +106,11 @@ class HunetService extends BaseApiService {
         ];
         $queryParams = ['event' => 'bookmark', 'properties' => json_encode($properties)];
 
-        $request = $this->getRequest('hunet_test', $queryParams);
-
+        $request = $this->getRequest('save/saveDataApi', $queryParams);
         while ($retryCount > 0) {
             try {
-                $response = $this->guzzle->send($request);
-                return respond_success(json_decode($response->getBody(), true));
+                $result = $this->guzzle->send($request);
+                return $result;
             } catch (\Exception $e) {
                 $retryCount--;
                 if ($retryCount == 0) {
