@@ -12,8 +12,8 @@ class HunetService extends BaseApiService {
     public function __construct($apiToken) {
         parent::__construct();
 
-        $this->domain = 'https://hunet-xapi.hunet.name';
-        $this->apiUrl = "$this->domain/" . 'save/saveDataApi';
+        $this->domain = 'https://xapi.hunet.name';
+        $this->apiUrl = "$this->domain/" . 'api/savePublyData';
         $this->apiToken = $apiToken;
     }
 
