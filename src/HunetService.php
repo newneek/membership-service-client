@@ -9,12 +9,12 @@ class HunetService extends BaseApiService {
 
     protected $apiToken;
 
-    public function __construct($domain) {
+    public function __construct($apiToken) {
         parent::__construct();
 
-        $this->domain = $domain;
-        $this->apiUrl = "$this->domain/";
-        $this->apiToken = env('HUNET_API_TOKEN');
+        $this->domain = 'https://hunet-xapi.hunet.name';
+        $this->apiUrl = "$this->domain/" . 'save/saveDataApi';
+        $this->apiToken = $apiToken;
     }
 
     public function viewContent($hunetId, $contentId, $setId)
@@ -29,7 +29,7 @@ class HunetService extends BaseApiService {
         $properties = json_encode($properties);
         $queryParams = ['event' => 'pageview_chapter', 'properties' => $properties];
 
-        $request = $this->getRequest('save/saveDataApi', $queryParams);
+        $request = $this->attachHeader('', $queryParams);
 
         while ($retryCount > 0) {
             try {
@@ -55,7 +55,7 @@ class HunetService extends BaseApiService {
         ];
         $queryParams = ['event' => 'complete_chapter', 'properties' => json_encode($properties)];
 
-        $request = $this->getRequest('save/saveDataApi', $queryParams);
+        $request = $this->attachHeader('save/saveDataApi', $queryParams);
 
         while ($retryCount > 0) {
             try {
@@ -81,7 +81,7 @@ class HunetService extends BaseApiService {
         ];
         $queryParams = ['event' => 'rate_set', 'properties' => json_encode($properties)];
 
-        $request = $this->getRequest('save/saveDataApi', $queryParams);
+        $request = $this->attachHeader('save/saveDataApi', $queryParams);
 
         while ($retryCount > 0) {
             try {
@@ -106,7 +106,7 @@ class HunetService extends BaseApiService {
         ];
         $queryParams = ['event' => 'bookmark', 'properties' => json_encode($properties)];
 
-        $request = $this->getRequest('save/saveDataApi', $queryParams);
+        $request = $this->attachHeader('save/saveDataApi', $queryParams);
         while ($retryCount > 0) {
             try {
                 $result = $this->guzzle->send($request);
@@ -120,7 +120,7 @@ class HunetService extends BaseApiService {
         }
     }
 
-    private function getRequest($endPoint, $queryParams)
+    private function attachHeader($endPoint, $queryParams)
     {
         $headers =
             [
