@@ -7,7 +7,7 @@ use GuzzleHttp\Psr7\Request;
 
 class HunetService extends BaseApiService {
 
-    protected $apiKey;
+    protected $apiToken;
 
     public function __construct($domain) {
         parent::__construct();
@@ -125,7 +125,7 @@ class HunetService extends BaseApiService {
         $headers =
             [
                 'Accept' => 'application/json',
-                'Authorization' => 'Bearer '. $this->apiToken
+                'Authorization' => 'bearer '. $this->apiToken
             ];
 
         $request = new Request(
