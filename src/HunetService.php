@@ -24,7 +24,7 @@ class HunetService extends BaseApiService {
             'hunet_id' => $hunetId,
             'content_id' => $contentId,
             'set_id' => $setId,
-            'com_id' => 'publy'
+            'com_id' => 'PUBLY'
         ];
         $properties = json_encode($properties);
         $queryParams = ['event' => 'pageview_chapter', 'properties' => $properties];
@@ -51,7 +51,7 @@ class HunetService extends BaseApiService {
             'hunet_id' => $hunetId,
             'content_id' => $contentId,
             'set_id' => $setId,
-            'com_id' => 'publy'
+            'com_id' => 'PUBLY'
         ];
         $queryParams = ['event' => 'complete_chapter', 'properties' => json_encode($properties)];
 
@@ -77,7 +77,7 @@ class HunetService extends BaseApiService {
             'hunet_id' => $hunetId,
             'set_id' => $setId,
             'rating' => $rating,
-            'com_id' => 'publy'
+            'com_id' => 'PUBLY'
         ];
         $queryParams = ['event' => 'rate_set', 'properties' => json_encode($properties)];
 
@@ -102,7 +102,7 @@ class HunetService extends BaseApiService {
         $properties = [
             'hunet_id' => $hunetId,
             'set_id' => $setId,
-            'com_id' => 'publy'
+            'com_id' => 'PUBLY'
         ];
         $queryParams = ['event' => 'bookmark', 'properties' => json_encode($properties)];
 
