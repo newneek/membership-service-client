@@ -128,6 +128,8 @@ class RecombeeService
                     $result = $this->client->send($request);
 
                     return $result;
+                } else {
+                    return null;
                 }
             } catch (\Exception $e) {
                 if (str_contains($e->getMessage(), 'equal or greater portion already exists')) {
