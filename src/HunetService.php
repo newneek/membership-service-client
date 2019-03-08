@@ -125,7 +125,7 @@ class HunetService extends BaseApiService {
         $headers =
             [
                 'Accept' => 'application/json',
-                'Authorization' => 'bearer '. $this->apiToken
+                'Authorization' => 'Bearer '. $this->apiToken
             ];
 
         $request = new Request(
