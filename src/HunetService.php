@@ -24,7 +24,7 @@ class HunetService extends BaseApiService {
             'hunet_id' => $hunetId,
             'content_id' => $contentId,
             'set_id' => $setId,
-            'com_id' => 'PUBLY'
+            'com_id' => 'publy'
         ];
         $properties = json_encode($properties);
         $queryParams = ['event' => 'pageview_chapter', 'properties' => $properties];
@@ -51,11 +51,11 @@ class HunetService extends BaseApiService {
             'hunet_id' => $hunetId,
             'content_id' => $contentId,
             'set_id' => $setId,
-            'com_id' => 'PUBLY'
+            'com_id' => 'publy'
         ];
         $queryParams = ['event' => 'complete_chapter', 'properties' => json_encode($properties)];
 
-        $request = $this->attachHeader('save/saveDataApi', $queryParams);
+        $request = $this->attachHeader('', $queryParams);
 
         while ($retryCount > 0) {
             try {
@@ -77,11 +77,11 @@ class HunetService extends BaseApiService {
             'hunet_id' => $hunetId,
             'set_id' => $setId,
             'rating' => $rating,
-            'com_id' => 'PUBLY'
+            'com_id' => 'publy'
         ];
         $queryParams = ['event' => 'rate_set', 'properties' => json_encode($properties)];
 
-        $request = $this->attachHeader('save/saveDataApi', $queryParams);
+        $request = $this->attachHeader('', $queryParams);
 
         while ($retryCount > 0) {
             try {
@@ -102,11 +102,11 @@ class HunetService extends BaseApiService {
         $properties = [
             'hunet_id' => $hunetId,
             'set_id' => $setId,
-            'com_id' => 'PUBLY'
+            'com_id' => 'publy'
         ];
         $queryParams = ['event' => 'bookmark', 'properties' => json_encode($properties)];
 
-        $request = $this->attachHeader('save/saveDataApi', $queryParams);
+        $request = $this->attachHeader('', $queryParams);
         while ($retryCount > 0) {
             try {
                 $result = $this->guzzle->send($request);
