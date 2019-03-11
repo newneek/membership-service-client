@@ -246,6 +246,7 @@ class PublySettlementService extends BaseApiService
         return $this->get("subscription_user_content_view/set/{$setId}/count", $filterArray);
     }
 
+    // deprecated
     public function createAuthorSettlementTransfer(
         $changerId,
         $authorId,
@@ -258,6 +259,26 @@ class PublySettlementService extends BaseApiService
             'author_id' => $authorId,
             'price_before_tax' => $priceBeforeTax,
             'note' => $note,
+            'force' => $force
+        ];
+
+        return $this->post("author_settlement_transfer", $inputs);
+    }
+
+    public function createAuthorSettlementTransfer2(
+        $changerId,
+        $authorId,
+        $priceBeforeTax,
+        $note,
+        $requestedAt,
+        $force = false
+    ) {
+        $inputs = [
+            'changer_id' => $changerId,
+            'author_id' => $authorId,
+            'price_before_tax' => $priceBeforeTax,
+            'note' => $note,
+            'requested_at' => $requestedAt,
             'force' => $force
         ];
 
