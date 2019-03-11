@@ -29,11 +29,11 @@ class HunetService extends BaseApiService {
         $properties = json_encode($properties);
         $queryParams = ['event' => 'pageview_chapter', 'properties' => $properties];
 
-        $request = $this->attachHeader('', $queryParams);
+        $request = $this->attachHeader('');
 
         while ($retryCount > 0) {
             try {
-                $result = $this->guzzle->send($request);
+                $result = $this->guzzle->send($request, ['query' => $queryParams]);
                 return $result;
             } catch (\Exception $e) {
                 $retryCount--;
@@ -55,11 +55,10 @@ class HunetService extends BaseApiService {
         ];
         $queryParams = ['event' => 'complete_chapter', 'properties' => json_encode($properties)];
 
-        $request = $this->attachHeader('', $queryParams);
-
+        $request = $this->attachHeader('');
         while ($retryCount > 0) {
             try {
-                $result = $this->guzzle->send($request);
+                $result = $this->guzzle->send($request, ['query' => $queryParams]);
                 return $result;
             } catch (\Exception $e) {
                 $retryCount--;
@@ -81,11 +80,11 @@ class HunetService extends BaseApiService {
         ];
         $queryParams = ['event' => 'rate_set', 'properties' => json_encode($properties)];
 
-        $request = $this->attachHeader('', $queryParams);
+        $request = $this->attachHeader('');
 
         while ($retryCount > 0) {
             try {
-                $result = $this->guzzle->send($request);
+                $result = $this->guzzle->send($request, ['query' => $queryParams]);
                 return $result;
             } catch (\Exception $e) {
                 $retryCount--;
@@ -106,10 +105,10 @@ class HunetService extends BaseApiService {
         ];
         $queryParams = ['event' => 'bookmark', 'properties' => json_encode($properties)];
 
-        $request = $this->attachHeader('', $queryParams);
+        $request = $this->attachHeader('');
         while ($retryCount > 0) {
             try {
-                $result = $this->guzzle->send($request);
+                $result = $this->guzzle->send($request, ['query' => $queryParams]);
                 return $result;
             } catch (\Exception $e) {
                 $retryCount--;
@@ -120,12 +119,12 @@ class HunetService extends BaseApiService {
         }
     }
 
-    private function attachHeader($endPoint, $queryParams)
+    private function attachHeader($endPoint)
     {
         $headers =
             [
                 'Accept' => 'application/json',
-                'Authorization' => 'Bearer '. $this->apiToken
+                'Authorization' => 'bearer '. $this->apiToken
             ];
 
         $request = new Request(
@@ -133,12 +132,6 @@ class HunetService extends BaseApiService {
             $this->getApiUrl() . $endPoint,
             $headers
         );
-
-        foreach ($queryParams as $queryKey => $queryValue) {
-            $uri = $request->getUri();
-            $uri = $uri->withQueryValue($uri, $queryKey, urlencode($queryValue));
-            $request = $request->withUri($uri, true);
-        }
 
         return $request;
     }
