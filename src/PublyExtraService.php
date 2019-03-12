@@ -19,6 +19,7 @@ class PublyExtraService extends BaseApiService
 
     const FEATURED_BANNER_ITEM_TYPE_SET = 1;
     const FEATURED_BANNER_ITEM_TYPE_MANUAL = 2;
+    const FEATURED_BANNER_ITEM_TYPE_TO_BE_PUBLISHED_SETS = 3;
 
     public function __construct($domain)
     {
