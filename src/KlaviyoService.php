@@ -4,15 +4,15 @@ namespace Publy\ServiceClient;
 
 use Publy\ServiceClient\Api\BaseApiService;
 
-class KlaviyoApiService extends BaseApiService
+class KlaviyoService extends BaseApiService
 {
     protected $apiKey;
 
-    public function __construct($domain, $apiKey)
+    public function __construct($apiKey)
     {
         parent::__construct();
 
-        $this->domain = $domain;
+        $this->domain = 'https://a.klaviyo.com';
         $this->apiUrl = "$this->domain/";
         $this->apiKey = $apiKey;
     }
