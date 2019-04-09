@@ -3252,4 +3252,11 @@ class PublyPaymentService extends BaseApiService
             'quantity' => $quantity
         ]);
     }
+    
+    public function getVouchers($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get('voucher', $filterArray);
+    }
 }
