@@ -3257,6 +3257,16 @@ class PublyPaymentService extends BaseApiService
     {
         $filterArray['page'] = $page;
         $filterArray['limit'] = $limit;
-        return $this->get('voucher', $filterArray);
+        return $this->get("voucher", $filterArray);
+    }
+
+    public function getVoucherUseHistoryByVoucher($voucherId)
+    {
+        return $this->get("voucher_use_history/voucher/{$voucherId}");
+    }
+
+    public function getVoucher($voucherId)
+    {
+        return $this->get("voucher/{$voucherId}");
     }
 }
