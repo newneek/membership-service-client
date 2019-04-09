@@ -3242,4 +3242,14 @@ class PublyPaymentService extends BaseApiService
             'base_days' => $days
         ]);
     }
+
+    public function createVoucherOption($changerId, $userId, $planId, $quantity)
+    {
+        return $this->post("voucher_option", [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'plan_id' => $planId,
+            'quantity' => $quantity
+        ]);
+    }
 }
