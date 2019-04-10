@@ -3269,4 +3269,12 @@ class PublyPaymentService extends BaseApiService
     {
         return $this->get("voucher/{$voucherId}");
     }
+
+    public function expireVoucherUseHistory($changerId, $voucherUseHistoryId)
+    {
+        return $this->put("voucher_use_history/{$voucherUseHistoryId}", [
+            'changer_id' => $changerId,
+            'action' => 'expire'
+        ]);
+    }
 }
