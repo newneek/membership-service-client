@@ -3278,4 +3278,13 @@ class PublyPaymentService extends BaseApiService
             'action' => 'expire'
         ]);
     }
+
+    public function updateVoucherOptionQuantity($changerId, $voucherOptionId, $quantity, $note)
+    {
+        return $this->put("voucher_option/{$voucherOptionId}", [
+            'changer_id' => $changerId,
+            'quantity' => $quantity,
+            'note' => $note
+        ]);
+    }
 }
