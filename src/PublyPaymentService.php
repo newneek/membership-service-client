@@ -3242,4 +3242,49 @@ class PublyPaymentService extends BaseApiService
             'base_days' => $days
         ]);
     }
+
+    public function createVoucherOption($changerId, $userId, $planId, $quantity, $note)
+    {
+        return $this->post("voucher_option", [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'plan_id' => $planId,
+            'quantity' => $quantity,
+            'note' => $note
+        ]);
+    }
+    
+    public function getVouchers($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("voucher", $filterArray);
+    }
+
+    public function getVoucherUseHistoryByVoucher($voucherId)
+    {
+        return $this->get("voucher_use_history/voucher/{$voucherId}");
+    }
+
+    public function getVoucher($voucherId)
+    {
+        return $this->get("voucher/{$voucherId}");
+    }
+
+    public function expireVoucherUseHistory($changerId, $voucherUseHistoryId)
+    {
+        return $this->put("voucher_use_history/{$voucherUseHistoryId}", [
+            'changer_id' => $changerId,
+            'action' => 'expire'
+        ]);
+    }
+
+    public function updateVoucherOptionQuantity($changerId, $voucherOptionId, $quantity, $note)
+    {
+        return $this->put("voucher_option/{$voucherOptionId}", [
+            'changer_id' => $changerId,
+            'quantity' => $quantity,
+            'note' => $note
+        ]);
+    }
 }
