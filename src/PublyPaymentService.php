@@ -148,11 +148,13 @@ class PublyPaymentService extends BaseApiService
     const USER_DEFAULT_PLAN_TYPE_ADMIN = 1;
     const USER_DEFAULT_PLAN_TYPE_REFERRAL = 2;
     const USER_DEFAULT_PLAN_TYPE_CONTENT_RETURN = 3;
+    const USER_DEFAULT_PLAN_TYPE_AUTHOR_REFERRAL = 4;
 
     const STRING_USER_DEFAULT_PLAN_TYPE = [
         PublyPaymentService::USER_DEFAULT_PLAN_TYPE_ADMIN => "관리자 추가",
         PublyPaymentService::USER_DEFAULT_PLAN_TYPE_REFERRAL => "공유 콘텐츠 읽음",
-        PublyPaymentService::USER_DEFAULT_PLAN_TYPE_CONTENT_RETURN => "콘텐츠 환급"
+        PublyPaymentService::USER_DEFAULT_PLAN_TYPE_CONTENT_RETURN => "콘텐츠 환급",
+        PublyPaymentService::USER_DEFAULT_PLAN_TYPE_AUTHOR_REFERRAL => "저자 공유"
     ];
 
 
