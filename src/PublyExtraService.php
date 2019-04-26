@@ -293,6 +293,11 @@ class PublyExtraService extends BaseApiService
         return $this->get("/shared_content/code/{$code}");
     }
 
+    public function getSharedContentByContentAndCode($contentId, $code)
+    {
+        return $this->get("/shared_content/content/{$contentId}/code/{$code}");
+    }
+
     public function createSharedContentByUserAndContent($userId, $contentId)
     {
         $inputs = [
