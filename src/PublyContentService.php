@@ -25,10 +25,6 @@ class PublyContentService extends BaseApiService
         PublyContentService::CURATION_TYPE_RANK_UNIQUE_SET_READER => '최근 인기 콘텐츠',
     ];
 
-    const SET_STATUS_TYPE_DRAFT = 1;
-    const SET_STATUS_TYPE_PUBLISHED = 2;
-    const SET_STATUS_TYPE_UNPUBLISHED = 3;
-
     const SET_READER_SOURCE_TYPE_ADMIN = 1;
     const SET_READER_SOURCE_TYPE_ORDER = 2;
 
