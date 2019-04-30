@@ -25,6 +25,10 @@ class PublyContentService extends BaseApiService
         PublyContentService::CURATION_TYPE_RANK_UNIQUE_SET_READER => '최근 인기 콘텐츠',
     ];
 
+    const SET_STATUS_TYPE_DRAFT = 1;
+    const SET_STATUS_TYPE_PUBLISHED = 2;
+    const SET_STATUS_TYPE_UNPUBLISHED = 3;
+
     const SET_READER_SOURCE_TYPE_ADMIN = 1;
     const SET_READER_SOURCE_TYPE_ORDER = 2;
 
@@ -1257,6 +1261,16 @@ class PublyContentService extends BaseApiService
             'publish_at' => $publishAt,
             'image_url' => $imageUrl,
             'square_image_url' => $squareImageUrl
+        ]);
+    }
+
+    public function updateSet6($setId, $changerId, $status, $isActive, $publishAt)
+    {
+        return $this->put("set/{$setId}", [
+            'changer_id' => $changerId,
+            'status' => $status,
+            'is_active' => $isActive,
+            'publish_at' => $publishAt
         ]);
     }
 
