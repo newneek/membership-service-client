@@ -56,6 +56,10 @@ class PublyContentService extends BaseApiService
 
     const NO_PAGE_LIMIT = 0;
 
+    const SET_STATUS_DRAFT = 1;
+    const SET_STATUS_PUBLISHED = 2;
+    const SET_STATUS_UNPUBLISHED = 3;
+
     public function __construct($domain)
     {
         parent::__construct();
