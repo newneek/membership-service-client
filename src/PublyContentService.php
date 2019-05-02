@@ -56,6 +56,10 @@ class PublyContentService extends BaseApiService
 
     const NO_PAGE_LIMIT = 0;
 
+    const SET_STATUS_DRAFT = 1;
+    const SET_STATUS_PUBLISHED = 2;
+    const SET_STATUS_UNPUBLISHED = 3;
+
     public function __construct($domain)
     {
         parent::__construct();
@@ -1260,6 +1264,23 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
+    public function publishSet($setId, $changerId, $publishAt)
+    {
+        return $this->put("set/{$setId}", [
+            'changer_id' => $changerId,
+            'status' => static::SET_STATUS_PUBLISHED,
+            'publish_at' => $publishAt
+        ]);
+    }
+
+    public function unpublishSet($setId, $changerId)
+    {
+        return $this->put("set/{$setId}", [
+            'changer_id' => $changerId,
+            'status' => static::SET_STATUS_UNPUBLISHED
+        ]);
+    }
+
     public function updateSetIsPackage($setId, $changerId, $isPackage)
     {
         return $this->put("set/{$setId}", [
@@ -1268,6 +1289,7 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
+    //deprecated:is_active
     public function updateSetIsActive($setId, $changerId, $isActive, $publishAt)
     {
         return $this->put("set/{$setId}", [
