@@ -1264,13 +1264,20 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function updateSet6($setId, $changerId, $status, $isActive, $publishAt)
+    public function publishSet($setId, $changerId, $publishAt)
     {
         return $this->put("set/{$setId}", [
             'changer_id' => $changerId,
-            'status' => $status,
-            'is_active' => $isActive,
+            'status' => static::SET_STATUS_PUBLISHED,
             'publish_at' => $publishAt
+        ]);
+    }
+
+    public function unpublishSet($setId, $changerId)
+    {
+        return $this->put("set/{$setId}", [
+            'changer_id' => $changerId,
+            'status' => static::SET_STATUS_UNPUBLISHED
         ]);
     }
 
@@ -1282,6 +1289,7 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
+    //deprecated:is_active
     public function updateSetIsActive($setId, $changerId, $isActive, $publishAt)
     {
         return $this->put("set/{$setId}", [
