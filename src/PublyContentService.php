@@ -1289,6 +1289,16 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
+    //deprecated:is_active
+    public function updateSetIsActive($setId, $changerId, $isActive, $publishAt)
+    {
+        return $this->put("set/{$setId}", [
+            'changer_id' => $changerId,
+            'is_active' => $isActive,
+            'publish_at' => $publishAt
+        ]);
+    }
+
     public function loadSetDataFromProject($changerId, $setId)
     {
         return $this->post("set/{$setId}/load_data_from_project", ['changer_id' => $changerId]);
