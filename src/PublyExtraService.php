@@ -403,17 +403,29 @@ class PublyExtraService extends BaseApiService
         return $this->get("show_all_content", $filterArray);
     }
 
+    //deprecated
     public function getShowAllContentByContent($contentId)
     {
         return $this->get("show_all_content/content/{$contentId}");
     }
 
+    //deprecated
     public function getShowAllContentByContents($contentIds, $filterArray = [])
     {
         $filterArray['ids'] = implode(',', $contentIds);
         return $this->get("show_all_content/content_ids", $filterArray);
     }
 
+    public function getShowAllContentByContent2($contentId)
+    {
+        return $this->get("show_all_content/show/content/{$contentId}");
+    }
+
+    public function getShowAllContentByContents2($contentIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $contentIds);
+        return $this->get("show_all_content/content_ids_2", $filterArray);
+    }
 
     public function createShowAllContent($changerId, $contentId)
     {
