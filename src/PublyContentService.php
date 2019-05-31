@@ -56,9 +56,16 @@ class PublyContentService extends BaseApiService
 
     const NO_PAGE_LIMIT = 0;
 
-    const SET_STATUS_DRAFT = 1;
+    const SET_STATUS_IN_PROGRESS = 1;
     const SET_STATUS_PUBLISHED = 2;
     const SET_STATUS_UNPUBLISHED = 3;
+    const SET_STATUS_DRAFT = 4;
+
+    const SET_DRAFT_STATUS_IN_PROGRESS = 1;
+    const SET_DRAFT_STATUS_FAILED = 2;
+    const SET_DRAFT_STATUS_SUCCEEDED = 3;
+    const SET_DRAFT_STATUS_DROPPED = 4;
+    const SET_DRAFT_STATUS_MAX = 5;
 
     public function __construct($domain)
     {
@@ -2456,5 +2463,59 @@ class PublyContentService extends BaseApiService
     public function getPermissionsByProject($projectId, $filterArray = [])
     {
         return $this->get("permission/project/{$projectId}", $filterArray);
+    }
+
+    public function createSetDraft($changerId, $setId, $goalLikeNumber, $summary)
+    {
+        return $this->post("set_draft", [
+            'changer_id' => $changerId,
+            'set_id' => $setId,
+            'goal_like_number' => $goalLikeNumber,
+            'summary' => $summary
+        ]);
+    }
+
+    public function updateSetDraft($changerId, $setId, $goalLikeNumber, $summary)
+    {
+        return $this->put("set_draft/$setId", [
+            'changer_id' => $changerId,
+            'action' => 'modify',
+            'goal_like_number' => $goalLikeNumber,
+            'summary' => $summary
+        ]);
+    }
+
+    public function succeedSetDraft($changerId, $setId)
+    {
+        return $this->put("set_draft/$setId", [
+            'changer_id' => $changerId,
+            'action' => 'succeed'
+        ]);
+    }
+
+    public function failSetDraft($changerId, $setId)
+    {
+        return $this->put("set_draft/$setId", [
+            'changer_id' => $changerId,
+            'action' => 'fail'
+        ]);
+    }
+
+    public function dropSetDraft($changerId, $setId)
+    {
+        return $this->put("set_draft/$setId", [
+            'changer_id' => $changerId,
+            'action' => 'drop'
+        ]);
+    }
+
+    public function getSetDraft($setId)
+    {
+        return $this->get("set_draft/{$setId}");
+    }
+
+    public function getSetDraftLikesBySet($setId, $filterArray = [])
+    {
+        return $this->get("set_draft_like/set/{$setId}", $filterArray);
     }
 }
