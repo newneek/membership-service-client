@@ -1271,24 +1271,31 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function publishSet($setId, $changerId, $publishAt)
+    public function progressSet($changerId, $setId)
     {
         return $this->put("set/{$setId}", [
             'changer_id' => $changerId,
-            'status' => static::SET_STATUS_PUBLISHED,
-            'publish_at' => $publishAt
+            'action' => 'progress'
         ]);
     }
 
-    public function unpublishSet($setId, $changerId)
+    public function publishSet($changerId, $setId)
     {
         return $this->put("set/{$setId}", [
             'changer_id' => $changerId,
-            'status' => static::SET_STATUS_UNPUBLISHED
+            'action' => 'publish'
         ]);
     }
 
-    public function updateSetIsPackage($setId, $changerId, $isPackage)
+    public function unpublishSet($changerId, $setId)
+    {
+        return $this->put("set/{$setId}", [
+            'changer_id' => $changerId,
+            'action' => 'unpublish'
+        ]);
+    }
+
+    public function updateSetIsPackage($changerId, $setId, $isPackage)
     {
         return $this->put("set/{$setId}", [
             'changer_id' => $changerId,
