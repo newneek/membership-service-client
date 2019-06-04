@@ -261,4 +261,20 @@ class PublyNotificationService extends BaseApiService
                 'voucher' => $voucher
             ]);
     }
+
+    public function eventSetDraftStatusChanged($setDraft, $oldStatus, $newStatus)
+    {
+        return $this->post("/event/set_draft_status_changed", [
+            'set_draft' => $setDraft,
+            'old_status' => $oldStatus,
+            'new_status' => $newStatus
+        ]);
+    }
+
+    public function eventSetDraftLikeCreated($setDraftLike)
+    {
+        return $this->post("/event/set_draft_like_created", [
+            'set_draft_like'
+        ]);
+    }
 }
