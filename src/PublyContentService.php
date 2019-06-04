@@ -2484,21 +2484,23 @@ class PublyContentService extends BaseApiService
         return $this->get("permission/project/{$projectId}", $filterArray);
     }
 
-    public function createSetDraft($changerId, $setId, $goalLikeNumber, $summary, $finishDate)
+    public function createSetDraft($changerId, $setId, $title, $goalLikeNumber, $summary, $finishDate)
     {
         return $this->post("set_draft", [
             'changer_id' => $changerId,
             'set_id' => $setId,
+            'title' => $title,
             'goal_like_number' => $goalLikeNumber,
             'summary' => $summary,
             'finish_date' => $finishDate
         ]);
     }
 
-    public function updateSetDraft($changerId, $setId, $goalLikeNumber, $summary, $finishDate)
+    public function updateSetDraft($changerId, $setId, $title, $goalLikeNumber, $summary, $finishDate)
     {
         return $this->put("set_draft/$setId", [
             'changer_id' => $changerId,
+            'title' => $title,
             'action' => 'modify',
             'goal_like_number' => $goalLikeNumber,
             'summary' => $summary,
