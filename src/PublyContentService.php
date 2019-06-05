@@ -2541,4 +2541,11 @@ class PublyContentService extends BaseApiService
     {
         return $this->get("set_draft_like/set/{$setId}", $filterArray);
     }
+
+    public function getSetDraftLikes($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("set_draft_like", $filterArray);
+    }
 }
