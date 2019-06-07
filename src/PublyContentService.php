@@ -2560,4 +2560,22 @@ class PublyContentService extends BaseApiService
         $filterArray['limit'] = $limit;
         return $this->get("set_draft_like", $filterArray);
     }
+
+    public function addSetDraftLike($changerId, $userId, $setId)
+    {
+        return $this->post("set_draft_like", [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'set_id' => $setId
+        ]);
+    }
+
+    public function removeSetDraftLike($changerId, $userId, $setId)
+    {
+        return $this->post("set_draft_like/delete", [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'set_id' => $setId
+        ]);
+    }
 }
