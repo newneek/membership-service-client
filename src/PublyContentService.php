@@ -2542,6 +2542,11 @@ class PublyContentService extends BaseApiService
         return $this->get("set_draft", $filterArray);
     }
 
+    public function getSetDraftLikesByUser($userId, $filterArray = [])
+    {
+        return $this->get("set_draft_like/user/{$userId}", $filterArray);
+    }
+
     public function getSetDraftLikesBySet($setId, $filterArray = [])
     {
         return $this->get("set_draft_like/set/{$setId}", $filterArray);
