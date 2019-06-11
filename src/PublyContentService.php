@@ -1859,7 +1859,7 @@ class PublyContentService extends BaseApiService
         return $this->post("curation", [
             'changer_id' => $changerId,
             'title' => $title,
-            'summary'
+            'summary' => $summary
         ]);
     }
 
