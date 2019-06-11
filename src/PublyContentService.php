@@ -2604,4 +2604,9 @@ class PublyContentService extends BaseApiService
             'set_id' => $setId
         ]);
     }
+
+    public function getSetDraftLikeBySetDraftAndUser($setDraftId, $userId)
+    {
+        return $this->get("set_draft_like/set/{$setDraftId}/user/{$userId}");
+    }
 }
