@@ -20,6 +20,7 @@ class PublyContentService extends BaseApiService
     const CURATION_TYPE_CONTINUE_TO_READ = 7;
     const CURATION_TYPE_NEW_CONTENT = 8;
     const CURATION_TYPE_PUBLISH_BEFORE = 9;
+    const CURATION_TYPE_SET_DRAFT = 10;
 
     const STRING_CURATION_TYPE = [
         PublyContentService::CURATION_TYPE_RANK_UNIQUE_SET_READER => '최근 인기 콘텐츠',
@@ -1844,11 +1845,21 @@ class PublyContentService extends BaseApiService
         return $this->get("curation/by_ids", $filterArray);
     }
 
+    //deprecated
     public function createCuration($changerId, $title)
     {
         return $this->post("curation", [
             'changer_id' => $changerId,
             'title' => $title
+        ]);
+    }
+
+    public function createCuration2($changerId, $title, $summary)
+    {
+        return $this->post("curation", [
+            'changer_id' => $changerId,
+            'title' => $title,
+            'summary'
         ]);
     }
 
@@ -1874,6 +1885,16 @@ class PublyContentService extends BaseApiService
             'changer_id' => $changerId,
             'title' => $title,
             'type' => $type
+        ]);
+    }
+
+    public function updateCuration3($changerId, $curationId, $title, $type, $summary)
+    {
+        return $this->put("curation/{$curationId}", [
+            'changer_id' => $changerId,
+            'title' => $title,
+            'type' => $type,
+            'summary' => $summary
         ]);
     }
 
