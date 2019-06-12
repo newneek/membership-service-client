@@ -2612,6 +2612,8 @@ class PublyContentService extends BaseApiService
 
     public function updateAllSetDraftStatus($changerId)
     {
-        return $this->post("set_draft/update_all_status", ['changer_id' => $changerId]);
+        return $this->post("set_draft/update_all_status", [
+            'changer_id' => $changerId
+        ]);
     }
 }
