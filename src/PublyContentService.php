@@ -2517,9 +2517,9 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function updateSetDraft($changerId, $setId, $title, $goalLikeNumber, $summary, $finishDate)
+    public function updateSetDraft($changerId, $setDraftId, $title, $goalLikeNumber, $summary, $finishDate)
     {
-        return $this->put("set_draft/$setId", [
+        return $this->put("set_draft/{$setDraftId}", [
             'changer_id' => $changerId,
             'title' => $title,
             'action' => 'modify',
@@ -2529,33 +2529,33 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function succeedSetDraft($changerId, $setId)
+    public function succeedSetDraft($changerId, $setDraftId)
     {
-        return $this->put("set_draft/$setId", [
+        return $this->put("set_draft/{$setDraftId}", [
             'changer_id' => $changerId,
             'action' => 'succeed'
         ]);
     }
 
-    public function failSetDraft($changerId, $setId)
+    public function failSetDraft($changerId, $setDraftId)
     {
-        return $this->put("set_draft/$setId", [
+        return $this->put("set_draft/{$setDraftId}", [
             'changer_id' => $changerId,
             'action' => 'fail'
         ]);
     }
 
-    public function dropSetDraft($changerId, $setId)
+    public function dropSetDraft($changerId, $setDraftId)
     {
-        return $this->put("set_draft/$setId", [
+        return $this->put("set_draft/{$setDraftId}", [
             'changer_id' => $changerId,
             'action' => 'drop'
         ]);
     }
 
-    public function getSetDraft($setId)
+    public function getSetDraft($setDraftId)
     {
-        return $this->get("set_draft/{$setId}");
+        return $this->get("set_draft/{$setDraftId}");
     }
 
     public function getSetDrafts($filterArray = [])
@@ -2568,16 +2568,16 @@ class PublyContentService extends BaseApiService
         return $this->get("set_draft_like/user/{$userId}", $filterArray);
     }
 
-    public function getSetDraftLikesBySet($setId, $filterArray = [])
+    public function getSetDraftLikesBySetDraft($setDraftId, $filterArray = [])
     {
-        return $this->get("set_draft_like/set/{$setId}", $filterArray);
+        return $this->get("set_draft_like/set/{$setDraftId}", $filterArray);
     }
 
-    public function getSetDraftLikesBySetIds($setIds, $filterArray = [])
+    public function getSetDraftLikesBySetDraftIds($setDraftIds, $filterArray = [])
     {
-        $filterArray['set_ids'] = implode(',', $setIds);
+        $filterArray['set_draft_ids'] = implode(',', $setDraftIds);
 
-        return $this->get("set_draft_like/by_set_ids", $filterArray);
+        return $this->get("set_draft_like/by_set_draft_ids", $filterArray);
     }
 
     public function getSetDraftLikes($page = 1, $limit = 10, $filterArray = [])
@@ -2587,12 +2587,12 @@ class PublyContentService extends BaseApiService
         return $this->get("set_draft_like", $filterArray);
     }
 
-    public function addSetDraftLike($changerId, $userId, $setId)
+    public function addSetDraftLike($changerId, $userId, $setDraftId)
     {
         return $this->post("set_draft_like", [
             'changer_id' => $changerId,
             'user_id' => $userId,
-            'set_id' => $setId
+            'set_draft_id' => $setDraftId
         ]);
     }
 
