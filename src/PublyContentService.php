@@ -20,6 +20,7 @@ class PublyContentService extends BaseApiService
     const CURATION_TYPE_CONTINUE_TO_READ = 7;
     const CURATION_TYPE_NEW_CONTENT = 8;
     const CURATION_TYPE_PUBLISH_BEFORE = 9;
+    const CURATION_TYPE_SET_DRAFT = 10;
 
     const STRING_CURATION_TYPE = [
         PublyContentService::CURATION_TYPE_RANK_UNIQUE_SET_READER => '최근 인기 콘텐츠',
@@ -56,9 +57,16 @@ class PublyContentService extends BaseApiService
 
     const NO_PAGE_LIMIT = 0;
 
-    const SET_STATUS_DRAFT = 1;
+    const SET_STATUS_IN_PROGRESS = 1;
     const SET_STATUS_PUBLISHED = 2;
     const SET_STATUS_UNPUBLISHED = 3;
+    const SET_STATUS_DRAFT = 4;
+
+    const SET_DRAFT_STATUS_IN_PROGRESS = 1;
+    const SET_DRAFT_STATUS_FAILED = 2;
+    const SET_DRAFT_STATUS_SUCCEEDED = 3;
+    const SET_DRAFT_STATUS_DROPPED = 4;
+    const SET_DRAFT_STATUS_MAX = 5;
 
     public function __construct($domain)
     {
@@ -1264,24 +1272,43 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function publishSet($setId, $changerId, $publishAt)
+    public function updateSet6($changerId, $setId, $title, $publishAt, $imageUrl, $squareImageUrl, $note)
     {
         return $this->put("set/{$setId}", [
             'changer_id' => $changerId,
-            'status' => static::SET_STATUS_PUBLISHED,
-            'publish_at' => $publishAt
+            'title' => $title,
+            'publish_at' => $publishAt,
+            'image_url' => $imageUrl,
+            'square_image_url' => $squareImageUrl,
+            'note' => $note
         ]);
     }
 
-    public function unpublishSet($setId, $changerId)
+    public function progressSet($changerId, $setId)
     {
         return $this->put("set/{$setId}", [
             'changer_id' => $changerId,
-            'status' => static::SET_STATUS_UNPUBLISHED
+            'action' => 'progress'
         ]);
     }
 
-    public function updateSetIsPackage($setId, $changerId, $isPackage)
+    public function publishSet($changerId, $setId)
+    {
+        return $this->put("set/{$setId}", [
+            'changer_id' => $changerId,
+            'action' => 'publish'
+        ]);
+    }
+
+    public function unpublishSet($changerId, $setId)
+    {
+        return $this->put("set/{$setId}", [
+            'changer_id' => $changerId,
+            'action' => 'unpublish'
+        ]);
+    }
+
+    public function updateSetIsPackage($changerId, $setId, $isPackage)
     {
         return $this->put("set/{$setId}", [
             'changer_id' => $changerId,
@@ -1818,11 +1845,21 @@ class PublyContentService extends BaseApiService
         return $this->get("curation/by_ids", $filterArray);
     }
 
+    //deprecated
     public function createCuration($changerId, $title)
     {
         return $this->post("curation", [
             'changer_id' => $changerId,
             'title' => $title
+        ]);
+    }
+
+    public function createCuration2($changerId, $title, $summary)
+    {
+        return $this->post("curation", [
+            'changer_id' => $changerId,
+            'title' => $title,
+            'summary' => $summary
         ]);
     }
 
@@ -1848,6 +1885,16 @@ class PublyContentService extends BaseApiService
             'changer_id' => $changerId,
             'title' => $title,
             'type' => $type
+        ]);
+    }
+
+    public function updateCuration3($changerId, $curationId, $title, $type, $summary)
+    {
+        return $this->put("curation/{$curationId}", [
+            'changer_id' => $changerId,
+            'title' => $title,
+            'type' => $type,
+            'summary' => $summary
         ]);
     }
 
@@ -2456,5 +2503,117 @@ class PublyContentService extends BaseApiService
     public function getPermissionsByProject($projectId, $filterArray = [])
     {
         return $this->get("permission/project/{$projectId}", $filterArray);
+    }
+
+    public function createSetDraft($changerId, $setId, $title, $goalLikeNumber, $summary, $finishDate)
+    {
+        return $this->post("set_draft", [
+            'changer_id' => $changerId,
+            'set_id' => $setId,
+            'title' => $title,
+            'goal_like_number' => $goalLikeNumber,
+            'summary' => $summary,
+            'finish_date' => $finishDate
+        ]);
+    }
+
+    public function updateSetDraft($changerId, $setDraftId, $title, $goalLikeNumber, $summary, $finishDate)
+    {
+        return $this->put("set_draft/{$setDraftId}", [
+            'changer_id' => $changerId,
+            'title' => $title,
+            'action' => 'modify',
+            'goal_like_number' => $goalLikeNumber,
+            'summary' => $summary,
+            'finish_date' => $finishDate
+        ]);
+    }
+
+    public function succeedSetDraft($changerId, $setDraftId)
+    {
+        return $this->put("set_draft/{$setDraftId}", [
+            'changer_id' => $changerId,
+            'action' => 'succeed'
+        ]);
+    }
+
+    public function failSetDraft($changerId, $setDraftId)
+    {
+        return $this->put("set_draft/{$setDraftId}", [
+            'changer_id' => $changerId,
+            'action' => 'fail'
+        ]);
+    }
+
+    public function dropSetDraft($changerId, $setDraftId)
+    {
+        return $this->put("set_draft/{$setDraftId}", [
+            'changer_id' => $changerId,
+            'action' => 'drop'
+        ]);
+    }
+
+    public function getSetDraft($setDraftId)
+    {
+        return $this->get("set_draft/{$setDraftId}");
+    }
+
+    public function getSetDrafts($filterArray = [])
+    {
+        return $this->get("set_draft", $filterArray);
+    }
+
+    public function getSetDraftLikesByUser($userId, $filterArray = [])
+    {
+        return $this->get("set_draft_like/user/{$userId}", $filterArray);
+    }
+
+    public function getSetDraftLikesBySetDraft($setDraftId, $filterArray = [])
+    {
+        return $this->get("set_draft_like/set_draft/{$setDraftId}", $filterArray);
+    }
+
+    public function getSetDraftLikesBySetDraftIds($setDraftIds, $filterArray = [])
+    {
+        $filterArray['set_draft_ids'] = implode(',', $setDraftIds);
+
+        return $this->get("set_draft_like/by_set_draft_ids", $filterArray);
+    }
+
+    public function getSetDraftLikes($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("set_draft_like", $filterArray);
+    }
+
+    public function addSetDraftLike($changerId, $userId, $setDraftId)
+    {
+        return $this->post("set_draft_like", [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'set_draft_id' => $setDraftId
+        ]);
+    }
+
+    public function removeSetDraftLike($changerId, $userId, $setDraftId)
+    {
+        return $this->post("set_draft_like/delete", [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'set_draft_id' => $setDraftId
+        ]);
+    }
+
+    public function getSetDraftLikeBySetDraftAndUser($setDraftId, $userId)
+    {
+        return $this->get("set_draft_like/set_draft/{$setDraftId}/user/{$userId}");
+    }
+
+    public function updateAllSetDraftStatus($changerId)
+    {
+        return $this->post("set_draft/update_all_status", [
+            'changer_id' => $changerId
+        ]);
     }
 }
