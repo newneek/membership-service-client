@@ -274,7 +274,7 @@ class PublyNotificationService extends BaseApiService
     public function eventSetDraftLikeCreated($setDraftLike)
     {
         return $this->post("/event/set_draft_like_created", [
-            'set_draft_like'
+            'set_draft_like' => $setDraftLike
         ]);
     }
 }
