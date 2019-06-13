@@ -158,14 +158,14 @@ class PublyNotificationService extends BaseApiService
         ]);
     }
 
-    public function eventSetIsActiveChanged($set, $oldIsActive, $newIsActive)
+    public function eventSetStatusChanged($set, $oldStatus, $newStatus)
     {
         $inputs = [
             'set' => $set,
-            'old_is_active' => $oldIsActive,
-            'new_is_active' => $newIsActive
+            'old_status' => $oldStatus,
+            'new_status' => $newStatus
         ];
-        return $this->post("/event/set_is_active_changed", $inputs);
+        return $this->post("/event/set_status_changed", $inputs);
     }
 
     public function eventSubscriptionStatusChanged(
