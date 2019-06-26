@@ -2652,4 +2652,25 @@ class PublyContentService extends BaseApiService
             'changer_id' => $changerId
         ]);
     }
+
+    public function createContentCuration($curationId, $contentId)
+    {
+        return $this->post("content_curation", [
+            'curation_id' => $curationId,
+            'content_id' => $contentId
+        ]);
+    }
+
+    public function updateContentCurationOrder($curationId, $contentCurationIds)
+    {
+        return $this->put("content_curation/order", [
+            'curation_id' => $curationId,
+            'ids' => implode(',', $contentCurationIds)
+        ]);
+    }
+
+    public function removeContentCuration($contentCurationId)
+    {
+        return $this->post("content_curation/{$contentCurationId}/delete");
+    }
 }
