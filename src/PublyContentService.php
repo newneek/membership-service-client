@@ -1299,6 +1299,19 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
+    public function updateSet7($changerId, $setId, $title, $publishAt, $imageUrl, $squareImageUrl, $note, $description)
+    {
+        return $this->put("set/{$setId}", [
+            'changer_id' => $changerId,
+            'title' => $title,
+            'publish_at' => $publishAt,
+            'image_url' => $imageUrl,
+            'square_image_url' => $squareImageUrl,
+            'note' => $note,
+            'description' => $description
+        ]);
+    }
+
     public function progressSet($changerId, $setId)
     {
         return $this->put("set/{$setId}", [
