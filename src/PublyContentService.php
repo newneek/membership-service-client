@@ -72,6 +72,17 @@ class PublyContentService extends BaseApiService
     const CURATION_CONTENT_TYPE_CONTENT = 2;
     const CURATION_CONTENT_TYPE_SET_DRAFT = 3;
 
+    const CURATION_LAYOUT_TYPE_ONE_COLUMN = 1;
+    const CURATION_LAYOUT_TYPE_TWO_COLUMN = 2;
+    const CURATION_LAYOUT_TYPE_SCROLL = 3;
+    const CURATION_LAYOUT_TYPE_SWIPE = 4;
+
+    const CURATION_COMPOSITION_TYPE_MANUAL = 1;
+    const CURATION_COMPOSITION_TYPE_AUTO = 2;
+    const CURATION_COMPOSITION_TYPE_INDIVIDUAL_RECOMMEND = 3;
+    const CURATION_COMPOSITION_TYPE_LIKE_SET = 4;
+
+
     public function __construct($domain)
     {
         parent::__construct();
@@ -1908,6 +1919,17 @@ class PublyContentService extends BaseApiService
             'changer_id' => $changerId,
             'title' => $title,
             'type' => $type,
+            'summary' => $summary
+        ]);
+    }
+
+    public function updateCuration4($changerId, $curationId, $title, $summary, $layoutType, $compositionType)
+    {
+        return $this->put("curation/{$curationId}", [
+            'changer_id' => $changerId,
+            'title' => $title,
+            'layout_type' => $layoutType,
+            'composition_type' => $compositionType,
             'summary' => $summary
         ]);
     }
