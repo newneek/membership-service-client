@@ -68,6 +68,10 @@ class PublyContentService extends BaseApiService
     const SET_DRAFT_STATUS_DROPPED = 4;
     const SET_DRAFT_STATUS_MAX = 5;
 
+    const CURATION_CONTENT_TYPE_SET = 1;
+    const CURATION_CONTENT_TYPE_CONTENT = 2;
+    const CURATION_CONTENT_TYPE_SET_DRAFT = 3;
+
     public function __construct($domain)
     {
         parent::__construct();
@@ -1860,6 +1864,16 @@ class PublyContentService extends BaseApiService
             'changer_id' => $changerId,
             'title' => $title,
             'summary' => $summary
+        ]);
+    }
+
+    public function createCuration3($changerId, $title, $summary, $contentType)
+    {
+        return $this->post("curation", [
+            'changer_id' => $changerId,
+            'title' => $title,
+            'summary' => $summary,
+            'content_type' => $contentType
         ]);
     }
 
