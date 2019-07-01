@@ -80,7 +80,7 @@ class PublyContentService extends BaseApiService
     const CURATION_COMPOSITION_TYPE_MANUAL = 1;
     const CURATION_COMPOSITION_TYPE_AUTO = 2;
     const CURATION_COMPOSITION_TYPE_INDIVIDUAL_RECOMMEND = 3;
-    const CURATION_COMPOSITION_TYPE_LIKE_SET = 4;
+    const CURATION_COMPOSITION_TYPE_CONTINUE_TO_READ = 4;
 
 
     public function __construct($domain)
