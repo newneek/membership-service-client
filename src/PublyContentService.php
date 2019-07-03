@@ -499,6 +499,38 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
+    public function updateContent7(
+        $changerId,
+        $contentId,
+        $title,
+        $isActive,
+        $isPaid,
+        $image,
+        $readTime,
+        $publishAt,
+        $freeLength,
+        $summary,
+        $canonicalUrl,
+        $memo,
+        $curationTitle
+    ) {
+        return $this->put("content/{$contentId}", [
+            'changer_id' => $changerId,
+            'title' => $title,
+            'is_active' => $isActive,
+            'is_paid' => $isPaid,
+            'read_time' => $readTime,
+            'image' => $image,
+            'publish_at' => $publishAt,
+            'free_length' => $freeLength,
+            'summary' => $summary,
+            'canonical_url' => $canonicalUrl,
+            'memo' => $memo,
+            'curation_title' => $curationTitle
+        ]);
+    }
+
+
     public function updateContentSet($contentId, $setId, $orderInSet)
     {
         return $this->put("content/{$contentId}/set", [
