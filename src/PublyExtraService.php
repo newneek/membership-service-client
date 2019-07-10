@@ -662,4 +662,10 @@ class PublyExtraService extends BaseApiService
 
         return $this->post("highlight/{$highlightId}/delete", $inputs);
     }
+
+    public function getReviewScoreCountsBySetIds($setIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $setIds);
+        return $this->get("review_score/counts/by_set_ids", $filterArray);
+    }
 }

@@ -68,6 +68,21 @@ class PublyContentService extends BaseApiService
     const SET_DRAFT_STATUS_DROPPED = 4;
     const SET_DRAFT_STATUS_MAX = 5;
 
+    const CURATION_CONTENT_TYPE_SET = 1;
+    const CURATION_CONTENT_TYPE_CONTENT = 2;
+    const CURATION_CONTENT_TYPE_SET_DRAFT = 3;
+
+    const CURATION_LAYOUT_TYPE_ONE_COLUMN = 1;
+    const CURATION_LAYOUT_TYPE_TWO_COLUMN = 2;
+    const CURATION_LAYOUT_TYPE_SCROLL = 3;
+    const CURATION_LAYOUT_TYPE_SWIPE = 4;
+
+    const CURATION_COMPOSITION_TYPE_MANUAL = 1;
+    const CURATION_COMPOSITION_TYPE_AUTO = 2;
+    const CURATION_COMPOSITION_TYPE_INDIVIDUAL_RECOMMEND = 3;
+    const CURATION_COMPOSITION_TYPE_CONTINUE_TO_READ = 4;
+
+
     public function __construct($domain)
     {
         parent::__construct();
@@ -483,6 +498,38 @@ class PublyContentService extends BaseApiService
             'memo' => $memo
         ]);
     }
+
+    public function updateContent7(
+        $changerId,
+        $contentId,
+        $title,
+        $isActive,
+        $isPaid,
+        $image,
+        $readTime,
+        $publishAt,
+        $freeLength,
+        $summary,
+        $canonicalUrl,
+        $memo,
+        $curationTitle
+    ) {
+        return $this->put("content/{$contentId}", [
+            'changer_id' => $changerId,
+            'title' => $title,
+            'is_active' => $isActive,
+            'is_paid' => $isPaid,
+            'read_time' => $readTime,
+            'image' => $image,
+            'publish_at' => $publishAt,
+            'free_length' => $freeLength,
+            'summary' => $summary,
+            'canonical_url' => $canonicalUrl,
+            'memo' => $memo,
+            'curation_title' => $curationTitle
+        ]);
+    }
+
 
     public function updateContentSet($contentId, $setId, $orderInSet)
     {
@@ -1284,6 +1331,19 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
+    public function updateSet7($changerId, $setId, $title, $publishAt, $imageUrl, $squareImageUrl, $note, $description)
+    {
+        return $this->put("set/{$setId}", [
+            'changer_id' => $changerId,
+            'title' => $title,
+            'publish_at' => $publishAt,
+            'image_url' => $imageUrl,
+            'square_image_url' => $squareImageUrl,
+            'note' => $note,
+            'description' => $description
+        ]);
+    }
+
     public function progressSet($changerId, $setId)
     {
         return $this->put("set/{$setId}", [
@@ -1727,6 +1787,12 @@ class PublyContentService extends BaseApiService
         return $this->get("/set_review/by_ids", $filterArray);
     }
 
+    public function getSetReviewsBySetIds($setIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $setIds);
+        return $this->get("/set_review/by_set_ids", $filterArray);
+    }
+
     public function getSetReviewSummary($setId)
     {
         return $this->get("/set_review/set/{$setId}/summary");
@@ -1863,6 +1929,16 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
+    public function createCuration3($changerId, $title, $summary, $contentType)
+    {
+        return $this->post("curation", [
+            'changer_id' => $changerId,
+            'title' => $title,
+            'summary' => $summary,
+            'content_type' => $contentType
+        ]);
+    }
+
     public function updateCurationOrder($changerId, $curationIds)
     {
         return $this->put("curation/order", [
@@ -1894,6 +1970,17 @@ class PublyContentService extends BaseApiService
             'changer_id' => $changerId,
             'title' => $title,
             'type' => $type,
+            'summary' => $summary
+        ]);
+    }
+
+    public function updateCuration4($changerId, $curationId, $title, $summary, $layoutType, $compositionType)
+    {
+        return $this->put("curation/{$curationId}", [
+            'changer_id' => $changerId,
+            'title' => $title,
+            'layout_type' => $layoutType,
+            'composition_type' => $compositionType,
             'summary' => $summary
         ]);
     }
@@ -2615,5 +2702,26 @@ class PublyContentService extends BaseApiService
         return $this->post("set_draft/update_all_status", [
             'changer_id' => $changerId
         ]);
+    }
+
+    public function createContentCuration($curationId, $contentId)
+    {
+        return $this->post("content_curation", [
+            'curation_id' => $curationId,
+            'content_id' => $contentId
+        ]);
+    }
+
+    public function updateContentCurationOrder($curationId, $contentCurationIds)
+    {
+        return $this->put("content_curation/order", [
+            'curation_id' => $curationId,
+            'ids' => implode(',', $contentCurationIds)
+        ]);
+    }
+
+    public function removeContentCuration($contentCurationId)
+    {
+        return $this->post("content_curation/{$contentCurationId}/delete");
     }
 }
