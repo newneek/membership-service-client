@@ -12,14 +12,16 @@ class PublyAuthService extends BaseApiService {
     const GROUP_MANAGER = 3;
     const GROUP_AUTHOR = 4;
     const GROUP_EDITOR = 5;
-    const GROUP_MAX = 6;
+    const GROUP_CURATOR = 6;
+    const GROUP_MAX = 7;
 
     const STRING_GROUP = [
         PublyAuthService::GROUP_ADMIN => "최고관리자",
         PublyAuthService::GROUP_NORMAL => "일반회원",
         PublyAuthService::GROUP_MANAGER => "관리자",
         PublyAuthService::GROUP_AUTHOR => "저자",
-        PublyAuthService::GROUP_EDITOR => "에디터"
+        PublyAuthService::GROUP_EDITOR => "에디터",
+        PublyAuthService::GROUP_CURATOR => "큐레이터"
     ];
 
     public function __construct($domain) {
