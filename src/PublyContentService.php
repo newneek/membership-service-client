@@ -2474,7 +2474,9 @@ class PublyContentService extends BaseApiService
         $title,
         $description,
         $note,
-        $links
+        $links,
+        $userId,
+        $hashtags
     ) {
         $inputs = [
             'changer_id' => $changerId,
@@ -2483,7 +2485,9 @@ class PublyContentService extends BaseApiService
             'title' => $title,
             'description' => $description,
             'note' => $note,
-            'links' => $links
+            'links' => $links,
+            'user_id' => $userId,
+            'hashtags' => $hashtags
         ];
 
         return $this->put("profile/{$profileId}", $inputs);

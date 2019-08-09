@@ -21,7 +21,7 @@ class PublyAuthService extends BaseApiService {
         PublyAuthService::GROUP_MANAGER => "관리자",
         PublyAuthService::GROUP_AUTHOR => "저자",
         PublyAuthService::GROUP_EDITOR => "에디터",
-        PublyAuthService::GROUP_CURATOR => "큐레이터"
+        PublyAuthService::GROUP_CURATOR => "뉴스 큐레이터"
     ];
 
     public function __construct($domain) {
