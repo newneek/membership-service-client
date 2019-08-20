@@ -136,11 +136,11 @@ class PublyAuthService extends BaseApiService {
         return $this->put("user/{$userId}", $inputs);
     }
 
-    public function updateUserPushNotificaionAgree($changerId, $userId, $pushNotificaionAgree)
+    public function updateUserPushNotificaionAgree($changerId, $userId, $pushNotificationAgree)
     {
         $inputs = [
             'changer_id' => $changerId,
-            'push_notification_agree' => $pushNotificaionAgree
+            'push_notification_agree' => $pushNotificationAgree
         ];
 
         return $this->put("user/{$userId}", $inputs);
