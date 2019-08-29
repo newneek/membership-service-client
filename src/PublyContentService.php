@@ -2324,6 +2324,11 @@ class PublyContentService extends BaseApiService
         return $this->get("user_set_progress/user/{$userId}", $filterArray);
     }
 
+    public function getUserSetProgressByUserAndSet($userId, $setId)
+    {
+        return $this->get("user_set_progress/user/{$userId}/set/{$setId}");
+    }
+
     public function createCategoryOrder($changerId, $categoryId)
     {
         return $this->post("category_order",
