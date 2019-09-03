@@ -1939,6 +1939,16 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
+    public function createCuration4($changerId, $title, $summary, $type)
+    {
+        return $this->post("curation", [
+            'changer_id' => $changerId,
+            'title' => $title,
+            'summary' => $summary,
+            'type' => $type
+        ]);
+    }
+
     public function updateCurationOrder($changerId, $curationIds)
     {
         return $this->put("curation/order", [
