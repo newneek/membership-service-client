@@ -2751,9 +2751,4 @@ class PublyContentService extends BaseApiService
         $filterArray['limit'] = $limit;
         return $this->get("/set_review", $filterArray);
     }
-
-    public function refreshFeedDisplays()
-    {
-        return $this->post("feed_display/refresh");
-    }
 }

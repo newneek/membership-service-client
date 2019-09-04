@@ -668,4 +668,9 @@ class PublyExtraService extends BaseApiService
         $filterArray['ids'] = implode(',', $setIds);
         return $this->get("review_score/counts/by_set_ids", $filterArray);
     }
+
+    public function refreshFeedDisplays()
+    {
+        return $this->post("feed_display/refresh");
+    }
 }
