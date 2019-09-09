@@ -2743,4 +2743,12 @@ class PublyContentService extends BaseApiService
     {
         return $this->post("content_curation/{$contentCurationId}/delete");
     }
+
+
+    public function getSetReviews($page, $limit, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("/set_review", $filterArray);
+    }
 }

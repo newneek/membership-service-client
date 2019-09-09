@@ -388,6 +388,12 @@ class PublyExtraService extends BaseApiService
         return $this->get("marketing_set_review/set/{$setId}");
     }
 
+    public function getMarketingSetReviewsBySetIds($setIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $setIds);
+        return $this->get("marketing_set_review/by_set_ids", $filterArray);
+    }
+
     public function deleteMarketingSetReview($changerId, $marketingSetReviewId)
     {
         return $this->post("marketing_set_review/{$marketingSetReviewId}/delete",
@@ -667,5 +673,17 @@ class PublyExtraService extends BaseApiService
     {
         $filterArray['ids'] = implode(',', $setIds);
         return $this->get("review_score/counts/by_set_ids", $filterArray);
+    }
+
+    public function refreshFeedDisplays()
+    {
+        return $this->post("feed_display/refresh");
+    }
+
+    public function getFeedDisplays($page, $limit, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("feed_display", $filterArray);
     }
 }
