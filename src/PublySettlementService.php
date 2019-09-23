@@ -129,6 +129,16 @@ class PublySettlementService extends BaseApiService
         return $this->put("settlement_result", $inputs);
     }
 
+    public function confirmSettlementAuthorResult($changerId, $authorId, $settlementYear, $settlementMonth)
+    {
+        return $this->post("settlement_author_result/confirm", [
+            'changer_id' => $changerId,
+            'author_id' => $authorId,
+            'settlement_year' => $settlementYear,
+            'settlement_month' => $settlementMonth
+        ]);
+    }
+
     public function getSettlementAuthorResults(
         $page = 1,
         $limit = 10,
