@@ -2751,4 +2751,14 @@ class PublyContentService extends BaseApiService
         $filterArray['limit'] = $limit;
         return $this->get("/set_review", $filterArray);
     }
+
+    public function getTargetGroup($day)
+    {
+        return $this->get("/user_set_progress/target/{$day}");
+    }
+
+    public function getUserSetProgressesByUserAndSets($userId, $filterArray = [])
+    {
+        return $this->get("user_set_progress/user/{$userId}/by_set_ids", $filterArray);
+    }
 }
