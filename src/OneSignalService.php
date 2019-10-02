@@ -51,7 +51,7 @@ class OneSignalService extends BaseApiService
         $client = new Client();
         while ($retryCount > 0) {
             try {
-                $response = $client->request('POST', $this->apiUrl . 'notifications/', ['headers' => $headers,
+                $response = $client->request('POST', $this->apiUrl . 'notifications', ['headers' => $headers,
                                                                      'json' => $fields]);
                 return json_decode($response->getBody()->getContents(), true);
             } catch (\Exception $e) {
