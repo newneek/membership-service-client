@@ -21,15 +21,15 @@ class OneSignalService extends BaseApiService
         $this->appKey = $appKey;
     }
 
-    public function sendPush($userId, $title, $msg, $sendTime){
+    public function sendPush($userId, $title, $msg, $sendTime = null, $data = []){
         $headers =
             [
                 'Content-Type' => 'application/json'
             ];
 
         $contents = array(
-            "ko" => $msg,
-            "en" => $msg
+            "ko" => $msg . '[수신거부: 설정 >  알림 설정]',
+            "en" => $msg . '[수신거부: 설정 >  알림 설정]'
         );
         $headings = array(
             "ko" => $title,
@@ -38,13 +38,15 @@ class OneSignalService extends BaseApiService
 
         $fields = array(
             'app_id' => $this->appId,
-            'delayed_option' => 'timezone',
-            'delivery_time_of_day' => $sendTime,
             'include_external_user_ids' => array($userId),
             'contents' => $contents,
-            'headings' => $headings
+            'headings' => $headings,
+            'data' => $data
         );
-//        $fields = json_encode($fields);
+        if (isset($sendTime)) {
+            $fields['delayed_option'] = 'timezone';
+            $fields['delivery_time_of_day'] = $sendTime;
+        }
         $retryCount = 3;
         $client = new Client();
         while ($retryCount > 0) {

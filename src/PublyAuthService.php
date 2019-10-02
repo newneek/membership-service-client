@@ -327,4 +327,9 @@ class PublyAuthService extends BaseApiService {
         $filterArray['limit'] = $limit;
         return $this->get("/partner_user", $filterArray);
     }
+
+    public function syncOneSignalData()
+    {
+        return $this->post("/sync_onesignal");
+    }
 }
