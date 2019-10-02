@@ -330,6 +330,6 @@ class PublyAuthService extends BaseApiService {
 
     public function syncOneSignalData()
     {
-        return $this->post("/sync_onesignal");
+        return $this->post("/sync");
     }
 }

@@ -283,4 +283,14 @@ class PublyNotificationService extends BaseApiService
             'set_draft_like' => $setDraftLike
         ]);
     }
+
+    public function sendPush($userId, $headings, $contents, $sendTime = null, $data = []) {
+        return $this->post("/push/send", [
+            'user_id' => $userId,
+            'headings' => $headings,
+            'contents' => $contents,
+            'send_time' => $sendTime,
+            'data' => $data
+        ]);
+    }
 }
