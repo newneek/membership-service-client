@@ -295,7 +295,7 @@ class PublyNotificationService extends BaseApiService
     }
 
     public function eventAmplitude($userId, $eventType, $eventProperties, $userProperties = []){
-        return $this->post("amplitude/event", [
+        return $this->post("/amplitude/event", [
             'user_id' => $userId,
             'event_type' => $eventType,
             'event_properties' => $eventProperties,
@@ -304,7 +304,7 @@ class PublyNotificationService extends BaseApiService
     }
 
     public function identifyAmplitude($userId, $userProperties){
-        return $this->post('amplitude/identify', [
+        return $this->post('/amplitude/identify', [
             'user_id' => $userId,
             'user_properties' => $userProperties
         ]);
