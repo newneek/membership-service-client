@@ -28,8 +28,8 @@ class OneSignalService extends BaseApiService
             ];
 
         $contents = array(
-            "ko" => $msg . '[수신거부: 설정 >  알림 설정]',
-            "en" => $msg . '[수신거부: 설정 >  알림 설정]'
+            "ko" => $msg,
+            "en" => $msg
         );
         $headings = array(
             "ko" => $title,
@@ -47,6 +47,7 @@ class OneSignalService extends BaseApiService
             $fields['delayed_option'] = 'timezone';
             $fields['delivery_time_of_day'] = $sendTime;
         }
+
         $retryCount = 3;
         $client = new Client();
         while ($retryCount > 0) {
