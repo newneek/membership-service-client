@@ -2751,4 +2751,9 @@ class PublyContentService extends BaseApiService
         $filterArray['limit'] = $limit;
         return $this->get("/set_review", $filterArray);
     }
+
+   public function findTargetGroupAndSendPush()
+   {
+       return $this->post("/push/send");
+   }
 }
