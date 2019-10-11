@@ -145,6 +145,14 @@ class PublyNotificationService extends BaseApiService
         ]);
     }
 
+    public function eventUserTurnoffPushNotification($userId, $product)
+    {
+        return $this->post("/event/user_turnoff_push_notification_agree", [
+            'user_id' => $userId,
+            'product' => $product
+        ]);
+    }
+
     public function eventSetReviewCreated($setReview)
     {
         return $this->post("/event/set_review_created", ['set_review' => $setReview]);
