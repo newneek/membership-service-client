@@ -2754,6 +2754,6 @@ class PublyContentService extends BaseApiService
 
    public function findTargetGroupAndSendPush()
    {
-       return $this->post("/push/send");
+       return $this->post("job/push/send");
    }
 }
