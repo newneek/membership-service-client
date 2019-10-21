@@ -686,4 +686,63 @@ class PublyExtraService extends BaseApiService
         $filterArray['limit'] = $limit;
         return $this->get("feed_display", $filterArray);
     }
+
+    public function getInterests()
+    {
+        return $this->get("user_segment_information/interests");
+    }
+
+    public function getRoles()
+    {
+        return $this->get("user_segment_information/roles");
+    }
+
+    public function getUserSegments($userId)
+    {
+        return $this->get("user_segments_information/{$userId}");
+    }
+
+    public function createUserSegments(
+        $changeId,
+        $userId,
+        $companyType,
+        $position,
+        $careerYear,
+        $roleId,
+        $interestIds = [])
+    {
+        $inputs = array(
+            'change_id' => $changeId,
+            'user_id' => $userId,
+            'company_type' => $companyType,
+            'position' => $position,
+            'career_year' => $careerYear,
+            'role_id' => $roleId,
+            'interest_ids' => $interestIds
+        );
+
+        return $this->post('user_segment_information', $inputs);
+    }
+
+    public function updateUserSegments(
+        $changeId,
+        $userId,
+        $companyType,
+        $position,
+        $careerYear,
+        $roleId,
+        $interestIds = [])
+    {
+        $inputs = array(
+            'change_id' => $changeId,
+            'user_id' => $userId,
+            'company_type' => $companyType,
+            'position' => $position,
+            'career_year' => $careerYear,
+            'role_id' => $roleId,
+            'interest_ids' => $interestIds
+        );
+
+        return $this->put('user_segment_information', $inputs);
+    }
 }
