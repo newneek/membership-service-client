@@ -692,9 +692,9 @@ class PublyExtraService extends BaseApiService
         return $this->get("user_segment_information/interests");
     }
 
-    public function getRoles()
+    public function getJobCategories()
     {
-        return $this->get("user_segment_information/roles");
+        return $this->get("user_segment_information/job_categories");
     }
 
     public function getUserSegments($userId)
@@ -706,18 +706,18 @@ class PublyExtraService extends BaseApiService
         $changeId,
         $userId,
         $companyType,
-        $position,
+        $managementLevel,
         $careerYear,
-        $roleId,
+        $jobCategory,
         $interestIds = [])
     {
         $inputs = array(
             'change_id' => $changeId,
             'user_id' => $userId,
             'company_type' => $companyType,
-            'position' => $position,
+            'management_level' => $managementLevel,
             'career_year' => $careerYear,
-            'role_id' => $roleId,
+            'job_category_id' => $jobCategory,
             'interest_ids' => $interestIds
         );
 
@@ -728,18 +728,18 @@ class PublyExtraService extends BaseApiService
         $changeId,
         $userId,
         $companyType,
-        $position,
+        $managementLevel,
         $careerYear,
-        $roleId,
+        $jobCategory,
         $interestIds = [])
     {
         $inputs = array(
             'change_id' => $changeId,
             'user_id' => $userId,
             'company_type' => $companyType,
-            'position' => $position,
+            'management_level' => $managementLevel,
             'career_year' => $careerYear,
-            'role_id' => $roleId,
+            'job_category_id' => $jobCategory,
             'interest_ids' => $interestIds
         );
 
