@@ -689,27 +689,26 @@ class PublyExtraService extends BaseApiService
 
     public function getInterests()
     {
-        return $this->get("user_segment_information/interests");
+        return $this->get("interest");
     }
 
     public function getJobCategories()
     {
-        return $this->get("user_segment_information/job_categories");
+        return $this->get("job_category");
     }
 
-    public function getUserSegments($userId)
+    public function getUserSegment($userId)
     {
-        return $this->get("user_segments_information/{$userId}");
+        return $this->get("user_segment/user/{$userId}");
     }
 
-    public function createUserSegments(
+    public function createUserSegment(
         $changeId,
         $userId,
         $companyType,
         $managementLevel,
         $careerYear,
-        $jobCategory,
-        $interestIds = [])
+        $jobCategory)
     {
         $inputs = array(
             'change_id' => $changeId,
@@ -717,21 +716,19 @@ class PublyExtraService extends BaseApiService
             'company_type' => $companyType,
             'management_level' => $managementLevel,
             'career_year' => $careerYear,
-            'job_category_id' => $jobCategory,
-            'interest_ids' => $interestIds
+            'job_category_id' => $jobCategory
         );
 
-        return $this->post('user_segment_information', $inputs);
+        return $this->post('user_segment', $inputs);
     }
 
-    public function updateUserSegments(
+    public function updateUserSegment(
         $changeId,
         $userId,
         $companyType,
         $managementLevel,
         $careerYear,
-        $jobCategory,
-        $interestIds = [])
+        $jobCategory)
     {
         $inputs = array(
             'change_id' => $changeId,
@@ -739,10 +736,25 @@ class PublyExtraService extends BaseApiService
             'company_type' => $companyType,
             'management_level' => $managementLevel,
             'career_year' => $careerYear,
-            'job_category_id' => $jobCategory,
+            'job_category_id' => $jobCategory
+        );
+
+        return $this->put('user_segment', $inputs);
+    }
+
+    public function getUserInterests($userId)
+    {
+        return $this->get("user_interest/user/${userId}");
+    }
+
+    public function storeUserInterests($changeId, $userId, $interestIds = [])
+    {
+        $inputs = array (
+            'change_id' => $changeId,
+            'user_id' => $userId,
             'interest_ids' => $interestIds
         );
 
-        return $this->put('user_segment_information', $inputs);
+        return $this->post('user_interest', $inputs);
     }
 }
