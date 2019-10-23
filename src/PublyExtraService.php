@@ -702,21 +702,11 @@ class PublyExtraService extends BaseApiService
         return $this->get("user_segment/user/{$userId}");
     }
 
-    public function createUserSegment(
-        $changeId,
-        $userId,
-        $companyType,
-        $managementLevel,
-        $careerYear,
-        $jobCategory)
+    public function createUserSegment($changeId, $userId)
     {
         $inputs = array(
             'change_id' => $changeId,
-            'user_id' => $userId,
-            'company_type' => $companyType,
-            'management_level' => $managementLevel,
-            'career_year' => $careerYear,
-            'job_category_id' => $jobCategory
+            'user_id' => $userId
         );
 
         return $this->post('user_segment', $inputs);
