@@ -744,10 +744,10 @@ class PublyExtraService extends BaseApiService
 
     public function getUserInterests($userId)
     {
-        return $this->get("user_interest/user/${userId}");
+        return $this->get("user_interest/user/{$userId}");
     }
 
-    public function storeUserInterests($changeId, $userId, $interestIds = [])
+    public function createUserInterests($changeId, $userId, $interestIds = [])
     {
         $inputs = array (
             'change_id' => $changeId,
@@ -756,5 +756,16 @@ class PublyExtraService extends BaseApiService
         );
 
         return $this->post('user_interest', $inputs);
+    }
+
+    public function deleteUserInterests($changerId, $userId, $interestIds)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'interest_ids' => $interestIds
+        ];
+
+        return $this->post('user_interest/delete', $inputs);
     }
 }
