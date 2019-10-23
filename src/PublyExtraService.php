@@ -704,10 +704,10 @@ class PublyExtraService extends BaseApiService
 
     public function createUserSegment($changeId, $userId)
     {
-        $inputs = array(
+        $inputs = [
             'change_id' => $changeId,
             'user_id' => $userId
-        );
+        ];
 
         return $this->post('user_segment', $inputs);
     }
@@ -720,14 +720,14 @@ class PublyExtraService extends BaseApiService
         $careerYear,
         $jobCategory)
     {
-        $inputs = array(
+        $inputs = [
             'change_id' => $changeId,
             'user_id' => $userId,
             'company_type' => $companyType,
             'management_level' => $managementLevel,
             'career_year' => $careerYear,
             'job_category_id' => $jobCategory
-        );
+        ];
 
         return $this->put('user_segment', $inputs);
     }
@@ -739,11 +739,11 @@ class PublyExtraService extends BaseApiService
 
     public function createUserInterests($changeId, $userId, $interestIds = [])
     {
-        $inputs = array (
+        $inputs = [
             'change_id' => $changeId,
             'user_id' => $userId,
             'interest_ids' => $interestIds
-        );
+        ];
 
         return $this->post('user_interest', $inputs);
     }
