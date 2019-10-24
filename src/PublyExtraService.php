@@ -702,10 +702,10 @@ class PublyExtraService extends BaseApiService
         return $this->get("user_segment/user/{$userId}");
     }
 
-    public function createUserSegment($changeId, $userId)
+    public function createUserSegment($changerId, $userId)
     {
         $inputs = [
-            'change_id' => $changeId,
+            'changer_id' => $changerId,
             'user_id' => $userId
         ];
 
@@ -713,7 +713,7 @@ class PublyExtraService extends BaseApiService
     }
 
     public function updateUserSegment(
-        $changeId,
+        $changerId,
         $userId,
         $companyType,
         $managementLevel,
@@ -721,7 +721,7 @@ class PublyExtraService extends BaseApiService
         $jobCategory)
     {
         $inputs = [
-            'change_id' => $changeId,
+            'changer_id' => $changerId,
             'user_id' => $userId,
             'company_type' => $companyType,
             'management_level' => $managementLevel,
@@ -737,10 +737,10 @@ class PublyExtraService extends BaseApiService
         return $this->get("user_interest/user/{$userId}");
     }
 
-    public function createUserInterests($changeId, $userId, $interestIds = [])
+    public function createUserInterests($changerId, $userId, $interestIds = [])
     {
         $inputs = [
-            'change_id' => $changeId,
+            'changer_id' => $changerId,
             'user_id' => $userId,
             'interest_ids' => $interestIds
         ];
