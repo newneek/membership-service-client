@@ -73,10 +73,10 @@ class OneSignalService extends BaseApiService
 
         $retryCount = 3;
         $client = new Client();
-        $this->apiUrl .= 'players?app_id=' . $this->appId . '&offset=' . $offset;
+        $url = $this->apiUrl . 'players?app_id=' . $this->appId . '&offset=' . $offset;
         while ($retryCount > 0) {
             try {
-                $response = $client->request('GET',  $this->apiUrl, ['headers' => $headers]);
+                $response = $client->request('GET',  $url, ['headers' => $headers]);
                 return json_decode($response->getBody()->getContents(), true);
             } catch (GuzzleException $e) {
                 $retryCount--;
