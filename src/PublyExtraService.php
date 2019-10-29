@@ -736,6 +736,40 @@ class PublyExtraService extends BaseApiService
         return $this->put('user_segment', $inputs);
     }
 
+    public function updateUserSegmentCompanyType($changerId, $userId, $companyType)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'company_type' => $companyType
+        ];
+
+        return $this->put('user_segment', $inputs);
+    }
+
+    public function updateUserSegmentCareer($changerId, $userId, $managementLevel, $careerYear)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'management_level' => $managementLevel,
+            'career_year' => $careerYear
+        ];
+
+        return $this->put('user_segment', $inputs);
+    }
+
+    public function updateUserSegmentJobCategory($changerId, $userId, $jobCategory)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'job_category' => $jobCategory
+        ];
+
+        return $this->put('user_segment', $inputs);
+    }
+
     public function getUserInterests($userId)
     {
         return $this->get("user_interest/user/{$userId}");
