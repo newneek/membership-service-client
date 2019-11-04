@@ -690,9 +690,9 @@ class PublyExtraService extends BaseApiService
         return $this->get("feed_display", $filterArray);
     }
 
-    public function getInterests()
+    public function getInterests($filterArray = [])
     {
-        return $this->get("interest");
+        return $this->get("interest", $filterArray);
     }
 
     public function getJobCategories()
