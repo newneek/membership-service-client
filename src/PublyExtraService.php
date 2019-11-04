@@ -758,12 +758,12 @@ class PublyExtraService extends BaseApiService
         return $this->put('user_segment', $inputs);
     }
 
-    public function updateUserSegmentJobCategory($changerId, $userId, $jobCategory)
+    public function updateUserSegmentJobCategory($changerId, $userId, $jobCategoryId)
     {
         $inputs = [
             'changer_id' => $changerId,
             'user_id' => $userId,
-            'job_category' => $jobCategory
+            'job_category_id' => $jobCategoryId
         ];
 
         return $this->put('user_segment', $inputs);
