@@ -719,9 +719,9 @@ class PublyExtraService extends BaseApiService
         return $this->post("job_category/{$jobCategoryId}/delete");
     }
 
-    public function getJobCategories()
+    public function getJobCategories($filterArray = [])
     {
-        return $this->get("job_category");
+        return $this->get("job_category", $filterArray);
     }
 
     public function getUserSegment($userId)
