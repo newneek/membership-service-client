@@ -1375,7 +1375,7 @@ class PublyContentService extends BaseApiService
             'is_package' => $isPackage
         ]);
     }
-    
+
     public function loadSetDataFromProject($changerId, $setId)
     {
         return $this->post("set/{$setId}/load_data_from_project", ['changer_id' => $changerId]);
@@ -1456,7 +1456,7 @@ class PublyContentService extends BaseApiService
     {
         return $this->get("set_reader/user/{$userId}", $filterArray);
     }
-    
+
     public function createSetReader($changerId, $userId, $setId, $sourceType, $adminId, $orderId, $note)
     {
         try {
@@ -1740,6 +1740,11 @@ class PublyContentService extends BaseApiService
     {
         $filterArray['ids'] = implode(',', $setIds);
         return $this->get("writer/set/ids", $filterArray);
+    }
+
+    public function getWritersByUserId($userId, $filterArray = [])
+    {
+        return $this->get("writer/user/{$userId}", $filterArray);
     }
 
     public function getProjectLikesByProjectIds($projectIds, $filterArray = [])
