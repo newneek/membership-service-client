@@ -523,11 +523,14 @@ class PublyExtraService extends BaseApiService
         return $this->get("onboarding_process/user/{$userId}", $filterArray);
     }
 
-    public function updateOnboardingProcessByUser($userId, $inputs)
+    public function updateOrCreateOnboardingProcessByUser($userId, $action)
     {
+        $inputs = [
+            'action' => $action
+        ];
+
         return $this->put("onboarding_process/user/{$userId}", $inputs);
     }
-
 
     public function getFeaturedBannerItems($filterArray = [])
     {
@@ -685,5 +688,135 @@ class PublyExtraService extends BaseApiService
         $filterArray['page'] = $page;
         $filterArray['limit'] = $limit;
         return $this->get("feed_display", $filterArray);
+    }
+
+    public function createInterest($name)
+    {
+        $inputs = ['name' => $name];
+
+        return $this->post("interest", $inputs);
+    }
+
+    public function deleteInterest($interest)
+    {
+        return $this->post("interest/{$interest}/delete");
+    }
+
+    public function getInterests($filterArray = [])
+    {
+        return $this->get("interest", $filterArray);
+    }
+
+    public function createJobCategory($name)
+    {
+        $inputs = ['name' => $name];
+
+        return $this->post("job_category", $inputs);
+    }
+
+    public function deleteJobCategory($jobCategoryId)
+    {
+        return $this->post("job_category/{$jobCategoryId}/delete");
+    }
+
+    public function getJobCategories($filterArray = [])
+    {
+        return $this->get("job_category", $filterArray);
+    }
+
+    public function getUserSegment($userId)
+    {
+        return $this->get("user_segment/user/{$userId}");
+    }
+
+    public function createUserSegment($changerId, $userId)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId
+        ];
+
+        return $this->post('user_segment', $inputs);
+    }
+
+    public function updateUserSegment(
+        $changerId,
+        $userId,
+        $companyType,
+        $managementLevel,
+        $careerYear,
+        $jobCategory)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'company_type' => $companyType,
+            'management_level' => $managementLevel,
+            'career_year' => $careerYear,
+            'job_category_id' => $jobCategory
+        ];
+
+        return $this->put('user_segment', $inputs);
+    }
+
+    public function updateUserSegmentCompanyType($changerId, $userId, $companyType)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'company_type' => $companyType
+        ];
+
+        return $this->put('user_segment', $inputs);
+    }
+
+    public function updateUserSegmentCareer($changerId, $userId, $managementLevel, $careerYear)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'management_level' => $managementLevel,
+            'career_year' => $careerYear
+        ];
+
+        return $this->put('user_segment', $inputs);
+    }
+
+    public function updateUserSegmentJobCategory($changerId, $userId, $jobCategoryId)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'job_category_id' => $jobCategoryId
+        ];
+
+        return $this->put('user_segment', $inputs);
+    }
+
+    public function getUserInterests($userId)
+    {
+        return $this->get("user_interest/user/{$userId}");
+    }
+
+    public function createUserInterests($changerId, $userId, $interestIds = [])
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'interest_ids' => $interestIds
+        ];
+
+        return $this->post('user_interest', $inputs);
+    }
+
+    public function deleteUserInterests($changerId, $userId, $interestIds)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'interest_ids' => $interestIds
+        ];
+
+        return $this->post('user_interest/delete', $inputs);
     }
 }
