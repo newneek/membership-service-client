@@ -317,4 +317,18 @@ class PublyNotificationService extends BaseApiService
             'user_properties' => $userProperties
         ]);
     }
+
+    public function eventUserCompleteProfile($userId)
+    {
+        return $this->post('/event/user_complete_profile', [
+            'user_id' => $userId
+        ]);
+    }
+
+    public function eventUserUpdateProfile($userId)
+    {
+        return $this->post('/event/user_update_profile', [
+            'user_id' => $userId
+        ]);
+    }
 }
