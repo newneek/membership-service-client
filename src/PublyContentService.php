@@ -1742,11 +1742,6 @@ class PublyContentService extends BaseApiService
         return $this->get("writer/set/ids", $filterArray);
     }
 
-    public function getWritersByUserId($userId, $filterArray = [])
-    {
-        return $this->get("writer/user/{$userId}", $filterArray);
-    }
-
     public function getProjectLikesByProjectIds($projectIds, $filterArray = [])
     {
         $filterArray['project_ids'] = implode(',', $projectIds);
@@ -2474,6 +2469,12 @@ class PublyContentService extends BaseApiService
     {
         $filterArray['ids'] = implode(',', $profileIds);
         return $this->get("profile/by_ids", $filterArray);
+    }
+
+    public function getProfilesByUserIds($userIds, $filterArray = [])
+    {
+        $filterArray['user_ids'] = implode(',', $userIds);
+        return $this->get("profile/by_user_ids", $filterArray);
     }
 
     public function createProfile($changerId, $name)
