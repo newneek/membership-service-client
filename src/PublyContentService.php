@@ -2768,19 +2768,7 @@ class PublyContentService extends BaseApiService
        return $this->get("set_segment/{$setId}");
    }
 
-   public function createSetSegment($setId, $companyType, $sourceType, $timeliness)
-   {
-       $inputs = [
-           'set_id' => $setId,
-           'company_type' => $companyType,
-           'source_type' => $sourceType,
-           'timeliness' => $timeliness
-       ];
-
-       return $this->post("set_segment", $inputs);
-   }
-
-    public function updateSetSegment($setId, $companyType, $sourceType, $timeliness)
+    public function updateOrCreateSetSegment($setId, $companyType, $sourceType, $timeliness)
     {
         $inputs = [
             'company_type' => $companyType,
