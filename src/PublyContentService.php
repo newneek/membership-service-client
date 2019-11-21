@@ -1375,7 +1375,7 @@ class PublyContentService extends BaseApiService
             'is_package' => $isPackage
         ]);
     }
-    
+
     public function loadSetDataFromProject($changerId, $setId)
     {
         return $this->post("set/{$setId}/load_data_from_project", ['changer_id' => $changerId]);
@@ -1456,7 +1456,7 @@ class PublyContentService extends BaseApiService
     {
         return $this->get("set_reader/user/{$userId}", $filterArray);
     }
-    
+
     public function createSetReader($changerId, $userId, $setId, $sourceType, $adminId, $orderId, $note)
     {
         try {
@@ -2469,6 +2469,12 @@ class PublyContentService extends BaseApiService
     {
         $filterArray['ids'] = implode(',', $profileIds);
         return $this->get("profile/by_ids", $filterArray);
+    }
+
+    public function getProfilesByUserIds($userIds, $filterArray = [])
+    {
+        $filterArray['user_ids'] = implode(',', $userIds);
+        return $this->get("profile/by_user_ids", $filterArray);
     }
 
     public function createProfile($changerId, $name)
