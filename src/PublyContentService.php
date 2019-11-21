@@ -2762,4 +2762,20 @@ class PublyContentService extends BaseApiService
    {
        return $this->post("job/push/send");
    }
+
+   public function getSetSegment($setId)
+   {
+       return $this->get("set_segment/{$setId}");
+   }
+
+    public function updateOrCreateSetSegment($setId, $companyType, $sourceType, $timeliness)
+    {
+        $inputs = [
+            'company_type' => $companyType,
+            'source_type' => $sourceType,
+            'timeliness' => $timeliness
+        ];
+
+        return $this->put("set_segment/{$setId}", $inputs);
+    }
 }
