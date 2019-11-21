@@ -2778,4 +2778,29 @@ class PublyContentService extends BaseApiService
 
         return $this->put("set_segment/{$setId}", $inputs);
     }
+
+    public function createSetInterests($setId, $interestIds)
+    {
+        $inputs = [
+            'set_id' => $setId,
+            'interest_ids' => $interestIds
+        ];
+
+        return $this->post("set_interest/create_set_interests", $inputs);
+    }
+
+    public function deleteSetInterests($setId, $interestIds)
+    {
+        $inputs = [
+            'set_id' => $setId,
+            'interest_ids' => $interestIds
+        ];
+
+        return $this->post("set_interest/delete_set_interests", $inputs);
+    }
+
+    public function getSetInterestsBySetId($setId, $filterArray = [])
+    {
+        return $this->get("set_interest/set/{$setId}", $filterArray);
+    }
 }
