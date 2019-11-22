@@ -2809,6 +2809,19 @@ class PublyContentService extends BaseApiService
         return $this->get("content_characteristic", $filterArray);
     }
 
+    public function createContentCharacteristic($name)
+    {
+        $inputs = [
+            'name' => $name
+        ];
+        return $this->post("content_characteristic", $inputs);
+    }
+
+    public function deleteContentCharacteristic($contentCharacteristicId)
+    {
+        return $this->get("content_characteristic/{$contentCharacteristicId}/delete");
+    }
+
     public function createSetContentCharacteristics($setId, $contentCharacteristicIds)
     {
         $inputs = [
