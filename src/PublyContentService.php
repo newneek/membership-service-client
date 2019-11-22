@@ -2803,4 +2803,34 @@ class PublyContentService extends BaseApiService
     {
         return $this->get("set_interest/set/{$setId}", $filterArray);
     }
+
+    public function getContentCharacteristics($filterArray = [])
+    {
+        return $this->get("content_characteristic", $filterArray);
+    }
+
+    public function createSetContentCharacteristics($setId, $contentCharacteristicIds)
+    {
+        $inputs = [
+            'set_id' => $setId,
+            'content_characteristic_ids' => $contentCharacteristicIds
+        ];
+
+        return $this->post("set_content_characteristic/store_set_content_characteristics", $inputs);
+    }
+
+    public function deleteSetContentCharacteristics($setId, $contentCharacteristicIds)
+    {
+        $inputs = [
+            'set_id' => $setId,
+            'content_characteristic_ids' => $contentCharacteristicIds
+        ];
+
+        return $this->post("set_content_characteristic/delete_set_content_characteristics", $inputs);
+    }
+
+    public function getSetContentCharacteristics($setId)
+    {
+        return $this->get("set_content_characteristic/set/{$setId}");
+    }
 }
