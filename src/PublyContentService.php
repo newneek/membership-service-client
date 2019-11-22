@@ -2819,7 +2819,7 @@ class PublyContentService extends BaseApiService
 
     public function deleteContentCharacteristic($contentCharacteristicId)
     {
-        return $this->get("content_characteristic/{$contentCharacteristicId}/delete");
+        return $this->post("content_characteristic/{$contentCharacteristicId}/delete");
     }
 
     public function createSetContentCharacteristics($setId, $contentCharacteristicIds)
