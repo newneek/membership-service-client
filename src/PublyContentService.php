@@ -2870,4 +2870,29 @@ class PublyContentService extends BaseApiService
     {
         return $this->get("set_career_type/set/{$setId}", $filterArray);
     }
+
+    public function createSetJobCategories($setId, $jobCategoryIds)
+    {
+        $inputs = [
+            'set_id' => $setId,
+            'job_category_ids' => $jobCategoryIds
+        ];
+
+        return $this->post("set_job_category/create_set_job_categories", $inputs);
+    }
+
+    public function deleteSetJobCategories($setId, $jobCategoryIds)
+    {
+        $inputs = [
+            'set_id' => $setId,
+            'job_category_ids' => $jobCategoryIds
+        ];
+
+        return $this->post("set_job_category/delete_set_job_categories", $inputs);
+    }
+
+    public function getSetJobCategoriesBySetId($setId, $filterArray = [])
+    {
+        return $this->get("set_job_category/set/{$setId}", $filterArray);
+    }
 }
