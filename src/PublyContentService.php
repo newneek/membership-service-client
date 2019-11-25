@@ -82,7 +82,6 @@ class PublyContentService extends BaseApiService
     const CURATION_COMPOSITION_TYPE_INDIVIDUAL_RECOMMEND = 3;
     const CURATION_COMPOSITION_TYPE_CONTINUE_TO_READ = 4;
 
-
     public function __construct($domain)
     {
         parent::__construct();
@@ -2845,5 +2844,30 @@ class PublyContentService extends BaseApiService
     public function getSetContentCharacteristics($setId)
     {
         return $this->get("set_content_characteristic/set/{$setId}");
+    }
+
+    public function createSetCareerTypes($setId, $careerTypes)
+    {
+        $inputs = [
+            'set_id' => $setId,
+            'career_types' => $careerTypes
+        ];
+
+        return $this->post("set_career_type/create_set_career_types", $inputs);
+    }
+
+    public function deleteSetCareerTypes($setId, $careerTypes)
+    {
+        $inputs = [
+            'set_id' => $setId,
+            'career_types' => $careerTypes
+        ];
+
+        return $this->post("set_career_type/delete_set_career_types", $inputs);
+    }
+
+    public function getSetCareerTypesBySetId($setId, $filterArray = [])
+    {
+        return $this->get("set_career_type/set/{$setId}", $filterArray);
     }
 }
