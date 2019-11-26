@@ -690,11 +690,24 @@ class PublyExtraService extends BaseApiService
         return $this->get("feed_display", $filterArray);
     }
 
-    public function createInterest($name)
+    public function createInterest($name, $categoryId)
     {
-        $inputs = ['name' => $name];
+        $inputs = [
+            'name' => $name,
+            'category_id' => $categoryId
+        ];
 
         return $this->post("interest", $inputs);
+    }
+
+    public function updateInterest($interestId, $name, $categoryId)
+    {
+        $inputs = [
+            'name' => $name,
+            'category_id' => $categoryId
+        ];
+
+        return $this->put("interest/{$interestId}/update", $inputs);
     }
 
     public function deleteInterest($interest)
@@ -707,34 +720,23 @@ class PublyExtraService extends BaseApiService
         return $this->get("interest", $filterArray);
     }
 
-    public function createJobCategory($name, $categoryId)
+    public function getInterest($interestId)
+    {
+        return $this->get("interest/{$interestId}");
+    }
+
+    public function createJobCategory($name)
     {
         $inputs = [
-            'name' => $name,
-            'category_id' => $categoryId
+            'name' => $name
         ];
 
         return $this->post("job_category", $inputs);
     }
 
-    public function updateJobCategory($jobCategoryId, $name, $categoryId)
-    {
-        $inputs = [
-            'name' => $name,
-            'category_id' => $categoryId
-        ];
-
-        return $this->put("job_category/{$jobCategoryId}", $inputs);
-    }
-
     public function deleteJobCategory($jobCategoryId)
     {
         return $this->post("job_category/{$jobCategoryId}/delete");
-    }
-
-    public function getJobCategory($jobCategoryId)
-    {
-        return $this->get("job_category/{$jobCategoryId}");
     }
 
     public function getJobCategories($filterArray = [])
