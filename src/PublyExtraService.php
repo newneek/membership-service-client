@@ -707,16 +707,34 @@ class PublyExtraService extends BaseApiService
         return $this->get("interest", $filterArray);
     }
 
-    public function createJobCategory($name)
+    public function createJobCategory($name, $categoryId)
     {
-        $inputs = ['name' => $name];
+        $inputs = [
+            'name' => $name,
+            'category_id' => $categoryId
+        ];
 
         return $this->post("job_category", $inputs);
+    }
+
+    public function updateJobCategory($jobCategoryId, $name, $categoryId)
+    {
+        $inputs = [
+            'name' => $name,
+            'category_id' => $categoryId
+        ];
+
+        return $this->put("job_category/{$jobCategoryId}", $inputs);
     }
 
     public function deleteJobCategory($jobCategoryId)
     {
         return $this->post("job_category/{$jobCategoryId}/delete");
+    }
+
+    public function getJobCategory($jobCategoryId)
+    {
+        return $this->get("job_category/{$jobCategoryId}");
     }
 
     public function getJobCategories($filterArray = [])
