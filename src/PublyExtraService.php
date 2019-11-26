@@ -725,6 +725,11 @@ class PublyExtraService extends BaseApiService
         return $this->get("interest/{$interestId}");
     }
 
+    public function getInterestsByCategoryId($categoryId)
+    {
+        return $this->get("interest/category/{$categoryId}");
+    }
+
     public function createJobCategory($name)
     {
         $inputs = [

@@ -2803,6 +2803,12 @@ class PublyContentService extends BaseApiService
         return $this->get("set_interest/set/{$setId}", $filterArray);
     }
 
+    public function getSetInterestsByInterestIds($interestIds, $filterArray = [])
+    {
+        $filterArray['interest_ids'] = implode(',', $interestIds);
+        return $this->get("set_interest/by_interest_ids", $filterArray);
+    }
+
     public function getContentCharacteristics($filterArray = [])
     {
         return $this->get("content_characteristic", $filterArray);
