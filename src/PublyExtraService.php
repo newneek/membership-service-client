@@ -690,11 +690,24 @@ class PublyExtraService extends BaseApiService
         return $this->get("feed_display", $filterArray);
     }
 
-    public function createInterest($name)
+    public function createInterest($name, $categoryId)
     {
-        $inputs = ['name' => $name];
+        $inputs = [
+            'name' => $name,
+            'category_id' => $categoryId
+        ];
 
         return $this->post("interest", $inputs);
+    }
+
+    public function updateInterest($interestId, $name, $categoryId)
+    {
+        $inputs = [
+            'name' => $name,
+            'category_id' => $categoryId
+        ];
+
+        return $this->put("interest/{$interestId}/update", $inputs);
     }
 
     public function deleteInterest($interest)
@@ -707,9 +720,21 @@ class PublyExtraService extends BaseApiService
         return $this->get("interest", $filterArray);
     }
 
+    public function getInterest($interestId)
+    {
+        return $this->get("interest/{$interestId}");
+    }
+
+    public function getInterestsByCategoryId($categoryId)
+    {
+        return $this->get("interest/category/{$categoryId}");
+    }
+
     public function createJobCategory($name)
     {
-        $inputs = ['name' => $name];
+        $inputs = [
+            'name' => $name
+        ];
 
         return $this->post("job_category", $inputs);
     }

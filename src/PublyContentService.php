@@ -82,7 +82,6 @@ class PublyContentService extends BaseApiService
     const CURATION_COMPOSITION_TYPE_INDIVIDUAL_RECOMMEND = 3;
     const CURATION_COMPOSITION_TYPE_CONTINUE_TO_READ = 4;
 
-
     public function __construct($domain)
     {
         parent::__construct();
@@ -2762,4 +2761,144 @@ class PublyContentService extends BaseApiService
    {
        return $this->post("job/push/send");
    }
+
+   public function getSetSegment($setId)
+   {
+       return $this->get("set_segment/{$setId}");
+   }
+
+    public function updateOrCreateSetSegment($setId, $companyType, $sourceType, $timeliness)
+    {
+        $inputs = [
+            'company_type' => $companyType,
+            'source_type' => $sourceType,
+            'timeliness' => $timeliness
+        ];
+
+        return $this->put("set_segment/{$setId}", $inputs);
+    }
+
+    public function createSetInterests($setId, $interestIds)
+    {
+        $inputs = [
+            'set_id' => $setId,
+            'interest_ids' => $interestIds
+        ];
+
+        return $this->post("set_interest/create_set_interests", $inputs);
+    }
+
+    public function deleteSetInterests($setId, $interestIds)
+    {
+        $inputs = [
+            'set_id' => $setId,
+            'interest_ids' => $interestIds
+        ];
+
+        return $this->post("set_interest/delete_set_interests", $inputs);
+    }
+
+    public function getSetInterestsBySetId($setId, $filterArray = [])
+    {
+        return $this->get("set_interest/set/{$setId}", $filterArray);
+    }
+
+    public function getSetInterestsByInterestIds($interestIds, $filterArray = [])
+    {
+        $filterArray['interest_ids'] = implode(',', $interestIds);
+        return $this->get("set_interest/by_interest_ids", $filterArray);
+    }
+
+    public function getContentCharacteristics($filterArray = [])
+    {
+        return $this->get("content_characteristic", $filterArray);
+    }
+
+    public function createContentCharacteristic($name)
+    {
+        $inputs = [
+            'name' => $name
+        ];
+        return $this->post("content_characteristic", $inputs);
+    }
+
+    public function deleteContentCharacteristic($contentCharacteristicId)
+    {
+        return $this->post("content_characteristic/{$contentCharacteristicId}/delete");
+    }
+
+    public function createSetContentCharacteristics($setId, $contentCharacteristicIds)
+    {
+        $inputs = [
+            'set_id' => $setId,
+            'content_characteristic_ids' => $contentCharacteristicIds
+        ];
+
+        return $this->post("set_content_characteristic/store_set_content_characteristics", $inputs);
+    }
+
+    public function deleteSetContentCharacteristics($setId, $contentCharacteristicIds)
+    {
+        $inputs = [
+            'set_id' => $setId,
+            'content_characteristic_ids' => $contentCharacteristicIds
+        ];
+
+        return $this->post("set_content_characteristic/delete_set_content_characteristics", $inputs);
+    }
+
+    public function getSetContentCharacteristics($setId)
+    {
+        return $this->get("set_content_characteristic/set/{$setId}");
+    }
+
+    public function createSetCareerTypes($setId, $careerTypes)
+    {
+        $inputs = [
+            'set_id' => $setId,
+            'career_types' => $careerTypes
+        ];
+
+        return $this->post("set_career_type/create_set_career_types", $inputs);
+    }
+
+    public function deleteSetCareerTypes($setId, $careerTypes)
+    {
+        $inputs = [
+            'set_id' => $setId,
+            'career_types' => $careerTypes
+        ];
+
+        return $this->post("set_career_type/delete_set_career_types", $inputs);
+    }
+
+    public function getSetCareerTypesBySetId($setId, $filterArray = [])
+    {
+        return $this->get("set_career_type/set/{$setId}", $filterArray);
+    }
+
+    public function createSetJobCategories($setId, $jobCategoryIds)
+    {
+        $inputs = [
+            'set_id' => $setId,
+            'job_category_ids' => $jobCategoryIds
+        ];
+
+        return $this->post("set_job_category/create_set_job_categories", $inputs);
+    }
+
+    public function deleteSetJobCategories($setId, $jobCategoryIds)
+    {
+        $inputs = [
+            'set_id' => $setId,
+            'job_category_ids' => $jobCategoryIds
+        ];
+
+        return $this->post("set_job_category/delete_set_job_categories", $inputs);
+    }
+
+    public function getSetJobCategoriesBySetId($setId, $filterArray = [])
+    {
+        return $this->get("set_job_category/set/{$setId}", $filterArray);
+    }
 }
