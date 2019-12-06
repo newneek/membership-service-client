@@ -21,6 +21,28 @@ class PublyExtraService extends BaseApiService
     const FEATURED_BANNER_ITEM_TYPE_MANUAL = 2;
     const FEATURED_BANNER_ITEM_TYPE_TO_BE_PUBLISHED_SETS = 3;
 
+    const COMPANY_TYPE_SMALL_AND_MEDIUM_SIZED_COMPANY = 1;
+    const COMPANY_TYPE_LARGE_COMPANY = 2;
+    const COMPANY_TYPE_START_UP = 3;
+    const COMPANY_TYPE_STUDENT = 4;
+
+    const MANAGEMENT_LEVEL_HANDS_ON_WORKER = 1;
+    const MANAGEMENT_LEVEL_MANAGER = 2;
+    const MANAGEMENT_LEVEL_DECISION_MAKER = 3;
+
+    const STRING_COMPANY_TYPE = [
+        PublyExtraService::COMPANY_TYPE_SMALL_AND_MEDIUM_SIZED_COMPANY => 'small-and-medium-sized-company',
+        PublyExtraService::COMPANY_TYPE_LARGE_COMPANY => 'large-company',
+        PublyExtraService::COMPANY_TYPE_START_UP => 'start-up',
+        PublyExtraService::COMPANY_TYPE_STUDENT => 'student'
+    ];
+
+    const STRING_MANAGEMENT_LEVEL = [
+        PublyExtraService::MANAGEMENT_LEVEL_HANDS_ON_WORKER => 'hands-on-worker',
+        PublyExtraService::MANAGEMENT_LEVEL_MANAGER => 'manager',
+        PublyExtraService::MANAGEMENT_LEVEL_DECISION_MAKER => 'decision-maker'
+    ];
+
     public function __construct($domain)
     {
         parent::__construct();
@@ -747,6 +769,11 @@ class PublyExtraService extends BaseApiService
     public function getJobCategories($filterArray = [])
     {
         return $this->get("job_category", $filterArray);
+    }
+
+    public function getJobCategory($jobCategoryId)
+    {
+        return $this->get("job_category/{$jobCategoryId}");
     }
 
     public function getUserSegment($userId)
