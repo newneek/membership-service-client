@@ -325,10 +325,11 @@ class PublyNotificationService extends BaseApiService
         ]);
     }
 
-    public function eventUserUpdateProfile($userId)
+    public function eventUserUpdateProfile($userId, $userSegment)
     {
         return $this->post('/event/user_update_profile', [
-            'user_id' => $userId
+            'user_id' => $userId,
+            'user_segment' => $userSegment
         ]);
     }
 }
