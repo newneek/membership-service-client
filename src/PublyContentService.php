@@ -82,6 +82,11 @@ class PublyContentService extends BaseApiService
     const CURATION_COMPOSITION_TYPE_INDIVIDUAL_RECOMMEND = 3;
     const CURATION_COMPOSITION_TYPE_CONTINUE_TO_READ = 4;
 
+    const SET_CAREER_TYPE_JUNIOR_HANDS_ON_WORKER = 1;
+    const SET_CAREER_TYPE_SENIOR_HANDS_ON_WORKER = 2;
+    const SET_CAREER_TYPE_MANAGER = 3;
+    const SET_CAREER_TYPE_DECISION_MAKER = 4;
+
     public function __construct($domain)
     {
         parent::__construct();
@@ -2767,6 +2772,13 @@ class PublyContentService extends BaseApiService
        return $this->get("set_segment/{$setId}");
    }
 
+    public function getSetSegmentBySetIds($setIds, $filterArray = [])
+    {
+        $filterArray['set_ids'] = implode(',', $setIds);
+
+        return $this->get("set_segment/by_set_ids");
+    }
+
     public function updateOrCreateSetSegment($setId, $companyType, $sourceType, $timeliness)
     {
         $inputs = [
@@ -2801,6 +2813,13 @@ class PublyContentService extends BaseApiService
     public function getSetInterestsBySetId($setId, $filterArray = [])
     {
         return $this->get("set_interest/set/{$setId}", $filterArray);
+    }
+
+    public function getSetInterestsBySetIds($setIds, $filterArray = [])
+    {
+        $filterArray['set_ids'] = implode(',', $setIds);
+
+        return $this->get("set_interest/by_set_ids", $filterArray);
     }
 
     public function getSetInterestsByInterestIds($interestIds, $filterArray = [])
@@ -2877,6 +2896,13 @@ class PublyContentService extends BaseApiService
         return $this->get("set_career_type/set/{$setId}", $filterArray);
     }
 
+    public function getSetCareerTypesBySetIds($setIds, $filterArray = [])
+    {
+        $filterArray['set_ids'] = implode(',', $setIds);
+
+        return $this->get("set_career_type/by_set_ids", $filterArray);
+    }
+
     public function createSetJobCategories($setId, $jobCategoryIds)
     {
         $inputs = [
@@ -2900,5 +2926,12 @@ class PublyContentService extends BaseApiService
     public function getSetJobCategoriesBySetId($setId, $filterArray = [])
     {
         return $this->get("set_job_category/set/{$setId}", $filterArray);
+    }
+
+    public function getUserSetProgressCountsBySetIds($setIds, $filterArray = [])
+    {
+        $filterArray['set_ids'] = implode(',', $setIds);
+
+        return $this->get("user_set_progress/by_set_ids/count", $filterArray);
     }
 }
