@@ -2776,7 +2776,7 @@ class PublyContentService extends BaseApiService
     {
         $filterArray['set_ids'] = implode(',', $setIds);
 
-        return $this->get("set_segment/by_set_ids");
+        return $this->get("set_segment/by_set_ids", $filterArray);
     }
 
     public function updateOrCreateSetSegment($setId, $companyType, $sourceType, $timeliness)
