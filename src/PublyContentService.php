@@ -2941,4 +2941,9 @@ class PublyContentService extends BaseApiService
 
         return $this->get("user_set_progress/by_set_ids/count", $filterArray);
     }
+
+    public function getUserSetProgressCountBySet($setId, $filterArray = [])
+    {
+        return $this->get("user_set_progress/set/{$setId}/count", $filterArray);
+    }
 }
