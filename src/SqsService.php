@@ -17,14 +17,11 @@ class SqsService extends BaseApiService
 
     protected $sqsClient;
 
-    public function __construct()
+    public function __construct(SqsClient $sqsClient)
     {
         parent::__construct();
 
-        $this->sqsClient = new SqsClient([
-            'region' => 'ap-northeast-2',
-            'version' => 'latest'
-        ]);
+        $this->sqsClient = $sqsClient;
     }
 
     public function sendMessage($queueUrl, $messageBody)
