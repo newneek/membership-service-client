@@ -24,7 +24,8 @@ class OneSignalService extends BaseApiService
     public function sendPush($userId, $title, $msg, $sendTime = null, $data = []){
         $headers =
             [
-                'Content-Type' => 'application/json'
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Basic ' . $this->appKey
             ];
 
         $contents = array(
