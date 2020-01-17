@@ -88,4 +88,31 @@ class OneSignalService extends BaseApiService
         }
     }
 
+    public function updateTags($playerId, $tags)
+    {
+        $headers = [
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Basic ' . $this->appKey
+        ];
+
+        $fields = [
+            'app_id' => $this->appId,
+            'tags' => $tags
+        ];
+
+        $retryCount = 3;
+        $client = new Client();
+        $url = $this->apiUrl . 'players/' . $playerId;
+        while ($retryCount > 0) {
+            try {
+                $response = $client->request('PUT',  $url, ['headers' => $headers, 'json' => $fields]);
+                return json_decode($response->getBody()->getContents(), true);
+            } catch (\Exception $e) {
+                $retryCount--;
+                if ($retryCount == 0) {
+                    throw $e;
+                }
+            }
+        }
+    }
 }
