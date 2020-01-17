@@ -24,26 +24,12 @@ class SqsService extends BaseApiService
         $this->sqsClient = $sqsClient;
     }
 
-    public function sendMessage($queueUrl, $messageBody)
+    public function sendMessage($queueUrl, $messageBody, $delaySeconds = 0)
     {
         $params = [
             'QueueUrl' => $queueUrl,
-            'MessageBody' => $messageBody
-        ];
-
-        try {
-            return $this->sqsClient->sendMessage($params);
-        } catch (\Exception $e) {
-            throw $e;
-        }
-    }
-
-    public function sendDelayMessage($delaySeconds, $queueUrl, $messageBody)
-    {
-        $params = [
-            'DelaySeconds' => $delaySeconds,
-            'QueueUrl' => $queueUrl,
-            'MessageBody' => $messageBody
+            'MessageBody' => $messageBody,
+            'DelaySeconds' => $delaySeconds
         ];
 
         try {
