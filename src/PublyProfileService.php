@@ -27,7 +27,7 @@ class PublyProfileService extends BaseApiService
                 'limit'=> 100,
                 'page'=> 1,
                 'sortBy' => 'displaySequence',
-                'orderBy' => 'desc'
+                'orderBy' => 'asc'
             ]);
     }
 
@@ -55,5 +55,13 @@ class PublyProfileService extends BaseApiService
     public function deleteCareer($careerId)
     {
         return $this->delete("careers/$careerId");
+    }
+
+    public function updateOrder($careerId, $order)
+    {
+        return $this->put("careers/$careerId",
+            [
+                'displaySequence' => $order,
+            ]);
     }
 }
