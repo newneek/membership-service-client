@@ -872,7 +872,7 @@ class PublyExtraService extends BaseApiService
         return $this->post('user_interest/delete', $inputs);
     }
 
-    public function refreshAllUserFeed()
+    public function refreshFeedForAllActiveUsers()
     {
         return $this->post("user_feed_refresh");
     }
