@@ -871,4 +871,19 @@ class PublyExtraService extends BaseApiService
 
         return $this->post('user_interest/delete', $inputs);
     }
+
+    public function refreshAllUserFeed()
+    {
+        return $this->post("user_feed_refresh");
+    }
+
+    public function getUserFeedRequestTime($userId)
+    {
+        return $this->get("user_feed_request_time/$userId");
+    }
+
+    public function updateOrCreateUserFeedRequestTime($userId)
+    {
+        return $this->post("user_feed_request_time/$userId");
+    }
 }
