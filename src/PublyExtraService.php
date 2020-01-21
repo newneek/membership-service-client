@@ -877,13 +877,13 @@ class PublyExtraService extends BaseApiService
         return $this->post("user_feed_refresh");
     }
 
-    public function getUserFeedRequestTime($userId)
+    public function getUserFeedStatus($userId)
     {
-        return $this->get("user_feed_request_time/$userId");
+        return $this->get("user_feed_status/$userId");
     }
 
-    public function updateOrCreateUserFeedRequestTime($userId)
+    public function updateOrCreateUserFeedStatus($userId)
     {
-        return $this->post("user_feed_request_time/$userId");
+        return $this->post("user_feed_status/$userId");
     }
 }
