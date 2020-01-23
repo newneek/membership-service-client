@@ -886,4 +886,9 @@ class PublyExtraService extends BaseApiService
     {
         return $this->post("user_feed_status/$userId");
     }
+
+    public function getUserFeedByUser($userId)
+    {
+        return $this->get("user_feed/user/$userId");
+    }
 }
