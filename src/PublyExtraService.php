@@ -874,7 +874,7 @@ class PublyExtraService extends BaseApiService
 
     public function refreshFeedForAllActiveUsers()
     {
-        return $this->post("user_feed_refresh");
+        return $this->post("/user_feed/refresh");
     }
 
     public function getUserFeedStatus($userId)
