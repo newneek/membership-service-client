@@ -891,4 +891,25 @@ class PublyExtraService extends BaseApiService
     {
         return $this->get("user_feed/user/$userId");
     }
+
+    public function getDailyRecommendations($filterArray = [])
+    {
+        return $this->get("daily_recommendation", $filterArray);
+    }
+
+    public function createDailyRecommendations($date, $segmentType, $contentIds)
+    {
+        $inputs = [
+            'date' => $date,
+            'segment_type' => $segmentType,
+            'content_ids' => $contentIds
+        ];
+
+        return $this->post("daily_recommendation/store_daily_recommendations", $inputs);
+    }
+
+    public function deleteDailyRecommendation($dailyRecommendationId)
+    {
+        return $this->post("daily_recommendation/{$dailyRecommendationId}/delete");
+    }
 }
