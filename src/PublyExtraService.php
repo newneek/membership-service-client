@@ -897,6 +897,11 @@ class PublyExtraService extends BaseApiService
         return $this->get("daily_recommendation", $filterArray);
     }
 
+    public function getDailyRecommendationsBySegmentTypeAndDate($segmentType, $date, $filterArray = [])
+    {
+        return $this->get("daily_recommendation/segment_type/{$segmentType}/date/{$date}", $filterArray);
+    }
+
     public function createDailyRecommendations($date, $segmentType, $contentIds)
     {
         $inputs = [
