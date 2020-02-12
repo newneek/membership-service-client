@@ -87,11 +87,14 @@ class PublyContentService extends BaseApiService
     const SET_CAREER_TYPE_MANAGER = 3;
     const SET_CAREER_TYPE_DECISION_MAKER = 4;
 
-    const STRING_SET_CAREER_TYPE = [
-        PublyContentService::SET_CAREER_TYPE_JUNIOR_HANDS_ON_WORKER => '주니어 실무자',
-        PublyContentService::SET_CAREER_TYPE_SENIOR_HANDS_ON_WORKER => '시니어 실무자',
-        PublyContentService::SET_CAREER_TYPE_MANAGER => '사람/조직 관리자',
-        PublyContentService::SET_CAREER_TYPE_DECISION_MAKER => '의사 결정권자'
+    const USER_SEGMENT_MANAGEMENT_LEVEL_HANDS_ON_WORKER = 1;
+    const USER_SEGMENT_MANAGEMENT_LEVEL_MANAGER = 2;
+    const USER_SEGMENT_MANAGEMENT_LEVEL_DECISION_MAKER = 3;
+
+    const STRING_MANAGEMENT_LEVEL = [
+        PublyContentService::USER_SEGMENT_MANAGEMENT_LEVEL_HANDS_ON_WORKER => '실무자',
+        PublyContentService::USER_SEGMENT_MANAGEMENT_LEVEL_MANAGER => '사람/조직 관리자',
+        PublyContentService::USER_SEGMENT_MANAGEMENT_LEVEL_DECISION_MAKER => '의사 결정권자',
     ];
 
     public function __construct($domain)
