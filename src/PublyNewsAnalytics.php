@@ -6,8 +6,6 @@ use Publy\ServiceClient\Api\BaseApiService;
 
 class PublyNewsAnalyticsService extends BaseApiService
 {
-    protected $apiKey;
-
     public function __construct($domain)
     {
         parent::__construct();
