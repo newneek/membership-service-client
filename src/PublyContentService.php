@@ -68,6 +68,9 @@ class PublyContentService extends BaseApiService
     const SET_DRAFT_STATUS_DROPPED = 4;
     const SET_DRAFT_STATUS_MAX = 5;
 
+    const SET_TYPE_WEB_BOOK = 1;
+    const SET_TYPE_ARTICLE = 2;
+
     const CURATION_CONTENT_TYPE_SET = 1;
     const CURATION_CONTENT_TYPE_CONTENT = 2;
     const CURATION_CONTENT_TYPE_SET_DRAFT = 3;
