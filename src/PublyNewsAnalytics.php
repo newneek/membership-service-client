@@ -16,6 +16,7 @@ class PublyNewsAnalyticsService extends BaseApiService
 
     public function sendEvent($eventBody)
     {
+        \Log::info($eventBody);
 //        $eventBody =  [
 //            'event' => [
 //                'key' => 'eventKey',
@@ -31,7 +32,7 @@ class PublyNewsAnalyticsService extends BaseApiService
 //            ]
 //        ];
 
-        return $this->post("/events", $eventBody);
+        return $this->post("events", $eventBody);
     }
 
 }
