@@ -43,6 +43,14 @@ class PublyExtraService extends BaseApiService
         PublyExtraService::MANAGEMENT_LEVEL_DECISION_MAKER => 'decision-maker'
     ];
 
+    const COMPLETE_READING_MESSAGE_TYPE_SET = 1;
+    const COMPLETE_READING_MESSAGE_TYPE_CONTENT = 2;
+
+    const STRING_COMPLETE_READING_MESSAGE_TYPE = [
+        PublyExtraService::COMPLETE_READING_MESSAGE_TYPE_SET => '웹북/아티클',
+        PublyExtraService::COMPLETE_READING_MESSAGE_TYPE_CONTENT => '챕터',
+    ];
+
     public function __construct($domain)
     {
         parent::__construct();
@@ -916,5 +924,26 @@ class PublyExtraService extends BaseApiService
     public function deleteDailyRecommendation($dailyRecommendationId)
     {
         return $this->post("daily_recommendation/{$dailyRecommendationId}/delete");
+    }
+
+    public function createCompleteReadingMessage($message, $type, $contentReadingCount = null)
+    {
+        $inputs = [
+            'message' => $message,
+            'type' => $type,
+            'content_reading_count' => $contentReadingCount
+        ];
+
+        return $this->post("complete_reading_message", $inputs);
+    }
+
+    public function getCompleteReadingMessages($filterArray = [])
+    {
+        return $this->get("complete_reading_message", $filterArray);
+    }
+
+    public function getCompleteReadingMessage($completeReadingMessageId)
+    {
+        return $this->get("complete_reading_message/{$completeReadingMessageId}");
     }
 }
