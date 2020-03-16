@@ -951,4 +951,15 @@ class PublyExtraService extends BaseApiService
     {
         return $this->post("complete_reading_message/{$completeReadingMessageId}/delete");
     }
+
+    public function updateCompleteReadingMessage($completeReadingMessageId, $message, $type, $contentReadingCount = null)
+    {
+        $inputs = [
+            'message' => $message,
+            'type' => $type,
+            'content_reading_count' => $contentReadingCount
+        ];
+
+        return $this->put("complete_reading_message/{$completeReadingMessageId}/update", $inputs);
+    }
 }
