@@ -963,8 +963,8 @@ class PublyExtraService extends BaseApiService
         return $this->put("complete_reading_message/{$completeReadingMessageId}/update", $inputs);
     }
 
-    public function getCompleteReadingMessageByContentReadingCount($contentReadingCount)
+    public function getCompleteReadingMessageByType($type)
     {
-        return $this->get("complete_reading_message/content_reading_count/{$contentReadingCount}");
+        return $this->get("complete_reading_message/type/{$type}");
     }
 }
