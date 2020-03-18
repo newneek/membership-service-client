@@ -965,6 +965,6 @@ class PublyExtraService extends BaseApiService
 
     public function getCompleteReadingMessageByType($type, $filterArray = [])
     {
-        return $this->get("complete_reading_message/type/{$type}", $filterArray);
+        return $this->get("complete_reading_message/type/{$type}/show", $filterArray);
     }
 }
