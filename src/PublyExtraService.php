@@ -926,11 +926,12 @@ class PublyExtraService extends BaseApiService
         return $this->post("daily_recommendation/{$dailyRecommendationId}/delete");
     }
 
-    public function createCompleteReadingMessage($message, $type, $contentReadingCount = null)
+    public function createCompleteReadingMessage($message, $type, $source, $contentReadingCount)
     {
         $inputs = [
             'message' => $message,
             'type' => $type,
+            'source' => $source,
             'content_reading_count' => $contentReadingCount
         ];
 
@@ -952,11 +953,12 @@ class PublyExtraService extends BaseApiService
         return $this->post("complete_reading_message/{$completeReadingMessageId}/delete");
     }
 
-    public function updateCompleteReadingMessage($completeReadingMessageId, $message, $type, $contentReadingCount = null)
+    public function updateCompleteReadingMessage($completeReadingMessageId, $message, $type, $source, $contentReadingCount)
     {
         $inputs = [
             'message' => $message,
             'type' => $type,
+            'source' => $source,
             'content_reading_count' => $contentReadingCount
         ];
 
@@ -965,6 +967,6 @@ class PublyExtraService extends BaseApiService
 
     public function getCompleteReadingMessageByType($type, $filterArray = [])
     {
-        return $this->get("complete_reading_message/type/{$type}", $filterArray);
+        return $this->get("complete_reading_message/type/{$type}/show", $filterArray);
     }
 }
