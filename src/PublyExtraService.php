@@ -789,6 +789,12 @@ class PublyExtraService extends BaseApiService
         return $this->get("user_segment/user/{$userId}");
     }
 
+    public function getUserSegmentsByUserIds($userIds, $filterArray = [])
+    {
+        $filterArray['user_ids'] = implode(',', $userIds);
+        return $this->get("user_segment/by_user_ids", $filterArray);
+    }
+
     public function createUserSegment($changerId, $userId)
     {
         $inputs = [
@@ -856,6 +862,12 @@ class PublyExtraService extends BaseApiService
     public function getUserInterests($userId)
     {
         return $this->get("user_interest/user/{$userId}");
+    }
+
+    public function getUserInterestsByUserIds($userIds, $filterArray = [])
+    {
+        $filterArray['user_ids'] = implode(',', $userIds);
+        return $this->get("user_interest/by_user_ids", $filterArray);
     }
 
     public function createUserInterests($changerId, $userId, $interestIds = [])
