@@ -25,6 +25,7 @@ class PublyExtraService extends BaseApiService
     const COMPANY_TYPE_LARGE_COMPANY = 2;
     const COMPANY_TYPE_START_UP = 3;
     const COMPANY_TYPE_STUDENT = 4;
+    const COMPANY_TYPE_ETC = 5;
 
     const MANAGEMENT_LEVEL_HANDS_ON_WORKER = 1;
     const MANAGEMENT_LEVEL_MANAGER = 2;
@@ -34,7 +35,8 @@ class PublyExtraService extends BaseApiService
         PublyExtraService::COMPANY_TYPE_SMALL_AND_MEDIUM_SIZED_COMPANY => 'small-and-medium-sized-company',
         PublyExtraService::COMPANY_TYPE_LARGE_COMPANY => 'large-company',
         PublyExtraService::COMPANY_TYPE_START_UP => 'start-up',
-        PublyExtraService::COMPANY_TYPE_STUDENT => 'student'
+        PublyExtraService::COMPANY_TYPE_STUDENT => 'student',
+        PublyExtraService::COMPANY_TYPE_ETC => 'etc'
     ];
 
     const STRING_MANAGEMENT_LEVEL = [
