@@ -983,4 +983,9 @@ class PublyExtraService extends BaseApiService
     {
         return $this->get("complete_reading_message/type/{$type}/show", $filterArray);
     }
+
+    public function getUserFeedScoreByUserId($userId, $filterArray = [])
+    {
+        return $this->get("user_feed_score/{$userId}", $filterArray);
+    }
 }
