@@ -986,6 +986,6 @@ class PublyExtraService extends BaseApiService
 
     public function getUserFeedScoreByUserId($userId, $filterArray = [])
     {
-        return $this->get("user_feed_score/{$userId}", $filterArray);
+        return $this->get("user_feed_score/user/{$userId}", $filterArray);
     }
 }
