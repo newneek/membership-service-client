@@ -174,6 +174,15 @@ class PublyPaymentService extends BaseApiService
 
     const NO_PAGE_LIMIT = 0;
 
+
+    const NICAPAY_ERROR_MESSAGES = [
+        "카드번호오류" => "카드번호를 다시 확인해 주세요",
+        "유효하지않은 카드번호를 입력하셨습니다. (card_bin 없음)" => "올바른 카드번호를 입력해 주세요",
+        "주민OR사업자등록번호오류" => "주민등록번호 또는 사업자등록 번호를 다시 확인해 주세요",
+        "비밀번호틀림" => "비밀번호를 다시 확인해 주세요",
+        "유효기간오류" => "유효기간을 다시 확인해 주세요",
+    ];
+
     public function __construct($domain)
     {
         parent::__construct();
