@@ -64,4 +64,18 @@ class PublyProfileService extends BaseApiService
                 'displaySequence' => $order,
             ]);
     }
+
+    public function getProfilesByProfileIds($profileIds, $page = 1, $limit = 100, $sortBy = 'p.id', $orderBy = 'asc')
+    {
+        $profileIds = implode(',', $profileIds);
+
+        return $this->get("profiles/",
+            [
+                'id' => $profileIds,
+                'limit'=> $limit,
+                'page'=> $page,
+                'sortBy' => $sortBy,
+                'orderBy' => $orderBy
+            ]);
+    }
 }
