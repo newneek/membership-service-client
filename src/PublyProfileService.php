@@ -65,6 +65,14 @@ class PublyProfileService extends BaseApiService
             ]);
     }
 
+    public function getProfile($profileId)
+    {
+        return $this->get("profiles/",
+            [
+                'id' => $profileId
+            ]);
+    }
+
     public function getProfilesByProfileIds($profileIds, $page = 1, $limit = 100, $sortBy = 'p.id', $orderBy = 'asc')
     {
         $profileIds = implode(',', $profileIds);
@@ -72,6 +80,18 @@ class PublyProfileService extends BaseApiService
         return $this->get("profiles/",
             [
                 'id' => $profileIds,
+                'limit'=> $limit,
+                'page'=> $page,
+                'sortBy' => $sortBy,
+                'orderBy' => $orderBy
+            ]);
+    }
+
+    public function getProfilesByUserId($userId, $page = 1, $limit = 100, $sortBy = 'p.id', $orderBy = 'asc')
+    {
+        return $this->get("profiles/",
+            [
+                'userId' => $userId,
                 'limit'=> $limit,
                 'page'=> $page,
                 'sortBy' => $sortBy,
