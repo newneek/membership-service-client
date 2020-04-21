@@ -73,15 +73,13 @@ class PublyProfileService extends BaseApiService
             ]);
     }
 
-    public function getProfiles($page = 1, $limit = 100, $sortBy = 'p.id', $orderBy = 'desc')
+    public function getProfiles($page = 1, $limit = 100, $sortBy = 'p.id', $orderBy = 'desc', $filterArray = [])
     {
-        return $this->get("profiles/",
-            [
-                'limit'=> $limit,
-                'page'=> $page,
-                'sortBy' => $sortBy,
-                'orderBy' => $orderBy
-            ]);
+        $filterArray['limit'] = $limit;
+        $filterArray['page'] = $page;
+        $filterArray['sortBy'] = $sortBy;
+        $filterArray['orderBy'] = $orderBy;
+        return $this->get("profiles/", $filterArray);
     }
 
     public function getProfilesByProfileIds($profileIds, $page = 1, $limit = 100, $sortBy = 'p.id', $orderBy = 'desc')
