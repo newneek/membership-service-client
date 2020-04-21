@@ -73,7 +73,7 @@ class PublyProfileService extends BaseApiService
             ]);
     }
 
-    public function getProfiles($page = 1, $limit = 100, $sortBy = 'p.id', $orderBy = 'desc', $filterArray = [])
+    public function getProfiles($page = 1, $limit = 100, $sortBy = 'id', $orderBy = 'desc', $filterArray = [])
     {
         $filterArray['limit'] = $limit;
         $filterArray['page'] = $page;
