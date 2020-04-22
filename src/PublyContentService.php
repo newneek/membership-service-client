@@ -1745,6 +1745,13 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
+    public function removeWriterByProfile($changerId, $profileId)
+    {
+        return $this->post("/writer/profile/{$profileId}/delete", [
+            'changer_id' => $changerId
+        ]);
+    }
+
     public function getProjectWriters($projectId, $filterArray = [])
     {
         return $this->get("writer/project/{$projectId}", $filterArray);
