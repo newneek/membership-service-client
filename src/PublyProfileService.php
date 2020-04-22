@@ -129,6 +129,11 @@ class PublyProfileService extends BaseApiService
         ]);
     }
 
+    public function deleteProfile($profileId)
+    {
+        return $this->delete("profiles/{$profileId}");
+    }
+
     public function getTotalProfileCount()
     {
         return $this->get("profiles/count");
