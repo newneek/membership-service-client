@@ -2983,4 +2983,40 @@ class PublyContentService extends BaseApiService
     {
         return $this->get("user_set_progress/set/{$setId}/count", $filterArray);
     }
+
+    public function getGuides($page = 1, $limit = 20, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+
+        return $this->get("guide", $filterArray);
+    }
+
+    public function getGuide($guideId)
+    {
+        return $this->get("guide/{$guideId}");
+    }
+
+    public function createGuide($changerId, $title)
+    {
+        return $this->post("guide", [
+            'changer_id' => $changerId,
+            'title' => $title
+        ]);
+    }
+
+    public function updateGuideIsActive($changerId, $guideId, $isActive)
+    {
+        return $this->put("guide/{$guideId}", [
+            'changer_id' => $changerId,
+            'is_active' => $isActive
+        ]);
+    }
+
+    public function deleteGuide($changerId, $guideId)
+    {
+        return $this->post("guide/{$guideId}/delete", [
+            'changer_id' => $changerId
+        ]);
+    }
 }
