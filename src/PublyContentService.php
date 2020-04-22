@@ -3005,6 +3005,16 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
+    public function updateGuide($changerId, $guideId, $title, $mastheadImageUrl, $coverImageUrl)
+    {
+        return $this->put("guide/{$guideId}", [
+            'changer_id' => $changerId,
+            'title' => $title,
+            'masthead_image_url' => $mastheadImageUrl,
+            'cover_image_url' => $coverImageUrl
+        ]);
+    }
+
     public function updateGuideIsActive($changerId, $guideId, $isActive)
     {
         return $this->put("guide/{$guideId}", [
