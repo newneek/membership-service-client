@@ -3036,4 +3036,9 @@ class PublyContentService extends BaseApiService
             'changer_id' => $changerId
         ]);
     }
+
+    public function getGuideItemsByGuide($guideId, $filterArray = [])
+    {
+        return $this->get("guide_item/guide/{$guideId}", $filterArray);
+    }
 }
