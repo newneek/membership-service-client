@@ -3036,4 +3036,22 @@ class PublyContentService extends BaseApiService
             'changer_id' => $changerId
         ]);
     }
+
+    public function getGuideItemsByGuide($guideId, $filterArray = [])
+    {
+        return $this->get("guide_item/guide/{$guideId}", $filterArray);
+    }
+
+    public function updateGuideItems($changerId, $guideId, $guideItemIds, $titles, $descriptions, $types, $itemIds, $randomStringIds)
+    {
+        return $this->put("guide_item/guide/{$guideId}", [
+            'changer_id' => $changerId,
+            'ids' => implode(',', $guideItemIds),
+            'titles' => $titles,
+            'descriptions' => $descriptions,
+            'types' => implode(',', $types),
+            'item_ids' => implode(',', $itemIds),
+            'random_string_ids' => implode(',', $randomStringIds)
+        ]);
+    }
 }
