@@ -3022,6 +3022,14 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
+    public function updateGuideDescription($changerId, $guideId, $description)
+    {
+        return $this->put("guide/{$guideId}", [
+            'changer_id' => $changerId,
+            'description' => $description
+        ]);
+    }
+
     public function updateGuideIsActive($changerId, $guideId, $isActive)
     {
         return $this->put("guide/{$guideId}", [
