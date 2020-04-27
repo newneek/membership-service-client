@@ -101,6 +101,9 @@ class PublyContentService extends BaseApiService
         PublyContentService::USER_SEGMENT_MANAGEMENT_LEVEL_DECISION_MAKER => '의사 결정권자',
     ];
 
+    const GUIDE_ITEM_TYPE_SET = 1;
+    const GUIDE_ITEM_TYPE_CONTENT = 2;
+
     public function __construct($domain)
     {
         parent::__construct();
