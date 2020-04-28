@@ -21,7 +21,7 @@ class PublyContentService extends BaseApiService
     const CURATION_TYPE_NEW_CONTENT = 8;
     const CURATION_TYPE_PUBLISH_BEFORE = 9;
     const CURATION_TYPE_SET_DRAFT = 10;
-    const CURATION_TYPE_MAGAZINE = 11;
+    const CURATION_TYPE_GUIDE = 11;
 
     const STRING_CURATION_TYPE = [
         PublyContentService::CURATION_TYPE_RANK_UNIQUE_SET_READER => '최근 인기 콘텐츠',
@@ -100,6 +100,9 @@ class PublyContentService extends BaseApiService
         PublyContentService::USER_SEGMENT_MANAGEMENT_LEVEL_MANAGER => '사람/조직 관리자',
         PublyContentService::USER_SEGMENT_MANAGEMENT_LEVEL_DECISION_MAKER => '의사 결정권자',
     ];
+
+    const GUIDE_ITEM_TYPE_SET = 1;
+    const GUIDE_ITEM_TYPE_CONTENT = 2;
 
     public function __construct($domain)
     {
