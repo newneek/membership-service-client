@@ -762,6 +762,13 @@ class PublyExtraService extends BaseApiService
         return $this->get("interest/category/{$categoryId}");
     }
 
+    public function getInterestsByIds($interestIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $interestIds);
+
+        return $this->get("interest/by_ids", $filterArray);
+    }
+
     public function createJobCategory($name)
     {
         $inputs = [
