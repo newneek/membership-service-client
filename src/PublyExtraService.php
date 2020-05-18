@@ -744,6 +744,13 @@ class PublyExtraService extends BaseApiService
         return $this->put("interest/{$interestId}/update", $inputs);
     }
 
+    public function updateInterestDisplaySequence($interestIds)
+    {
+        return $this->put("interest/update_display_sequence", [
+            'ids' => implode(',', $interestIds)
+        ]);
+    }
+
     public function deleteInterest($interest)
     {
         return $this->post("interest/{$interest}/delete");
@@ -793,6 +800,13 @@ class PublyExtraService extends BaseApiService
     public function getJobCategory($jobCategoryId)
     {
         return $this->get("job_category/{$jobCategoryId}");
+    }
+
+    public function updateJobCategoryDisplaySequence($jobCategoryIds)
+    {
+        return $this->put("job_category/update_display_sequence", [
+            'ids' => implode(',', $jobCategoryIds)
+        ]);
     }
 
     public function getUserSegment($userId)
