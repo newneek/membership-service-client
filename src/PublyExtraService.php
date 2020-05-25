@@ -1011,4 +1011,10 @@ class PublyExtraService extends BaseApiService
     {
         return $this->get("user_feed_score/user/{$userId}", $filterArray);
     }
+
+    //TODO 테이블 생성 후 수정
+    public function updateViewContent($userId, $setId)
+    {
+        return true;
+    }
 }
