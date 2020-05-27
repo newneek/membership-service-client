@@ -1013,7 +1013,7 @@ class PublyExtraService extends BaseApiService
     }
 
     //TODO 테이블 생성 후 수정
-    public function updateViewContent($userId, $setId)
+    public function createUserFeedFactor($userId, $setId, $action)
     {
         return true;
     }
