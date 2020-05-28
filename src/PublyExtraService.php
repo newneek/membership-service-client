@@ -1011,10 +1011,15 @@ class PublyExtraService extends BaseApiService
     {
         return $this->get("user_feed_score/user/{$userId}", $filterArray);
     }
-
-    //TODO 테이블 생성 후 수정
-    public function createUserFeedFactor($userId, $setId, $action)
+    
+    public function createUserFeedFactor($userId, $setId, $factorId)
     {
-        return true;
+        $inputs = [
+            'user_id' => $userId,
+            'set_id' => $setId,
+            'factor' => $factorId
+        ];
+
+        return $this->post("user_feed_factor", $inputs);
     }
 }
