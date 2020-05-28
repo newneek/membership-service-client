@@ -1011,4 +1011,15 @@ class PublyExtraService extends BaseApiService
     {
         return $this->get("user_feed_score/user/{$userId}", $filterArray);
     }
+    
+    public function createUserFeedFactor($userId, $setId, $factorId)
+    {
+        $inputs = [
+            'user_id' => $userId,
+            'set_id' => $setId,
+            'factor' => $factorId
+        ];
+
+        return $this->post("user_feed_factor", $inputs);
+    }
 }
