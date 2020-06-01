@@ -1017,7 +1017,7 @@ class PublyExtraService extends BaseApiService
         $inputs = [
             'user_id' => $userId,
             'set_id' => $setId,
-            'factor' => $factorId
+            'factor_id' => $factorId
         ];
 
         return $this->post("user_feed_factor", $inputs);
