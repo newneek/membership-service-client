@@ -717,13 +717,6 @@ class PublyExtraService extends BaseApiService
         return $this->post("feed_display/refresh");
     }
 
-    public function getFeedDisplays($page, $limit, $filterArray = [])
-    {
-        $filterArray['page'] = $page;
-        $filterArray['limit'] = $limit;
-        return $this->get("feed_display", $filterArray);
-    }
-
     public function createInterest($name, $categoryId)
     {
         $inputs = [
