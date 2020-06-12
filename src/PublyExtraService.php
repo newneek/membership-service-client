@@ -1015,4 +1015,36 @@ class PublyExtraService extends BaseApiService
 
         return $this->post("user_feed_factor", $inputs);
     }
+
+    public function getWriterSetReviewRepliesBySetReviewId($setReviewId, $filterArray = [])
+    {
+        return $this->get("/writer_set_review_reply/set_review/{$setReviewId}", $filterArray);
+    }
+
+    public function createWriterSetReviewReply($setId, $setReviewId, $profileId, $comment)
+    {
+        $inputs = [
+            'set_id' => $setId,
+            'set_review_id' => $setReviewId,
+            'profile_id' => $profileId,
+            'comment' => $comment
+        ];
+
+        return $this->post("/writer_set_review_reply", $inputs);
+    }
+
+    public function updateWriterSetReviewReply($writerSetReviewReplyId, $profileId, $comment)
+    {
+        $inputs = [
+            'profile_id' => $profileId,
+            'comment' => $comment
+        ];
+
+        return $this->put("/writer_set_review_reply/{$writerSetReviewReplyId}/update", $inputs);
+    }
+
+    public function deleteWriterSetReviewReply($writerSetReviewReplyId)
+    {
+        return $this->post("/writer_set_review_reply/{$writerSetReviewReplyId}/delete");
+    }
 }
