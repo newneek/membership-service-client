@@ -1021,6 +1021,11 @@ class PublyExtraService extends BaseApiService
         return $this->get("/writer_set_review_reply/set_review/{$setReviewId}", $filterArray);
     }
 
+    public function getWriterSetReviewRepliesBySet($setId, $filterArray = [])
+    {
+        return $this->get("/writer_set_review_reply/set/{$setId}", $filterArray);
+    }
+
     public function createWriterSetReviewReply($setId, $setReviewId, $profileId, $comment)
     {
         $inputs = [
