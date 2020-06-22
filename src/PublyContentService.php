@@ -695,7 +695,7 @@ class PublyContentService extends BaseApiService
         $latestPackageSetFilter =
             [
                 'is_package' => 1,
-                'publish_after' => 1,
+                'status' => 2,
             ];
         $totalPackageSetCount = \Cache::remember($cacheKey, 60, function() use ($latestPackageSetFilter) {
             $latestPackageSetResult = $this->getSets(1, 1, $latestPackageSetFilter);
@@ -705,6 +705,42 @@ class PublyContentService extends BaseApiService
         });
 
         return $totalPackageSetCount;
+    }
+
+    public function getTotalWebBookSetCountFromCache() {
+        $cacheKey = 'TOTAL_WEB_BOOK_SET_COUNT';
+        $webBookSetFilter =
+            [
+                'is_package' => 1,
+                'status' => 2,
+                'type' => self::SET_TYPE_WEB_BOOK,
+            ];
+        $totalWebBookSetCount = \Cache::remember($cacheKey, 60, function() use ($webBookSetFilter) {
+            $webBookSetResult = $this->getSets(1, 1, $webBookSetFilter);
+            $totalWebBookSetCount = $webBookSetResult['paginator']['total_count'];
+
+            return $totalWebBookSetCount;
+        });
+
+        return $totalWebBookSetCount;
+    }
+
+    public function getTotalArticleSetCountFromCache() {
+        $cacheKey = 'TOTAL_ARTICLE_SET_COUNT';
+        $articleSetFilter =
+            [
+                'is_package' => 1,
+                'status' => 2,
+                'type' => self::SET_TYPE_ARTICLE
+            ];
+        $totalArticleSetCount = \Cache::remember($cacheKey, 60, function() use ($articleSetFilter) {
+            $articleSetResult = $this->getSets(1, 1, $articleSetFilter);
+            $totalArticleSetCount = $articleSetResult['paginator']['total_count'];
+
+            return $totalArticleSetCount;
+        });
+
+        return $totalArticleSetCount;
     }
 
     public function getTotalAuthorCountFromCache($filterArray = []) {
