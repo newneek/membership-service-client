@@ -1053,6 +1053,11 @@ class PublyExtraService extends BaseApiService
         return $this->post("/writer_set_review_reply/{$writerSetReviewReplyId}/delete");
     }
 
+    public function getUserVideoContentProgressByUserAndContent($userId, $contentId)
+    {
+        return $this->get("/user_video_content_progress/user/{$userId}/content/{$contentId}");
+    }
+
     public function updateOrStoreUserVideoContentProgress($userId, $setId, $contentId, $lastPlayTime)
     {
         $inputs = [
