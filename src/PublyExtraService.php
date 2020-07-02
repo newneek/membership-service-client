@@ -1052,4 +1052,13 @@ class PublyExtraService extends BaseApiService
     {
         return $this->post("/writer_set_review_reply/{$writerSetReviewReplyId}/delete");
     }
+
+    public function updateOrStoreUserVideoContentProgress($userId, $setId, $contentId, $lastPlayTime)
+    {
+        $inputs = [
+            'last_play_time' => $lastPlayTime
+        ];
+
+        return $this->put("/user_video_content_progress/user/{$userId}/set/{$setId}/content/{$contentId}", $inputs);
+    }
 }
