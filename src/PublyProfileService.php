@@ -108,6 +108,20 @@ class PublyProfileService extends BaseApiService
             ]);
     }
 
+    public function getProfilesByUserIds($userIds, $page = 1, $limit = 100, $sortBy = 'p.id', $orderBy = 'desc')
+    {
+        $userIds = implode(',', $userIds);
+
+        return $this->get("profiles/",
+            [
+                'userId' => $userIds,
+                'limit'=> $limit,
+                'page'=> $page,
+                'sortBy' => $sortBy,
+                'orderBy' => $orderBy
+            ]);
+    }
+
     public function createProfile($name)
     {
         return $this->post("profiles/", [
