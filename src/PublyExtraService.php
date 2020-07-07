@@ -1004,7 +1004,7 @@ class PublyExtraService extends BaseApiService
     {
         return $this->get("user_feed_score/user/{$userId}", $filterArray);
     }
-    
+
     public function createUserFeedFactor($userId, $setId, $factorId)
     {
         $inputs = [
@@ -1058,10 +1058,11 @@ class PublyExtraService extends BaseApiService
         return $this->get("/user_video_content_progress/user/{$userId}/content/{$contentId}");
     }
 
-    public function updateOrStoreUserVideoContentProgress($userId, $setId, $contentId, $lastPlayTime)
+    public function updateOrStoreUserVideoContentProgress($userId, $setId, $contentId, $lastPlayTime, $action = 'update')
     {
         $inputs = [
-            'last_play_time' => $lastPlayTime
+            'last_play_time' => $lastPlayTime,
+            'action' => $action
         ];
 
         return $this->put("/user_video_content_progress/user/{$userId}/set/{$setId}/content/{$contentId}", $inputs);
