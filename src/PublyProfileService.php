@@ -163,12 +163,4 @@ class PublyProfileService extends BaseApiService
                 'orderBy' => $orderBy
             ]);
     }
-
-    public function createProfileAndProfileUser($name, $userId)
-    {
-        $profile = $this->createProfile($name);
-        if (!empty($profile['data'])) {
-            $this->createProfileUser($profile['data']['id'], $userId);
-        }
-    }
 }
