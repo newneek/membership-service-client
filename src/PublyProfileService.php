@@ -143,6 +143,13 @@ class PublyProfileService extends BaseApiService
         ]);
     }
 
+    public function updateProfileName($profileId, $name)
+    {
+        return $this->put("profiles/{$profileId}", [
+            'name' => $name
+        ]);
+    }
+
     public function deleteProfile($profileId)
     {
         return $this->delete("profiles/{$profileId}");
@@ -166,11 +173,28 @@ class PublyProfileService extends BaseApiService
         return $this->delete("profile-users/$profileUserId");
     }
 
+    private function getProfileUsers($params)
+    {
+        return $this->get("profile-users/", $params);
+    }
+
     public function getProfileUsersByProfileId($profileId, $page = 1, $limit = 100, $sortBy = 'id', $orderBy = 'desc')
     {
-        return $this->get("profile-users/",
+        return $this->getProfileUsers(
             [
                 'profileId' => $profileId,
+                'limit'=> $limit,
+                'page'=> $page,
+                'sortBy' => $sortBy,
+                'orderBy' => $orderBy
+            ]);
+    }
+
+    public function getProfileUsersByUserId($userId, $page = 1, $limit = 100, $sortBy = 'id', $orderBy = 'desc')
+    {
+        return $this->getProfileUsers(
+            [
+                'userId' => $userId,
                 'limit'=> $limit,
                 'page'=> $page,
                 'sortBy' => $sortBy,
