@@ -187,13 +187,4 @@ class PublyProfileService extends BaseApiService
                 'orderBy' => $orderBy
             ]);
     }
-
-    public function updateProfileNameByUserId($userId, $name)
-    {
-        $profileUsersResult = $this->getProfileUsersByUserId($userId, 1, 1);
-        if(!empty($profileUsersResult['data'])) {
-            $profileId = $profileUsersResult['data'][0]['profileId'];
-            $this->updateProfileName($profileId, $name);
-        }
-    }
 }
