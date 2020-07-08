@@ -220,6 +220,11 @@ class PublyNotificationService extends BaseApiService
             ]);
     }
 
+    public function eventSubscriptionNextPlanChanged($subscription)
+    {
+        return $this->post("/event/subscription_next_plan_changed", ['subscription' => $subscription]);
+    }
+
     public function eventSubscriptionRenewalHistoryCreated(
         $subscriptionRenewalHistory,
         $renewalCount
