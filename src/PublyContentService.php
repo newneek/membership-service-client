@@ -72,6 +72,9 @@ class PublyContentService extends BaseApiService
     const SET_TYPE_WEB_BOOK = 1;
     const SET_TYPE_ARTICLE = 2;
 
+    const CONTENT_TYPE_TEXT = 1;
+    const CONTENT_TYPE_VIDEO = 2;
+
     const CURATION_CONTENT_TYPE_SET = 1;
     const CURATION_CONTENT_TYPE_CONTENT = 2;
     const CURATION_CONTENT_TYPE_SET_DRAFT = 3;
@@ -386,6 +389,16 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
+    public function createContent3($changerId, $title, $isPaid, $type)
+    {
+        return $this->post("content", [
+            'title' => $title,
+            'is_paid' => $isPaid,
+            'type' => $type,
+            'changer_id' => $changerId
+        ]);
+    }
+
     public function getContents($page = 1, $limit = 10, $filterArray = [])
     {
         $filterArray['page'] = $page;
@@ -548,6 +561,39 @@ class PublyContentService extends BaseApiService
             'canonical_url' => $canonicalUrl,
             'memo' => $memo,
             'curation_title' => $curationTitle
+        ]);
+    }
+
+    public function updateContent8(
+        $changerId,
+        $contentId,
+        $title,
+        $isActive,
+        $isPaid,
+        $image,
+        $readTime,
+        $publishAt,
+        $freeLength,
+        $summary,
+        $canonicalUrl,
+        $memo,
+        $curationTitle,
+        $type
+    ) {
+        return $this->put("content/{$contentId}", [
+            'changer_id' => $changerId,
+            'title' => $title,
+            'is_active' => $isActive,
+            'is_paid' => $isPaid,
+            'read_time' => $readTime,
+            'image' => $image,
+            'publish_at' => $publishAt,
+            'free_length' => $freeLength,
+            'summary' => $summary,
+            'canonical_url' => $canonicalUrl,
+            'memo' => $memo,
+            'curation_title' => $curationTitle,
+            'type' => $type
         ]);
     }
 
