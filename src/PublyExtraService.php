@@ -1058,11 +1058,21 @@ class PublyExtraService extends BaseApiService
         return $this->get("/user_video_content_progress/user/{$userId}/content/{$contentId}");
     }
 
-    public function updateOrStoreUserVideoContentProgress($userId, $setId, $contentId, $lastPlayTime, $action = 'update')
+    public function getUserVideoContentProgressesByUserAndContents($userId, $contentIds)
+    {
+        $inputs = [
+            'content_ids' => implode(',', $contentIds)
+        ];
+
+        return $this->get("/user_video_content_progress/user/{$userId}/by_content_ids", $inputs);
+    }
+
+    public function updateOrStoreUserVideoContentProgress($userId, $setId, $contentId, $lastPlayTime, $duration, $action = 'update')
     {
         $inputs = [
             'last_play_time' => $lastPlayTime,
-            'action' => $action
+            'action' => $action,
+            'duration' => $duration
         ];
 
         return $this->put("/user_video_content_progress/user/{$userId}/set/{$setId}/content/{$contentId}", $inputs);
