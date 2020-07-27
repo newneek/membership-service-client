@@ -1093,11 +1093,11 @@ class PublyExtraService extends BaseApiService
     }
 
     public function getRecommendedContentsByTargetSegments() {
-        return $this->get("/recommended_contents");
+        return $this->get("recommended_contents");
     }
 
     public function getRecommendedContentsDescriptionsByTargetSegments() {
-        return $this->get("/recommended_contents_descriptions");
+        return $this->get("recommended_contents_descriptions");
     }
 
     public function createRecommendedContentsByTargetSegments($recommendedContents) {
@@ -1105,7 +1105,7 @@ class PublyExtraService extends BaseApiService
             'recommended_contents' => $recommendedContents,
         ];
 
-        return $this->post("/recommended_contents", $inputs);
+        return $this->post("recommended_contents", $inputs);
     }
 
     public function createRecommendedContentDescriptionsByTargetSegments($recommendedContentsDescriptions) {
@@ -1113,6 +1113,6 @@ class PublyExtraService extends BaseApiService
             'recommended_contents_descriptions' => $recommendedContentsDescriptions,
         ];
 
-        return $this->post("/recommended_contents_descriptions", $inputs);
+        return $this->post("recommended_contents_descriptions", $inputs);
     }
 }
