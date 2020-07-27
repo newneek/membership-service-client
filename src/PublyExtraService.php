@@ -32,6 +32,12 @@ class PublyExtraService extends BaseApiService
     const MANAGEMENT_LEVEL_MANAGER = 2;
     const MANAGEMENT_LEVEL_DECISION_MAKER = 3;
 
+    const RECOMMEND_CONTENT_TYPE_USER_LIKED_CONTENTS = 1;
+    const RECOMMEND_CONTENT_TYPE_TARGET_SEGMENT_JUNIOR = 2;
+    const RECOMMEND_CONTENT_TYPE_TARGET_SEGMENT_SENIOR = 3;
+    const RECOMMEND_CONTENT_TYPE_TARGET_SEGMENT_TREND_STUDY = 4;
+    const RECOMMEND_CONTENT_TYPE_TARGET_SEGMENT_FREELANCER = 5;
+
     const STRING_COMPANY_TYPE = [
         PublyExtraService::COMPANY_TYPE_SMALL_AND_MEDIUM_SIZED_COMPANY => 'small-and-medium-sized-company',
         PublyExtraService::COMPANY_TYPE_LARGE_COMPANY => 'large-company',
@@ -1076,5 +1082,29 @@ class PublyExtraService extends BaseApiService
         ];
 
         return $this->put("/user_video_content_progress/user/{$userId}/set/{$setId}/content/{$contentId}", $inputs);
+    }
+
+    public function getRecommendedContentsByTargetSegments() {
+        return $this->get("recommended_contents");
+    }
+
+    public function getRecommendedContentsDescriptionsByTargetSegments() {
+        return $this->get("recommended_contents_descriptions");
+    }
+
+    public function createRecommendedContentsByTargetSegments($recommendedContents) {
+        $inputs = [
+            'recommended_contents' => $recommendedContents,
+        ];
+
+        return $this->get("recommended_contents", $inputs);
+    }
+
+    public function createRecommendedContentDescriptionsByTargetSegments($recommendedContentsDescriptions) {
+        $inputs = [
+            'recommended_contents_descriptions' => $recommendedContentsDescriptions,
+        ];
+
+        return $this->get("recommended_contents_descriptions", $inputs);
     }
 }
