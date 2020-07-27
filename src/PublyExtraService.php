@@ -53,6 +53,14 @@ class PublyExtraService extends BaseApiService
         PublyExtraService::MANAGEMENT_LEVEL_DECISION_MAKER => 'decision-maker'
     ];
 
+    const STRING_RECOMMENDED_CONTENT_TYPE = [
+        PublyExtraService::RECOMMEND_CONTENT_TYPE_USER_LIKED_CONTENTS => '읽고 싶어요',
+        PublyExtraService::RECOMMEND_CONTENT_TYPE_TARGET_SEGMENT_JUNIOR => '주니어',
+        PublyExtraService::RECOMMEND_CONTENT_TYPE_TARGET_SEGMENT_SENIOR => '시니어',
+        PublyExtraService::RECOMMEND_CONTENT_TYPE_TARGET_SEGMENT_TREND_STUDY => '트렌드 스터디',
+        PublyExtraService::RECOMMEND_CONTENT_TYPE_TARGET_SEGMENT_FREELANCER => '프리렌서',
+    ];
+
     const COMPLETE_READING_MESSAGE_TYPE_SET = 1;
     const COMPLETE_READING_MESSAGE_TYPE_CONTENT = 2;
 
