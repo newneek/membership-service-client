@@ -11,6 +11,7 @@ class PublyPaymentService extends BaseApiService
     const PAYMENT_TYPE_ADMIN = 2;
     const PAYMENT_TYPE_BANK_TRANSFER = 3;
     const PAYMENT_TYPE_PAYPAL = 4;
+    const PAYMENT_TYPE_NAVERPAY = 5;
     const PAYMENT_TYPE_IAMPORT = 90;
     const PAYMENT_TYPE_OLD_ADMIN = 91;
 
@@ -1388,6 +1389,11 @@ class PublyPaymentService extends BaseApiService
         return $this->get("bank_transfer/user/{$userId}", $filterArray);
     }
 
+    public function getNaverpaysByUser($userId)
+    {
+        return $this->get("naverpay/user/{$userId}");
+    }
+
     public function addCreditCard(
         $userId,
         $creditCardNumber,
@@ -1483,6 +1489,30 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
+    public function deleteNaverpay(
+        $userId,
+        $naverpayId
+    ) {
+        $result = [ 'success' => false ];
+        try {
+            $resultNaverpay =
+                $this->post("naverpay/{$naverpayId}/delete", [
+                    'changer_id' => $userId,
+                    'user_id' => $userId
+                ]);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['from'] = 'naverpay';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $result['success'] = true;
+        return $result;
+    }
+
     public function addBankTransfer($changerId, $userId, $name)
     {
         $result['success'] = false;
@@ -1523,14 +1553,22 @@ class PublyPaymentService extends BaseApiService
         return $resultMainPaymentMethod['success']['data'];
     }
 
-    public function setMainPaymentMethod($userId, $creditCardId)
+    public function setMainPaymentMethod($userId, $methodId, $methodIdName)
     {
         $result = [ 'success' => false ];
-        $pgType = static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD;
+        $pgType = null;
+
+        if ($methodIdName == 'credit_card_id') {
+            $pgType = static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD;
+        } else if ($methodIdName == 'naverpay_id') {
+            $pgType = static::PAYMENT_TYPE_NAVERPAY;
+        }
+
         try {
-            $resultMainPaymentMethod =
-                $this->put("user_main_payment_method/user/{$userId}/pg_type/{$pgType}",
-                    [ 'credit_card_id' => $creditCardId ]);
+            $this->put(
+                "user_main_payment_method/user/{$userId}/pg_type/{$pgType}",
+                [ $methodIdName => $methodId ]
+            );
             $result['success'] = true;
         } catch (ResponseException $e) {
             $result['success'] = false;
@@ -1745,7 +1783,7 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
-    public function subscriptionAndPay2($changerId, $userId, $creditCardId, $planId, $price, $useReferralPlanIfPossible)
+    public function subscriptionAndPay2($changerId, $userId, $paymentMethodId, $paymentMethodIdName, $pgType, $planId, $price, $useReferralPlanIfPossible)
     {
         $result = [ 'success' => false ];
 
@@ -1774,11 +1812,12 @@ class PublyPaymentService extends BaseApiService
             $changerId,
             $userId,
             $subscription['id'],
-            static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
-            'credit_card_id',
-            $creditCardId,
+            $pgType,
+            $paymentMethodIdName,
+            $paymentMethodId,
             //            true,
-            '');
+            ''
+        );
 
         if (!$resultPayment['success']) {
             $result['success'] = false;
@@ -1884,17 +1923,132 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
-    public function addCreditCardAndSubscriptionAndPay2($changerId,
-                                                        $userId,
-                                                        $creditCardNumber,
-                                                        $expireYear,
-                                                        $expireMonth,
-                                                        $id,
-                                                        $password,
-                                                        $planId,
-                                                        $price,
-                                                        $useReferralPlanIfPossible)
-    {
+    public function addNaverpay(
+        $userId,
+        $reserveId,
+        $tempReceiptId,
+        $totalPayAmount
+    ) {
+        $result = [ 'success' => false ];
+        try {
+            $resultNaverpay =
+                $this->post('naverpay', [
+                    'changer_id' => $userId,
+                    'user_id' => $userId,
+                    'reserve_id' => $reserveId,
+                    'temp_receipt_id' => $tempReceiptId,
+                    'total_pay_amount' => $totalPayAmount
+                ]);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['from'] = 'naverpay';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $result['success'] = true;
+        $result['item'] = $resultNaverpay['success']['data'];
+
+        return $result;
+    }
+
+    public function addNaverpayAndSubscriptionAndPay(
+        $changerId,
+        $userId,
+        $reserveId,
+        $tempReceiptId,
+        $planId,
+        $price,
+        $useReferralPlanIfPossible
+    ) {
+        $result = [ 'success' => false ];
+
+        // add naverpay
+        $resultNaverpay = $this->addNaverpay(
+            $userId,
+            $reserveId,
+            $tempReceiptId,
+            $price
+        );
+
+        if (!$resultNaverpay['success']) {
+            $result['success'] = false;
+            $result['from'] = 'naverpay';
+            $result['error_code'] = $resultNaverpay['error_code'];
+            $result['message'] = $resultNaverpay['message'];
+            return $result;
+        }
+
+        $naverpay = $resultNaverpay['item'];
+        $naverpayId = $naverpay['id'];
+        $result['naverpay'] = $naverpay;
+
+        // subscription
+        $resultSubscription = $this->subscription2(
+            $changerId,
+            $userId,
+            $planId,
+            $price,
+            $useReferralPlanIfPossible
+        );
+
+        if (!$resultSubscription['success']) {
+            $result['success'] = false;
+            $result['from'] = 'subscription';
+            $result['error_code'] = $resultSubscription['error_code'];
+            $result['message'] = $resultSubscription['message'];
+            return $result;
+        }
+
+        $subscription = $resultSubscription['item'];
+        $result['subscription'] = $subscription;
+
+        // payment
+        $resultPayment = $this->paySubscription(
+            $changerId,
+            $userId,
+            $subscription['id'],
+            static::PAYMENT_TYPE_NAVERPAY,
+            'naverpay_id',
+            $naverpayId,
+            //            true,
+            ''
+        );
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+
+            return $result;
+        }
+        $payment = $resultPayment['item'];
+        $result['payment'] = $payment;
+
+        $subscriptionResult = $this->get("subscription/{$subscription['id']}", []);
+        $subscription = $subscriptionResult['success']['data'];
+        $result['subscription'] = $subscription; // refresh subscription after payment
+
+        $result['success'] = true;
+
+        return $result;
+    }
+
+    public function addCreditCardAndSubscriptionAndPay2(
+        $changerId,
+        $userId,
+        $creditCardNumber,
+        $expireYear,
+        $expireMonth,
+        $id,
+        $password,
+        $planId,
+        $price,
+        $useReferralPlanIfPossible
+    ) {
         $result = [ 'success' => false ];
 
         // add credit card
@@ -2080,21 +2234,31 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
-    public function changeCardAndResumeSubscription(
+    public function changePaymentMethodAndResumeSubscription(
         $changerId,
         $paymentId,
         $subscriptionId,
-        $creditCardId,
-        $force = false)
-    {
+        $paymentMethodId,
+        $paymentMethodIdName,
+        $force = false
+    ) {
 
-        $resultPayment = $this->updatePayment($changerId,
+        $pgType = null;
+        if ($paymentMethodIdName == 'credit_card_id') {
+            $pgType = PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD;
+        } else if ($paymentMethodIdName == 'naverpay_id') {
+            $pgType = PublyPaymentService::PAYMENT_TYPE_NAVERPAY;
+        }
+
+        $resultPayment = $this->updatePayment(
+            $changerId,
             $paymentId,
             [
                 'action' => 'change_payment_method',
-                'pg_type' => PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
-                'credit_card_id' => $creditCardId
-            ]);
+                'pg_type' => $pgType,
+                $paymentMethodIdName => $paymentMethodId
+            ]
+        );
 
         if (!$resultPayment['success']) {
             $result['success'] = false;
@@ -2192,25 +2356,89 @@ class PublyPaymentService extends BaseApiService
 
     public function resumeSubscription($changerId, $subscriptionId, $force = false)
     {
-        return $this->put("/subscription/{$subscriptionId}",
+        return $this->put(
+            "/subscription/{$subscriptionId}",
             [ 'changer_id' => $changerId,
                 'action' => 'resume',
-                'force' => $force ? 1 : 0 ]);
+                'force' => $force ? 1 : 0 ]
+        );
     }
 
-    public function changeCardAndRecoverSubscription($changerId,
-                                                     $subscriptionId,
-                                                     $paymentId,
-                                                     $creditCardId,
-                                                     $force = false)
-    {
-        $resultPayment = $this->updatePayment($changerId,
+    public function changeCardAndRecoverSubscription(
+        $changerId,
+        $subscriptionId,
+        $paymentId,
+        $paymentMethodId,
+        $paymentMethodIdName,
+        $force = false
+    ) {
+        $pgType = null;
+        if ($paymentMethodIdName == 'credit_card_id') {
+            $pgType = PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD;
+        } else if ($paymentMethodIdName == 'naverpay_id') {
+            $pgType = PublyPaymentService::PAYMENT_TYPE_NAVERPAY;
+        }
+
+        $resultPayment = $this->updatePayment(
+            $changerId,
             $paymentId,
             [
                 'action' => 'change_payment_method',
-                'pg_type' => PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
-                'credit_card_id' => $creditCardId
-            ]);
+                'pg_type' => $pgType,
+                $paymentMethodIdName => $paymentMethodId
+            ]
+        );
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $inputs = [];
+        $inputs['changer_id'] = $changerId;
+        $inputs['action'] = 'pay';
+
+        $resultPayment = $this->put("/payment/{$paymentId}", $inputs);
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+
+            return $result;
+        }
+
+        $payment = $resultPayment['success']['data'];
+        $result['payment'] = $payment;
+
+        $subscriptionResult = $this->get("subscription/{$subscriptionId}", []);
+        $subscription = $subscriptionResult['success']['data'];
+        $result['subscription'] = $subscription; // refresh subscription after payment
+
+        $result['success'] = true;
+        return $result;
+    }
+
+    public function changeNaverpayAndRecoverSubscription(
+        $changerId,
+        $subscriptionId,
+        $paymentId,
+        $naverpayId,
+        $force = false
+    ) {
+        $resultPayment = $this->updatePayment(
+            $changerId,
+            $paymentId,
+            [
+                'action' => 'change_payment_method',
+                'pg_type' => PublyPaymentService::PAYMENT_TYPE_NAVERPAY,
+                '$naverpay_id' => $naverpayId
+            ]
+        );
 
         if (!$resultPayment['success']) {
             $result['success'] = false;
@@ -2508,15 +2736,24 @@ class PublyPaymentService extends BaseApiService
         return $this->get("plan/{$planId}");
     }
 
-    public function changeSubscriptionCreditCard($changerId, $paymentId, $creditCardId)
+    public function changeSubscriptionPaymentMethod($changerId, $paymentId, $paymentMethodId, $paymentMethodIdName)
     {
-        $resultPayment = $this->updatePayment($changerId,
+        $pgType = null;
+        if ($paymentMethodIdName == 'credit_card_id') {
+            $pgType = PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD;
+        } else if ($paymentMethodIdName == 'naverpay_id') {
+            $pgType = PublyPaymentService::PAYMENT_TYPE_NAVERPAY;
+        }
+
+        $resultPayment = $this->updatePayment(
+            $changerId,
             $paymentId,
             [
                 'action' => 'change_payment_method',
-                'pg_type' => PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
-                'credit_card_id' => $creditCardId
-            ]);
+                'pg_type' => $pgType,
+                $paymentMethodIdName => $paymentMethodId
+            ]
+        );
 
         if (!$resultPayment['success']) {
             $result['success'] = false;
@@ -3297,5 +3534,26 @@ class PublyPaymentService extends BaseApiService
             'quantity' => $quantity,
             'note' => $note
         ]);
+    }
+
+    public function existsCreditCardByUserId($userId)
+    {
+        return $this->get("credit_card/user/{$userId}/exists");
+    }
+
+    public function existsNaverpayByUserId($userId)
+    {
+        return $this->get("naverpay/user/{$userId}/exists");
+    }
+
+    public function existsPaymentMethodByPgType($userId, $pgType)
+    {
+        if ($pgType == static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD) {
+            return $this->existsCreditCardByUserId($userId);
+        } else if ($pgType == static::PAYMENT_TYPE_NAVERPAY) {
+            return $this->existsNaverpayByUserId($userId);
+        } else {
+            return $result['success']['data'] = false;
+        }
     }
 }
