@@ -34,9 +34,14 @@ class PublyAuthService extends BaseApiService {
     /*
      * User Related Interfaces
      */
-    public function getUser($userId)
+    public function getUser($userId, $filterArray = [])
     {
-        return $this->get("user/{$userId}");
+        return $this->get("user/{$userId}", $filterArray);
+    }
+
+    public function getAuthUser($userId, $filterArray = [])
+    {
+        return $this->getUser($userId, array_merge($filterArray, ['use_auth_only' => true]));
     }
 
     public function getUsers($page = 1, $limit = 10, $filterArray = [])
@@ -46,11 +51,21 @@ class PublyAuthService extends BaseApiService {
         return $this->get("user", $filterArray);
     }
 
+    public function getAuthUsers($page = 1, $limit = 10, $filterArray = [])
+    {
+        return $this->getUsers($page, $limit, array_merge($filterArray, ['use_auth_only' => true]));
+    }
+
     public function getUsersByIds($userIds, $filterArray = [])
     {
         $filterArray['ids'] = implode(',', $userIds);
 
         return $this->get("user/by_ids", $filterArray);
+    }
+
+    public function getAuthUsersByIds($userIds, $filterArray = [])
+    {
+        return $this->getUsersByIds($userIds, array_merge($filterArray, ['use_auth_only' => true]));
     }
 
     public function updateUser($changerId, $userId, $name, $email, $phone)
