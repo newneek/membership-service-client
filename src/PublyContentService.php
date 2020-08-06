@@ -914,7 +914,8 @@ class PublyContentService extends BaseApiService
         $basePrice,
         $summary,
         $memo,
-        $type
+        $type,
+        $guideId
     ) {
         return $this->put("project/{$projectId}", [ 'changer_id' => $changerId,
             'title' => $title,
@@ -926,7 +927,8 @@ class PublyContentService extends BaseApiService
             'base_price' => $basePrice,
             'summary' => $summary,
             'memo' => $memo,
-            'type' => $type
+            'type' => $type,
+            'guide_id' => $guideId
         ]);
     }
 
