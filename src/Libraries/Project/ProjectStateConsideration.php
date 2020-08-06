@@ -8,13 +8,13 @@ class ProjectStateConsideration implements ProjectState
 {
     public $nextStates = [
         PublyContentService::PROJECT_STATUS_PREORDER,
+        PublyContentService::PROJECT_STATUS_SALES,
         PublyContentService::PROJECT_STATUS_DROP,
-        PublyContentService::PROJECT_STATUS_SALES
     ];
     public $manuallyChangeableStates = [
         PublyContentService::PROJECT_STATUS_PREORDER,
+        PublyContentService::PROJECT_STATUS_SALES,
         PublyContentService::PROJECT_STATUS_DROP,
-        PublyContentService::PROJECT_STATUS_SALES
     ];
 
     public function onEnter($changerId, $project, $params)
