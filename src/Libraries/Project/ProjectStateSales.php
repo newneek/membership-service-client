@@ -18,13 +18,6 @@ class ProjectStateSales implements ProjectState
 
     public function canStatusEnter($project)
     {
-        $currDate = \Carbon\Carbon::now();
-        $finishDate = new \Carbon\Carbon($project['preorder_finish_at']);
-
-        if ($currDate->lt($finishDate)) {
-            throw new ProjectStateException(ProjectStateException::UNCHANGEABLE_STATUS, '프로젝트 종료일이 현재시간보다 늦습니다.');
-        }
-
         // 리워드 - 리워드가 1개만 남아 있어야 함
         $count = 0;
         foreach ($project['rewards'] as $reward) {
