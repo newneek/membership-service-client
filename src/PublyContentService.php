@@ -75,6 +75,9 @@ class PublyContentService extends BaseApiService
     const CONTENT_TYPE_TEXT = 1;
     const CONTENT_TYPE_VIDEO = 2;
 
+    const PROJECT_TYPE_SINGLE = 1;
+    const PROJECT_TYPE_BUNDLE = 2;
+
     const CURATION_CONTENT_TYPE_SET = 1;
     const CURATION_CONTENT_TYPE_CONTENT = 2;
     const CURATION_CONTENT_TYPE_SET_DRAFT = 3;
