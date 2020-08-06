@@ -890,94 +890,16 @@ class PublyContentService extends BaseApiService
      * Project Related Functions
      */
 
-    public function createProject($changerId, $title)
+    public function createProject($changerId, $title, $type)
     {
         return $this->post("project", [
             'title' => $title,
+            'type' => $type,
             'changer_id' => $changerId
         ]);
     }
 
     public function updateProject(
-        $changerId,
-        $projectId,
-        $title,
-        $status,
-        $isPreorder,
-        $isUnderConsideration,
-        $startAt,
-        $finishAt,
-        $donateGoalPrice,
-        $summary,
-        $memo
-    ) {
-        return $this->put("project/{$projectId}", [
-            'changer_id' => $changerId,
-            'title' => $title,
-            'status' => $status,
-            'is_preorder' => $isPreorder,
-            'is_under_consideration' => $isUnderConsideration,
-            'start_at' => $startAt,
-            'finish_at' => $finishAt,
-            'donate_goal_price' => $donateGoalPrice,
-            'summary' => $summary,
-            'memo' => $memo
-        ]);
-    }
-
-    public function updateProject2(
-        $changerId,
-        $projectId,
-        $title,
-        $isActive,
-        $imageUrl,
-        $imageVerticalUrl,
-        $preorderStartAt,
-        $preorderFinishAt,
-        $preorderGoalPrice,
-        $summary,
-        $memo
-    ) {
-        return $this->put("project/{$projectId}", [
-            'changer_id' => $changerId,
-            'title' => $title,
-            'is_active' => $isActive,
-            'image' => $imageUrl,
-            'image_vertical' => $imageVerticalUrl,
-            'preorder_start_at' => $preorderStartAt,
-            'preorder_finish_at' => $preorderFinishAt,
-            'preorder_goal_price' => $preorderGoalPrice,
-            'summary' => $summary,
-            'memo' => $memo
-        ]);
-    }
-
-    public function updateProject3(
-        $changerId,
-        $projectId,
-        $title,
-        $imageUrl,
-        $imageVerticalUrl,
-        $preorderStartAt,
-        $preorderFinishAt,
-        $preorderGoalPrice,
-        $summary,
-        $memo
-    ) {
-        return $this->put("project/{$projectId}", [
-            'changer_id' => $changerId,
-            'title' => $title,
-            'image' => $imageUrl,
-            'image_vertical' => $imageVerticalUrl,
-            'preorder_start_at' => $preorderStartAt,
-            'preorder_finish_at' => $preorderFinishAt,
-            'preorder_goal_price' => $preorderGoalPrice,
-            'summary' => $summary,
-            'memo' => $memo
-        ]);
-    }
-
-    public function updateProject4(
         $changerId,
         $projectId,
         $title,
@@ -988,8 +910,9 @@ class PublyContentService extends BaseApiService
         $preorderGoalPrice,
         $basePrice,
         $summary,
-        $memo )
-    {
+        $memo,
+        $type
+    ) {
         return $this->put("project/{$projectId}", [ 'changer_id' => $changerId,
             'title' => $title,
             'image' => $imageUrl,
@@ -999,10 +922,10 @@ class PublyContentService extends BaseApiService
             'preorder_goal_price' => $preorderGoalPrice,
             'base_price' => $basePrice,
             'summary' => $summary,
-            'memo' => $memo
+            'memo' => $memo,
+            'type' => $type
         ]);
     }
-
 
     public function updateProjectIsActive($changerId, $projectId, $isActive)
     {
