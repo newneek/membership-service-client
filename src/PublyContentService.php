@@ -306,6 +306,13 @@ class PublyContentService extends BaseApiService
         return $this->get("reward/project/{$projectId}", $filters);
     }
 
+    public function getRewardsByProjectIds($projectIds, $filters = [])
+    {
+        $filters['project_ids'] = implode(',', $projectIds);
+
+        return $this->get("reward/by_project_ids", $filters);
+    }
+
     public function getAllRewardsByProject($projectId)
     {
         return $this->get("reward/project/{$projectId}", ['show_all' => true]);
