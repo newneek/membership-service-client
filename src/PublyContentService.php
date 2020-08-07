@@ -75,6 +75,9 @@ class PublyContentService extends BaseApiService
     const CONTENT_TYPE_TEXT = 1;
     const CONTENT_TYPE_VIDEO = 2;
 
+    const PROJECT_TYPE_SINGLE = 1;
+    const PROJECT_TYPE_BUNDLE = 2;
+
     const CURATION_CONTENT_TYPE_SET = 1;
     const CURATION_CONTENT_TYPE_CONTENT = 2;
     const CURATION_CONTENT_TYPE_SET_DRAFT = 3;
@@ -911,7 +914,8 @@ class PublyContentService extends BaseApiService
         $basePrice,
         $summary,
         $memo,
-        $type
+        $type,
+        $guideId
     ) {
         return $this->put("project/{$projectId}", [ 'changer_id' => $changerId,
             'title' => $title,
@@ -923,7 +927,8 @@ class PublyContentService extends BaseApiService
             'base_price' => $basePrice,
             'summary' => $summary,
             'memo' => $memo,
-            'type' => $type
+            'type' => $type,
+            'guide_id' => $guideId
         ]);
     }
 
