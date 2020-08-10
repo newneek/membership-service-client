@@ -594,17 +594,15 @@ class PublyExtraService extends BaseApiService
         $changerId,
         $note,
         $type,
-        $setId,
-        $htmlPc,
-        $htmlMobile
+        $payload,
+        $image_url
     ) {
         $inputs = [
             'changer_id' => $changerId,
             'note' => $note,
             'type' => $type,
-            'set_id' => $setId,
-            'html_pc' => $htmlPc,
-            'html_mobile' => $htmlMobile
+            'payload' => $payload,
+            'image_url' => $image_url,
         ];
 
         return $this->post("featured_banner_item", $inputs);
@@ -615,17 +613,15 @@ class PublyExtraService extends BaseApiService
         $featuredBannerItemId,
         $note,
         $type,
-        $setId,
-        $htmlPc,
-        $htmlMobile
+        $payload,
+        $image_url
     ) {
         $inputs = [
             'changer_id' => $changerId,
             'note' => $note,
             'type' => $type,
-            'set_id' => $setId,
-            'html_pc' => $htmlPc,
-            'html_mobile' => $htmlMobile
+            'payload' => $payload,
+            'image_url' => $image_url,
         ];
 
         return $this->put("featured_banner_item/{$featuredBannerItemId}", $inputs);
