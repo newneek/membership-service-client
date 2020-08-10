@@ -28,7 +28,8 @@ class PublyContentService extends BaseApiService
     ];
 
     const SET_READER_SOURCE_TYPE_ADMIN = 1;
-    const SET_READER_SOURCE_TYPE_ORDER = 2;
+    const SET_READER_SOURCE_TYPE_ORDER_SINGLE = 2;
+    const SET_READER_SOURCE_TYPE_ORDER_BUNDLE = 3;
 
     const PACKAGE_READER_SOURCE_TYPE_ADMIN = 1;
     const PACKAGE_READER_SOURCE_TYPE_SUBSCRIPTION = 2;
