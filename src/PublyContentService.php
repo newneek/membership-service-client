@@ -28,7 +28,8 @@ class PublyContentService extends BaseApiService
     ];
 
     const SET_READER_SOURCE_TYPE_ADMIN = 1;
-    const SET_READER_SOURCE_TYPE_ORDER = 2;
+    const SET_READER_SOURCE_TYPE_ORDER_SINGLE = 2;
+    const SET_READER_SOURCE_TYPE_ORDER_BUNDLE = 3;
 
     const PACKAGE_READER_SOURCE_TYPE_ADMIN = 1;
     const PACKAGE_READER_SOURCE_TYPE_SUBSCRIPTION = 2;
@@ -304,6 +305,13 @@ class PublyContentService extends BaseApiService
     public function getRewardsByProject2($projectId, $filters = [])
     {
         return $this->get("reward/project/{$projectId}", $filters);
+    }
+
+    public function getRewardsByProjectIds($projectIds, $filters = [])
+    {
+        $filters['project_ids'] = implode(',', $projectIds);
+
+        return $this->get("reward/by_project_ids", $filters);
     }
 
     public function getAllRewardsByProject($projectId)
@@ -993,9 +1001,11 @@ class PublyContentService extends BaseApiService
         return $this->get("project", $filterArray);
     }
 
-    public function getProjectsByIds($projectIds)
+    public function getProjectsByIds($projectIds, $filterArray = [])
     {
-        return $this->get("project/by_ids", ['ids' => implode(',', $projectIds)]);
+        $filterArray['ids'] = implode(',', $projectIds);
+
+        return $this->get("project/by_ids", $filterArray);
     }
 
     public function getProjectsBySet($setId, $filterArray = [])
@@ -3026,6 +3036,13 @@ class PublyContentService extends BaseApiService
     public function getGuide($guideId)
     {
         return $this->get("guide/{$guideId}");
+    }
+
+    public function getGuidesByIds($guideIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $guideIds);
+
+        return $this->get("guide/by_ids", $filterArray);
     }
 
     public function createGuide($changerId, $title)
