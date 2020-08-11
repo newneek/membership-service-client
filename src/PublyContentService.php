@@ -3085,6 +3085,13 @@ class PublyContentService extends BaseApiService
         return $this->get("guide_item/guide/{$guideId}", $filterArray);
     }
 
+    public function getGuideItemsCountByGuideIds($guideIds)
+    {
+        $filterArray = ['guide_ids' => implode(',', $guideIds)];
+
+        return $this->get("/guide_item/by_guide_ids/count", $filterArray);
+    }
+
     public function updateGuideItems($changerId, $guideId, $guideItemIds, $titles, $descriptions, $types, $itemIds, $randomStringIds)
     {
         return $this->put("guide_item/guide/{$guideId}", [
