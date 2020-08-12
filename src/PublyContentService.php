@@ -1481,12 +1481,12 @@ class PublyContentService extends BaseApiService
         return $this->get("set_reader/{$setReaderId}");
     }
 
-    public function getTotalSetReader($userId, $setId)
+    public function getTotalSetReader($userId, $setId, $filterArray = [])
     {
-        return $this->get("set_reader/total", [
-            'user_id' => $userId,
-            'set_id' => $setId
-        ]);
+        $filterArray['user_id'] = $userId;
+        $filterArray['set_id'] = $setId;
+
+        return $this->get("set_reader/total", $filterArray);
     }
 
     public function getSetReadersByUserId($userId, $page = 1, $limit = 10, $filterArray = [])
@@ -3089,6 +3089,13 @@ class PublyContentService extends BaseApiService
     public function getGuideItemsByGuide($guideId, $filterArray = [])
     {
         return $this->get("guide_item/guide/{$guideId}", $filterArray);
+    }
+
+    public function getGuideItemsCountByGuideIds($guideIds)
+    {
+        $filterArray = ['guide_ids' => implode(',', $guideIds)];
+
+        return $this->get("/guide_item/by_guide_ids/count", $filterArray);
     }
 
     public function updateGuideItems($changerId, $guideId, $guideItemIds, $titles, $descriptions, $types, $itemIds, $randomStringIds)
