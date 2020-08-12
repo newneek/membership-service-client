@@ -18,6 +18,10 @@ class ProjectStateSales implements ProjectState
 
     public function canStatusEnter($project)
     {
+        if (!$project['guide_id']) {
+            throw new ProjectStateException(ProjectStateException::UNCHANGEABLE_STATUS, '가이드를 등록해야 합니다.');
+        }
+
         // 리워드 - 리워드가 1개만 남아 있어야 함
         $count = 0;
         foreach ($project['rewards'] as $reward) {
