@@ -3093,7 +3093,7 @@ class PublyContentService extends BaseApiService
 
     public function getGuideItemsByGuideIds($guideIds, $filterArray = [])
     {
-        $filterArray['guide_ids'] = ['guide_ids' => implode(',', $guideIds)];
+        $filterArray['guide_ids'] = implode(',', $guideIds);
         return $this->get("guide_item/by_guide_ids", $filterArray);
     }
 
