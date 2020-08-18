@@ -127,69 +127,21 @@ class PublyContentService extends BaseApiService
         $changerId,
         $projectId,
         $name,
-        $needDelivery,
         $price,
         $quantity,
-        $description
-    ) {
-        return $this->post("reward", [
-            'changer_id' => $changerId,
-            'project_id' => $projectId,
-            'name' => $name,
-            'need_delivery' => $needDelivery,
-            'price' => $price,
-            'quantity' => $quantity,
-            'description' => $description
-        ]);
-    }
-
-    public function createReward2(
-        $changerId,
-        $projectId,
-        $name,
-        $needDelivery,
-        $price,
-        $quantity,
-        $hasOffline,
-        $description
-    ) {
-        return $this->post("reward", [
-            'changer_id' => $changerId,
-            'project_id' => $projectId,
-            'name' => $name,
-            'need_delivery' => $needDelivery,
-            'price' => $price,
-            'quantity' => $quantity,
-            'has_offline' => $hasOffline,
-            'description' => $description
-        ]);
-    }
-
-    public function createReward3(
-        $changerId,
-        $projectId,
-        $name,
-        $needDelivery,
-        $price,
-        $quantity,
-        $hasOffline,
         $description,
-        $subscriptionName,
-        $subscriptionPrice,
-        $subscriptionDescription
+        $basePrice,
+        $priceDescription
     ) {
         return $this->post("reward", [
             'changer_id' => $changerId,
             'project_id' => $projectId,
             'name' => $name,
-            'need_delivery' => $needDelivery,
             'price' => $price,
             'quantity' => $quantity,
-            'has_offline' => $hasOffline,
             'description' => $description,
-            'subscription_name' => $subscriptionName,
-            'subscription_price' => $subscriptionPrice,
-            'subscription_description' => $subscriptionDescription
+            'base_price' => $basePrice,
+            'price_description' => $priceDescription
         ]);
     }
 
