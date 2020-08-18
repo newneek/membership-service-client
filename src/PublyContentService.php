@@ -2985,6 +2985,11 @@ class PublyContentService extends BaseApiService
         return $this->get("guide", $filterArray);
     }
 
+    public function getGuideCount($filterArray = [])
+    {
+        return $this->get("guide/count", $filterArray);
+    }
+
     public function getGuide($guideId)
     {
         return $this->get("guide/{$guideId}");
