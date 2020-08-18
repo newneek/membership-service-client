@@ -184,6 +184,12 @@ class PublyPaymentService extends BaseApiService
         "유효기간오류" => "유효기간을 다시 확인해 주세요",
     ];
 
+    const NAVERPAY_ERROR_MESSAGES = [
+        "userCancel" => "결제를 취소하셨습니다. 주문 내용 확인 후 다시 결제해주세요.",
+        "OwnerAuthFail" => "타인 명의 카드는 결제가 불가능합니다. 회원 본인 명의의 카드로 결제해주세요.",
+        "paymentTimeExpire" => "결제 가능한 시간이 지났습니다. 주문 내용 확인 후 다시 결제해주세요."
+    ];
+
     public function __construct($domain)
     {
         parent::__construct();
