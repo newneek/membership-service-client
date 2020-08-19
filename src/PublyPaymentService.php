@@ -2240,6 +2240,49 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
+    public function changeCardAndResumeSubscription(
+        $changerId,
+        $paymentId,
+        $subscriptionId,
+        $creditCardId,
+        $force = false)
+    {
+
+        $resultPayment = $this->updatePayment($changerId,
+            $paymentId,
+            [
+                'action' => 'change_payment_method',
+                'pg_type' => PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+                'credit_card_id' => $creditCardId
+            ]);
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        try {
+            $resultSubscription = $this->resumeSubscription($changerId, $subscriptionId, $force);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['from'] = 'subscription';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $subscriptionResult = $this->get("subscription/{$subscriptionId}", []);
+        $subscription = $subscriptionResult['success']['data'];
+        $result['subscription'] = $subscription; // refresh subscription after payment
+
+        $result['success'] = true;
+        return $result;
+    }
+
     public function changePaymentMethodAndResumeSubscription(
         $changerId,
         $paymentId,
@@ -2740,6 +2783,28 @@ class PublyPaymentService extends BaseApiService
     public function getPlan($planId)
     {
         return $this->get("plan/{$planId}");
+    }
+
+    public function changeSubscriptionCreditCard($changerId, $paymentId, $creditCardId)
+    {
+        $resultPayment = $this->updatePayment($changerId,
+            $paymentId,
+            [
+                'action' => 'change_payment_method',
+                'pg_type' => PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+                'credit_card_id' => $creditCardId
+            ]);
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $result['success'] = true;
+        return $result;
     }
 
     public function changeSubscriptionPaymentMethod($changerId, $paymentId, $paymentMethodId, $paymentMethodIdName)
