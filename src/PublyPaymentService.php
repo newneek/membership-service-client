@@ -39,6 +39,7 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::PAYMENT_TYPE_ADMIN => "관리자 추가",
         PublyPaymentService::PAYMENT_TYPE_BANK_TRANSFER => "계좌이체",
         PublyPaymentService::PAYMENT_TYPE_PAYPAL => "PayPal",
+        PublyPaymentService::PAYMENT_TYPE_NAVERPAY => "NaverPay",
         PublyPaymentService::PAYMENT_TYPE_IAMPORT => "아임포트",
         PublyPaymentService::PAYMENT_TYPE_OLD_ADMIN => "구 관리자 추가"
     ];
@@ -136,7 +137,7 @@ class PublyPaymentService extends BaseApiService
     const POINT_HISTORY_TRANSACTION_TYPE_CONTENT_RETURNED = 5;
     const POINT_HISTORY_TRANSACTION_TYPE_PROJECT_SPONSOR = 6;
     const POINT_HISTORY_TRANSACTION_TYPE_MAX = 7;
-    
+
     const STRING_TRANSACTION_TYPE = [
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_USED_FOR_PAYMENT => "포인트 사용",
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_ADJUSTED_BY_ADMIN => "어드민 포인트 적립",
@@ -3695,7 +3696,7 @@ class PublyPaymentService extends BaseApiService
             'note' => $note
         ]);
     }
-    
+
     public function getVouchers($page = 1, $limit = 10, $filterArray = [])
     {
         $filterArray['page'] = $page;
