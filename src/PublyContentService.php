@@ -1394,6 +1394,15 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
+    public function updateSetIsVisible($changerId, $setId, $isVisible)
+    {
+        return $this->put("set/{$setId}", [
+            'changer_id' => $changerId,
+            'is_visible' => $isVisible
+        ]);
+    }
+
+
     public function loadSetDataFromProject($changerId, $setId)
     {
         return $this->post("set/{$setId}/load_data_from_project", ['changer_id' => $changerId]);
