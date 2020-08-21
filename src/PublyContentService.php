@@ -1276,79 +1276,7 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function updateSet($setId, $changerId, $title)
-    {
-        return $this->put("set/{$setId}", [
-            'changer_id' => $changerId,
-            'title' => $title
-        ]);
-    }
-
-    public function updateSet2($setId, $changerId, $title, $publishAt)
-    {
-        return $this->put("set/{$setId}", [
-            'changer_id' => $changerId,
-            'title' => $title,
-            'publish_at' => $publishAt
-        ]);
-    }
-
-    public function updateSet3($setId, $changerId, $title, $summary, $publishAt)
-    {
-        return $this->put("set/{$setId}", [
-            'changer_id' => $changerId,
-            'title' => $title,
-            'summary' => $summary,
-            'publish_at' => $publishAt
-        ]);
-    }
-
-    public function updateSet4($setId, $changerId, $title, $publishAt)
-    {
-        return $this->put("set/{$setId}", [
-            'changer_id' => $changerId,
-            'title' => $title,
-            'publish_at' => $publishAt
-        ]);
-    }
-
-    public function updateSet5($setId, $changerId, $title, $publishAt, $imageUrl, $squareImageUrl)
-    {
-        return $this->put("set/{$setId}", [
-            'changer_id' => $changerId,
-            'title' => $title,
-            'publish_at' => $publishAt,
-            'image_url' => $imageUrl,
-            'square_image_url' => $squareImageUrl
-        ]);
-    }
-
-    public function updateSet6($changerId, $setId, $title, $publishAt, $imageUrl, $squareImageUrl, $note)
-    {
-        return $this->put("set/{$setId}", [
-            'changer_id' => $changerId,
-            'title' => $title,
-            'publish_at' => $publishAt,
-            'image_url' => $imageUrl,
-            'square_image_url' => $squareImageUrl,
-            'note' => $note
-        ]);
-    }
-
-    public function updateSet7($changerId, $setId, $title, $publishAt, $imageUrl, $squareImageUrl, $note, $description)
-    {
-        return $this->put("set/{$setId}", [
-            'changer_id' => $changerId,
-            'title' => $title,
-            'publish_at' => $publishAt,
-            'image_url' => $imageUrl,
-            'square_image_url' => $squareImageUrl,
-            'note' => $note,
-            'description' => $description
-        ]);
-    }
-
-    public function updateSet8($changerId, $setId, $title, $publishAt, $imageUrl, $squareImageUrl, $note, $description, $type)
+    public function updateSet($changerId, $setId, $title, $publishAt, $imageUrl, $squareImageUrl, $note, $description, $type, $isVisible)
     {
         return $this->put("set/{$setId}", [
             'changer_id' => $changerId,
@@ -1358,7 +1286,8 @@ class PublyContentService extends BaseApiService
             'square_image_url' => $squareImageUrl,
             'note' => $note,
             'description' => $description,
-            'type' => $type
+            'type' => $type,
+            'is_visible' => $isVisible
         ]);
     }
 
