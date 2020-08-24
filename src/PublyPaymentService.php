@@ -248,6 +248,11 @@ class PublyPaymentService extends BaseApiService
         return $this->get("order/{$orderId}", $filterArray);
     }
 
+    public function getOrderByUserIdAndProjectId($userId, $projectId)
+    {
+        return $this->get("order/user/{$userId}/project/{$projectId}");
+    }
+
     public function deleteOrder(
         $changerId,
         $orderId)
