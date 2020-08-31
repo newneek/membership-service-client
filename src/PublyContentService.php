@@ -981,14 +981,18 @@ class PublyContentService extends BaseApiService
         return $this->get("project", $filterArray);
     }
 
-    public function createProjectSet($changerId, $projectId, $setId)
+    public function createProjectSet($projectId, $setId, $settlementRate)
     {
-        return $this->post("project/{$projectId}/set/{$setId}", ['changer_id' => $changerId]);
+        return $this->post("project_set", [
+            'project_id' => $projectId,
+            'set_id' => $setId,
+            'settlement_rate' => $settlementRate
+        ]);
     }
 
-    public function removeProjectSet($changerId, $projectId, $setId)
+    public function removeProjectSet($projectSetId)
     {
-        return $this->post("project/{$projectId}/set/{$setId}/delete", ['changer_id' => $changerId]);
+        return $this->post("project_set/{$projectSetId}/delete");
     }
 
     public function updateProjectCoverImage($projectId, $imageUrl)
@@ -3012,5 +3016,10 @@ class PublyContentService extends BaseApiService
             'item_ids' => implode(',', $itemIds),
             'random_string_ids' => implode(',', $randomStringIds)
         ]);
+    }
+
+    public function getProjectSetsByProject($projectId, $filterArray = [])
+    {
+        return $this->get("project_set/project/{$projectId}", $filterArray);
     }
 }
