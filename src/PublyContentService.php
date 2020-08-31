@@ -995,6 +995,13 @@ class PublyContentService extends BaseApiService
         return $this->post("project_set/{$projectSetId}/delete");
     }
 
+    public function updateProjectSet($projectSetId, $settlementRate)
+    {
+        return $this->put("project_set/{$projectSetId}", [
+            'settlement_rate' => $settlementRate
+        ]);
+    }
+
     public function updateProjectCoverImage($projectId, $imageUrl)
     {
         return $this->put("project/{$projectId}/image", ['cover_image' => $imageUrl]);
