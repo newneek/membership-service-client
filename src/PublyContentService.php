@@ -3029,4 +3029,19 @@ class PublyContentService extends BaseApiService
     {
         return $this->get("project_set/project/{$projectId}", $filterArray);
     }
+
+    public function getSetReviewCaches()
+    {
+        return $this->get("/set_review_cache");
+    }
+
+    public function getSetReviewCache($setId)
+    {
+        return $this->get('/set_review_cache/{$setId}');
+    }
+
+    public function refreshSetReviewCache($setId)
+    {
+        return $this->post('/set_review_cache_refresh');
+    }
 }
