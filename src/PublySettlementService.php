@@ -89,7 +89,17 @@ class PublySettlementService extends BaseApiService
         return $this->put("subscription_user_content_view", $inputs);
     }
 
-    public function addAuthorRate($changerId, $setId, $userId, $rate, $type)
+    public function addAuthorRate($changerId, $setId, $userId, $rate)
+    {
+        return $this->post("author_rate", [
+            'changer_id' => $changerId,
+            'author_id' => $userId,
+            'set_id' => $setId,
+            'rate' => $rate
+        ]);
+    }
+
+    public function addAuthorRate2($changerId, $setId, $userId, $rate, $type)
     {
         return $this->post("author_rate", [
             'changer_id' => $changerId,
