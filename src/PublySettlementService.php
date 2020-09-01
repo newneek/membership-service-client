@@ -19,6 +19,9 @@ class PublySettlementService extends BaseApiService
     const AUTHOR_SETTLEMENT_TRANSFER_STATUS_REQUESTED = 2;
     const AUTHOR_SETTLEMENT_TRANSFER_STATUS_REJECTED = 3;
 
+    const AUTHOR_RATE_TYPE_MEMBERSHIP = 1;
+    const AUTHOR_RATE_TYPE_PROJECT = 2;
+
     const STRING_SETTLEMENT_RESULT_STATUS = [
         PublySettlementService::SETTLEMENT_RESULT_STATUS_CALCULATED => "정산 완료",
         PublySettlementService::SETTLEMENT_RESULT_STATUS_CALCULATING => "정산중",
@@ -86,13 +89,14 @@ class PublySettlementService extends BaseApiService
         return $this->put("subscription_user_content_view", $inputs);
     }
 
-    public function addAuthorRate($changerId, $setId, $userId, $rate)
+    public function addAuthorRate($changerId, $setId, $userId, $rate, $type)
     {
         return $this->post("author_rate", [
             'changer_id' => $changerId,
             'author_id' => $userId,
             'set_id' => $setId,
-            'rate' => $rate
+            'rate' => $rate,
+            'type' => $type
         ]);
     }
 
