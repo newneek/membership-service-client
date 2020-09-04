@@ -3049,4 +3049,9 @@ class PublyContentService extends BaseApiService
     {
         return $this->post('/set_review_cache_refresh');
     }
+
+    public function getProjectSets($filterArray = [])
+    {
+        return $this->get("proejct_set", $filterArray);
+    }
 }
