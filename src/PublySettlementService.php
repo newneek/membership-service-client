@@ -448,6 +448,11 @@ class PublySettlementService extends BaseApiService
         return $this->get("project_settlement_result", $filterArray);
     }
 
+    public function getProjectSettlementResultBySettlementYearAndMonth($settlementYear, $settlementMonth)
+    {
+        return $this->get("project_settlement_result/settlement_year/{$settlementYear}/settlement_month/{$settlementMonth}");
+    }
+
     public function calculateProjectSettlement(
         $changerId,
         $settlementYear,
@@ -467,6 +472,33 @@ class PublySettlementService extends BaseApiService
             'settlement_year' => $settlementYear,
             'settlement_month' => $settlementMonth,
             'status' => $status
+        ]);
+    }
+
+    public function getProjectSettlementAuthorResults($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("project_settlement_author_result", $filterArray);
+    }
+
+    public function calculateProjectSettlementAuthorResult($changerId, $authorId, $settlementYear, $settlementMonth)
+    {
+        return $this->post("project_settlement_author_result/calculate", [
+            'changer_id' => $changerId,
+            'author_id' => $authorId,
+            'settlement_year' => $settlementYear,
+            'settlement_month' => $settlementMonth
+        ]);
+    }
+
+    public function confirmProjectSettlementAuthorResult($changerId, $authorId, $settlementYear, $settlementMonth)
+    {
+        return $this->post("project_settlement_author_result/confirm", [
+            'changer_id' => $changerId,
+            'author_id' => $authorId,
+            'settlement_year' => $settlementYear,
+            'settlement_month' => $settlementMonth
         ]);
     }
 }
