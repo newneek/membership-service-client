@@ -447,4 +447,16 @@ class PublySettlementService extends BaseApiService
     {
         return $this->get("project_settlement_result", $filterArray);
     }
+
+    public function calculateProjectSettlement(
+        $changerId,
+        $settlementYear,
+        $settlementMonth
+    ) {
+        return $this->post("project_settlement_result/calculate", [
+            'changer_id' => $changerId,
+            'settlement_year' => $settlementYear,
+            'settlement_month' => $settlementMonth
+        ]);
+    }
 }
