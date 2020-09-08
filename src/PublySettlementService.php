@@ -501,4 +501,9 @@ class PublySettlementService extends BaseApiService
             'settlement_month' => $settlementMonth
         ]);
     }
+
+    public function getProjectSettlementAuthorSetResultsByAuthor($authorId, $filterArray = [])
+    {
+        return $this->get("project_settlement_author_set_result/author/{$authorId}", $filterArray);
+    }
 }
