@@ -442,4 +442,9 @@ class PublySettlementService extends BaseApiService
         $filterArray['ids'] = implode(',', $setIds);
         return $this->get("settlement_set_user_detail/by_set_ids", $filterArray);
     }
+
+    public function getProjectSettlementResults($filterArray = [])
+    {
+        return $this->get("project_settlement_result", $filterArray);
+    }
 }
