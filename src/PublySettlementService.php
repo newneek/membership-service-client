@@ -459,4 +459,14 @@ class PublySettlementService extends BaseApiService
             'settlement_month' => $settlementMonth
         ]);
     }
+
+    public function updateProjectSettlementResult($changerId, $settlementYear, $settlementMonth, $status)
+    {
+        return $this->put("project_settlement_result", [
+            'changer_id' => $changerId,
+            'settlement_year' => $settlementYear,
+            'settlement_month' => $settlementMonth,
+            'status' => $status
+        ]);
+    }
 }
