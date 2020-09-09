@@ -19,8 +19,8 @@ class PublySettlementService extends BaseApiService
     const AUTHOR_SETTLEMENT_TRANSFER_STATUS_REQUESTED = 2;
     const AUTHOR_SETTLEMENT_TRANSFER_STATUS_REJECTED = 3;
 
-    const AUTHOR_RATE_TYPE_MEMBERSHIP = 1;
-    const AUTHOR_RATE_TYPE_PROJECT = 2;
+    const SETTLEMENT_TYPE_MEMBERSHIP = 1;
+    const SETTLEMENT_TYPE_PROJECT = 2;
 
     const STRING_SETTLEMENT_RESULT_STATUS = [
         PublySettlementService::SETTLEMENT_RESULT_STATUS_CALCULATED => "정산 완료",
@@ -441,5 +441,79 @@ class PublySettlementService extends BaseApiService
     {
         $filterArray['ids'] = implode(',', $setIds);
         return $this->get("settlement_set_user_detail/by_set_ids", $filterArray);
+    }
+
+    public function getProjectSettlementResults($filterArray = [])
+    {
+        return $this->get("project_settlement_result", $filterArray);
+    }
+
+    public function getProjectSettlementResultBySettlementYearAndMonth($settlementYear, $settlementMonth)
+    {
+        return $this->get("project_settlement_result/settlement_year/{$settlementYear}/settlement_month/{$settlementMonth}");
+    }
+
+    public function calculateProjectSettlement(
+        $changerId,
+        $settlementYear,
+        $settlementMonth
+    ) {
+        return $this->post("project_settlement_result/calculate", [
+            'changer_id' => $changerId,
+            'settlement_year' => $settlementYear,
+            'settlement_month' => $settlementMonth
+        ]);
+    }
+
+    public function updateProjectSettlementResult($changerId, $settlementYear, $settlementMonth, $status)
+    {
+        return $this->put("project_settlement_result", [
+            'changer_id' => $changerId,
+            'settlement_year' => $settlementYear,
+            'settlement_month' => $settlementMonth,
+            'status' => $status
+        ]);
+    }
+
+    public function getProjectSettlementAuthorResults($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("project_settlement_author_result", $filterArray);
+    }
+
+    public function calculateProjectSettlementAuthorResult($changerId, $authorId, $settlementYear, $settlementMonth)
+    {
+        return $this->post("project_settlement_author_result/calculate", [
+            'changer_id' => $changerId,
+            'author_id' => $authorId,
+            'settlement_year' => $settlementYear,
+            'settlement_month' => $settlementMonth
+        ]);
+    }
+
+    public function confirmProjectSettlementAuthorResult($changerId, $authorId, $settlementYear, $settlementMonth)
+    {
+        return $this->post("project_settlement_author_result/confirm", [
+            'changer_id' => $changerId,
+            'author_id' => $authorId,
+            'settlement_year' => $settlementYear,
+            'settlement_month' => $settlementMonth
+        ]);
+    }
+
+    public function getProjectSettlementAuthorSetResultsByAuthor($authorId, $filterArray = [])
+    {
+        return $this->get("project_settlement_author_set_result/author/{$authorId}", $filterArray);
+    }
+
+    public function getProjectSettlementAuthorResultsByAuthor($authorId, $filterArray = [])
+    {
+        return $this->get("project_settlement_author_result/author/{$authorId}", $filterArray);
+    }
+
+    public function getProjectSettlementAuthorResultsTotalPriceGroupByAuthor($filterArray = [])
+    {
+        return $this->get("project_settlement_author_result/total_price_group_by_author", $filterArray);
     }
 }
