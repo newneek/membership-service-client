@@ -191,6 +191,23 @@ class PublyPaymentService extends BaseApiService
         "paymentTimeExpire" => "결제 가능한 시간이 지났습니다. 주문 내용 확인 후 다시 결제해주세요."
     ];
 
+    const NAVERPAY_APPROVAL_TYPES = [
+        'ALL' => '전체',
+        'APPROVAL' => '승인',
+        'CANCEL' => '취소',
+        'CANCEL_FAIL' => '취소실패'
+    ];
+
+    const NAVERPAY_DIFFERENCE_STATUS_EXIST = 1;
+    const NAVERPAY_DIFFERENCE_STATUS_NOT_EXIST = 2;
+    const NAVERPAY_DIFFERENCE_STATUS_NO_NEED = 3;
+
+    const NAVERPAY_DIFFERENCE_STATUS = [
+        PublyPaymentService::NAVERPAY_DIFFERENCE_STATUS_EXIST => "내역 존재",
+        PublyPaymentService::NAVERPAY_DIFFERENCE_STATUS_NOT_EXIST => "내역 미존재",
+        PublyPaymentService::NAVERPAY_DIFFERENCE_STATUS_NO_NEED => "해당 없음",
+    ];
+
     public function __construct($domain)
     {
         parent::__construct();
@@ -3872,6 +3889,36 @@ class PublyPaymentService extends BaseApiService
             return $result['success']['data'] = false;
         }
     }
+
+    public function getNaverpayDifferenceWithHistory($page, $limit, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get('naverpay_difference/payment/history', $filterArray);
+    }
+
+
+    public function createNaverpayDifference($chargerId,
+        $paymentId,
+        $payHistId,
+        $cancel,
+        $tradeDate,
+        $amount,
+        $productName)
+    {
+        $inputs = [
+            'charger_id' => $chargerId,
+            'payment_id' => $paymentId,
+            'pay_hist_id' => $payHistId,
+            'cancel' => $cancel,
+            'trade_date' => $tradeDate,
+            'amount' => $amount,
+            'product_name' => $productName,
+        ];
+
+        return $this->post('naverpay_difference', $inputs);
+    }
+
 
     public function createNaverpayDifferenceRequests($changerId, $batch = 'request')
     {
