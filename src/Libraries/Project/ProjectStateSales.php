@@ -18,7 +18,7 @@ class ProjectStateSales implements ProjectState
 
     public function canStatusEnter($project)
     {
-        if (!$project['guide_id']) {
+        if ($project['type'] === PublyContentService::PROJECT_TYPE_BUNDLE && !$project['guide_id']) {
             throw new ProjectStateException(ProjectStateException::UNCHANGEABLE_STATUS, '가이드를 등록해야 합니다.');
         }
 
