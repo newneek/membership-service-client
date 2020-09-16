@@ -3890,7 +3890,7 @@ class PublyPaymentService extends BaseApiService
         }
     }
 
-    public function getNaverpayHistory($page, $limit, $filterArray = [])
+    public function getNaverpayDifferenceWithHistory($page, $limit, $filterArray = [])
     {
         $filterArray['page'] = $page;
         $filterArray['limit'] = $limit;
