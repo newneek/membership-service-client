@@ -73,6 +73,7 @@ class PublyContentService extends BaseApiService
 
     const SET_TYPE_WEB_BOOK = 1;
     const SET_TYPE_ARTICLE = 2;
+    const SET_TYPE_ON_AIR = 3;
 
     const CONTENT_TYPE_TEXT = 1;
     const CONTENT_TYPE_VIDEO = 2;
