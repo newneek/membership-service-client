@@ -55,6 +55,9 @@ class PublyContentService extends BaseApiService
         PublyContentService::PROJECT_STATUS_DROP => "중단"
     ];
 
+    const PROJECT_PAGE_BASE_ON_TEXT = 1;
+    const PROJECT_PAGE_BASE_ON_VIDEO = 2;
+
     const USER_CONTENT_PROGRESS_TYPE_INDIVIDUAL = 1;
     const USER_CONTENT_PROGRESS_TYPE_PACKAGE = 2;
 
@@ -877,7 +880,8 @@ class PublyContentService extends BaseApiService
         $summary,
         $memo,
         $type,
-        $guideId
+        $guideId,
+        $pageBase
     ) {
         return $this->put("project/{$projectId}", [ 'changer_id' => $changerId,
             'title' => $title,
@@ -891,7 +895,8 @@ class PublyContentService extends BaseApiService
             'summary' => $summary,
             'memo' => $memo,
             'type' => $type,
-            'guide_id' => $guideId
+            'guide_id' => $guideId,
+            'page_base' => $pageBase
         ]);
     }
 
