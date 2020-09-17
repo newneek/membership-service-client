@@ -1132,4 +1132,14 @@ class PublyExtraService extends BaseApiService
     {
         return $this->get("content_group/set/{$setId}", $filterArray);
     }
+
+    public function updateContentGroupsOrderInSet($setId, $contentGroupIds)
+    {
+        $inputs = [
+            'ids' => implode(',', $contentGroupIds)
+        ];
+
+        return $this->put("content_group/set/{$setId}", $inputs);
+    }
+
 }
