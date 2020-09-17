@@ -382,6 +382,11 @@ class PublyContentService extends BaseApiService
         return $this->get("content/by_set_ids/", $filterArray);
     }
 
+    public function getContentsByContentGroup($contentGroup, $filterArray = [])
+    {
+        return $this->get("content/content_group/{$contentGroup}", $filterArray);
+    }
+
     public function updateContent($contentId, $isPaid)
     {
         return $this->put("content/{$contentId}", ['is_paid' => $isPaid]);
@@ -585,6 +590,22 @@ class PublyContentService extends BaseApiService
             ]);
     }
 
+    public function updateContentSetAndContentGroup(
+        $changerId,
+        $contentId,
+        $setId,
+        $contentGroupId,
+        $orderInContentGroup
+    ) {
+        return $this->put("content/{$contentId}",
+            [
+                'changer_id' => $changerId,
+                'set_id' => $setId,
+                'order_in_content_group' => $orderInContentGroup,
+                'content_group_id' => $contentGroupId
+            ]);
+    }
+
     public function updateContentIsPicked(
         $changerId,
         $contentId,
@@ -619,6 +640,15 @@ class PublyContentService extends BaseApiService
     public function updateContentsOrderInSet2($changerId, $setId, $contentIds)
     {
         return $this->put("content/set/{$setId}",
+            [
+                'changer_id' => $changerId,
+                'ids' => implode(',', $contentIds)
+            ]);
+    }
+
+    public function updateContentsOrderInContentGroup($changerId, $contentGroupId, $contentIds)
+    {
+        return $this->put("content/content_group/{$contentGroupId}",
             [
                 'changer_id' => $changerId,
                 'ids' => implode(',', $contentIds)
