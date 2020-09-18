@@ -3943,10 +3943,15 @@ class PublyPaymentService extends BaseApiService
         ]);
     }
 
-    public function createNaverpayDifferenceStatusAndResultBatch($changerId)
+    public function createNaverpayDifferenceResultBatch($changerId, $completeDate = null)
     {
-        return $this->post("naverpay_difference/status_and_result_batch", [
-            'changer_id' => $changerId,
-        ]);
+        $inputs = [
+            'changer_id' => $changerId
+        ];
+        if ($completeDate) {
+            $inputs = array_merge($inputs, ['complete_date' => $completeDate]);
+        }
+
+        return $this->post("naverpay_difference/result_batch", $inputs);
     }
 }
