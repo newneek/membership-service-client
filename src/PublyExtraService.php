@@ -1112,4 +1112,47 @@ class PublyExtraService extends BaseApiService
 
         return $this->post("recommended_contents_descriptions", $inputs);
     }
+
+    public function createContentGroup($setId, $title)
+    {
+        $inputs = [
+            'set_id' => $setId,
+            'title' => $title
+        ];
+
+        return $this->post("content_group", $inputs);
+    }
+
+    public function deleteContentGroup($contentGroupId)
+    {
+        return $this->post("content_group/{$contentGroupId}/delete");
+    }
+
+    public function updateContentGroup($contentGroupId, $title)
+    {
+        $inputs = [
+            'title' => $title
+        ];
+
+        return $this->put("content_group/{$contentGroupId}", $inputs);
+    }
+
+    public function getContentGroup($contentGroupId)
+    {
+        return $this->get("content_group/{$contentGroupId}");
+    }
+
+    public function getContentGroupsBySet($setId, $filterArray = [])
+    {
+        return $this->get("content_group/set/{$setId}", $filterArray);
+    }
+
+    public function updateContentGroupsOrderInSet($setId, $contentGroupIds)
+    {
+        $inputs = [
+            'ids' => implode(',', $contentGroupIds)
+        ];
+
+        return $this->put("content_group/set/{$setId}", $inputs);
+    }
 }
