@@ -2234,21 +2234,23 @@ class PublyContentService extends BaseApiService
         return $this->get("package_reader/total", ['user_id' => $userId]);
     }
 
-    public function addSetLike($changerId, $userId, $setId)
+    public function addSetLike($changerId, $userId, $setId, $contentId)
     {
         return $this->post("set_like", [
             'changer_id' => $changerId,
             'user_id' => $userId,
-            'set_id' => $setId
+            'set_id' => $setId,
+            'content_id' => $contentId
         ]);
     }
 
-    public function removeSetLike($changerId, $userId, $setId)
+    public function removeSetLike($changerId, $userId, $setId, $contentId)
     {
         return $this->post("set_like/delete", [
             'changer_id' => $changerId,
             'user_id' => $userId,
-            'set_id' => $setId
+            'set_id' => $setId,
+            'content_id' => $contentId
         ]);
     }
 
@@ -2262,6 +2264,12 @@ class PublyContentService extends BaseApiService
     {
         $filterArray['set_ids'] = implode(',', $setIds);
         return $this->get("set_like/by_set_ids", $filterArray);
+    }
+
+    public function getSetLikesByContentIds($contentIds, $filterArray = [])
+    {
+        $filterArray['content_ids'] = implode(',', $contentIds);
+        return $this->get("set_like/by_content_ids", $filterArray);
     }
 
     public function getCouponExceptionSets($filterArray = [])
