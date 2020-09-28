@@ -12,6 +12,7 @@ class PublyPaymentService extends BaseApiService
     const PAYMENT_TYPE_BANK_TRANSFER = 3;
     const PAYMENT_TYPE_PAYPAL = 4;
     const PAYMENT_TYPE_NAVERPAY = 5;
+    const PAYMENT_TYPE_NAVERPAY_SIMPLE = 6;
     const PAYMENT_TYPE_IAMPORT = 90;
     const PAYMENT_TYPE_OLD_ADMIN = 91;
 
@@ -990,6 +991,71 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
+    public function orderAndPayByNaverpay(
+        $changerId,
+        $userId,
+        $naverpayPaymentId,
+        $projectId,
+        $rewardId,
+        $price,
+        $userName,
+        $userEmail,
+        $userPhone
+    ) {
+        $result = [ 'success' => false ];
+
+        // order
+        $resultOrder = $this->order2(
+            $changerId,
+            $userId,
+            $projectId,
+            $rewardId,
+            $price,
+            $userName,
+            $userEmail,
+            $userPhone
+        );
+
+        if (!$resultOrder['success']) {
+            $result['success'] = false;
+            $result['from'] = 'order';
+            $result['error_code'] = $resultOrder['error_code'];
+            $result['message'] = $resultOrder['message'];
+            return $result;
+        }
+
+        $order = $resultOrder['item'];
+        // 정상적으로 주문 되었음.
+
+        // payment
+        $resultPayment = $this->payByNaverpaySimple(
+            $changerId,
+            $userId,
+            $order['id'],
+            $naverpayPaymentId,
+            true,
+            ''
+        );
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $payment = $resultPayment['item'];
+
+        $orderResult = $this->get("order/".$order['id'], []);
+        $order = $orderResult['success']['data'];
+
+        $result['success'] = true;
+        $result['order'] = $order;
+        $result['payment'] = $payment;
+        return $result;
+    }
+
     public function addCreditCardAndOrderAndPay(
         $changerId,
         $userId,
@@ -1375,6 +1441,41 @@ class PublyPaymentService extends BaseApiService
                     'order_id' => $orderId,
                     'pg_type' => $pgType,
                     $paymentMethodIdName => $paymentMethodId,
+                    'immediate' => $immediate,
+                    'note' => $note,
+                    'use_point' => static::USE_POINT_ON_ORDER
+                ]);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $result['success'] = true;
+        $result['item'] = $resultPayment['success']['data'];
+
+        return $result;
+    }
+
+    public function payByNaverpaySimple(
+        $changerId,
+        $userId,
+        $orderId,
+        $naverpayPaymentId,
+        $immediate,
+        $note = ''
+    ) {
+        $result = [ 'success' => false ];
+        try {
+            $resultPayment =
+                $this->post('payment', [
+                    'changer_id' => $changerId,
+                    'user_id' => $userId,
+                    'order_id' => $orderId,
+                    'pg_type' => static::PAYMENT_TYPE_NAVERPAY_SIMPLE,
                     'immediate' => $immediate,
                     'note' => $note,
                     'use_point' => static::USE_POINT_ON_ORDER
