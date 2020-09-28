@@ -1475,6 +1475,7 @@ class PublyPaymentService extends BaseApiService
                     'changer_id' => $changerId,
                     'user_id' => $userId,
                     'order_id' => $orderId,
+                    'naverpay_id' => $naverpayPaymentId,
                     'pg_type' => static::PAYMENT_TYPE_NAVERPAY_SIMPLE,
                     'immediate' => $immediate,
                     'note' => $note,
