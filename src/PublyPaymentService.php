@@ -12,7 +12,7 @@ class PublyPaymentService extends BaseApiService
     const PAYMENT_TYPE_BANK_TRANSFER = 3;
     const PAYMENT_TYPE_PAYPAL = 4;
     const PAYMENT_TYPE_NAVERPAY = 5;
-    const PAYMENT_TYPE_NAVERPAY_SIMPLE = 6;
+    const PAYMENT_TYPE_NAVERPAY_ONETIME = 6;
     const PAYMENT_TYPE_IAMPORT = 90;
     const PAYMENT_TYPE_OLD_ADMIN = 91;
 
@@ -266,9 +266,9 @@ class PublyPaymentService extends BaseApiService
         return $this->get("order/{$orderId}", $filterArray);
     }
 
-    public function getOrderByUserIdAndProjectId($userId, $projectId)
+    public function getOrderByUserIdAndProjectId($userId, $projectId, $filterArray = [])
     {
-        return $this->get("order/user/{$userId}/project/{$projectId}");
+        return $this->get("order/user/{$userId}/project/{$projectId}", $filterArray);
     }
 
     public function deleteOrder(
@@ -994,7 +994,7 @@ class PublyPaymentService extends BaseApiService
     public function orderAndPayByNaverpay(
         $changerId,
         $userId,
-        $naverpayPaymentId,
+        $naverpayOnetimeId,
         $projectId,
         $rewardId,
         $price,
@@ -1032,7 +1032,7 @@ class PublyPaymentService extends BaseApiService
             $changerId,
             $userId,
             $order['id'],
-            $naverpayPaymentId,
+            $naverpayOnetimeId,
             true,
             ''
         );
@@ -1464,7 +1464,7 @@ class PublyPaymentService extends BaseApiService
         $changerId,
         $userId,
         $orderId,
-        $naverpayPaymentId,
+        $naverpayOnetimeId,
         $immediate,
         $note = ''
     ) {
@@ -1475,8 +1475,8 @@ class PublyPaymentService extends BaseApiService
                     'changer_id' => $changerId,
                     'user_id' => $userId,
                     'order_id' => $orderId,
-                    'naverpay_id' => $naverpayPaymentId,
-                    'pg_type' => static::PAYMENT_TYPE_NAVERPAY_SIMPLE,
+                    'naverpay_onetime_id' => $naverpayOnetimeId,
+                    'pg_type' => static::PAYMENT_TYPE_NAVERPAY_ONETIME,
                     'immediate' => $immediate,
                     'note' => $note,
                     'use_point' => static::USE_POINT_ON_ORDER
