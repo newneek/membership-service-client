@@ -570,6 +570,43 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
+    public function updateContent9(
+        $changerId,
+        $contentId,
+        $title,
+        $isActive,
+        $isPaid,
+        $image,
+        $readTime,
+        $publishAt,
+        $freeLength,
+        $summary,
+        $canonicalUrl,
+        $memo,
+        $curationTitle,
+        $type,
+        $metaKeywords,
+        $imgAlt
+    ) {
+        return $this->put("content/{$contentId}", [
+            'changer_id' => $changerId,
+            'title' => $title,
+            'is_active' => $isActive,
+            'is_paid' => $isPaid,
+            'read_time' => $readTime,
+            'image' => $image,
+            'publish_at' => $publishAt,
+            'free_length' => $freeLength,
+            'summary' => $summary,
+            'canonical_url' => $canonicalUrl,
+            'memo' => $memo,
+            'curation_title' => $curationTitle,
+            'type' => $type,
+            'meta_keywords' => $metaKeywords,
+            'img_alt' => $imgAlt
+        ]);
+    }
+
 
     public function updateContentSet($contentId, $setId, $orderInSet)
     {
@@ -1324,8 +1361,20 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function updateSet($changerId, $setId, $title, $publishAt, $imageUrl, $squareImageUrl, $note, $description, $type, $isVisible)
-    {
+    public function updateSet(
+        $changerId,
+        $setId,
+        $title,
+        $publishAt,
+        $imageUrl,
+        $squareImageUrl,
+        $note,
+        $description,
+        $type,
+        $isVisible,
+        $metaKeywords,
+        $imgAlt
+    ) {
         return $this->put("set/{$setId}", [
             'changer_id' => $changerId,
             'title' => $title,
@@ -1335,7 +1384,9 @@ class PublyContentService extends BaseApiService
             'note' => $note,
             'description' => $description,
             'type' => $type,
-            'is_visible' => $isVisible
+            'is_visible' => $isVisible,
+            'meta_keywords' => $metaKeywords,
+            'img_alt' => $imgAlt
         ]);
     }
 
