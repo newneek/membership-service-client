@@ -41,6 +41,7 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::PAYMENT_TYPE_BANK_TRANSFER => "계좌이체",
         PublyPaymentService::PAYMENT_TYPE_PAYPAL => "PayPal",
         PublyPaymentService::PAYMENT_TYPE_NAVERPAY => "NaverPay",
+        PublyPaymentService::PAYMENT_TYPE_NAVERPAY_ONETIME => "NaverPay 간편결제",
         PublyPaymentService::PAYMENT_TYPE_IAMPORT => "아임포트",
         PublyPaymentService::PAYMENT_TYPE_OLD_ADMIN => "구 관리자 추가"
     ];
