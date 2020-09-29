@@ -1000,7 +1000,8 @@ class PublyPaymentService extends BaseApiService
         $price,
         $userName,
         $userEmail,
-        $userPhone
+        $userPhone,
+        $isPreorder
     ) {
         $result = [ 'success' => false ];
 
@@ -1013,7 +1014,12 @@ class PublyPaymentService extends BaseApiService
             $price,
             $userName,
             $userEmail,
-            $userPhone
+            $userPhone,
+            null,
+            null,
+            null,
+            null,
+            $isPreorder
         );
 
         if (!$resultOrder['success']) {
