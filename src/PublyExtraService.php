@@ -55,7 +55,7 @@ class PublyExtraService extends BaseApiService
     ];
 
     const STRING_RECOMMENDED_CONTENT_TYPE = [
-        PublyExtraService::RECOMMEND_CONTENT_TYPE_USER_LIKED_CONTENTS => '읽고 싶어요',
+        PublyExtraService::RECOMMEND_CONTENT_TYPE_USER_LIKED_CONTENTS => '북마크',
         PublyExtraService::RECOMMEND_CONTENT_TYPE_TARGET_SEGMENT_JUNIOR => '주니어',
         PublyExtraService::RECOMMEND_CONTENT_TYPE_TARGET_SEGMENT_SENIOR => '시니어',
         PublyExtraService::RECOMMEND_CONTENT_TYPE_TARGET_SEGMENT_TREND_STUDY => '트렌드 스터디',
