@@ -2285,7 +2285,7 @@ class PublyContentService extends BaseApiService
         return $this->get("package_reader/total", ['user_id' => $userId]);
     }
 
-    public function addSetLike($changerId, $userId, $setId, $contentId)
+    public function addSetLike($changerId, $userId, $setId, $contentId = null)
     {
         return $this->post("set_like", [
             'changer_id' => $changerId,
@@ -2295,7 +2295,7 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function removeSetLike($changerId, $userId, $setId, $contentId)
+    public function removeSetLike($changerId, $userId, $setId, $contentId = null)
     {
         return $this->post("set_like/delete", [
             'changer_id' => $changerId,
