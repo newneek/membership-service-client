@@ -28,7 +28,7 @@ class PublyAuthService extends BaseApiService {
         parent::__construct();
 
         $this->domain = $domain;
-        $this->apiUrl = "$this->domain/";        
+        $this->apiUrl = "$this->domain/";
     }
 
     /*
@@ -84,7 +84,7 @@ class PublyAuthService extends BaseApiService {
         }
 
         if ($email !== null) {
-            $inputs['email'] = $email;            
+            $inputs['email'] = $email;
         }
 
         if ($phone !== null) {
@@ -187,7 +187,7 @@ class PublyAuthService extends BaseApiService {
 
     public function retrieveByToken($id, $token)
     {
-    	return $this->get('retrieve_by_token', array('id'=> $id, 
+    	return $this->get('retrieve_by_token', array('id'=> $id,
     											     'token' => $token));
     }
 
@@ -199,7 +199,7 @@ class PublyAuthService extends BaseApiService {
 
     public function updateRememberToken($id, $token)
     {
-    	return $this->post('update_remember_token', array('id'=> $id, 
+    	return $this->post('update_remember_token', array('id'=> $id,
     	 											      'token' => $token));
     }
 
@@ -213,7 +213,7 @@ class PublyAuthService extends BaseApiService {
     {
         return $this->get('retrieve_by_email', array('email'=> $email));
     }
-    
+
     public function retrieveByFacebookToken($accessToken)
     {
         return $this->get('retrieve_by_facebook_token', array('access_token' => $accessToken));
@@ -231,7 +231,7 @@ class PublyAuthService extends BaseApiService {
 
     public function validateCredentials($id, $password)
     {
-    	return $this->post('validate_credentials', array('id'=> $id, 
+    	return $this->post('validate_credentials', array('id'=> $id,
     												     'password' => $password));
     }
 
@@ -346,5 +346,30 @@ class PublyAuthService extends BaseApiService {
     public function syncOneSignalData()
     {
         return $this->post("/sync");
+    }
+
+    public function retrieveBySocialLogin($socialType, $socialUserId)
+    {
+        return $this->get('retrieve_by_social_login',
+            array('social_type' => $socialType, 'social_user_id' => $socialUserId)
+        );
+    }
+
+    public function signupByKakaoId($kakaoUserId, $username, $email)
+    {
+        return $this->post('signup_by_kakao', array(
+            'kakao_user_id' => $kakaoUserId,
+            'username' => $username,
+            'email' => $email,
+        ));
+    }
+
+    public function signupByAppleId($appleUserId, $username, $email)
+    {
+        return $this->post('signup_by_apple', array(
+            'apple_user_id' => $appleUserId,
+            'username' => $username,
+            'email' => $email,
+        ));
     }
 }
