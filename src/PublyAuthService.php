@@ -347,4 +347,29 @@ class PublyAuthService extends BaseApiService {
     {
         return $this->post("/sync");
     }
+
+    public function retrieveBySocialLogin($socialType, $socialUserId)
+    {
+        return $this->get('retrieve_by_social_login',
+            array('social_type' => $socialType, 'social_user_id' => $socialUserId)
+        );
+    }
+
+    public function signupByKakaoId($kakaoUserId, $username, $email)
+    {
+        return $this->post('signup_by_kakao', array(
+            'kakao_user_id' => $kakaoUserId,
+            'username' => $username,
+            'email' => $email,
+        ));
+    }
+
+    public function signupByAppleId($appleUserId, $username, $email)
+    {
+        return $this->post('signup_by_apple', array(
+            'apple_user_id' => $appleUserId,
+            'username' => $username,
+            'email' => $email,
+        ));
+    }
 }
