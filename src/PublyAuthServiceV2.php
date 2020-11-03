@@ -5,7 +5,7 @@ namespace Publy\ServiceClient;
 use Publy\ServiceClient\Api\BaseApiService;
 use Publy\ServiceClient\Api\ResponseException;
 
-class PublyAuthV2Service extends BaseApiService {
+class PublyAuthServiceV2 extends BaseApiService {
 
 
     public function __construct($domain) {
