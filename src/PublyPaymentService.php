@@ -3040,6 +3040,11 @@ class PublyPaymentService extends BaseApiService
         return $this->get("plan/{$planId}");
     }
 
+    public function getPlansByNextPlanId($planId)
+    {
+        return $this->get("plan/next_plan/{$planId}");
+    }
+
     public function changeSubscriptionCreditCard($changerId, $paymentId, $creditCardId)
     {
         $resultPayment = $this->updatePayment($changerId,
