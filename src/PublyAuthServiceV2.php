@@ -23,6 +23,11 @@ class PublyAuthServiceV2 extends BaseApiService {
         return $this->post("auth/kakao/oauth", array('token' => $token));
     }
 
+    public function getKakaoUserWithTokenV2($token)
+    {
+        return $this->post("auth/kakao/oauth/v2", array('token' => $token));
+    }
+
     public function getAppleUserWithAppleUser($appleUser)
     {
         return $this->post("auth/apple/oauth", array('appleUser' => $appleUser));
