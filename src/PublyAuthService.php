@@ -355,12 +355,13 @@ class PublyAuthService extends BaseApiService {
         );
     }
 
-    public function signupByKakaoId($kakaoUserId, $username, $email)
+    public function signupByKakaoId($kakaoUserId, $username, $email, $phone)
     {
         return $this->post('signup_by_kakao', array(
             'kakao_user_id' => $kakaoUserId,
             'username' => $username,
             'email' => $email,
+            'phone' => $phone,
         ));
     }
 
