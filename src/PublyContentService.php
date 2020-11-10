@@ -3133,17 +3133,17 @@ class PublyContentService extends BaseApiService
 
     public function getSetReviewCaches()
     {
-        return $this->get("/set_review_cache");
+        return $this->get("set_review_cache");
     }
 
     public function getSetReviewCache($setId)
     {
-        return $this->get('/set_review_cache/{$setId}');
+        return $this->get('set_review_cache/{$setId}');
     }
 
     public function refreshSetReviewCache()
     {
-        return $this->post('/set_review_cache_refresh');
+        return $this->post('set_review_cache_refresh');
     }
 
     public function getProjectSets($filterArray = [])
@@ -3156,5 +3156,12 @@ class PublyContentService extends BaseApiService
         $filterArray['set_ids'] = implode(',', $setIds);
 
         return $this->get("project_set", $filterArray);
+    }
+
+    public function getContentsCountBySetIds($setIds, $filterArray = [])
+    {
+        $filterArray['set_ids'] = implode(',', $setIds);
+
+        return $this->get("content/count/by_set_ids", $filterArray);
     }
 }
