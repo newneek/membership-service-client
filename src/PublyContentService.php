@@ -3162,6 +3162,6 @@ class PublyContentService extends BaseApiService
     {
         $filterArray['set_ids'] = implode(',', $setIds);
 
-        return $this->get("content/count/by_set_ids", $filterArray);
+        return $this->get("content/by_set_ids/count", $filterArray);
     }
 }
