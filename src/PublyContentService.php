@@ -1343,6 +1343,12 @@ class PublyContentService extends BaseApiService
         return $this->get("set/{$setId}", $filterArray);
     }
 
+    public function getSetCountsByIds($setIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $setIds);
+        return $this->get("set/by_ids/count", $filterArray);
+    }
+
     public function createSet($changerId, $title)
     {
         return $this->post("set", [
