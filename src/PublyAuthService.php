@@ -373,4 +373,9 @@ class PublyAuthService extends BaseApiService {
             'email' => $email,
         ));
     }
+
+    public function showSocialLoginTypes($userId)
+    {
+        return $this->get("user/{$userId}/social_login_types");
+    }
 }
