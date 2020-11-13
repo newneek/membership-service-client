@@ -28,8 +28,8 @@ class PublyAuthServiceV2 extends BaseApiService {
         return $this->post("auth/apple/oauth", array('appleUser' => $appleUser));
     }
 
-    public function retrieveUserByAppleIdentityToken($identityToken)
+    public function retrieveUserByAppleIdentityToken($params)
     {
-        return $this->post("auth/apple/user", array('identityToken' => $identityToken));
+        return $this->post("auth/apple/oauth/callback", $params);
     }
 }
