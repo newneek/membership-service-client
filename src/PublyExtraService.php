@@ -759,17 +759,6 @@ class PublyExtraService extends BaseApiService
         return $this->put("interest/{$interestId}/update", $inputs);
     }
 
-    public function updateInterest2($interestId, $name, $categoryId, $isActive)
-    {
-        $inputs = [
-            'name' => $name,
-            'category_id' => $categoryId,
-            'is_active' => $isActive
-        ];
-
-        return $this->put("interest/{$interestId}/update", $inputs);
-    }
-
     public function updateInterestIsActive($interestId, $isActive)
     {
         $inputs = [
