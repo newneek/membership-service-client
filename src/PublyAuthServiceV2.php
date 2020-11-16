@@ -18,9 +18,12 @@ class PublyAuthServiceV2 extends BaseApiService {
     /*
      * User Related Interfaces
      */
-    public function getKakaoUserWithToken($token)
+    public function oauthKakaoCallbackForWeb($code, $redirectUri)
     {
-        return $this->post("auth/kakao/oauth", array('token' => $token));
+        return $this->post("auth/web/oauth/kakao/callback", [
+            'code' => $code,
+            'redirect_uri' => $redirectUri
+        ]);
     }
 
     public function getAppleUserWithAppleUser($appleUser)
