@@ -138,11 +138,12 @@ class PublyNotificationService extends BaseApiService
         ]);
     }
 
-    public function eventUserLogin($userId, $product)
+    public function eventUserLogin($userId, $product, $method)
     {
         return $this->post("/event/user_login", [
             'user_id' => $userId,
-            'product' => $product
+            'product' => $product,
+            'method' => $method,
         ]);
     }
 
