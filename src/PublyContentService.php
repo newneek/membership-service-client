@@ -2397,7 +2397,14 @@ class PublyContentService extends BaseApiService
         return $this->get("category/by_ids", $filterArray)['success']['data'];
     }
 
-    public function updateCategory($changerId, $categoryId, $name, $mastheadImageUrl)
+    public function updateCategory($changerId, $categoryId, $name)
+    {
+        return $this->put("category/{$categoryId}", [
+            'changer_id' => $changerId, 'name' => $name
+        ]);
+    }
+
+    public function updateCategory2($changerId, $categoryId, $name, $mastheadImageUrl)
     {
         return $this->put("category/{$categoryId}", [
             'changer_id' => $changerId, 'name' => $name, 'masthead_image_url' => $mastheadImageUrl
