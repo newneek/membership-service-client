@@ -26,6 +26,11 @@ class PublyAuthServiceV2 extends BaseApiService {
         ]);
     }
 
+    public function oauthAppleCallbackForWeb($params)
+    {
+        return $this->post("auth/web/oauth/apple/callback", $params);
+    }
+
     public function getAppleUserWithAppleUser($appleUser)
     {
         return $this->post("auth/apple/oauth", array('appleUser' => $appleUser));
