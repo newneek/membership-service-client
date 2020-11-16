@@ -337,4 +337,19 @@ class PublyNotificationService extends BaseApiService
             'user_segment' => $userSegment
         ]);
     }
+
+    public function eventVoucherUseHistoryCreated($voucherUseHistory)
+    {
+        return $this->post("/event/voucher_use_history_created", [
+            'voucher_use_history' => $voucherUseHistory
+        ]);
+    }
+
+    public function eventVoucherUseHistoryStatusChanged($voucherUseHistory)
+    {
+        return $this->post("/event/voucher_use_history_status_changed", [
+            'voucher_use_history' => $voucherUseHistory
+        ]);
+    }
+
 }
