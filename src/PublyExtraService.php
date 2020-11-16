@@ -738,11 +738,31 @@ class PublyExtraService extends BaseApiService
         return $this->post("interest", $inputs);
     }
 
+    public function createInterest2($name, $categoryId, $isActive)
+    {
+        $inputs = [
+            'name' => $name,
+            'category_id' => $categoryId,
+            'is_active' => $isActive
+        ];
+
+        return $this->post("interest", $inputs);
+    }
+
     public function updateInterest($interestId, $name, $categoryId)
     {
         $inputs = [
             'name' => $name,
             'category_id' => $categoryId
+        ];
+
+        return $this->put("interest/{$interestId}/update", $inputs);
+    }
+
+    public function updateInterestIsActive($interestId, $isActive)
+    {
+        $inputs = [
+            'is_active' => $isActive
         ];
 
         return $this->put("interest/{$interestId}/update", $inputs);
