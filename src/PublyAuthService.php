@@ -315,14 +315,15 @@ class PublyAuthService extends BaseApiService {
                                                         'device_id' => $deviceId ));
     }
 
-    public function userLogin($userId, $ipAddress, $os, $browser, $deviceId)
+    public function userLogin($userId, $ipAddress, $os, $browser, $deviceId, $method)
     {
         return $this->post('user_login', [
             'user_id' => $userId,
             'ip_address' => $ipAddress,
             'os' => $os,
             'browser' => $browser,
-            'device_id' => $deviceId
+            'device_id' => $deviceId,
+            'method' => $method,
         ]);
     }
 
