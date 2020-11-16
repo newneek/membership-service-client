@@ -3019,6 +3019,11 @@ class PublyPaymentService extends BaseApiService
                 'force' => $force ? 1 : 0]);
     }
 
+    public function existsSubscriptionByUserId($userId)
+    {
+        return $this->get("subscription/user/{$userId}/exists");
+    }
+
     public function getPlans($filterArray = [])
     {
         return $this->get("plan", $filterArray);
