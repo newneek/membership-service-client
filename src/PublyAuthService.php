@@ -380,6 +380,11 @@ class PublyAuthService extends BaseApiService {
         return $this->get("user/{$userId}/social_login_types");
     }
 
+    public function initializeUserNotificationStatus($userId)
+    {
+        return $this->put("/user/{$userId}/initialize_notification_status");
+    }
+
     public function getUserNotificationStatus($userId)
     {
         return $this->get("/user/{$userId}/notification_status");
