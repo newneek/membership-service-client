@@ -1651,6 +1651,32 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
+    public function deleteNaverpayByAdmin(
+        $changerId,
+        $userId,
+        $naverpayId
+    ) {
+        $result = [ 'success' => false ];
+        try {
+            $resultNaverpay =
+                $this->post("naverpay/{$naverpayId}/delete", [
+                    'changer_id' => $changerId,
+                    'user_id' => $userId,
+                    'force' => true
+                ]);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['from'] = 'naverpay';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $result['success'] = true;
+        return $result;
+    }
+
     public function addBankTransfer($changerId, $userId, $name)
     {
         $result['success'] = false;
