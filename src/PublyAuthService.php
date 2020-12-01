@@ -382,21 +382,21 @@ class PublyAuthService extends BaseApiService {
 
     public function initializeUserNotificationStatus($userId)
     {
-        return $this->put("/user/{$userId}/initialize_notification_status");
+        return $this->put("user/{$userId}/initialize_notification_status");
     }
 
     public function getUserNotificationStatus($userId, $filterArray = [])
     {
-        return $this->get("/user/{$userId}/notification_status", $filterArray);
+        return $this->get("user/{$userId}/notification_status", $filterArray);
     }
 
     public function updateOrCreateUserNotificationStatus($userId, $notificationStatus)
     {
-        return $this->put("/user/{$userId}/notification_status", ['notification_status' => $notificationStatus]);
+        return $this->put("user/{$userId}/notification_status", ['notification_status' => $notificationStatus]);
     }
 
     public function findUserNotificationStatus($filterArray = [])
     {
-        return $this->get("/notification_status", $filterArray);
+        return $this->get("user_notification_status", $filterArray);
     }
 }
