@@ -1189,9 +1189,13 @@ class PublyExtraService extends BaseApiService
         return $this->post("content_group", $inputs);
     }
 
-    public function deleteContentGroup($contentGroupId)
+    public function deleteContentGroup($changerId, $contentGroupId)
     {
-        return $this->post("content_group/{$contentGroupId}/delete");
+        $inputs = [
+            'changer_id' => $changerId
+        ];
+
+        return $this->post("content_group/{$contentGroupId}/delete", $inputs);
     }
 
     public function updateContentGroup($contentGroupId, $title)
