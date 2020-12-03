@@ -2766,7 +2766,7 @@ class PublyPaymentService extends BaseApiService
             [
                 'action' => 'change_payment_method',
                 'pg_type' => PublyPaymentService::PAYMENT_TYPE_NAVERPAY,
-                '$naverpay_id' => $naverpayId
+                'naverpay_id' => $naverpayId
             ]
         );
 
