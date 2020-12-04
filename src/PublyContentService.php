@@ -115,6 +115,9 @@ class PublyContentService extends BaseApiService
     const GUIDE_ITEM_TYPE_SET = 1;
     const GUIDE_ITEM_TYPE_CONTENT = 2;
 
+    const WRITER_TYPE_AUTHOR = 1;
+    const WRITER_TYPE_CONTENT_PROVIDER = 6;
+
     public function __construct($domain)
     {
         parent::__construct();
