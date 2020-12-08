@@ -1944,7 +1944,8 @@ class PublyPaymentService extends BaseApiService
             $paymentMethodIdName,
             $paymentMethodId,
             //            true,
-            ''
+            '',
+            $installmentMonth
         );
 
         if (!$resultPayment['success']) {
@@ -2092,6 +2093,7 @@ class PublyPaymentService extends BaseApiService
         $password,
         $planId,
         $price,
+        $installmentMonth,
         $useReferralPlanIfPossible
     ) {
         $result = [ 'success' => false ];
@@ -2146,7 +2148,9 @@ class PublyPaymentService extends BaseApiService
             'credit_card_id',
             $creditCardId,
             //            true,
-            '');
+            '',
+            $installmentMonth
+        );
 
         if (!$resultPayment['success']) {
             $result['success'] = false;
@@ -2249,7 +2253,8 @@ class PublyPaymentService extends BaseApiService
         $pgType,
         $paymentMethodIdName,
         $paymentMethodId,
-        $note
+        $note,
+        $installmentMonth = null
     ) {
         $result = [ 'success' => false ];
         try {
@@ -2262,7 +2267,8 @@ class PublyPaymentService extends BaseApiService
                     $paymentMethodIdName => $paymentMethodId,
                     'immediate' => true,
                     'note' => $note,
-                    'use_point' => static::USE_POINT_ON_SUBSCRIPTION
+                    'use_point' => static::USE_POINT_ON_SUBSCRIPTION,
+                    'installment_month' => $installmentMonth
                 ]);
         } catch (ResponseException $e) {
             $result['success'] = false;
