@@ -2912,7 +2912,7 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
-    public function changeSubscriptionPaymentMethod($changerId, $paymentId, $paymentMethodId, $paymentMethodIdName)
+    public function changeSubscriptionPaymentMethod($changerId, $paymentId, $paymentMethodId, $paymentMethodIdName, $installmentMonth)
     {
         $pgType = null;
         if ($paymentMethodIdName == 'credit_card_id') {
@@ -2927,7 +2927,8 @@ class PublyPaymentService extends BaseApiService
             [
                 'action' => 'change_payment_method',
                 'pg_type' => $pgType,
-                $paymentMethodIdName => $paymentMethodId
+                $paymentMethodIdName => $paymentMethodId,
+                'installment_month' => $installmentMonth
             ]
         );
 
@@ -2951,8 +2952,9 @@ class PublyPaymentService extends BaseApiService
         $expireYear,
         $expireMonth,
         $id,
-        $password)
-    {
+        $password,
+        $installmentMonth
+    ) {
         $resultCreditCard = $this->addCreditCard2(
             $changerId,
             $userId,
@@ -2978,7 +2980,8 @@ class PublyPaymentService extends BaseApiService
             [
                 'action' => 'change_payment_method',
                 'pg_type' => PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
-                'credit_card_id' => $creditCard['id']
+                'credit_card_id' => $creditCard['id'],
+                'installment_month' => $installmentMonth
             ]);
 
         if (!$resultPayment['success']) {
