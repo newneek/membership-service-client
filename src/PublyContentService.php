@@ -3181,6 +3181,6 @@ class PublyContentService extends BaseApiService
 
     public function notifyPageView($pageType, $pageId)
     {
-        return $this->post("page_view/{$pageType}/${pageId}");
+        return $this->post("page_view/{$pageType}/{$pageId}");
     }
 }
