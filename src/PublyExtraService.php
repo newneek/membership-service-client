@@ -669,6 +669,51 @@ class PublyExtraService extends BaseApiService
         return $this->put("featured_banner_item/{$featuredBannerItemId}", $inputs);
     }
 
+    public function createFeaturedBannerItem3(
+        $changerId,
+        $note,
+        $type,
+        $payload,
+        $imageUrl,
+        $isVisibleToSubscription,
+        $category
+    ) {
+        $inputs = [
+            'changer_id' => $changerId,
+            'note' => $note,
+            'type' => $type,
+            'payload' => $payload,
+            'image_url' => $imageUrl,
+            'is_visible_to_subscription' => $isVisibleToSubscription,
+            'category' => $category
+        ];
+
+        return $this->post("featured_banner_item", $inputs);
+    }
+
+    public function updateFeaturedBannerItem3(
+        $changerId,
+        $featuredBannerItemId,
+        $note,
+        $type,
+        $payload,
+        $imageUrl,
+        $isVisibleToSubscription,
+        $category
+    ) {
+        $inputs = [
+            'changer_id' => $changerId,
+            'note' => $note,
+            'type' => $type,
+            'payload' => $payload,
+            'image_url' => $imageUrl,
+            'is_visible_to_subscription' => $isVisibleToSubscription,
+            'category' => $category
+        ];
+
+        return $this->put("featured_banner_item/{$featuredBannerItemId}", $inputs);
+    }
+
     public function updateFeaturedBannerItemOrder($changerId, $featuredBannerItemIds)
     {
         return $this->put("featured_banner_item/update_order", [
