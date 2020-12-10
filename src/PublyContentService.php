@@ -3188,4 +3188,18 @@ class PublyContentService extends BaseApiService
     {
         return $this->post("page_view_count/{$pageType}/{$pageId}");
     }
+
+    public function getProjectDescriptions($filterArray = [])
+    {
+        return $this->get("project_description", $filterArray);
+    }
+
+    public function updateOrCreateProjectDescriptions($projectId, $descriptionType, $description)
+    {
+        $inputs = [
+            'description' => $description
+        ];
+
+        return $this->put("project_description/{$projectId}/{$descriptionType}", $inputs);
+    }
 }
