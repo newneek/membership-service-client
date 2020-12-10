@@ -118,6 +118,10 @@ class PublyContentService extends BaseApiService
     const WRITER_TYPE_AUTHOR = 1;
     const WRITER_TYPE_CONTENT_PROVIDER = 6;
 
+    const PROJECT_DESCRIPTION_TYPE_SUMMARY = 1;
+    const PROJECT_DESCRIPTION_TYPE_CURRICULUM = 2;
+    const PROJECT_DESCRIPTION_TYPE_FAQ = 3;
+
     public function __construct($domain)
     {
         parent::__construct();
