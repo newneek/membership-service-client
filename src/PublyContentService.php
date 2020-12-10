@@ -3198,9 +3198,10 @@ class PublyContentService extends BaseApiService
         return $this->get("project_description", $filterArray);
     }
 
-    public function updateOrCreateProjectDescriptions($projectId, $descriptionType, $description)
+    public function updateOrCreateProjectDescriptions($changerId, $projectId, $descriptionType, $description)
     {
         $inputs = [
+            'changer_id' => $changerId,
             'description' => $description
         ];
 
