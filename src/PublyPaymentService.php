@@ -3925,4 +3925,9 @@ class PublyPaymentService extends BaseApiService
 
         return $this->post("naverpay_difference/result_batch", $inputs);
     }
+
+    public function getCreditCardFreeInterestInstallments()
+    {
+        return $this->get("credit_card/free_interests_installments");
+    }
 }
