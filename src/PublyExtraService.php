@@ -437,6 +437,13 @@ class PublyExtraService extends BaseApiService
         return $this->get("marketing_set_review/set/{$setId}");
     }
 
+    public function getMarketingSetReviewsBySetIdWithPagination($setId, $page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("marketing_set_review/set/{$setId}", $filterArray);
+    }
+
     public function getMarketingSetReviewsBySetIds($setIds, $filterArray = [])
     {
         $filterArray['ids'] = implode(',', $setIds);
