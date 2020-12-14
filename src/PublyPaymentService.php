@@ -2334,6 +2334,7 @@ class PublyPaymentService extends BaseApiService
         $subscriptionId,
         $paymentMethodId,
         $paymentMethodIdName,
+        $installmentMonth,
         $force = false
     ) {
 
@@ -2350,7 +2351,8 @@ class PublyPaymentService extends BaseApiService
             [
                 'action' => 'change_payment_method',
                 'pg_type' => $pgType,
-                $paymentMethodIdName => $paymentMethodId
+                $paymentMethodIdName => $paymentMethodId,
+                'installment_month' => $installmentMonth
             ]
         );
 
