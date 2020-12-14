@@ -1911,118 +1911,7 @@ class PublyPaymentService extends BaseApiService
             'comment' => $comment ]);
     }
 
-    public function subscriptionAndPay($changerId, $userId, $creditCardId, $planId, $price)
-    {
-        $result = [ 'success' => false ];
-
-        // subscription
-        $resultSubscription = $this->subscription(
-            $changerId,
-            $userId,
-            $planId,
-            $price
-        );
-
-        if (!$resultSubscription['success']) {
-            $result['success'] = false;
-            $result['from'] = 'subscription';
-            $result['error_code'] = $resultSubscription['error_code'];
-            $result['message'] = $resultSubscription['message'];
-            return $result;
-        }
-
-        $subscription = $resultSubscription['item'];
-        $result['subscription'] = $subscription;
-
-        // payment
-        $resultPayment = $this->paySubscription(
-            $changerId,
-            $userId,
-            $subscription['id'],
-            static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
-            'credit_card_id',
-            $creditCardId,
-            //            true,
-            '');
-
-        if (!$resultPayment['success']) {
-            $result['success'] = false;
-            $result['from'] = 'payment';
-            $result['error_code'] = $resultPayment['error_code'];
-            $result['message'] = $resultPayment['message'];
-
-            return $result;
-        }
-
-        $payment = $resultPayment['item'];
-
-        $subscriptionResult = $this->get("subscription/{$subscription['id']}");
-        $subscription = $subscriptionResult['success']['data'];
-
-        $result['success'] = true;
-        $result['subscription'] = $subscription;
-        $result['payment'] = $payment;
-
-        return $result;
-    }
-
-    public function subscriptionAndPay2($changerId, $userId, $creditCardId, $planId, $price, $useReferralPlanIfPossible)
-    {
-        $result = [ 'success' => false ];
-
-        // subscription
-        $resultSubscription = $this->subscription2(
-            $changerId,
-            $userId,
-            $planId,
-            $price,
-            $useReferralPlanIfPossible
-        );
-
-        if (!$resultSubscription['success']) {
-            $result['success'] = false;
-            $result['from'] = 'subscription';
-            $result['error_code'] = $resultSubscription['error_code'];
-            $result['message'] = $resultSubscription['message'];
-            return $result;
-        }
-
-        $subscription = $resultSubscription['item'];
-        $result['subscription'] = $subscription;
-
-        // payment
-        $resultPayment = $this->paySubscription(
-            $changerId,
-            $userId,
-            $subscription['id'],
-            static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
-            'credit_card_id',
-            $creditCardId,
-            //            true,
-            '');
-
-        if (!$resultPayment['success']) {
-            $result['success'] = false;
-            $result['from'] = 'payment';
-            $result['error_code'] = $resultPayment['error_code'];
-            $result['message'] = $resultPayment['message'];
-
-            return $result;
-        }
-
-        $payment = $resultPayment['item'];
-
-        $subscriptionResult = $this->get("subscription/{$subscription['id']}");
-        $subscription = $subscriptionResult['success']['data'];
-
-        $result['success'] = true;
-        $result['subscription'] = $subscription;
-        $result['payment'] = $payment;
-
-        return $result;
-    }
-
-    public function subscriptionAndPay3($changerId, $userId, $paymentMethodId, $paymentMethodIdName, $pgType, $planId, $price, $useReferralPlanIfPossible)
+    public function subscriptionAndPay3($changerId, $userId, $paymentMethodId, $paymentMethodIdName, $pgType, $planId, $price, $installmentMonth, $useReferralPlanIfPossible)
     {
         $result = [ 'success' => false ];
 
@@ -2055,7 +1944,8 @@ class PublyPaymentService extends BaseApiService
             $paymentMethodIdName,
             $paymentMethodId,
             //            true,
-            ''
+            '',
+            $installmentMonth
         );
 
         if (!$resultPayment['success']) {
@@ -2076,89 +1966,6 @@ class PublyPaymentService extends BaseApiService
         $result['subscription'] = $subscription;
         $result['payment'] = $payment;
 
-        return $result;
-    }
-
-    public function addCreditCardAndSubscriptionAndPay($changerId,
-                                                       $userId,
-                                                       $creditCardNumber,
-                                                       $expireYear,
-                                                       $expireMonth,
-                                                       $id,
-                                                       $password,
-                                                       $planId,
-                                                       $price)
-    {
-        $result = [ 'success' => false ];
-
-        // add credit card
-        $resultCreditCard = $this->addCreditCard(
-            $userId,
-            $creditCardNumber,
-            $expireYear,
-            $expireMonth,
-            $id,
-            $password);
-
-        if (!$resultCreditCard['success']) {
-            $result['success'] = false;
-            $result['from'] = 'credit_card';
-            $result['error_code'] = $resultCreditCard['error_code'];
-            $result['message'] = $resultCreditCard['message'];
-            return $result;
-        }
-
-        $creditCard = $resultCreditCard['item'];
-        $creditCardId = $creditCard['id'];
-        $result['creditCard'] = $creditCard;
-
-        // subscription
-        $resultSubscription= $this->subscription(
-            $changerId,
-            $userId,
-            $planId,
-            $price
-        );
-
-        if (!$resultSubscription['success']) {
-            $result['success'] = false;
-            $result['from'] = 'subscription';
-            $result['error_code'] = $resultSubscription['error_code'];
-            $result['message'] = $resultSubscription['message'];
-            return $result;
-        }
-
-        $subscription = $resultSubscription['item'];
-        $result['subscription'] = $subscription;
-
-        // payment
-        $resultPayment = $this->paySubscription(
-            $changerId,
-            $userId,
-            $subscription['id'],
-            static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
-            'credit_card_id',
-            $creditCardId,
-            //            true,
-            '');
-
-        if (!$resultPayment['success']) {
-            $result['success'] = false;
-            $result['from'] = 'payment';
-            $result['error_code'] = $resultPayment['error_code'];
-            $result['message'] = $resultPayment['message'];
-
-            return $result;
-        }
-
-        $payment = $resultPayment['item'];
-        $result['payment'] = $payment;
-
-        $subscriptionResult = $this->get("subscription/{$subscription['id']}", []);
-        $subscription = $subscriptionResult['success']['data'];
-        $result['subscription'] = $subscription; // refresh subscription after payment
-
-        $result['success'] = true;
         return $result;
     }
 
@@ -2286,6 +2093,7 @@ class PublyPaymentService extends BaseApiService
         $password,
         $planId,
         $price,
+        $installmentMonth,
         $useReferralPlanIfPossible
     ) {
         $result = [ 'success' => false ];
@@ -2340,7 +2148,9 @@ class PublyPaymentService extends BaseApiService
             'credit_card_id',
             $creditCardId,
             //            true,
-            '');
+            '',
+            $installmentMonth
+        );
 
         if (!$resultPayment['success']) {
             $result['success'] = false;
@@ -2443,7 +2253,8 @@ class PublyPaymentService extends BaseApiService
         $pgType,
         $paymentMethodIdName,
         $paymentMethodId,
-        $note
+        $note,
+        $installmentMonth = null
     ) {
         $result = [ 'success' => false ];
         try {
@@ -2456,7 +2267,8 @@ class PublyPaymentService extends BaseApiService
                     $paymentMethodIdName => $paymentMethodId,
                     'immediate' => true,
                     'note' => $note,
-                    'use_point' => static::USE_POINT_ON_SUBSCRIPTION
+                    'use_point' => static::USE_POINT_ON_SUBSCRIPTION,
+                    'installment_month' => $installmentMonth
                 ]);
         } catch (ResponseException $e) {
             $result['success'] = false;
@@ -2700,6 +2512,7 @@ class PublyPaymentService extends BaseApiService
         $paymentId,
         $paymentMethodId,
         $paymentMethodIdName,
+        $installmentMonth,
         $force = false
     ) {
         $pgType = null;
@@ -2715,7 +2528,8 @@ class PublyPaymentService extends BaseApiService
             [
                 'action' => 'change_payment_method',
                 'pg_type' => $pgType,
-                $paymentMethodIdName => $paymentMethodId
+                $paymentMethodIdName => $paymentMethodId,
+                'installment_month' => $installmentMonth
             ]
         );
 
@@ -2804,17 +2618,19 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
-    public function addCreditCardAndRecoverSubscription($changerId,
-                                                        $userId,
-                                                        $subscriptionId,
-                                                        $paymentId,
-                                                        $creditCardNumber,
-                                                        $expireYear,
-                                                        $expireMonth,
-                                                        $id,
-                                                        $password,
-                                                        $force = false)
-    {
+    public function addCreditCardAndRecoverSubscription(
+        $changerId,
+        $userId,
+        $subscriptionId,
+        $paymentId,
+        $creditCardNumber,
+        $expireYear,
+        $expireMonth,
+        $id,
+        $password,
+        $installmentMonth,
+        $force = false
+    ) {
         $resultCreditCard = $this->addCreditCard2(
             $changerId,
             $userId,
@@ -2841,7 +2657,8 @@ class PublyPaymentService extends BaseApiService
             [
                 'action' => 'change_payment_method',
                 'pg_type' => PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
-                'credit_card_id' => $creditCard['id']
+                'credit_card_id' => $creditCard['id'],
+                'installment_month' => $installmentMonth
             ]);
 
         if (!$resultPayment['success']) {
@@ -3098,7 +2915,7 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
-    public function changeSubscriptionPaymentMethod($changerId, $paymentId, $paymentMethodId, $paymentMethodIdName)
+    public function changeSubscriptionPaymentMethod($changerId, $paymentId, $paymentMethodId, $paymentMethodIdName, $installmentMonth)
     {
         $pgType = null;
         if ($paymentMethodIdName == 'credit_card_id') {
@@ -3113,7 +2930,8 @@ class PublyPaymentService extends BaseApiService
             [
                 'action' => 'change_payment_method',
                 'pg_type' => $pgType,
-                $paymentMethodIdName => $paymentMethodId
+                $paymentMethodIdName => $paymentMethodId,
+                'installment_month' => $installmentMonth
             ]
         );
 
@@ -3137,8 +2955,9 @@ class PublyPaymentService extends BaseApiService
         $expireYear,
         $expireMonth,
         $id,
-        $password)
-    {
+        $password,
+        $installmentMonth
+    ) {
         $resultCreditCard = $this->addCreditCard2(
             $changerId,
             $userId,
@@ -3164,7 +2983,8 @@ class PublyPaymentService extends BaseApiService
             [
                 'action' => 'change_payment_method',
                 'pg_type' => PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
-                'credit_card_id' => $creditCard['id']
+                'credit_card_id' => $creditCard['id'],
+                'installment_month' => $installmentMonth
             ]);
 
         if (!$resultPayment['success']) {
@@ -4104,5 +3924,10 @@ class PublyPaymentService extends BaseApiService
         }
 
         return $this->post("naverpay_difference/result_batch", $inputs);
+    }
+
+    public function getCreditCardFreeInterestInstallments()
+    {
+        return $this->get("credit_card/free_interests_installments");
     }
 }
