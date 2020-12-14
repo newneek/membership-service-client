@@ -73,6 +73,11 @@ class PublyExtraService extends BaseApiService
         PublyExtraService::COMPLETE_READING_MESSAGE_TYPE_CONTENT => '챕터',
     ];
 
+    const STRING_FEATURED_BANNER_ITEM_CATEGORY = [
+        PublyExtraService::FEATURED_BANNER_ITEM_CATEGORY_HOME => '홈',
+        PublyExtraService::FEATURED_BANNER_ITEM_CATEGORY_ONAIR => '온에어'
+    ];
+
     public function __construct($domain)
     {
         parent::__construct();
