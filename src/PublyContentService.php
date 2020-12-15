@@ -3210,9 +3210,11 @@ class PublyContentService extends BaseApiService
     {
         $inputs = [
             'changer_id' => $changerId,
+            'project_id' => $projectId,
+            'description_type' => $descriptionType,
             'description' => $description
         ];
 
-        return $this->put("project_description/{$projectId}/{$descriptionType}", $inputs);
+        return $this->put("project_description", $inputs);
     }
 }
