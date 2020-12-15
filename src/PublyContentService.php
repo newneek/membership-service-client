@@ -3158,7 +3158,7 @@ class PublyContentService extends BaseApiService
 
     public function getSetReviewCache($setId)
     {
-        return $this->get('set_review_cache/{$setId}');
+        return $this->get("set_review_cache/{$setId}");
     }
 
     public function refreshSetReviewCache()
