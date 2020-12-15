@@ -122,6 +122,8 @@ class PublyContentService extends BaseApiService
     const PROJECT_DESCRIPTION_TYPE_CURRICULUM = 2;
     const PROJECT_DESCRIPTION_TYPE_FAQ = 3;
 
+    const PAGE_VIEW_COUNT_TYPE_ONAIR_INDEX = 1;
+
     public function __construct($domain)
     {
         parent::__construct();
