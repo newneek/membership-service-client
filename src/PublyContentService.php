@@ -3185,14 +3185,20 @@ class PublyContentService extends BaseApiService
         return $this->get("content/by_set_ids/count", $filterArray);
     }
 
-    public function getPageViewCount($pageType, $pageId)
+    public function getPageViewCount($pageType, $pageId, $filterArray = [])
     {
-        return $this->get("page_view_count/{$pageType}/{$pageId}");
+        $filterArray['page_type'] = implode(',', $pageType);
+        $filterArray['page_id'] = implode(',', $pageId);
+
+        return $this->get("page_view_count", $filterArray);
     }
 
-    public function incrementPageViewCount($pageType, $pageId)
+    public function incrementPageViewCount($pageType, $pageId, $filterArray = [])
     {
-        return $this->post("page_view_count/{$pageType}/{$pageId}");
+        $filterArray['page_type'] = implode(',', $pageType);
+        $filterArray['page_id'] = implode(',', $pageId);
+
+        return $this->post("page_view_count", $filterArray);
     }
 
     public function getProjectDescriptions($filterArray = [])
