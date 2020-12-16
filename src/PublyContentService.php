@@ -3195,8 +3195,8 @@ class PublyContentService extends BaseApiService
 
     public function incrementPageViewCount($pageType, $pageId, $filterArray = [])
     {
-        $filterArray['page_type'] = implode(',', $pageType);
-        $filterArray['page_id'] = implode(',', $pageId);
+        $filterArray['page_type'] = $pageType;
+        $filterArray['page_id'] = $pageId;
 
         return $this->post("page_view_count", $filterArray);
     }
