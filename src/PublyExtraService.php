@@ -44,6 +44,8 @@ class PublyExtraService extends BaseApiService
     const RECOMMEND_CONTENT_TYPE_TARGET_SEGMENT_STUDENT_AND_JOB_SEEKER = 6;
     const RECOMMEND_CONTENT_TYPE_TARGET_SEGMENT_MARKETER = 7;
 
+    const JOB_CATEGORY_MARKETER = 1;
+
     const STRING_COMPANY_TYPE = [
         PublyExtraService::COMPANY_TYPE_SMALL_AND_MEDIUM_SIZED_COMPANY => 'small-and-medium-sized-company',
         PublyExtraService::COMPANY_TYPE_LARGE_COMPANY => 'large-company',
