@@ -3932,4 +3932,34 @@ class PublyPaymentService extends BaseApiService
     {
         return $this->get("credit_card/free_interests_installments");
     }
+
+    public function createPlan($changerId, $name, $price, $settlementPrice, $note, $lengthMonth, $nextPlanId)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'name' => $name,
+            'price' => $price,
+            'settlement_price' => $settlementPrice,
+            'note' => $note,
+            'length_month' => $lengthMonth,
+            'next_plan_id' => $nextPlanId
+        ];
+
+        return $this->post("plan", $inputs);
+    }
+
+    public function updatePlan($changerId, $planId, $name, $price, $settlementPrice, $note, $lengthMonth, $nextPlanId)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'name' => $name,
+            'price' => $price,
+            'settlement_price' => $settlementPrice,
+            'note' => $note,
+            'length_month' => $lengthMonth,
+            'next_plan_id' => $nextPlanId
+        ];
+
+        return $this->put("plan/{$planId}", $inputs);
+    }
 }
