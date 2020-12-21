@@ -924,6 +924,7 @@ class PublyPaymentService extends BaseApiService
         $contentId,
         $rewardId,
         $price,
+        $installmentMonth,
         $userName,
         $userEmail,
         $userPhone,
@@ -963,7 +964,7 @@ class PublyPaymentService extends BaseApiService
         // 정상적으로 주문 되었음.
 
         // payment
-        $resultPayment = $this->pay2(
+        $resultPayment = $this->pay3(
             $changerId,
             $userId,
             $order['id'],
@@ -971,6 +972,7 @@ class PublyPaymentService extends BaseApiService
             'credit_card_id',
             $creditCardId,
             true,
+            $installmentMonth,
             '');
 
         if (!$resultPayment['success']) {
@@ -1074,6 +1076,7 @@ class PublyPaymentService extends BaseApiService
         $contentId,
         $rewardId,
         $price,
+        $installmentMonth,
         $userName,
         $userEmail,
         $userPhone,
@@ -1134,7 +1137,7 @@ class PublyPaymentService extends BaseApiService
         // 정상적으로 주문 되었음.
 
         // reserve payment
-        $resultPayment = $this->pay2(
+        $resultPayment = $this->pay3(
             $changerId,
             $userId,
             $order['id'],
@@ -1142,6 +1145,7 @@ class PublyPaymentService extends BaseApiService
             'credit_card_id',
             $creditCard['id'],
             true,
+            $installmentMonth,
             '');
 
         if (!$resultPayment['success']) {
@@ -1451,6 +1455,46 @@ class PublyPaymentService extends BaseApiService
                     'immediate' => $immediate,
                     'note' => $note,
                     'use_point' => static::USE_POINT_ON_ORDER
+                ]);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $result['success'] = true;
+        $result['item'] = $resultPayment['success']['data'];
+
+        return $result;
+    }
+
+    public function pay3(
+        $changerId,
+        $userId,
+        $orderId,
+        $pgType,
+        $paymentMethodIdName,
+        $paymentMethodId,
+        $immediate,
+        $installmentMonth,
+        $note
+    ) {
+        $result = [ 'success' => false ];
+        try {
+            $resultPayment =
+                $this->post('payment', [
+                    'changer_id' => $changerId,
+                    'user_id' => $userId,
+                    'order_id' => $orderId,
+                    'pg_type' => $pgType,
+                    $paymentMethodIdName => $paymentMethodId,
+                    'immediate' => $immediate,
+                    'note' => $note,
+                    'use_point' => static::USE_POINT_ON_ORDER,
+                    'installment_month' => $installmentMonth
                 ]);
         } catch (ResponseException $e) {
             $result['success'] = false;
