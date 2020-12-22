@@ -2,9 +2,9 @@
 
 namespace Publy\ServiceClient;
 
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Publy\ServiceClient\Api\BaseApiService;
-use GuzzleHttp\Client;
 
 class OneSignalService extends BaseApiService
 {
@@ -49,12 +49,19 @@ class OneSignalService extends BaseApiService
             $fields['delivery_time_of_day'] = $sendTime;
         }
 
+        // TODO : sendPushWithRetry 테스트 완료 후, sendPushWithRetry 를 사용하도록 수정해야함
         $retryCount = 3;
         $client = new Client();
         while ($retryCount > 0) {
             try {
-                $response = $client->request('POST', $this->apiUrl . 'notifications', ['headers' => $headers,
-                                                                     'json' => $fields]);
+                $response = $client->request(
+                    'POST',
+                    $this->apiUrl . 'notifications',
+                    [
+                        'headers' => $headers,
+                        'json' => $fields
+                    ]
+                );
                 return json_decode($response->getBody()->getContents(), true);
             } catch (\Exception $e) {
                 $retryCount--;
@@ -63,7 +70,64 @@ class OneSignalService extends BaseApiService
                 }
             }
         }
+    }
 
+    public function sendPushAfter($userIds, $title, $msg, $sendTime, $data = null){
+        $headers = [
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Basic ' . $this->appKey
+        ];
+
+        $contents = array(
+            "ko" => $msg,
+            "en" => $msg
+        );
+
+        $headings = array(
+            "ko" => $title,
+            "en" => $title
+        );
+
+        $fields = array(
+            'app_id' => $this->appId,
+            'include_external_user_ids' => $userIds,
+            'contents' => $contents,
+            'headings' => $headings,
+            'data' => $data
+        );
+
+        $fields['send_after'] = $sendTime;
+
+        try {
+            return $this->sendPushWithRetry($headers, $fields);
+        } catch (\Exception $e) {
+            report_async_error($e);
+            return respond_internal_error();
+        }
+    }
+
+    private function sendPushWithRetry($headers, $fields)
+    {
+        $retryCount = 3;
+        $client = new Client();
+        while ($retryCount > 0) {
+            try {
+                $response = $client->request(
+                    'POST',
+                    $this->apiUrl . 'notifications',
+                    [
+                        'headers' => $headers,
+                        'json' => $fields
+                    ]
+                );
+                return json_decode($response->getBody()->getContents(), true);
+            } catch (\Exception $e) {
+                $retryCount--;
+                if ($retryCount == 0) {
+                    throw $e;
+                }
+            }
+        }
     }
 
     public function getUsers($offset){
