@@ -96,10 +96,7 @@ class OneSignalService extends BaseApiService
             'data' => $data
         );
 
-        if (isset($sendTime)) {
-            $fields['send_after'] = $sendTime;
-            $fields['delayed_option'] = 'timezone';
-        }
+        $fields['send_after'] = $sendTime;
 
         try {
             return $this->sendPushWithRetry($headers, $fields);
