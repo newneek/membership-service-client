@@ -1291,4 +1291,19 @@ class PublyExtraService extends BaseApiService
 
         return $this->put("content_group/set/{$setId}", $inputs);
     }
+
+    public function getUserPushNotificationSchedules($filterArray = [])
+    {
+        return $this->get("user_push_notification_schedule", $filterArray);
+    }
+
+    public function createUserPushNotificationSchedules($filterArray = [])
+    {
+        return $this->post("user_push_notification_schedule", $filterArray);
+    }
+
+    public function updateUserPushNotificationSchedules($userId, $filterArray = [])
+    {
+        return $this->put("user_push_notification_schedule/user/{$userId}", $filterArray);
+    }
 }
