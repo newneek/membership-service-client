@@ -3863,7 +3863,7 @@ class PublyPaymentService extends BaseApiService
             'note' => $note
         ];
 
-        return $this->post("voucher_option/store_voucher_options_by_admin", $inputs);
+        return $this->post("voucher_option/store_voucher_options", $inputs);
     }
 
     public function getVouchers($page = 1, $limit = 10, $filterArray = [])
