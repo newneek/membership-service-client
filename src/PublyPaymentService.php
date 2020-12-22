@@ -3777,6 +3777,13 @@ class PublyPaymentService extends BaseApiService
         return $this->get("voucher_discount_rate", $filterArray);
     }
 
+    public function getVoucherOptions($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("voucher_option", $filterArray);
+    }
+
     public function getVoucherOptionsByUser($userId, $filterArray = [])
     {
         return $this->get("voucher_option/user/{$userId}", $filterArray);
@@ -3844,6 +3851,19 @@ class PublyPaymentService extends BaseApiService
             'quantity' => $quantity,
             'note' => $note
         ]);
+    }
+
+    public function createVoucherOptions($changerId, $userIds, $planId, $quantity, $note)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_ids' => implode(',', $userIds),
+            'plan_id' => $planId,
+            'quantity' => $quantity,
+            'note' => $note
+        ];
+
+        return $this->post("voucher_option/store_voucher_options", $inputs);
     }
 
     public function getVouchers($page = 1, $limit = 10, $filterArray = [])
