@@ -3846,6 +3846,19 @@ class PublyPaymentService extends BaseApiService
         ]);
     }
 
+    public function createVoucherOptions($changerId, $userIds, $planId, $quantity, $note)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_ids' => implode(',', $userIds),
+            'plan_id' => $planId,
+            'quantity' => $quantity,
+            'note' => $note
+        ];
+
+        return $this->post("voucher_option/store_voucher_options_by_admin", $inputs);
+    }
+
     public function getVouchers($page = 1, $limit = 10, $filterArray = [])
     {
         $filterArray['page'] = $page;
