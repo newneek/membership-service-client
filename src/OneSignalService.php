@@ -96,7 +96,11 @@ class OneSignalService extends BaseApiService
             'data' => $data
         );
 
-        $fields['send_after'] = $sendTime;
+        // 예약 시간이 미래일 경우에만 시간을 설정
+        // 현재일 경우 null 값으로 넘겨준다.
+        if ($this->checkIsFuture($sendTime)) {
+            $fields['send_after'] = $sendTime;
+        }
 
         try {
             return $this->sendPushWithRetry($headers, $fields);
@@ -104,6 +108,12 @@ class OneSignalService extends BaseApiService
             report_async_error($e);
             return respond_internal_error();
         }
+    }
+
+    private function checkIsFuture($sendTimeString)
+    {
+        $sendTime = \Carbon\Carbon::createFromTimeString($sendTimeString);
+        return $sendTime->isFuture();
     }
 
     private function sendPushWithRetry($headers, $fields)
