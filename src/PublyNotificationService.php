@@ -365,4 +365,19 @@ class PublyNotificationService extends BaseApiService
         ]);
     }
 
+    public function eventRoutineOnboardingCompleted($userId)
+    {
+        $inputs = [
+            'user_id' => $userId,
+        ];
+        return $this->post("/event/routine_onboarding_completed", $inputs);
+    }
+
+    public function eventUserRoutineUpdated($userId)
+    {
+        $inputs = [
+            'user_id' => $userId,
+        ];
+        return $this->post("/event/user_routine_updated", $inputs);
+    }
 }
