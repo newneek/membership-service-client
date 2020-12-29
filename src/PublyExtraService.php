@@ -1307,11 +1307,12 @@ class PublyExtraService extends BaseApiService
         return $this->put("user_push_notification_schedule/user/{$userId}", $filterArray);
     }
 
-    public function sendPushForRoutineUsers($targetDayOfTheWeek, $targetTime)
+    public function sendPushForRoutineUsers($targetDayOfTheWeek, $targetTime, $sendAfter)
     {
         $inputs = [
             'targetDayOfTheWeek' => $targetDayOfTheWeek,
             'targetTime' => $targetTime,
+            'sendAfter' => $sendAfter
         ];
 
         return $this->post("job/reserve_scheduled_push_notifications", $inputs);
