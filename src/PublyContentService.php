@@ -3217,4 +3217,9 @@ class PublyContentService extends BaseApiService
 
         return $this->put("project_description", $inputs);
     }
+
+    public function getUserContentProgressCountsGroupBySetAndUser($filterArray = [])
+    {
+        return $this->get("user_content_progress/count_group_by_set_and_user", $filterArray);
+    }
 }
