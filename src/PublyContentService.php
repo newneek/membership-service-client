@@ -2292,7 +2292,7 @@ class PublyContentService extends BaseApiService
     {
         $filterArray['page'] = $page;
         $filterArray['limit'] = $limit;
-        $filterArray['user_ids'] = $userIds;
+        $filterArray['user_ids'] = implode(',', $userIds);
         return $this->get("package_reader/", $filterArray);
     }
 
