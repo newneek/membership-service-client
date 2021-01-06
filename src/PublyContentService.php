@@ -3027,7 +3027,7 @@ class PublyContentService extends BaseApiService
             'occupation_types' => $occupationTypes
         ];
 
-        return $this->post("set_occupation_type/occupation_types", $inputs);
+        return $this->post("set_occupation_type/create_set_occupation_types", $inputs);
     }
 
     public function deleteSetOccupationTypes($setId, $occupationTypes)
@@ -3037,7 +3037,7 @@ class PublyContentService extends BaseApiService
             'occupation_types' => $occupationTypes
         ];
 
-        return $this->post("set_occupation_type/occupation_types", $inputs);
+        return $this->post("set_occupation_type/delete_set_occupation_types", $inputs);
     }
 
     public function getSetOccupationTypesBySetId($setId, $filterArray = [])
