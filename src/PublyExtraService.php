@@ -25,6 +25,7 @@ class PublyExtraService extends BaseApiService
     const FEATURED_BANNER_ITEM_CATEGORY_HOME = 1;
     const FEATURED_BANNER_ITEM_CATEGORY_ONAIR = 2;
 
+    // deprecated
     const COMPANY_TYPE_SMALL_AND_MEDIUM_SIZED_COMPANY = 1;
     const COMPANY_TYPE_LARGE_COMPANY = 2;
     const COMPANY_TYPE_START_UP = 3;
@@ -32,9 +33,16 @@ class PublyExtraService extends BaseApiService
     const COMPANY_TYPE_ETC = 5;
     const COMPANY_TYPE_FREELANCER = 6;
 
+    // deprecated
     const MANAGEMENT_LEVEL_HANDS_ON_WORKER = 1;
     const MANAGEMENT_LEVEL_MANAGER = 2;
     const MANAGEMENT_LEVEL_DECISION_MAKER = 3;
+
+    // TODO 마이그레이션 코드 삭제, 타깃 직책 + 경력
+    const CAREER_TYPE_HANDS_ON_WORKER_JUNIOR = 1;
+    const CAREER_TYPE_HANDS_ON_WORKER_SENIOR = 2;
+    const CAREER_TYPE_MANAGER = 3;
+    const CAREER_TYPE_DECISION_MAKER = 4;
 
     // (직업) 직책 소속 통합
     const OCCUPATION_TYPE_STUDENT = 1;
