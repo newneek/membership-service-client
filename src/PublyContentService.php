@@ -3020,6 +3020,38 @@ class PublyContentService extends BaseApiService
         return $this->get("set_career_type/by_set_ids", $filterArray);
     }
 
+    public function createSetOccupationTypes($setId, $occupationTypes)
+    {
+        $inputs = [
+            'set_id' => $setId,
+            'occupation_types' => $occupationTypes
+        ];
+
+        return $this->post("set_occupation_type/occupation_types", $inputs);
+    }
+
+    public function deleteSetOccupationTypes($setId, $occupationTypes)
+    {
+        $inputs = [
+            'set_id' => $setId,
+            'occupation_types' => $occupationTypes
+        ];
+
+        return $this->post("set_occupation_type/occupation_types", $inputs);
+    }
+
+    public function getSetOccupationTypesBySetId($setId, $filterArray = [])
+    {
+        return $this->get("set_occupation_type/set/{$setId}", $filterArray);
+    }
+
+    public function getSetOccupationTypesBySetIds($setIds, $filterArray = [])
+    {
+        $filterArray['set_ids'] = implode(',', $setIds);
+
+        return $this->get("set_occupation_type/by_set_ids", $filterArray);
+    }
+
     public function createSetJobCategories($setId, $jobCategoryIds)
     {
         $inputs = [
