@@ -977,6 +977,7 @@ class PublyExtraService extends BaseApiService
         return $this->post('user_segment', $inputs);
     }
 
+    // TODO deprecated, use updateUserSegmentV2
     public function updateUserSegment(
         $changerId,
         $userId,
@@ -997,6 +998,18 @@ class PublyExtraService extends BaseApiService
         return $this->put('user_segment', $inputs);
     }
 
+    public function updateUserSegmentV2(
+        $changerId,
+        $userId,
+        $inputs = [])
+    {
+        $inputs['changer_id'] = $changerId;
+        $inputs['user_id'] = $userId;
+
+        return $this->put('user_segment', $inputs);
+    }
+
+    // TODO deprecated, use updateUserSegmentV2
     public function updateUserSegmentCompanyType($changerId, $userId, $companyType)
     {
         $inputs = [
@@ -1008,6 +1021,7 @@ class PublyExtraService extends BaseApiService
         return $this->put('user_segment', $inputs);
     }
 
+    // TODO deprecated, use updateUserSegmentV2
     public function updateUserSegmentCareer($changerId, $userId, $managementLevel, $careerYear)
     {
         $inputs = [
@@ -1020,6 +1034,7 @@ class PublyExtraService extends BaseApiService
         return $this->put('user_segment', $inputs);
     }
 
+    // TODO deprecated, use updateUserSegmentV2
     public function updateUserSegmentJobCategory($changerId, $userId, $jobCategoryId)
     {
         $inputs = [
