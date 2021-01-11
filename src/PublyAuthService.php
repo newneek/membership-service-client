@@ -399,4 +399,11 @@ class PublyAuthService extends BaseApiService {
     {
         return $this->get("user_notification_status", $filterArray);
     }
+
+    public function getUserIdsByEmails($emails)
+    {
+        return $this->get("user/by_emails/id", [
+            'emails' => $emails
+        ]);
+    }
 }
