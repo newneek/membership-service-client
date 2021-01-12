@@ -3777,6 +3777,11 @@ class PublyPaymentService extends BaseApiService
         return $this->get("voucher_discount_rate", $filterArray);
     }
 
+    public function getVoucherOption($voucherOptionId)
+    {
+        return $this->get("voucher_option/{$voucherOptionId}");
+    }
+
     public function getVoucherOptions($page = 1, $limit = 10, $filterArray = [])
     {
         $filterArray['page'] = $page;
