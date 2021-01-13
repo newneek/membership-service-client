@@ -422,4 +422,11 @@ class PublyAuthService extends BaseApiService {
         $filterArray['last_used_at'] = \Carbon\Carbon::now();
         return $this->put("user_device", $filterArray);
     }
+
+    public function activateUserDevice($userId, $deviceId, $params = [])
+    {
+        $params['user_id'] = $userId;
+        $params['device_id'] = $deviceId;
+        return $this->put("user_device/activate", $params);
+    }
 }
