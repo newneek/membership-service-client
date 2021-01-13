@@ -420,6 +420,6 @@ class PublyAuthService extends BaseApiService {
         $filterArray['user_id'] = $userId;
         $filterArray['device_id'] = $deviceId;
         $filterArray['last_used_at'] = \Carbon\Carbon::now();
-        return $this->put("user_device/touch", $filterArray);
+        return $this->put("user_device", $filterArray);
     }
 }
