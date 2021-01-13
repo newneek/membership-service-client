@@ -3042,14 +3042,16 @@ class PublyContentService extends BaseApiService
 
     public function getSetOccupationTypesBySetId($setId, $filterArray = [])
     {
-        return $this->get("set_occupation_type/set/{$setId}", $filterArray);
+        $filterArray['set_id'] = $setId;
+
+        return $this->get("set_occupation_type", $filterArray);
     }
 
     public function getSetOccupationTypesBySetIds($setIds, $filterArray = [])
     {
         $filterArray['set_ids'] = implode(',', $setIds);
 
-        return $this->get("set_occupation_type/by_set_ids", $filterArray);
+        return $this->get("set_occupation_type", $filterArray);
     }
 
     public function createSetJobCategories($setId, $jobCategoryIds)
