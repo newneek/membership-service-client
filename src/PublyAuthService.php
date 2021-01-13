@@ -399,4 +399,26 @@ class PublyAuthService extends BaseApiService {
     {
         return $this->get("user_notification_status", $filterArray);
     }
+
+    public function findUserDeviceStatus($userId, $deviceId, $filterArray = [])
+    {
+        $filterArray['user_id'] = $userId;
+        $filterArray['device_id'] = $deviceId;
+        return $this->get("user_device_status", $filterArray);
+    }
+
+    public function updateOrCreateUserDeviceStatus($userId, $deviceId, $params = [])
+    {
+        $params['user_id'] = $userId;
+        $params['device_id'] = $deviceId;
+        return $this->put("user_device_status", $params);
+    }
+
+    public function updateUserDeviceStatusOnlyLastUsedAt($userId, $deviceId)
+    {
+        $filterArray = [];
+        $filterArray['user_id'] = $userId;
+        $filterArray['device_id'] = $deviceId;
+        return $this->put("user_device_status/touch", $filterArray);
+    }
 }
