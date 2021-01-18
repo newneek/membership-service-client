@@ -404,7 +404,13 @@ class PublyAuthService extends BaseApiService {
     {
         $filterArray['user_id'] = $userId;
         $filterArray['device_id'] = $deviceId;
-        return $this->get("user_device_status", $filterArray);
+        return $this->get("user_device", $filterArray);
+    }
+
+    public function findUserDeviceByUserId($userId, $filterArray = [])
+    {
+        $filterArray['user_id'] = $userId;
+        return $this->get("user_device", $filterArray);
     }
 
     public function updateOrCreateUserDevice($userId, $deviceId, $params = [])
