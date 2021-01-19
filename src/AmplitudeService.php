@@ -70,6 +70,31 @@ class AmplitudeService extends BaseApiService
         }
     }
 
+    public function sendBatchEvents($events)
+    {
+        $retryCount = 3;
+        while ($retryCount > 0) {
+            try {
+                $result = $this->get("httpapi",
+                    [
+                        'api_key' => $this->apiKey,
+                        'event' => json_encode($events)
+                    ]);
+                return $result;
+            } catch (ResponseException $e) {
+                // for any response exception, retry
+                if ($e->getCode() === 429) {
+                    // rate limit exceeded
+                    throw $e;
+                }
+                $retryCount--;
+                if ($retryCount == 0) {
+                    throw $e;
+                }
+            }
+        }
+    }
+
     public function revenue($userId, $revenueType, $eventType, $price, $productId, $insertId, $time, $eventProperties = null)
     {
         $retryCount = 3;
