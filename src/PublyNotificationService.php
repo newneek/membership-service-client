@@ -329,6 +329,12 @@ class PublyNotificationService extends BaseApiService
         ]);
     }
 
+    public function eventAmplitudeBatch($amplitudeEvents){
+        return $this->post("/amplitude/event_batch", [
+            'amplitude_events' => $amplitudeEvents,
+        ]);
+    }
+
     public function identifyAmplitude($userId, $userProperties){
         return $this->post('/amplitude/identify', [
             'user_id' => $userId,
