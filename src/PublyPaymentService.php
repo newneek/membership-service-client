@@ -4031,4 +4031,42 @@ class PublyPaymentService extends BaseApiService
 
         return $this->put("plan/{$planId}", $inputs);
     }
+
+    public function getCouponOption($couponOptionId)
+    {
+        return $this->get("coupon_option/{$couponOptionId}");
+    }
+
+    public function getCouponOptions($page, $limit, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+
+        return $this->get("coupon_option", $filterArray);
+    }
+
+    public function createCouponOption($name, $projectId, $discountPrice, $expireAt, $note)
+    {
+        $inputs = [
+            'name' => $name,
+            'project_id' => $projectId,
+            'discount_price' => $discountPrice,
+            'expire_at' => $expireAt,
+            'note' => $note
+        ];
+
+        return $this->post("coupon_option", $inputs);
+    }
+
+    public function updateCouponOption($couponOptionId, $name, $discountPrice, $expireAt, $note)
+    {
+        $inputs = [
+            'name' => $name,
+            'discount_price' => $discountPrice,
+            'expire_at' => $expireAt,
+            'note' => $note
+        ];
+
+        return $this->put("coupon_option/{$couponOptionId}", $inputs);
+    }
 }
