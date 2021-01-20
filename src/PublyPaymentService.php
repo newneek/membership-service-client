@@ -4045,6 +4045,11 @@ class PublyPaymentService extends BaseApiService
         return $this->get("coupon_option", $filterArray);
     }
 
+    public function getCouponOptionsByProject($projectId, $filterArray = [])
+    {
+        return $this->get("coupon_option/project/{$projectId}", $filterArray);
+    }
+
     public function createCouponOption($name, $projectId, $discountPrice, $expireAt, $note)
     {
         $inputs = [
