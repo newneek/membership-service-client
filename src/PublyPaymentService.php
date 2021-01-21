@@ -4102,4 +4102,13 @@ class PublyPaymentService extends BaseApiService
 
         return $this->post("coupon_v2", $inputs);
     }
+
+    public function updateCouponOptionIsActive($couponOptionId, $isActive)
+    {
+        $inputs = [
+            'is_active' => $isActive
+        ];
+
+        return $this->put("coupon_option/{$couponOptionId}", $inputs);
+    }
 }
