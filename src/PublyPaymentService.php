@@ -35,6 +35,10 @@ class PublyPaymentService extends BaseApiService
     const ORDER_STATUS_CONTENT_RETURNED = 11;
     const ORDER_STATUS_MAX = 12;
 
+    const COUPON_V2_STATUS_USABLE = 1;
+    const COUPON_V2_STATUS_USED = 2;
+    const COUPON_V2_STATUS_EXPIRED = 3;
+
     const STRING_PAYMENT_TYPE = [
         PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD => "Nicepay 신용카드",
         PublyPaymentService::PAYMENT_TYPE_ADMIN => "관리자 추가",
@@ -4030,5 +4034,102 @@ class PublyPaymentService extends BaseApiService
         ];
 
         return $this->put("plan/{$planId}", $inputs);
+    }
+
+    public function getCouponOption($couponOptionId)
+    {
+        return $this->get("coupon_option/{$couponOptionId}");
+    }
+
+    public function getCouponOptionByCode($code)
+    {
+        return $this->get("coupon_option/code/{$code}");
+    }
+
+
+    public function getCouponOptions($page, $limit, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+
+        return $this->get("coupon_option", $filterArray);
+    }
+
+    public function getCouponOptionsByProject($projectId, $filterArray = [])
+    {
+        return $this->get("coupon_option/project/{$projectId}", $filterArray);
+    }
+
+    public function createCouponOption($name, $projectId, $discountPrice, $expireAt, $note)
+    {
+        $inputs = [
+            'name' => $name,
+            'project_id' => $projectId,
+            'discount_price' => $discountPrice,
+            'expire_at' => $expireAt,
+            'note' => $note
+        ];
+
+        return $this->post("coupon_option", $inputs);
+    }
+
+    public function updateCouponOption($couponOptionId, $name, $discountPrice, $expireAt, $note)
+    {
+        $inputs = [
+            'name' => $name,
+            'discount_price' => $discountPrice,
+            'expire_at' => $expireAt,
+            'note' => $note
+        ];
+
+        return $this->put("coupon_option/{$couponOptionId}", $inputs);
+    }
+
+    public function getCouponsV2ByUserAndCouponOptionIds($userId, $couponOptionIds, $filterArray = [])
+    {
+        $filterArray['coupon_option_ids'] = implode(',', $couponOptionIds);
+
+        return $this->get("coupon_v2/user/{$userId}/by_coupon_option_ids", $filterArray);
+    }
+
+    public function createCouponV2($changerId, $userId, $couponOptionId)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'coupon_option_id' => $couponOptionId
+        ];
+
+        return $this->post("coupon_v2", $inputs);
+    }
+
+    public function updateCouponOptionIsActive($couponOptionId, $isActive)
+    {
+        $inputs = [
+            'is_active' => $isActive
+        ];
+
+        return $this->put("coupon_option/{$couponOptionId}", $inputs);
+    }
+
+    public function getCouponV2($couponV2Id)
+    {
+        return $this->get("coupon_v2/{$couponV2Id}");
+    }
+
+    public function updateCouponV2($changerId, $couponV2Id, $orderId, $status)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'status' => $status,
+            'order_id' => $orderId
+        ];
+
+        return $this->put("coupon_v2/{$couponV2Id}", $inputs);
+    }
+
+    public function getCouponV2sByOrder($orderId, $filterArray = [])
+    {
+        return $this->get("coupon_v2/order/{$orderId}", $filterArray);
     }
 }
