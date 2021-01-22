@@ -4127,4 +4127,9 @@ class PublyPaymentService extends BaseApiService
 
         return $this->put("coupon_v2/{$couponV2Id}", $inputs);
     }
+
+    public function getCouponV2sByOrder($orderId, $filterArray = [])
+    {
+        return $this->get("coupon_v2/order/{$orderId}", $filterArray);
+    }
 }
