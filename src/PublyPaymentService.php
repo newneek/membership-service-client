@@ -4003,7 +4003,10 @@ class PublyPaymentService extends BaseApiService
 
     public function getCreditCardFreeInterestInstallments()
     {
-        return $this->get("credit_card/free_interests_installments");
+        $cacheKey = 'FREE_INTEREST_INSTALLMENT';
+        return \Cache::remember($cacheKey, 1440, function () {
+            return $this->get("credit_card/free_interests_installments");
+        });
     }
 
     public function createPlan($changerId, $name, $price, $settlementPrice, $note, $lengthMonth, $nextPlanId)
