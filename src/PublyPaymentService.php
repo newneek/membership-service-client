@@ -4117,10 +4117,12 @@ class PublyPaymentService extends BaseApiService
         return $this->get("coupon_v2/{$couponV2Id}");
     }
 
-    public function updateCouponV2Status($couponV2Id, $status)
+    public function updateCouponV2($changerId, $couponV2Id, $orderId, $status)
     {
         $inputs = [
-            'status' => $status
+            'changer_id' => $changerId,
+            'status' => $status,
+            'order_id' => $orderId
         ];
 
         return $this->put("coupon_v2/{$couponV2Id}", $inputs);
