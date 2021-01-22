@@ -386,4 +386,12 @@ class PublyNotificationService extends BaseApiService
         ];
         return $this->post("/event/user_routine_updated", $inputs);
     }
+
+    public function eventCouponV2WasCreated($couponV2)
+    {
+        $inputs = [
+            'coupon_v2' => $couponV2
+        ];
+        return $this->post("/event/coupon_v2_was_created", $inputs);
+    }
 }
