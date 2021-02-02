@@ -3306,16 +3306,30 @@ class PublyPaymentService extends BaseApiService
         );
     }
 
-    public function addPlanToken($changerId, $userId, $planId, $expireDate)
+    public function addPlanToken($changerId, $userId, $planId, $expireDate, $isReuseable, $quantity)
     {
         $inputs = [
             'changer_id' => $changerId,
             'user_id' => $userId,
             'plan_id' => $planId,
-            'expire_date' => $expireDate
+            'expire_date' => $expireDate,
+            'is_reuseable' => $isReuseable,
+            'quantity' => $quantity
         ];
 
-        return $this->put("plan_token", $inputs);
+        return $this->post("plan_token", $inputs);
+    }
+
+    public function updatePlanToken($changerId, $planTokenId, $planId, $expireDate, $quantity)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'plan_id' => $planId,
+            'expire_date' => $expireDate,
+            'quantity' => $quantity
+        ];
+
+        return $this->put("plan_token/{$planTokenId}", $inputs);
     }
 
     public function getPlanTokenByToken($token, $filterArray)
