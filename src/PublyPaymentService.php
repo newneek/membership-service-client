@@ -3354,6 +3354,18 @@ class PublyPaymentService extends BaseApiService
         return $this->post("plan_token/token", $inputs);
     }
 
+    public function getPlanTokens($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("plan_token", $filterArray);
+    }
+
+    public function getPlanToken($planTokenId)
+    {
+        return $this->get("plan_token/{$planTokenId}");
+    }
+
     public function getPointHistories($page = 1, $limit = 10, $filterArray = [])
     {
         $filterArray['page'] = $page;
