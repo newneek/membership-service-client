@@ -3319,11 +3319,10 @@ class PublyPaymentService extends BaseApiService
         return $this->post("plan_token", $inputs);
     }
 
-    public function updatePlanToken($changerId, $planTokenId, $planId, $expireDate, $quantity)
+    public function updatePlanToken($changerId, $planTokenId, $expireDate, $quantity)
     {
         $inputs = [
             'changer_id' => $changerId,
-            'plan_id' => $planId,
             'expire_date' => $expireDate,
             'quantity' => $quantity
         ];
