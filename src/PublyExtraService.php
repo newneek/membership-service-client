@@ -483,6 +483,7 @@ class PublyExtraService extends BaseApiService
         return $this->get("marketing_set_review/set/{$setId}", $filterArray);
     }
 
+//    TODO limit를 NO_PAGE_LIMIT로 기존에 사용하던 곳을 새로 만든 버전으로 교체해야 한다.
     public function getMarketingSetReviewsBySetIds($setIds, $filterArray = [])
     {
         $filterArray['ids'] = implode(',', $setIds);
