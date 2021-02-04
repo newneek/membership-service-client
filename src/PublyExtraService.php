@@ -489,6 +489,19 @@ class PublyExtraService extends BaseApiService
         return $this->get("marketing_set_review/by_set_ids", $filterArray);
     }
 
+    public function getMarketingSetReviewsBySetIds2(
+        $setIds,
+        $page = 1,
+        $limit = 10,
+        $filterArray = []
+    ) {
+        $filterArray['ids'] = implode(',', $setIds);
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+
+        return $this->get("marketing_set_review/by_set_ids", $filterArray);
+    }
+
     public function deleteMarketingSetReview($changerId, $marketingSetReviewId)
     {
         return $this->post("marketing_set_review/{$marketingSetReviewId}/delete",
