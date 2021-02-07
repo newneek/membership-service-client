@@ -3306,16 +3306,28 @@ class PublyPaymentService extends BaseApiService
         );
     }
 
-    public function addPlanToken($changerId, $userId, $planId, $expireDate)
+    public function createPlanToken($changerId, $planId, $expireDate, $isReuseable, $quantity)
     {
         $inputs = [
             'changer_id' => $changerId,
-            'user_id' => $userId,
             'plan_id' => $planId,
-            'expire_date' => $expireDate
+            'expire_date' => $expireDate,
+            'is_reuseable' => $isReuseable,
+            'quantity' => $quantity
         ];
 
-        return $this->put("plan_token", $inputs);
+        return $this->post("plan_token", $inputs);
+    }
+
+    public function updatePlanToken($changerId, $planTokenId, $expireDate, $quantity)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'expire_date' => $expireDate,
+            'quantity' => $quantity
+        ];
+
+        return $this->put("plan_token/{$planTokenId}", $inputs);
     }
 
     public function getPlanTokenByToken($token, $filterArray)
@@ -3338,6 +3350,18 @@ class PublyPaymentService extends BaseApiService
         ];
 
         return $this->post("plan_token/token", $inputs);
+    }
+
+    public function getPlanTokens($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("plan_token", $filterArray);
+    }
+
+    public function getPlanToken($planTokenId)
+    {
+        return $this->get("plan_token/{$planTokenId}");
     }
 
     public function getPointHistories($page = 1, $limit = 10, $filterArray = [])
@@ -4033,6 +4057,16 @@ class PublyPaymentService extends BaseApiService
             'settlement_price' => $settlementPrice,
             'note' => $note,
             'length_month' => $lengthMonth,
+            'next_plan_id' => $nextPlanId
+        ];
+
+        return $this->put("plan/{$planId}", $inputs);
+    }
+
+    public function updatePlanNextPlanId($changerId, $planId, $nextPlanId)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
             'next_plan_id' => $nextPlanId
         ];
 
