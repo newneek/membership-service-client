@@ -142,7 +142,8 @@ class PublyPaymentService extends BaseApiService
     const POINT_HISTORY_TRANSACTION_TYPE_FAILED_IN_PAYMENT = 4;
     const POINT_HISTORY_TRANSACTION_TYPE_CONTENT_RETURNED = 5;
     const POINT_HISTORY_TRANSACTION_TYPE_PROJECT_SPONSOR = 6;
-    const POINT_HISTORY_TRANSACTION_TYPE_MAX = 7;
+    const POINT_HISTORY_TRANSACTION_TYPE_USER_REWARD = 7;
+    const POINT_HISTORY_TRANSACTION_TYPE_MAX = 8;
 
     const STRING_TRANSACTION_TYPE = [
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_USED_FOR_PAYMENT => "포인트 사용",
@@ -3436,6 +3437,22 @@ class PublyPaymentService extends BaseApiService
             'delta' => $delta,
             'transaction_type' => static::POINT_HISTORY_TRANSACTION_TYPE_USED_FOR_PAYMENT,
             'payment_id' => $paymentId,
+            'note' => $note
+        ];
+
+        return $this->post("point_history", $input);
+    }
+
+    public function createPointHistoryByUserReward(
+        $userId,
+        $delta,
+        $note
+    )
+    {
+        $input = [
+            'user_id' => $userId,
+            'delta' => $delta,
+            'transaction_type' => static::POINT_HISTORY_TRANSACTION_TYPE_USER_REWARD,
             'note' => $note
         ];
 
