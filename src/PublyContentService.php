@@ -1347,6 +1347,11 @@ class PublyContentService extends BaseApiService
         return $this->get("set/category/{$categoryId}", $filterArray);
     }
 
+    public function getSetsBySeriesItem($seriesItemId, $filterArray = [])
+    {
+        return $this->get("set/series_item/{$seriesItemId}", $filterArray);
+    }
+
     public function getSet($setId, $filterArray = [])
     {
         return $this->get("set/{$setId}", $filterArray);
@@ -3265,5 +3270,48 @@ class PublyContentService extends BaseApiService
         $filterArray['page'] = $page;
         $filterArray['limit'] = $limit;
         return $this->get("user_content_progress/count_group_by_set_and_user", $filterArray);
+    }
+
+    public function getSeriesItems($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("series_item", $filterArray);
+    }
+
+    public function getSeriesItem($seriesItemId)
+    {
+        return $this->get("series_item/{$seriesItemId}");
+    }
+
+    public function createSeriesItem($changerId, $title)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'title' => $title
+        ];
+
+        return $this->post("series_item", $inputs);
+    }
+
+    public function updateSeriesItem($changerId, $seriesItemId, $title, $imageUrl)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'title' => $title,
+            'image_url' => $imageUrl
+        ];
+
+        return $this->put("series_item/{$seriesItemId}", $inputs);
+    }
+
+    public function updateSeriesSet($changerId, $seriesItemId, $setId)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'series_item_id' => $seriesItemId
+        ];
+
+        return $this->put("set/{$setId}", $inputs);
     }
 }
