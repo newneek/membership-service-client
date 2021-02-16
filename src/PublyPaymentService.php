@@ -142,7 +142,7 @@ class PublyPaymentService extends BaseApiService
     const POINT_HISTORY_TRANSACTION_TYPE_FAILED_IN_PAYMENT = 4;
     const POINT_HISTORY_TRANSACTION_TYPE_CONTENT_RETURNED = 5;
     const POINT_HISTORY_TRANSACTION_TYPE_PROJECT_SPONSOR = 6;
-    const POINT_HISTORY_TRANSACTION_TYPE_USER_REWARD = 7;
+    const POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_DAILY_VIEW_CONTENT = 7;
     const POINT_HISTORY_TRANSACTION_TYPE_MAX = 8;
 
     const STRING_TRANSACTION_TYPE = [
@@ -3443,7 +3443,7 @@ class PublyPaymentService extends BaseApiService
         return $this->post("point_history", $input);
     }
 
-    public function createPointHistoryByUserReward(
+    public function createPointHistoryByDailyViewContentReward(
         $userId,
         $delta,
         $note
@@ -3452,7 +3452,7 @@ class PublyPaymentService extends BaseApiService
         $input = [
             'user_id' => $userId,
             'delta' => $delta,
-            'transaction_type' => static::POINT_HISTORY_TRANSACTION_TYPE_USER_REWARD,
+            'transaction_type' => static::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_DAILY_VIEW_CONTENT,
             'note' => $note
         ];
 
