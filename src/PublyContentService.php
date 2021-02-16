@@ -3294,11 +3294,12 @@ class PublyContentService extends BaseApiService
         return $this->post("series_item", $inputs);
     }
 
-    public function updateSeriesItem($changerId, $seriesItemId, $title, $imageUrl)
+    public function updateSeriesItem($changerId, $seriesItemId, $title, $description, $imageUrl)
     {
         $inputs = [
             'changer_id' => $changerId,
             'title' => $title,
+            'description' => $description,
             'image_url' => $imageUrl
         ];
 
