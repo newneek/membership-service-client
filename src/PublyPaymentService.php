@@ -3845,11 +3845,12 @@ class PublyPaymentService extends BaseApiService
         return $this->get("voucher/voucher_options", $filterArray);
     }
 
-    public function registerVoucherByCode($changerId, $userId, $code)
+    public function registerVoucherByCode($changerId, $userId, $code, $force = false)
     {
         $inputs = [
             'changer_id' => $changerId,
-            'user_id' => $userId
+            'user_id' => $userId,
+            'force' => $force ? 1 : 0
         ];
 
         return $this->post("voucher_use_history/code/{$code}", $inputs);
