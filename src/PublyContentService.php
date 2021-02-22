@@ -116,6 +116,7 @@ class PublyContentService extends BaseApiService
     const GUIDE_ITEM_TYPE_CONTENT = 2;
 
     const WRITER_TYPE_AUTHOR = 1;
+    const WRITER_TYPE_EDITOR = 2;
     const WRITER_TYPE_CONTENT_PROVIDER = 6;
 
     const PROJECT_DESCRIPTION_TYPE_INTRODUCTION = 1;
