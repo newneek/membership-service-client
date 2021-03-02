@@ -1927,6 +1927,15 @@ class PublyPaymentService extends BaseApiService
                 'force' => $force ? 1 : 0 ]);
     }
 
+    public function requestAutoRefundOrder($changerId, $orderId, $refundReason, $force = false)
+    {
+        return $this->put("/order/{$orderId}",
+            [ 'changer_id' => $changerId,
+                'action' => 'request-auto-refund',
+                'refund_reason' => $refundReason,
+                'force' => $force ? 1 : 0 ]);
+    }
+
     public function returnContent($changerId, $orderId, $force = false)
     {
         return $this->put("/order/{$orderId}",
