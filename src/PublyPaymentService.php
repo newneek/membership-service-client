@@ -33,7 +33,8 @@ class PublyPaymentService extends BaseApiService
     const ORDER_STATUS_REFUND_COMPLETED = 9; // requested 단계를 무조건 거치고 이동해야 함
     const ORDER_STATUS_PROJECT_DROP = 10;
     const ORDER_STATUS_CONTENT_RETURNED = 11;
-    const ORDER_STATUS_MAX = 12;
+    const ORDER_STATUS_REFUND_FAILED = 12;
+    const ORDER_STATUS_MAX = 13;
 
     const COUPON_V2_STATUS_USABLE = 1;
     const COUPON_V2_STATUS_USED = 2;
@@ -87,6 +88,7 @@ class PublyPaymentService extends BaseApiService
     const SUBSCRIPTION_RENEWAL_HISTORY_STATUS_REFUND_REQUESTED = 2;
     const SUBSCRIPTION_RENEWAL_HISTORY_STATUS_REFUND_COMPLETED = 3;
     const SUBSCRIPTION_RENEWAL_HISTORY_STATUS_DUPLICATED = 4;
+    const SUBSCRIPTION_RENEWAL_HISTORY_STATUS_REFUND_FAILED = 5;
 
     const STRING_SUBSCRIPTION_TYPE = [
         PublyPaymentService::SUBSCRIPTION_STATUS_INIT => "초기상태",
