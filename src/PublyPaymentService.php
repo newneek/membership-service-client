@@ -2904,6 +2904,19 @@ class PublyPaymentService extends BaseApiService
                 'force' => $force ? 1 : 0]);
     }
 
+    public function requestAutoRefundSubscriptionRenewalHistory($changerId,
+                                                            $subscriptionId,
+                                                            $subscriptionRenewalHistoryId,
+                                                            $force = false)
+    {
+        return $this->put("subscription_renewal_history/{$subscriptionRenewalHistoryId}",
+            ['changer_id' => $changerId,
+                'subscription_id' => $subscriptionId,
+                'action' => 'request-auto-refund',
+                'force' => $force ? 1 : 0]);
+    }
+
+
     public function completeRefundSubscriptionRenewalHistory($changerId,
                                                              $subscriptionId,
                                                              $subscriptionRenewalHistoryId,
