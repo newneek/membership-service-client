@@ -1927,6 +1927,15 @@ class PublyPaymentService extends BaseApiService
                 'force' => $force ? 1 : 0 ]);
     }
 
+    public function requestAutoRefundOrder($changerId, $orderId, $refundReason, $force = false)
+    {
+        return $this->put("/order/{$orderId}",
+            [ 'changer_id' => $changerId,
+                'action' => 'request-auto-refund',
+                'refund_reason' => $refundReason,
+                'force' => $force ? 1 : 0 ]);
+    }
+
     public function returnContent($changerId, $orderId, $force = false)
     {
         return $this->put("/order/{$orderId}",
@@ -2903,6 +2912,21 @@ class PublyPaymentService extends BaseApiService
                 'action' => 'request-refund',
                 'force' => $force ? 1 : 0]);
     }
+
+    public function requestAutoRefundSubscriptionRenewalHistory($changerId,
+                                                            $subscriptionId,
+                                                            $subscriptionRenewalHistoryId,
+                                                            $refundReason,
+                                                            $force = false)
+    {
+        return $this->put("subscription_renewal_history/{$subscriptionRenewalHistoryId}",
+            ['changer_id' => $changerId,
+                'subscription_id' => $subscriptionId,
+                'action' => 'request-auto-refund',
+                'refund_reason' => $refundReason,
+                'force' => $force ? 1 : 0]);
+    }
+
 
     public function completeRefundSubscriptionRenewalHistory($changerId,
                                                              $subscriptionId,
