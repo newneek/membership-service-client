@@ -70,7 +70,8 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::ORDER_STATUS_REFUND_REQUESTED => "환불 신청",
         PublyPaymentService::ORDER_STATUS_REFUND_COMPLETED => "환불 완료",
         PublyPaymentService::ORDER_STATUS_PROJECT_DROP => "프로젝트 중단",
-        PublyPaymentService::ORDER_STATUS_CONTENT_RETURNED => "포인트 환급"
+        PublyPaymentService::ORDER_STATUS_CONTENT_RETURNED => "포인트 환급",
+        PublyPaymentService::ORDER_STATUS_REFUND_FAILED => "환불 실패"
     ];
 
 
