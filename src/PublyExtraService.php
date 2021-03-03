@@ -109,6 +109,11 @@ class PublyExtraService extends BaseApiService
         PublyExtraService::FEATURED_BANNER_ITEM_CATEGORY_ONAIR => '온에어'
     ];
 
+    const MISSION_NAMES = [
+        'PAGE_VIEW_HOME' => 'page_view_home',
+        'PAGE_VIEW_CONTENT' => 'page_view_content'
+    ];
+
     public function __construct($domain)
     {
         parent::__construct();
@@ -1370,5 +1375,26 @@ class PublyExtraService extends BaseApiService
         ];
 
         return $this->post("job/reserve_scheduled_push_notifications", $inputs);
+    }
+
+    public function getUserMissionAchievementHistoriesByUser($userId, $filterArray = [])
+    {
+        return $this->get("user_mission_achievement_history/user/{$userId}", $filterArray);
+    }
+
+    public function createUserMissionAchievementHistory($userId, $missionName, $date)
+    {
+        $inputs = [
+            'user_id' => $userId,
+            'mission_name' => $missionName,
+            'date' => $date
+        ];
+
+        return $this->post("user_mission_achievement_history", $inputs);
+    }
+
+    public function getMissions($filterArray = [])
+    {
+        return $this->get("mission", $filterArray);
     }
 }
