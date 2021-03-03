@@ -70,7 +70,8 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::ORDER_STATUS_REFUND_REQUESTED => "환불 신청",
         PublyPaymentService::ORDER_STATUS_REFUND_COMPLETED => "환불 완료",
         PublyPaymentService::ORDER_STATUS_PROJECT_DROP => "프로젝트 중단",
-        PublyPaymentService::ORDER_STATUS_CONTENT_RETURNED => "포인트 환급"
+        PublyPaymentService::ORDER_STATUS_CONTENT_RETURNED => "포인트 환급",
+        PublyPaymentService::ORDER_STATUS_REFUND_FAILED => "환불 실패"
     ];
 
 
@@ -1927,6 +1928,15 @@ class PublyPaymentService extends BaseApiService
                 'force' => $force ? 1 : 0 ]);
     }
 
+    public function requestAutoRefundOrder($changerId, $orderId, $refundReason, $force = false)
+    {
+        return $this->put("/order/{$orderId}",
+            [ 'changer_id' => $changerId,
+                'action' => 'request-auto-refund',
+                'refund_reason' => $refundReason,
+                'force' => $force ? 1 : 0 ]);
+    }
+
     public function returnContent($changerId, $orderId, $force = false)
     {
         return $this->put("/order/{$orderId}",
@@ -2903,6 +2913,21 @@ class PublyPaymentService extends BaseApiService
                 'action' => 'request-refund',
                 'force' => $force ? 1 : 0]);
     }
+
+    public function requestAutoRefundSubscriptionRenewalHistory($changerId,
+                                                            $subscriptionId,
+                                                            $subscriptionRenewalHistoryId,
+                                                            $refundReason,
+                                                            $force = false)
+    {
+        return $this->put("subscription_renewal_history/{$subscriptionRenewalHistoryId}",
+            ['changer_id' => $changerId,
+                'subscription_id' => $subscriptionId,
+                'action' => 'request-auto-refund',
+                'refund_reason' => $refundReason,
+                'force' => $force ? 1 : 0]);
+    }
+
 
     public function completeRefundSubscriptionRenewalHistory($changerId,
                                                              $subscriptionId,
