@@ -219,6 +219,9 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::NAVERPAY_DIFFERENCE_STATUS_NO_NEED => "해당 없음",
     ];
 
+    const REFUND_HISTORY_STATUS_COMPLETED = 1;
+    const REFUND_HISTORY_STATUS_FAILED = 2;
+
     public function __construct($domain)
     {
         parent::__construct();
