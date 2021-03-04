@@ -395,6 +395,11 @@ class PublyAuthService extends BaseApiService {
         return $this->put("user/{$userId}/notification_status", ['notification_status' => $notificationStatus]);
     }
 
+    public function checkPasswordModifyAllowed($userId)
+    {
+        return $this->get("user/{$userId}/check_password_modify_allowed");
+    }
+
     public function findUserNotificationStatus($filterArray = [])
     {
         return $this->get("user_notification_status", $filterArray);
