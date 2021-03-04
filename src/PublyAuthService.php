@@ -294,6 +294,17 @@ class PublyAuthService extends BaseApiService {
         return $result;
     }
 
+    public function createNewPassword($userId, $newPassword, $newPasswordConfirm)
+    {
+        $inputs = [
+            "user_id" => $userId,
+            "new_password" => $newPassword,
+            "new_password_confirm" => $newPasswordConfirm,
+        ];
+
+        return $this->post('create_new_password', $inputs);
+    }
+
     public function forgotPassword($email)
     {
         return $this->post('forgot_password', array('email' => $email));
