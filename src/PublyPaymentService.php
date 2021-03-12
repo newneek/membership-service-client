@@ -3521,6 +3521,24 @@ class PublyPaymentService extends BaseApiService
         return $this->post("point_history/store_point_histories_by_admin", $input);
     }
 
+    public function createPointHistoryByReferralSignup(
+        $userId,
+        $referrerId,
+        $delta,
+        $transactionType,
+        $note = null
+    ) {
+        $input = [
+            'user_id' => $userId,
+            'referrer_id' => $referrerId,
+            'delta' => $delta,
+            'transaction_type' => $transactionType,
+            'note' => $note
+        ];
+
+        return $this->post("point_history", $input);
+    }
+
     public function updateOrCreateReferralRelation($referrerId, $refereeId, $referralProgramId)
     {
         $inputs = [
