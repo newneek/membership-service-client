@@ -2896,6 +2896,11 @@ class PublyPaymentService extends BaseApiService
         return $this->get("subscription_renewal_history/settlement_year/{$settlementYear}/settlement_month/{$settlementMonth}", $filterArray);
     }
 
+    public function getSubscriptionRenewalHistory($subscriptionRenewalHistoryId)
+    {
+        return $this->get("subscription_renewal_history/{$subscriptionRenewalHistoryId}");
+    }
+
     // deprecated
     public function getSubscriptionRenewalHistories($userId, $settlementYear, $settlementMonth, $filterArray = [])
     {
