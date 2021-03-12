@@ -4218,4 +4218,40 @@ class PublyPaymentService extends BaseApiService
     {
         return $this->get("coupon_v2/order/{$orderId}", $filterArray);
     }
+
+    public function refundSubscriptionRenewalHistory(
+        $subscriptionRenewalHistoryId,
+        $payCancelAmount,
+        $pointCancelAmount,
+        $cancelReason,
+        $requestUserId,
+        $force = false)
+    {
+        $inputs = [
+            'pay_cancel_amount' => $payCancelAmount,
+            'point_cancel_amount' => $pointCancelAmount,
+            'cancel_reason' => $cancelReason,
+            'request_user_id' => $requestUserId,
+            'force' => $force,
+        ];
+        return $this->post("/refund/subscription_renewal_history/{$subscriptionRenewalHistoryId}", $inputs);
+    }
+
+    public function refundOrder(
+        $orderId,
+        $payCancelAmount,
+        $pointCancelAmount,
+        $cancelReason,
+        $requestUserId,
+        $force = false)
+    {
+        $inputs = [
+            'pay_cancel_amount' => $payCancelAmount,
+            'point_cancel_amount' => $pointCancelAmount,
+            'cancel_reason' => $cancelReason,
+            'request_user_id' => $requestUserId,
+            'force' => $force,
+        ];
+        return $this->post("/refund/order/{$orderId}", $inputs);
+    }
 }
