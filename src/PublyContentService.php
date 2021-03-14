@@ -3103,10 +3103,10 @@ class PublyContentService extends BaseApiService
         return $this->get("user_set_progress/user/{$userId}/by_set_ids", $filterArray);
     }
 
-    public function getUserContentProgressCountCompletedBySetIds($userId, $setIds, $filterArray = [])
+    public function getUserContentProgressesBySetIds($userId, $setIds, $filterArray = [])
     {
         $filterArray['set_ids'] = implode(',', $setIds);
-        return $this->get("user_content_progress/user/{$userId}/count_completed/by_set_ids", $filterArray);
+        return $this->get("user_content_progress/user/{$userId}/by_set_ids", $filterArray);
     }
 
     public function getGuides($page = 1, $limit = 20, $filterArray = [])
