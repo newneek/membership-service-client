@@ -1034,6 +1034,11 @@ class PublyContentService extends BaseApiService
         return $this->get("project/{$projectId}");
     }
 
+    public function getProjectById($projectId, $filterArray = [])
+    {
+        return $this->get("project/{$projectId}", $filterArray);
+    }
+
     public function getProjects($page = 1, $limit = 10, $filterArray = [])
     {
         $filterArray['page'] = $page;
@@ -2450,6 +2455,16 @@ class PublyContentService extends BaseApiService
     public function detachSetFromCategory($changerId, $categoryId, $setId)
     {
         return $this->post("category/{$categoryId}/set/{$setId}/detach", ['changer_id' => $changerId]);
+    }
+
+    public function attachProjectToCategory($changerId, $categoryId, $projectId)
+    {
+        return $this->post("category/{$categoryId}/project/{$projectId}/attach", ['changer_id' => $changerId]);
+    }
+
+    public function detachProjectFromCategory($changerId, $categoryId, $projectId)
+    {
+        return $this->post("category/{$categoryId}/project/{$projectId}/detach", ['changer_id' => $changerId]);
     }
 
     public function getUserSetProgressesByUser($userId, $filterArray = [])
