@@ -2500,13 +2500,12 @@ class PublyContentService extends BaseApiService
             ]);
     }
 
-    public function updateCategoryOrderOrder($changerId, $categoryOrderIds, $categoryType)
+    public function updateCategoryOrderOrder($changerId, $categoryOrderIds)
     {
         return $this->put("category_order/update_order",
             [
                 'changer_id'=> $changerId,
-                'ids' => implode(',', $categoryOrderIds),
-                'type' => $categoryType
+                'ids' => implode(',', $categoryOrderIds)
             ]);
     }
 
