@@ -125,6 +125,9 @@ class PublyContentService extends BaseApiService
 
     const PAGE_VIEW_COUNT_TYPE_ONAIR_INDEX = 1;
 
+    const CATEGORY_ORDER_TYPE_SET = 1;
+    const CATEGORY_ORDER_TYPE_PROJECT = 2;
+
     public function __construct($domain)
     {
         parent::__construct();
@@ -2464,12 +2467,13 @@ class PublyContentService extends BaseApiService
         return $this->get("user_set_progress/user/{$userId}/set/{$setId}");
     }
 
-    public function createCategoryOrder($changerId, $categoryId)
+    public function createCategoryOrder($changerId, $categoryId, $categoryType)
     {
         return $this->post("category_order",
             [
                 'category_id' => $categoryId,
-                'changer_id' => $changerId
+                'changer_id' => $changerId,
+                'type' => $categoryType
             ]);
     }
 
@@ -2483,6 +2487,11 @@ class PublyContentService extends BaseApiService
         return $this->get("category_order", $filterArray)['success']['data'];
     }
 
+    public function getCategoryOrdersByType($type, $filterArray = [])
+    {
+        return $this->get("category_order/type/{$type}", $filterArray);
+    }
+
     public function deleteCategoryOrder($changerId, $categoryOrderId)
     {
         return $this->post("category_order/{$categoryOrderId}/delete",
@@ -2491,12 +2500,13 @@ class PublyContentService extends BaseApiService
             ]);
     }
 
-    public function updateCategoryOrderOrder($changerId, $categoryOrderIds)
+    public function updateCategoryOrderOrder($changerId, $categoryOrderIds, $categoryType)
     {
         return $this->put("category_order/update_order",
             [
                 'changer_id'=> $changerId,
-                'ids' => implode(',', $categoryOrderIds)
+                'ids' => implode(',', $categoryOrderIds),
+                'type' => $categoryType
             ]);
     }
 
