@@ -4257,4 +4257,9 @@ class PublyPaymentService extends BaseApiService
         ];
         return $this->post("/refund/order/{$orderId}", $inputs);
     }
+
+    public function getRefundHistory($page, $limit, $filterArray = [])
+    {
+        return $this->get("refund_history", $filterArray);
+    }
 }
