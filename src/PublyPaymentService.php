@@ -146,7 +146,9 @@ class PublyPaymentService extends BaseApiService
     const POINT_HISTORY_TRANSACTION_TYPE_CONTENT_RETURNED = 5;
     const POINT_HISTORY_TRANSACTION_TYPE_PROJECT_SPONSOR = 6;
     const POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_DAILY_VIEW_CONTENT = 7;
-    const POINT_HISTORY_TRANSACTION_TYPE_MAX = 8;
+    const POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_USER_REFERRAL_SIGNUP = 8;
+    const POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_AUTHOR_REFERRAL_SIGNUP = 9;
+    const POINT_HISTORY_TRANSACTION_TYPE_MAX = 10;
 
     const STRING_TRANSACTION_TYPE = [
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_USED_FOR_PAYMENT => "포인트 사용",
@@ -155,7 +157,9 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_FAILED_IN_PAYMENT => "포인트 결제 취소",
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_CONTENT_RETURNED => "콘텐츠 환급 포인트",
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_PROJECT_SPONSOR => "후원 하기 포인트",
-        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_DAILY_VIEW_CONTENT => "퍼블리 습관 응원 포인트"
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_DAILY_VIEW_CONTENT => "퍼블리 습관 응원 포인트",
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_USER_REFERRAL_SIGNUP => "유저 레퍼럴 회원가입 포인트 적립",
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_AUTHOR_REFERRAL_SIGNUP => "저자 레퍼럴 회원가입 포인트 적립"
     ];
 
     const USER_DEFAULT_PLAN_TYPE_ADMIN = 1;
@@ -3496,6 +3500,24 @@ class PublyPaymentService extends BaseApiService
         ];
 
         return $this->post("point_history/store_point_histories_by_admin", $input);
+    }
+
+    public function createPointHistoryByReferralSignup(
+        $userId,
+        $referrerId,
+        $delta,
+        $transactionType,
+        $note = null
+    ) {
+        $input = [
+            'user_id' => $userId,
+            'referrer_id' => $referrerId,
+            'delta' => $delta,
+            'transaction_type' => $transactionType,
+            'note' => $note
+        ];
+
+        return $this->post("point_history", $input);
     }
 
     public function updateOrCreateReferralRelation($referrerId, $refereeId, $referralProgramId)
