@@ -2517,7 +2517,10 @@ class PublyContentService extends BaseApiService
             $takeLimit = 29;
             $filterArray = ['order' => 'asc', 'take_limit' => $takeLimit];
 
-            $categoryOrders = $this->getCategoryOrders2($filterArray);
+            $categoryOrders = $this->getCategoryOrdersByType(
+                PublyContentService::CATEGORY_ORDER_TYPE_SET,
+                $filterArray
+            )['success']['data'];
             $categoryIds = array_unique_values_from_second_dimension($categoryOrders, 'category_id');
 
             $categories = $this->getCategoriesByIds2($categoryIds);
