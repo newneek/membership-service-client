@@ -235,13 +235,16 @@ class PublyAuthService extends BaseApiService {
     												     'password' => $password));
     }
 
-    public function signup($changerId, $name, $email, $password, $subscribeToWeeklyLetter = 0)
+    public function signup($changerId, $name, $email, $password, $subscribeToWeeklyLetter = 0, $sendMail = 1)
     {
-        return $this->post("signup", [ 'changer_id' => $changerId,
-                                       'name' => $name,
-                                       'email' => $email,
-                                       'password' => $password,
-                                       'subscribe_to_weekly_letter' => $subscribeToWeeklyLetter]);
+        return $this->post("signup", [
+            'changer_id' => $changerId,
+            'name' => $name,
+            'email' => $email,
+            'password' => $password,
+            'subscribe_to_weekly_letter' => $subscribeToWeeklyLetter,
+            'send_mail' => $sendMail
+        ]);
     }
 
     public function signup2($changerId, $name, $email, $password, $subscribeToWeeklyLetter, $margetingEmailAgree)
