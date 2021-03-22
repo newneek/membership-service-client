@@ -191,6 +191,15 @@ class PublyAuthService extends BaseApiService {
     											     'token' => $token));
     }
 
+    public function retrieveByTokenUsingAuthOnly($id, $token)
+    {
+        return $this->get('retrieve_by_token', array(
+            'id' => $id,
+            'token' => $token,
+            'use_auth_only' => true,
+        ));
+    }
+
     public function retrieveByPasswordToken($id, $passwordToken)
     {
         return $this->get('retrieve_by_password_token', array('id' => $id,
