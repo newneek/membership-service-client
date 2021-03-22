@@ -191,11 +191,12 @@ class PublyAuthService extends BaseApiService {
     											     'token' => $token));
     }
 
-    public function retrieveByTokenUsingAuthOnly($id, $token)
+    public function retrieveByTokenOnlyUser($id, $token)
     {
         return $this->get('retrieve_by_token', array(
             'id' => $id,
             'token' => $token,
+            'without_group' => true,
             'use_auth_only' => true,
         ));
     }
