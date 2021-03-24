@@ -1029,12 +1029,7 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function getProject($projectId)
-    {
-        return $this->get("project/{$projectId}");
-    }
-
-    public function getProjectById($projectId, $filterArray = [])
+    public function getProject($projectId, $filterArray = [])
     {
         return $this->get("project/{$projectId}", $filterArray);
     }
