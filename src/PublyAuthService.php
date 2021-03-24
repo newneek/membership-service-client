@@ -191,6 +191,16 @@ class PublyAuthService extends BaseApiService {
     											     'token' => $token));
     }
 
+    public function retrieveByTokenOnlyUser($id, $token)
+    {
+        return $this->get('retrieve_by_token', array(
+            'id' => $id,
+            'token' => $token,
+            'with_group' => 0,
+            'use_auth_only' => true,
+        ));
+    }
+
     public function retrieveByPasswordToken($id, $passwordToken)
     {
         return $this->get('retrieve_by_password_token', array('id' => $id,
@@ -235,13 +245,16 @@ class PublyAuthService extends BaseApiService {
     												     'password' => $password));
     }
 
-    public function signup($changerId, $name, $email, $password, $subscribeToWeeklyLetter = 0)
+    public function signup($changerId, $name, $email, $password, $subscribeToWeeklyLetter = 0, $sendMail = 1)
     {
-        return $this->post("signup", [ 'changer_id' => $changerId,
-                                       'name' => $name,
-                                       'email' => $email,
-                                       'password' => $password,
-                                       'subscribe_to_weekly_letter' => $subscribeToWeeklyLetter]);
+        return $this->post("signup", [
+            'changer_id' => $changerId,
+            'name' => $name,
+            'email' => $email,
+            'password' => $password,
+            'subscribe_to_weekly_letter' => $subscribeToWeeklyLetter,
+            'send_mail' => $sendMail
+        ]);
     }
 
     public function signup2($changerId, $name, $email, $password, $subscribeToWeeklyLetter, $margetingEmailAgree)
