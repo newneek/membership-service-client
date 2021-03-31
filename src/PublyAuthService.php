@@ -185,6 +185,12 @@ class PublyAuthService extends BaseApiService {
     	return $this->get('retrieve_by_id', array('id'=>$id));
     }
 
+    /**
+     * @param $id
+     * @param $token
+     * @return mixed
+     * @throws ResponseException
+     */
     public function retrieveByToken($id, $token)
     {
     	return $this->get('retrieve_by_token', array('id'=> $id,

@@ -80,6 +80,12 @@ class BaseApiService {
         return $this->apiUrl;
     }
 
+    /**
+     * @param $endpoint
+     * @param array $queryParams
+     * @return mixed
+     * @throws ResponseException
+     */
     public function get($endpoint, $queryParams = [])
     {
         $response = Http::send(
