@@ -37,9 +37,11 @@ class OneSignalService extends BaseApiService
             "en" => $title
         );
 
+        $userId = array_map('strval', array($userId));
+
         $fields = array(
             'app_id' => $this->appId,
-            'include_external_user_ids' => array($userId),
+            'include_external_user_ids' => $userId,
             'contents' => $contents,
             'headings' => $headings,
             'data' => $data
@@ -87,6 +89,8 @@ class OneSignalService extends BaseApiService
             "ko" => $title,
             "en" => $title
         );
+
+        $userIds = array_map('strval', $userIds);
 
         $fields = array(
             'app_id' => $this->appId,
