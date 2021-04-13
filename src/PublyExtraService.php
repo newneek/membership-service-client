@@ -831,6 +831,11 @@ class PublyExtraService extends BaseApiService
         return $this->get("highlight/user/{$userId}", $filterArray);
     }
 
+    public function getHighlightsCountByUser($userId, $filterArray = [])
+    {
+        return $this->get("highlight/user/{$userId}/count", $filterArray);
+    }
+
     public function getHighlightsByUserAndContent($userId, $contentId, $filterArray = [])
     {
         return $this->get("highlight/user/{$userId}/content/{$contentId}", $filterArray);
