@@ -1534,6 +1534,11 @@ class PublyContentService extends BaseApiService
         return $this->get("set_reader/user/{$userId}", $filterArray);
     }
 
+    public function getSetReadersCountByUserId($userId, $filterArray = [])
+    {
+        return $this->get("set_reader/user/{$userId}/count", $filterArray);
+    }
+
     public function createSetReader($changerId, $userId, $setId, $sourceType, $adminId, $orderId, $note)
     {
         try {
@@ -2341,6 +2346,13 @@ class PublyContentService extends BaseApiService
         return $this->get("set_like", $filterArray);
     }
 
+    public function getSetLikesCountByUser($userId, $filterArray = [])
+    {
+        $filterArray['user_id'] = $userId;
+        return $this->get("set_like/count", $filterArray);
+    }
+
+
     public function getSetLikesBySetIds($setIds, $filterArray = [])
     {
         $filterArray['set_ids'] = implode(',', $setIds);
@@ -2470,6 +2482,11 @@ class PublyContentService extends BaseApiService
     public function getUserSetProgressesByUser2($userId, $filterArray = [])
     {
         return $this->get("user_set_progress/user/with_pagination/{$userId}", $filterArray);
+    }
+
+    public function getUserSetProgressCountByUser($userId, $filterArray = [])
+    {
+        return $this->get("user_set_progress/user/{$userId}/count", $filterArray);
     }
 
     public function getUserSetProgressByUserAndSet($userId, $setId)
