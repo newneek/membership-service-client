@@ -1534,7 +1534,7 @@ class PublyContentService extends BaseApiService
         return $this->get("set_reader/user/{$userId}", $filterArray);
     }
 
-    public function getSetReadersCountByUserId($userId, $filterArray = [])
+    public function getSetReaderCountByUserId($userId, $filterArray = [])
     {
         return $this->get("set_reader/user/{$userId}/count", $filterArray);
     }
@@ -2346,7 +2346,7 @@ class PublyContentService extends BaseApiService
         return $this->get("set_like", $filterArray);
     }
 
-    public function getSetLikesCountByUser($userId, $filterArray = [])
+    public function getSetLikeCountByUser($userId, $filterArray = [])
     {
         $filterArray['user_id'] = $userId;
         return $this->get("set_like/count", $filterArray);
