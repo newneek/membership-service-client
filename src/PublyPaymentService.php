@@ -3476,6 +3476,18 @@ class PublyPaymentService extends BaseApiService
         return $this->post("point_history", $input);
     }
 
+    public function createPointHistoryByAppInstall($userId, $delta, $note = '')
+    {
+        $input = [
+            'user_id' => $userId,
+            'delta' => $delta,
+            'transaction_type' => static::POINT_HISTORY_TRANSACTION_TYPE_APP_INSTALL,
+            'note' => $note
+        ];
+
+        return $this->post('point_history', $input);
+    }
+
     public function updatePointHistory($pointHistoryId, $note)
     {
         $input = [
