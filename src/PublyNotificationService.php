@@ -395,4 +395,14 @@ class PublyNotificationService extends BaseApiService
         ];
         return $this->post("/event/coupon_v2_was_created", $inputs);
     }
+
+    public function eventFreeTrialAppInstalled($userId, $rewardedPoints)
+    {
+        $inputs = [
+            'user_id' => $userId,
+            'rewarded_points' => $rewardedPoints
+        ];
+
+        return $this->post('/event/free_trial_app_installed', $inputs);
+    }
 }
