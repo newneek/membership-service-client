@@ -160,7 +160,8 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_PROJECT_SPONSOR => "후원 하기 포인트",
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_DAILY_VIEW_CONTENT => "퍼블리 습관 응원 포인트",
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_USER_REFERRAL_SIGNUP => "유저 레퍼럴 회원가입 포인트 적립",
-        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_AUTHOR_REFERRAL_SIGNUP => "저자 레퍼럴 회원가입 포인트 적립"
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_AUTHOR_REFERRAL_SIGNUP => "저자 레퍼럴 회원가입 포인트 적립",
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_APP_INSTALL => "앱 설치 축하 포인트 적립"
     ];
 
     const USER_DEFAULT_PLAN_TYPE_ADMIN = 1;
