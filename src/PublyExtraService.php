@@ -305,6 +305,16 @@ class PublyExtraService extends BaseApiService
         return $this->post("/searchable_object/delete", $inputs);
     }
 
+    public function addSearchableObjects($indexName, $records)
+    {
+        $inputs = [
+            'index_name' => $indexName,
+            'records' => $records
+        ];
+
+        return $this->put("/searchable_object/batch", $inputs);
+    }
+
     public function createEventGroup($changerId,
                                      $title,
                                      $order)
