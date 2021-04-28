@@ -3181,24 +3181,14 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function updateGuide($changerId, $guideId, $title, $mastheadImageUrl, $coverImageUrl)
-    {
-        return $this->put("guide/{$guideId}", [
-            'changer_id' => $changerId,
-            'title' => $title,
-            'masthead_image_url' => $mastheadImageUrl,
-            'cover_image_url' => $coverImageUrl
-        ]);
-    }
-
-    public function updateGuide2($changerId, $guideId, $title, $mastheadImageUrl, $coverImageUrl, $metaKeywords)
+    public function updateGuide($changerId, $guideId, $title, $mastheadImageUrl, $coverImageUrl, $metaKeywords)
     {
         return $this->put("guide/{$guideId}", [
             'changer_id' => $changerId,
             'title' => $title,
             'masthead_image_url' => $mastheadImageUrl,
             'cover_image_url' => $coverImageUrl,
-            'meta_keywords' => $metaKeywords,
+            'meta_keywords' => $metaKeywords
         ]);
     }
 
