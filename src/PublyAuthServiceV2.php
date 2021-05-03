@@ -18,11 +18,12 @@ class PublyAuthServiceV2 extends BaseApiService {
     /*
      * User Related Interfaces
      */
-    public function oauthKakaoCallbackForWeb($code, $redirectUri)
+    public function oauthKakaoCallbackForWeb($code, $redirectUri, $product = 'membership')
     {
         return $this->post("auth/web/oauth/kakao/callback", [
             'code' => $code,
-            'redirect_uri' => $redirectUri
+            'redirect_uri' => $redirectUri,
+            'product' => $product
         ]);
     }
 
