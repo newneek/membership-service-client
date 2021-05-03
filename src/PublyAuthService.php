@@ -263,14 +263,15 @@ class PublyAuthService extends BaseApiService {
         ]);
     }
 
-    public function signup2($changerId, $name, $email, $password, $subscribeToWeeklyLetter, $margetingEmailAgree)
+    public function signup2($changerId, $name, $email, $password, $subscribeToWeeklyLetter, $margetingEmailAgree, $product = 'membership')
     {
         return $this->post("signup", [ 'changer_id' => $changerId,
             'name' => $name,
             'email' => $email,
             'password' => $password,
             'subscribe_to_weekly_letter' => $subscribeToWeeklyLetter,
-            'marketing_email_agree' => $margetingEmailAgree
+            'marketing_email_agree' => $margetingEmailAgree,
+            'product' => $product
         ]);
     }
 
@@ -345,7 +346,7 @@ class PublyAuthService extends BaseApiService {
                                                         'device_id' => $deviceId ));
     }
 
-    public function userLogin($userId, $ipAddress, $os, $browser, $deviceId, $method)
+    public function userLogin($userId, $ipAddress, $os, $browser, $deviceId, $method, $product = 'membership')
     {
         return $this->post('user_login', [
             'user_id' => $userId,
@@ -354,6 +355,7 @@ class PublyAuthService extends BaseApiService {
             'browser' => $browser,
             'device_id' => $deviceId,
             'method' => $method,
+            'product' => $product
         ]);
     }
 
