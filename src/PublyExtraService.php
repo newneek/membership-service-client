@@ -587,6 +587,16 @@ class PublyExtraService extends BaseApiService
         return $this->get("set_similarity_coefficient/set/{$setId}", $filterArray);
     }
 
+    public function getSetSimilarityCoefficientCache()
+    {
+        return $this->get("set_similarity_coefficient_cache");
+    }
+
+    public function updateSetSimilarityCoefficientCache()
+    {
+        return $this->post("set_similarity_coefficient_cache");
+    }
+
     public function createRankingByType($changerId, $type, $filterArray = [])
     {
         if (!$type) {
