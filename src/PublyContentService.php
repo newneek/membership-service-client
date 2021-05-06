@@ -3417,12 +3417,21 @@ class PublyContentService extends BaseApiService
         return $this->post("comment/{$parentCommentId}/reply", $inputs);
     }
 
-    public function updateComment($commentId, $changerId, $content, $isHidden = 0)
+    public function updateComment($commentId, $changerId, $content)
     {
         $inputs = [
             'changer_id' => $changerId,
-            'content' => $content,
-            'is_hidden' => $isHidden
+            'content' => $content
+        ];
+
+        return $this->put("comment/{$commentId}", $inputs);
+    }
+
+    public function hideComment($commentId, $changerId)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'is_hidden' => 1
         ];
 
         return $this->put("comment/{$commentId}", $inputs);
