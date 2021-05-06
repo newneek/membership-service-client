@@ -405,4 +405,13 @@ class PublyNotificationService extends BaseApiService
 
         return $this->post('/event/free_trial_app_installed', $inputs);
     }
+
+    public function eventCommentReplied($userId)
+    {
+        $inputs = [
+            'user_id' => $userId
+        ];
+
+        return $this->post('/event/comment_replied', $inputs);
+    }
 }
