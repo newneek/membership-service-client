@@ -3368,4 +3368,92 @@ class PublyContentService extends BaseApiService
 
         return $this->put("set/{$setId}", $inputs);
     }
+
+    public function getComments($page = 1, $limit = 3, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+
+        return $this->get("comment", $filterArray);
+    }
+
+    public function getCommentsBySet($setId, $page = 1, $limit = 3, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+
+        return $this->get("comment/set/{$setId}", $filterArray);
+    }
+
+    public function getCommentsCountBySet($setId, $filterArray = [])
+    {
+        return $this->get("comment/set/{$setId}/count", $filterArray);
+    }
+
+    public function getComment($commentId, $filterArray = [])
+    {
+        return $this->get("comment/{$commentId}". $filterArray);
+    }
+
+    public function createSetComment($userId, $changerId, $setId, $content)
+    {
+        $inputs = [
+            'user_id' => $userId,
+            'changer_id' => $changerId,
+            'content' => $content
+        ];
+
+        return $this->post("comment/set/{$setId}", $inputs);
+    }
+
+    public function createCommentReply($userId, $changerId, $content, $parentCommentId)
+    {
+        $inputs = [
+            'user_id' => $userId,
+            'changer_id' => $changerId,
+            'content' => $content
+        ];
+
+        return $this->post("comment/{$parentCommentId}/reply", $inputs);
+    }
+
+    public function updateComment($commentId, $changerId, $content, $isHidden = 0)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'content' => $content,
+            'is_hidden' => $isHidden
+        ];
+
+        return $this->put("comment/{$commentId}", $inputs);
+    }
+
+    public function deleteComment($commentId, $changerId)
+    {
+        $inputs = [
+            'changer_id' => $changerId
+        ];
+
+        return $this->post("comment/{$commentId}/delete", $inputs);
+    }
+
+    public function createCommentReaction($userId, $changerId, $commentId, $reactionTypeId)
+    {
+        $inputs = [
+            'user_id' => $userId,
+            'changer_id' => $changerId,
+            'reaction_type_id' => $reactionTypeId
+        ];
+
+        return $this->post("reaction/comment/{$commentId}", $inputs);
+    }
+
+    public function deleteReaction($reactionId, $changerId)
+    {
+        $inputs = [
+            'changer_id' => $changerId
+        ];
+
+        return $this->post("reaction/{$reactionId}/delete", $inputs);
+    }
 }
