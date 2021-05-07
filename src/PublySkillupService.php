@@ -11,7 +11,7 @@ class PublySkillupService extends BaseApiService {
         parent::__construct();
 
         $this->domain = $domain;
-        $this->apiUrl = "$this->domain/";
+        $this->apiUrl = "$this->domain/api/";
     }
 
     public function createUserStatus($userId): array
