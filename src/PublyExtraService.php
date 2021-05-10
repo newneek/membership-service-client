@@ -1424,4 +1424,42 @@ class PublyExtraService extends BaseApiService
     {
         return $this->get("mission", $filterArray);
     }
+
+    public function getNotificationMessages($page = 1, $limit = 5, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("notification_message", $filterArray);
+    }
+
+    public function getNotificationMessageCount($filterArray = [])
+    {
+        return $this->get("notification_message/count", $filterArray);
+    }
+
+    public function createNotificationMessage($changerId, $notificationType, $sendAt, $title, $body, $extraData = [])
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'notification_type' => $notificationType,
+            'send_at' => $sendAt,
+            'title' => $title,
+            'body' => $body,
+            'extra_data' => $extraData,
+        ];
+
+        return $this->post("notification_message", $inputs);
+    }
+
+    public function updateNotificationMessage($changerId, $notificationMessageId, $inputs)
+    {
+        $inputs['changer_id'] = $changerId;
+        return $this->put("notification_message/{$notificationMessageId}", $inputs);
+    }
+
+    public function deleteNotificationMessage($changerId, $notificationMessageId)
+    {
+        $inputs['changer_id'] = $changerId;
+        return $this->post("notification_message/{$notificationMessageId}/delete", $inputs);
+    }
 }
