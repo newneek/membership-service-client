@@ -1451,6 +1451,11 @@ class PublyExtraService extends BaseApiService
         return $this->post("notification_message", $inputs);
     }
 
+    public function getNotificationMessage($notificationMessageId)
+    {
+        return $this->get("notification_message/{$notificationMessageId}");
+    }
+
     public function updateNotificationMessage($changerId, $notificationMessageId, $inputs)
     {
         $inputs['changer_id'] = $changerId;
