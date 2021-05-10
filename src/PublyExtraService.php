@@ -116,6 +116,16 @@ class PublyExtraService extends BaseApiService
         'PAGE_VIEW_CONTENT' => 'page_view_content'
     ];
 
+    const PUSH_NOTIFICATION_TYPE_NEW_CONTENT = 1;
+    const PUSH_NOTIFICATION_TYPE_NOTICE = 2;
+    const PUSH_NOTIFICATION_TYPE_PROMOTION_EVENT = 3;
+
+    const STRING_PUSH_NOTIFICATION_TYPE = [
+        PublyExtraService::PUSH_NOTIFICATION_TYPE_NEW_CONTENT => '신규 콘텐츠',
+        PublyExtraService::PUSH_NOTIFICATION_TYPE_NOTICE => '공지',
+        PublyExtraService::PUSH_NOTIFICATION_TYPE_PROMOTION_EVENT => '이벤트/프로모션',
+    ];
+
     public function __construct($domain)
     {
         parent::__construct();
