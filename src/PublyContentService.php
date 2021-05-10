@@ -3446,6 +3446,11 @@ class PublyContentService extends BaseApiService
         return $this->post("comment/{$commentId}/delete", $inputs);
     }
 
+    public function getReactionCountByComment($commentId, $filterArray = [])
+    {
+        return $this->get("reaction/comment/{$commentId}/count", $filterArray);
+    }
+
     public function createCommentReaction($userId, $changerId, $commentId, $reactionTypeId)
     {
         $inputs = [
@@ -3464,5 +3469,10 @@ class PublyContentService extends BaseApiService
         ];
 
         return $this->post("reaction/{$reactionId}/delete", $inputs);
+    }
+
+    public function getReactionTypes($filterArray = [])
+    {
+        return $this->get('reaction_type', $filterArray);
     }
 }
