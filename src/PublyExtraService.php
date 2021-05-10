@@ -116,6 +116,16 @@ class PublyExtraService extends BaseApiService
         'PAGE_VIEW_CONTENT' => 'page_view_content'
     ];
 
+    const PUSH_NOTIFICATION_TYPE_NEW_CONTENT = 1;
+    const PUSH_NOTIFICATION_TYPE_NOTICE = 2;
+    const PUSH_NOTIFICATION_TYPE_PROMOTION_EVENT = 3;
+
+    const STRING_PUSH_NOTIFICATION_TYPE = [
+        PublyExtraService::PUSH_NOTIFICATION_TYPE_NEW_CONTENT => '신규 콘텐츠',
+        PublyExtraService::PUSH_NOTIFICATION_TYPE_NOTICE => '공지',
+        PublyExtraService::PUSH_NOTIFICATION_TYPE_PROMOTION_EVENT => '이벤트/프로모션',
+    ];
+
     public function __construct($domain)
     {
         parent::__construct();
@@ -1423,5 +1433,48 @@ class PublyExtraService extends BaseApiService
     public function getMissions($filterArray = [])
     {
         return $this->get("mission", $filterArray);
+    }
+
+    public function getNotificationMessages($page = 1, $limit = 5, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("notification_message", $filterArray);
+    }
+
+    public function getNotificationMessageCount($filterArray = [])
+    {
+        return $this->get("notification_message/count", $filterArray);
+    }
+
+    public function createNotificationMessage($changerId, $notificationType, $sendAt, $title, $body, $extraData = [])
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'notification_type' => $notificationType,
+            'send_at' => $sendAt,
+            'title' => $title,
+            'body' => $body,
+            'extra_data' => $extraData,
+        ];
+
+        return $this->post("notification_message", $inputs);
+    }
+
+    public function getNotificationMessage($notificationMessageId)
+    {
+        return $this->get("notification_message/{$notificationMessageId}");
+    }
+
+    public function updateNotificationMessage($changerId, $notificationMessageId, $inputs)
+    {
+        $inputs['changer_id'] = $changerId;
+        return $this->put("notification_message/{$notificationMessageId}", $inputs);
+    }
+
+    public function deleteNotificationMessage($changerId, $notificationMessageId)
+    {
+        $inputs['changer_id'] = $changerId;
+        return $this->post("notification_message/{$notificationMessageId}/delete", $inputs);
     }
 }
