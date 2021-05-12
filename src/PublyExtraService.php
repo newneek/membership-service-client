@@ -1447,7 +1447,7 @@ class PublyExtraService extends BaseApiService
         return $this->get("notification_message/count", $filterArray);
     }
 
-    public function createNotificationMessage($changerId, $notificationType, $sendAt, $title, $body, $extraData = [])
+    public function createNotificationMessage($changerId, $notificationType, $sendAt, $title, $body, $extraData = null)
     {
         $inputs = [
             'changer_id' => $changerId,
