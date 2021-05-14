@@ -117,8 +117,6 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::PLAN_TYPE_TWELVE_MONTHS => "12개월마다"
     ];
 
-
-
     const EVENT_CONDITION_ALL = 1;
     const EVENT_CONDITION_SUBSCRIPTION = 2;
     const EVENT_CONDITION_ORDER = 3;
@@ -227,6 +225,14 @@ class PublyPaymentService extends BaseApiService
 
     const REFUND_HISTORY_STATUS_COMPLETED = 1;
     const REFUND_HISTORY_STATUS_FAILED = 2;
+
+    const NAVERPAY_USED_KEY_MEMBERSHIP = 1;
+    const NAVERPAY_USED_KEY_SKILLUP = 2;
+
+    const STRING_NAVERPAY_USED_KEY = [
+        PublyPaymentService::NAVERPAY_USED_KEY_MEMBERSHIP => '멤버십',
+        PublyPaymentService::NAVERPAY_USED_KEY_SKILLUP => '스킬업',
+    ];
 
     public function __construct($domain)
     {
@@ -4034,14 +4040,16 @@ class PublyPaymentService extends BaseApiService
     }
 
 
-    public function createNaverpayDifference($chargerId,
+    public function createNaverpayDifference(
+        $chargerId,
         $paymentId,
         $payHistId,
         $cancel,
         $tradeDate,
         $amount,
-        $productName)
-    {
+        $productName,
+        $usedKey = PublyPaymentService::NAVERPAY_USED_KEY_MEMBERSHIP
+    ) {
         $inputs = [
             'charger_id' => $chargerId,
             'payment_id' => $paymentId,
