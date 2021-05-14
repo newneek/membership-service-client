@@ -2016,6 +2016,11 @@ class PublyContentService extends BaseApiService
         return $this->get("curation/by_ids", $filterArray);
     }
 
+    public function getCurationByType($curationType, $filterArray = [])
+    {
+        return $this->get("curation/type/{$curationType}", $filterArray);
+    }
+
     //deprecated
     public function createCuration($changerId, $title)
     {
