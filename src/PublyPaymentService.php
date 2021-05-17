@@ -13,6 +13,8 @@ class PublyPaymentService extends BaseApiService
     const PAYMENT_TYPE_PAYPAL = 4;
     const PAYMENT_TYPE_NAVERPAY = 5;
     const PAYMENT_TYPE_NAVERPAY_ONETIME = 6;
+    const PAYMENT_TYPE_SKILLUP_NAVERPAY = 7;
+    const PAYMENT_TYPE_SKILLUP_NICEPAY_CREDIT_CARD = 8;
     const PAYMENT_TYPE_IAMPORT = 90;
     const PAYMENT_TYPE_OLD_ADMIN = 91;
 
