@@ -50,7 +50,9 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::PAYMENT_TYPE_NAVERPAY => "NaverPay",
         PublyPaymentService::PAYMENT_TYPE_NAVERPAY_ONETIME => "NaverPay 간편결제",
         PublyPaymentService::PAYMENT_TYPE_IAMPORT => "아임포트",
-        PublyPaymentService::PAYMENT_TYPE_OLD_ADMIN => "구 관리자 추가"
+        PublyPaymentService::PAYMENT_TYPE_OLD_ADMIN => "구 관리자 추가",
+        PublyPaymentService::PAYMENT_TYPE_SKILLUP_NAVERPAY => "NaverPay (스킬업)",
+        PublyPaymentService::PAYMENT_TYPE_SKILLUP_NICEPAY_CREDIT_CARD => "Nicepay 신용카드 (스킬업)",
     ];
 
     const STRING_PAYMENT_STATUS = [
@@ -1020,6 +1022,83 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
+    public function orderAndPaySkillup(
+        $changerId,
+        $userId,
+        $creditCardId,
+        $contentId,
+        $rewardId,
+        $price,
+        $installmentMonth,
+        $userName,
+        $userEmail,
+        $userPhone,
+        $deliveryName = null,
+        $deliveryPhone = null,
+        $deliveryZipcode = null,
+        $deliveryAddress = null,
+        $isPreorder = null)
+    {
+        $result = [ 'success' => false ];
+
+        // order
+        $resultOrder = $this->order2(
+            $changerId,
+            $userId,
+            $contentId,
+            $rewardId,
+            $price,
+            $userName,
+            $userEmail,
+            $userPhone,
+            $deliveryName,
+            $deliveryPhone,
+            $deliveryZipcode,
+            $deliveryAddress,
+            $isPreorder);
+
+        if (!$resultOrder['success']) {
+            $result['success'] = false;
+            $result['from'] = 'order';
+            $result['error_code'] = $resultOrder['error_code'];
+            $result['message'] = $resultOrder['message'];
+            return $result;
+        }
+
+        $order = $resultOrder['item'];
+        // 정상적으로 주문 되었음.
+
+        // payment
+        $resultPayment = $this->pay3(
+            $changerId,
+            $userId,
+            $order['id'],
+            static::PAYMENT_TYPE_SKILLUP_NICEPAY_CREDIT_CARD,
+            'credit_card_id',
+            $creditCardId,
+            true,
+            $installmentMonth,
+            '');
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $payment = $resultPayment['item'];
+
+        $orderResult = $this->get("order/".$order['id'], []);
+        $order = $orderResult['success']['data'];
+
+        $result['success'] = true;
+        $result['order'] = $order;
+        $result['payment'] = $payment;
+        return $result;
+    }
+
     public function orderAndPayByNaverpay(
         $changerId,
         $userId,
@@ -1168,6 +1247,109 @@ class PublyPaymentService extends BaseApiService
             $userId,
             $order['id'],
             static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+            'credit_card_id',
+            $creditCard['id'],
+            true,
+            $installmentMonth,
+            '');
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $payment = $resultPayment['item'];
+
+        $orderResult = $this->get("order/".$order['id'], []);
+        $order = $orderResult['success']['data'];
+
+        $result['success'] = true;
+        $result['order'] = $order;
+        $result['payment'] = $payment;
+        $result['creditCard'] = $creditCard;
+        return $result;
+    }
+
+    public function addCreditCardAndOrderAndPaySkillup(
+        $changerId,
+        $userId,
+        $creditCardNumber,
+        $expireYear,
+        $expireMonth,
+        $id,
+        $password,
+        $contentId,
+        $rewardId,
+        $price,
+        $installmentMonth,
+        $userName,
+        $userEmail,
+        $userPhone,
+        $deliveryName = null,
+        $deliveryPhone = null,
+        $deliveryZipcode = null,
+        $deliveryAddress = null,
+        $isPreorder = null)
+    {
+        $result = [ 'success' => false ];
+
+        // add credit card
+        $resultCreditCard = $this->addCreditCard2(
+            $changerId,
+            $userId,
+            $creditCardNumber,
+            $expireYear,
+            $expireMonth,
+            $id,
+            $password);
+
+        if (!$resultCreditCard['success']) {
+            $result['success'] = false;
+            $result['from'] = 'credit_card';
+            $result['error_code'] = $resultCreditCard['error_code'];
+            $result['message'] = $resultCreditCard['message'];
+            return $result;
+        }
+
+        $creditCard = $resultCreditCard['item'];
+        // 정상적으로 카드 등록 되었음.
+
+        // order
+        $resultOrder = $this->order2(
+            $changerId,
+            $userId,
+            $contentId,
+            $rewardId,
+            $price,
+            $userName,
+            $userEmail,
+            $userPhone,
+            $deliveryName,
+            $deliveryPhone,
+            $deliveryZipcode,
+            $deliveryAddress,
+            $isPreorder);
+
+        if (!$resultOrder['success']) {
+            $result['success'] = false;
+            $result['from'] = 'order';
+            $result['error_code'] = $resultOrder['error_code'];
+            $result['message'] = $resultOrder['message'];
+            return $result;
+        }
+
+        $order = $resultOrder['item'];
+        // 정상적으로 주문 되었음.
+
+        // reserve payment
+        $resultPayment = $this->pay3(
+            $changerId,
+            $userId,
+            $order['id'],
+            static::PAYMENT_TYPE_SKILLUP_NICEPAY_CREDIT_CARD,
             'credit_card_id',
             $creditCard['id'],
             true,
