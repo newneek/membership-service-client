@@ -1170,6 +1170,77 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
+    public function orderAndPayBySkillupNaverpay(
+        $changerId,
+        $userId,
+        $naverpayOnetimeId,
+        $projectId,
+        $rewardId,
+        $price,
+        $userName,
+        $userEmail,
+        $userPhone,
+        $isPreorder
+    ) {
+        $result = [ 'success' => false ];
+
+        // order
+        $resultOrder = $this->order2(
+            $changerId,
+            $userId,
+            $projectId,
+            $rewardId,
+            $price,
+            $userName,
+            $userEmail,
+            $userPhone,
+            null,
+            null,
+            null,
+            null,
+            $isPreorder
+        );
+
+        if (!$resultOrder['success']) {
+            $result['success'] = false;
+            $result['from'] = 'order';
+            $result['error_code'] = $resultOrder['error_code'];
+            $result['message'] = $resultOrder['message'];
+            return $result;
+        }
+
+        $order = $resultOrder['item'];
+        // 정상적으로 주문 되었음.
+
+        // payment
+        $resultPayment = $this->payBySkillupNaverpay(
+            $changerId,
+            $userId,
+            $order['id'],
+            $naverpayOnetimeId,
+            true,
+            ''
+        );
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $payment = $resultPayment['item'];
+
+        $orderResult = $this->get("order/".$order['id'], []);
+        $order = $orderResult['success']['data'];
+
+        $result['success'] = true;
+        $result['order'] = $order;
+        $result['payment'] = $payment;
+        return $result;
+    }
+
     public function addCreditCardAndOrderAndPay(
         $changerId,
         $userId,
@@ -1736,6 +1807,43 @@ class PublyPaymentService extends BaseApiService
                     'order_id' => $orderId,
                     'naverpay_onetime_id' => $naverpayOnetimeId,
                     'pg_type' => static::PAYMENT_TYPE_NAVERPAY_ONETIME,
+                    'immediate' => $immediate,
+                    'note' => $note,
+                    'use_point' => static::USE_POINT_ON_ORDER
+                ]);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $result['success'] = true;
+        $result['item'] = $resultPayment['success']['data'];
+
+        return $result;
+    }
+
+
+    public function payBySkillupNaverpay(
+        $changerId,
+        $userId,
+        $orderId,
+        $naverpayOnetimeId,
+        $immediate,
+        $note = ''
+    ) {
+        $result = [ 'success' => false ];
+        try {
+            $resultPayment =
+                $this->post('payment', [
+                    'changer_id' => $changerId,
+                    'user_id' => $userId,
+                    'order_id' => $orderId,
+                    'naverpay_onetime_id' => $naverpayOnetimeId,
+                    'pg_type' => static::PAYMENT_TYPE_SKILLUP_NAVERPAY,
                     'immediate' => $immediate,
                     'note' => $note,
                     'use_point' => static::USE_POINT_ON_ORDER
