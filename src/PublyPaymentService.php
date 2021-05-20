@@ -4242,6 +4242,7 @@ class PublyPaymentService extends BaseApiService
             'trade_date' => $tradeDate,
             'amount' => $amount,
             'product_name' => $productName,
+            $usedKey
         ];
 
         return $this->post('naverpay_difference', $inputs);
