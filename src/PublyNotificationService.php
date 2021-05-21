@@ -414,4 +414,13 @@ class PublyNotificationService extends BaseApiService
 
         return $this->post('/event/comment_replied', $inputs);
     }
+    
+    public function eventCommentCreated($comment)
+    {
+        $inputs = [
+            'comment' => $comment
+        ];
+
+        return $this->post('/event/comment_created', $inputs);
+    }
 }
