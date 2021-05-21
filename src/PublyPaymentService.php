@@ -4333,7 +4333,7 @@ class PublyPaymentService extends BaseApiService
 
 
     public function createNaverpayDifference(
-        $chargerId,
+        $changerId,
         $paymentId,
         $payHistId,
         $cancel,
@@ -4343,7 +4343,7 @@ class PublyPaymentService extends BaseApiService
         $usedKey = PublyPaymentService::NAVERPAY_USED_KEY_MEMBERSHIP
     ) {
         $inputs = [
-            'charger_id' => $chargerId,
+            'changer_id' => $changerId,
             'payment_id' => $paymentId,
             'pay_hist_id' => $payHistId,
             'cancel' => $cancel,
