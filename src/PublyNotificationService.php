@@ -444,32 +444,23 @@ class PublyNotificationService extends BaseApiService
 
     public function getNotificationMessage($notificationMessageId)
     {
-        return $this->get("notification_message/{$notificationMessageId}");
+        return $this->get("/notification_message/{$notificationMessageId}");
     }
 
-//    public function createNotificationMessage($changerId, $notificationType, $sendAt, $title, $body, $extraData = null)
-//    {
-//        $inputs = [
-//            'changer_id' => $changerId,
-//            'notification_type' => $notificationType,
-//            'send_at' => $sendAt,
-//            'title' => $title,
-//            'body' => $body,
-//            'extra_data' => $extraData,
-//        ];
-//
-//        return $this->post("notification_message", $inputs);
-//    }
+    public function createNotificationMessage($inputs)
+    {
+        return $this->post("/notification_message/send", $inputs);
+    }
 
     public function updateNotificationMessage($changerId, $notificationMessageId, $inputs)
     {
         $inputs['changer_id'] = $changerId;
-        return $this->put("notification_message/{$notificationMessageId}", $inputs);
+        return $this->put("/notification_message/{$notificationMessageId}", $inputs);
     }
 
     public function deleteNotificationMessage($changerId, $notificationMessageId)
     {
         $inputs['changer_id'] = $changerId;
-        return $this->post("notification_message/{$notificationMessageId}/delete", $inputs);
+        return $this->post("/notification_message/{$notificationMessageId}/delete", $inputs);
     }
 }
