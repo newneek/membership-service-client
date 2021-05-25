@@ -7,6 +7,17 @@ use Publy\ServiceClient\Api\ResponseException;
 
 class PublyNotificationService extends BaseApiService
 {
+    const PUSH_NOTIFICATION_TYPE_NEW_CONTENT = 1;
+    const PUSH_NOTIFICATION_TYPE_NOTICE = 2;
+    const PUSH_NOTIFICATION_TYPE_PROMOTION_EVENT = 3;
+    const PUSH_NOTIFICATION_TYPE_PUBLISHED_CONTENT = 4;
+
+    const STRING_PUSH_NOTIFICATION_TYPE = [
+        PublyNotificationService::PUSH_NOTIFICATION_TYPE_NEW_CONTENT => '신규 콘텐츠',
+        PublyNotificationService::PUSH_NOTIFICATION_TYPE_NOTICE => '공지',
+        PublyNotificationService::PUSH_NOTIFICATION_TYPE_PROMOTION_EVENT => '이벤트/프로모션',
+        PublyNotificationService::PUSH_NOTIFICATION_TYPE_PUBLISHED_CONTENT => '발행알림',
+    ];
 
     public function __construct($domain)
     {
@@ -431,5 +442,34 @@ class PublyNotificationService extends BaseApiService
         ];
 
         return $this->post('/event/daily_set_comment_report', $inputs);
+    }
+
+    public function getNotificationMessages($page = 1, $limit = 5, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("/notification_message", $filterArray);
+    }
+
+    public function getNotificationMessage($notificationMessageId)
+    {
+        return $this->get("/notification_message/{$notificationMessageId}");
+    }
+
+    public function createNotificationMessage($inputs)
+    {
+        return $this->post("/notification_message/send", $inputs);
+    }
+
+    public function updateNotificationMessage($changerId, $notificationMessageId, $inputs)
+    {
+        $inputs['changer_id'] = $changerId;
+        return $this->put("/notification_message/{$notificationMessageId}", $inputs);
+    }
+
+    public function deleteNotificationMessage($changerId, $notificationMessageId)
+    {
+        $inputs['changer_id'] = $changerId;
+        return $this->post("/notification_message/{$notificationMessageId}/delete", $inputs);
     }
 }
