@@ -3451,7 +3451,7 @@ class PublyContentService extends BaseApiService
         return $this->post("comment/{$commentId}/delete", $inputs);
     }
 
-    public function dailyReport()
+    public function sendDailySetCommentReportToAuthor()
     {
         return $this->post('/comment/send_daily_set_comment_report_to_author');
     }
