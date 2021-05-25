@@ -1437,6 +1437,9 @@ class PublyExtraService extends BaseApiService
         return $this->get("mission", $filterArray);
     }
 
+    /**
+     * @deprecated
+     */
     public function getNotificationMessages($page = 1, $limit = 5, $filterArray = [])
     {
         $filterArray['page'] = $page;
@@ -1444,11 +1447,17 @@ class PublyExtraService extends BaseApiService
         return $this->get("notification_message", $filterArray);
     }
 
+    /**
+     * @deprecated
+     */
     public function getNotificationMessageCount($filterArray = [])
     {
         return $this->get("notification_message/count", $filterArray);
     }
 
+    /**
+     * @deprecated
+     */
     public function createNotificationMessage($changerId, $notificationType, $sendAt, $title, $body, $extraData = null)
     {
         $inputs = [
@@ -1463,17 +1472,26 @@ class PublyExtraService extends BaseApiService
         return $this->post("notification_message", $inputs);
     }
 
+    /**
+     * @deprecated
+     */
     public function getNotificationMessage($notificationMessageId)
     {
         return $this->get("notification_message/{$notificationMessageId}");
     }
 
+    /**
+     * @deprecated
+     */
     public function updateNotificationMessage($changerId, $notificationMessageId, $inputs)
     {
         $inputs['changer_id'] = $changerId;
         return $this->put("notification_message/{$notificationMessageId}", $inputs);
     }
 
+    /**
+     * @deprecated
+     */
     public function deleteNotificationMessage($changerId, $notificationMessageId)
     {
         $inputs['changer_id'] = $changerId;
