@@ -463,4 +463,15 @@ class PublyNotificationService extends BaseApiService
         $inputs['changer_id'] = $changerId;
         return $this->post("/notification_message/{$notificationMessageId}/delete", $inputs);
     }
+
+    public function sendNotificationByTemplate($templateType, $variables, $userIds)
+    {
+        $inputs = [
+            'template_type' => $templateType,
+            'variables' => $variables,
+            'user_ids' => $userIds,
+        ];
+
+        return $this->post("/notification_template/send", $inputs);
+    }
 }
