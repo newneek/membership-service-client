@@ -423,4 +423,13 @@ class PublyNotificationService extends BaseApiService
 
         return $this->post('/event/comment_created', $inputs);
     }
+
+    public function eventDailySetCommentReport($setData)
+    {
+        $inputs = [
+            'set_data' => $setData
+        ];
+
+        return $this->post('/event/daily_set_comment_report', $inputs);
+    }
 }
