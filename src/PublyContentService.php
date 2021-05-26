@@ -3485,4 +3485,28 @@ class PublyContentService extends BaseApiService
     {
         return $this->get('reaction_type', $filterArray);
     }
+
+    public function storeUserContentSubscription($userId, $targetType, $targetId)
+    {
+        $inputs = [
+            'changer_id' => $userId,
+            'user_id' => $userId,
+            'subscribable_type' => $targetType,
+            'subscribable_id' => $targetId,
+        ];
+
+        return $this->post("user_content_subscribe", $inputs);
+    }
+
+    public function deleteUserContentSubscription($userId, $targetType, $targetId)
+    {
+        $inputs = [
+            'changer_id' => $userId,
+            'user_id' => $userId,
+            'subscribable_type' => $targetType,
+            'subscribable_id' => $targetId,
+        ];
+
+        return $this->post("user_content_subscribe/delete", $inputs);
+    }
 }
