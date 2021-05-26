@@ -3453,7 +3453,7 @@ class PublyContentService extends BaseApiService
 
     public function sendDailySetCommentReportToAuthor()
     {
-        return $this->post('/comment/send_daily_set_comment_report_to_author');
+        return $this->post('/job/daily_set_comment_report/send');
     }
 
     public function getReactionCountByComment($commentId, $filterArray = [])
