@@ -439,28 +439,61 @@ class PublyNotificationService extends BaseApiService
     {
         $filterArray['page'] = $page;
         $filterArray['limit'] = $limit;
-        return $this->get("/notification_message", $filterArray);
+        return $this->get("notification_message", $filterArray);
     }
 
     public function getNotificationMessage($notificationMessageId)
     {
-        return $this->get("/notification_message/{$notificationMessageId}");
+        return $this->get("notification_message/{$notificationMessageId}");
     }
 
     public function createNotificationMessage($inputs)
     {
-        return $this->post("/notification_message/send", $inputs);
+        return $this->post("notification_message/send", $inputs);
     }
 
     public function updateNotificationMessage($changerId, $notificationMessageId, $inputs)
     {
         $inputs['changer_id'] = $changerId;
-        return $this->put("/notification_message/{$notificationMessageId}", $inputs);
+        return $this->put("notification_message/{$notificationMessageId}", $inputs);
     }
 
     public function deleteNotificationMessage($changerId, $notificationMessageId)
     {
         $inputs['changer_id'] = $changerId;
-        return $this->post("/notification_message/{$notificationMessageId}/delete", $inputs);
+        return $this->post("notification_message/{$notificationMessageId}/delete", $inputs);
+    }
+
+    public function getNotificationTemplates()
+    {
+        return $this->get("notification_template");
+    }
+
+    public function createNotificationTemplate($changerId, $inputs)
+    {
+        $inputs['changer_id'] = $changerId;
+        return $this->post("notification_template", $inputs);
+    }
+
+    public function getNotificationTemplate($templateId)
+    {
+        return $this->get("notification_template/{$templateId}");
+    }
+
+    public function updateNotificationTemplate($templateId, $changerId, $inputs)
+    {
+        $inputs['changer_id'] = $changerId;
+        return $this->put("notification_template/{$templateId}", $inputs);
+    }
+
+    public function sendNotificationByTemplate($templateType, $variables, $userIds)
+    {
+        $inputs = [
+            'template_type' => $templateType,
+            'variables' => $variables,
+            'user_ids' => $userIds,
+        ];
+
+        return $this->post("notification_template/send", $inputs);
     }
 }

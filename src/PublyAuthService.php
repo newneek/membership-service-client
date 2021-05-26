@@ -180,6 +180,11 @@ class PublyAuthService extends BaseApiService {
         return $this->get("user/email_disagree_token/{$token}");
     }
 
+    public function getAllUserIds()
+    {
+        return $this->get("user/all_user_ids");
+    }
+
     public function retrieveById($id)
     {
     	return $this->get('retrieve_by_id', array('id'=>$id));
