@@ -464,9 +464,9 @@ class PublyNotificationService extends BaseApiService
         return $this->post("notification_message/{$notificationMessageId}/delete", $inputs);
     }
 
-    public function getNotificationTemplates()
+    public function getNotificationTemplates($filterArray)
     {
-        return $this->get("notification_template");
+        return $this->get("notification_template", $filterArray);
     }
 
     public function createNotificationTemplate($changerId, $inputs)
