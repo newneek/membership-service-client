@@ -3509,4 +3509,18 @@ class PublyContentService extends BaseApiService
 
         return $this->post("user_content_subscribe/delete", $inputs);
     }
+
+    public function getUserContentSubscriptions($page, $limit, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+
+        return $this->get("user_content_subscribe", $filterArray);
+    }
+
+
+    public function getUserContentSubscriptionCount($filterArray = [])
+    {
+        return $this->get("user_content_subscribe/count", $filterArray);
+    }
 }
