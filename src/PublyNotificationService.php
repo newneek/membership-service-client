@@ -425,7 +425,7 @@ class PublyNotificationService extends BaseApiService
 
         return $this->post('/event/comment_replied', $inputs);
     }
-    
+
     public function eventCommentCreated($comment)
     {
         $inputs = [
@@ -489,11 +489,10 @@ class PublyNotificationService extends BaseApiService
     public function sendNotificationByTemplate($templateType, $variables, $userIds)
     {
         $inputs = [
-            'template_type' => $templateType,
             'variables' => $variables,
             'user_ids' => $userIds,
         ];
 
-        return $this->post("notification_template/send", $inputs);
+        return $this->post("notification_template/template_type/{$templateType}/send", $inputs);
     }
 }
