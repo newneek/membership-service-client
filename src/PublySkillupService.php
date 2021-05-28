@@ -29,7 +29,7 @@ class PublySkillupService extends BaseApiService {
         ]);
     }
 
-    public function removeProjectLike($projectId, $userId): array
+    public function removeProjectLike($userId, $projectId): array
     {
         return $this->post("like/delete/project", [
             'likeableId' => $projectId,
@@ -44,7 +44,7 @@ class PublySkillupService extends BaseApiService {
         ]);
     }
 
-    public function getProjectLikeByProjectIdAndUserId($projectId, $userId): array
+    public function getProjectLikeByProjectIdAndUserId($userId, $projectId): array
     {
         return $this->get("like/project/{$projectId}/user/{$userId}");
     }
