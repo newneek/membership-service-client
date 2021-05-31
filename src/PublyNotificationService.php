@@ -444,11 +444,6 @@ class PublyNotificationService extends BaseApiService
         return $this->get("notification_message", $filterArray);
     }
 
-    public function getNotificationMessageCount($filterArray = [])
-    {
-        return $this->get("notification_message/count", $filterArray);
-    }
-
     public function getNotificationMessage($notificationMessageId)
     {
         return $this->get("notification_message/{$notificationMessageId}");
@@ -501,5 +496,17 @@ class PublyNotificationService extends BaseApiService
         ];
 
         return $this->post("notification_template/template_type/{$templateType}/send", $inputs);
+    }
+
+    public function getNotificationSendHistoriesByUserId($userId, $page = 1, $limit = 5, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("notification_send_history/user/{$userId}", $filterArray);
+    }
+
+    public function getNotificationSendHistoryCountByUserId($userId, $filterArray = [])
+    {
+        return $this->get("notification_send_history/user/{$userId}/count", $filterArray);
     }
 }
