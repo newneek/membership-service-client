@@ -488,11 +488,12 @@ class PublyNotificationService extends BaseApiService
         return $this->put("notification_template/{$templateId}", $inputs);
     }
 
-    public function sendNotificationByTemplate($templateType, $variables, $userIds)
+    public function sendNotificationByTemplate($templateType, $variables, $userIds, $analyticsEvent = [])
     {
         $inputs = [
             'variables' => $variables,
             'user_ids' => $userIds,
+            'analytics_event' => $analyticsEvent,
         ];
 
         return $this->post("notification_template/template_type/{$templateType}/send", $inputs);
