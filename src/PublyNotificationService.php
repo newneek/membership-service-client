@@ -17,7 +17,7 @@ class PublyNotificationService extends BaseApiService
         PublyNotificationService::PUSH_NOTIFICATION_TYPE_NEW_CONTENT => '신규 콘텐츠',
         PublyNotificationService::PUSH_NOTIFICATION_TYPE_NOTICE => '공지',
         PublyNotificationService::PUSH_NOTIFICATION_TYPE_PROMOTION_EVENT => '이벤트/프로모션',
-        PublyNotificationService::PUSH_NOTIFICATION_TYPE_PUBLISHED_CONTENT => '발행알림',
+        PublyNotificationService::PUSH_NOTIFICATION_TYPE_PUBLISHED_CONTENT => '시리즈 발행',
         PublyNotificationService::PUSH_NOTIFICATION_TYPE_COMMUNITY => '커뮤니티'
     ];
 
