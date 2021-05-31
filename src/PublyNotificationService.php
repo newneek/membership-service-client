@@ -11,12 +11,14 @@ class PublyNotificationService extends BaseApiService
     const PUSH_NOTIFICATION_TYPE_NOTICE = 2;
     const PUSH_NOTIFICATION_TYPE_PROMOTION_EVENT = 3;
     const PUSH_NOTIFICATION_TYPE_PUBLISHED_CONTENT = 4;
+    const PUSH_NOTIFICATION_TYPE_COMMUNITY = 5;
 
     const STRING_PUSH_NOTIFICATION_TYPE = [
         PublyNotificationService::PUSH_NOTIFICATION_TYPE_NEW_CONTENT => '신규 콘텐츠',
         PublyNotificationService::PUSH_NOTIFICATION_TYPE_NOTICE => '공지',
         PublyNotificationService::PUSH_NOTIFICATION_TYPE_PROMOTION_EVENT => '이벤트/프로모션',
         PublyNotificationService::PUSH_NOTIFICATION_TYPE_PUBLISHED_CONTENT => '발행알림',
+        PublyNotificationService::PUSH_NOTIFICATION_TYPE_COMMUNITY => '커뮤니티'
     ];
 
     public function __construct($domain)
@@ -440,6 +442,11 @@ class PublyNotificationService extends BaseApiService
         $filterArray['page'] = $page;
         $filterArray['limit'] = $limit;
         return $this->get("notification_message", $filterArray);
+    }
+
+    public function getNotificationMessageCount($filterArray = [])
+    {
+        return $this->get("notification_message/count", $filterArray);
     }
 
     public function getNotificationMessage($notificationMessageId)
