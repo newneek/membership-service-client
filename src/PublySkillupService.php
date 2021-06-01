@@ -20,4 +20,32 @@ class PublySkillupService extends BaseApiService {
             'userId' => $userId
         ]);
     }
+
+    public function addProjectLike($userId, $projectId): array
+    {
+        return $this->post("like/project", [
+            'userId' => $userId,
+            'likeableId' => $projectId
+        ]);
+    }
+
+    public function removeProjectLike($userId, $projectId): array
+    {
+        return $this->post("like/delete/project", [
+            'likeableId' => $projectId,
+            'userId' => $userId
+        ]);
+    }
+
+    public function getProjectLikesByUser($userId): array
+    {
+        return $this->get("like/project", [
+            'userId' => $userId
+        ]);
+    }
+
+    public function getProjectLikeByProjectIdAndUserId($userId, $projectId): array
+    {
+        return $this->get("like/project/{$projectId}/user/{$userId}");
+    }
 }
