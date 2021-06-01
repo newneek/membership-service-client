@@ -1497,4 +1497,9 @@ class PublyExtraService extends BaseApiService
         $inputs['changer_id'] = $changerId;
         return $this->post("notification_message/{$notificationMessageId}/delete", $inputs);
     }
+
+    public function updateRecommededSearchKeyWords()
+    {
+        return $this->post("recommended_search_keyword");
+    }
 }
