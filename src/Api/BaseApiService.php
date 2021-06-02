@@ -185,7 +185,6 @@ class BaseApiService
             [
                 'method' => 'GET',
                 'queryParams' => $queryParams,
-
                 'timeout' => $this->timeout
             ],
             $headers
