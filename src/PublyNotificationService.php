@@ -511,7 +511,7 @@ class PublyNotificationService extends BaseApiService
         return $this->get("notification_send_history/user/{$userId}/count", $filterArray);
     }
 
-    public function getNotificationSendHistoryByNotificationId($notificationMessageId)
+    public function getNotificationSendTargetUserIdsByNotificationId($notificationMessageId)
     {
         return $this->get("/notification_send_history/notificationMessage/{$notificationMessageId}/user_ids");
     }
