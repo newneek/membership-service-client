@@ -2,10 +2,10 @@
 
 namespace Publy\ServiceClient;
 
-use Publy\ServiceClient\Api\BaseApiServiceWithHeader;
+use Publy\ServiceClient\Api\BaseApiService;
 use Publy\ServiceClient\Api\ResponseException;
 
-class AlgoliaAnalyticsService extends BaseApiServiceWithHeader
+class AlgoliaAnalyticsService extends BaseApiService
 {
     public const DEFAULT_INDEX_KEY = 'all';
 
@@ -22,19 +22,27 @@ class AlgoliaAnalyticsService extends BaseApiServiceWithHeader
         $this->ALGOLIA_API_KEY = $ALGOLIA_API_KEY;
     }
 
-    private function getHeaders(): array
-    {
-        return [
-            "X-Algolia-Application-Id" => $this->ALGOLIA_APP_ID,
-            "X-Algolia-API-Key" => $this->ALGOLIA_API_KEY,
-        ];
-    }
-
     /**
      * @throws ResponseException
      */
     public function getTopSearchResult($queryParams = [])
     {
-        return $this->get("2/searches", $queryParams, $this->getHeaders());
+        return $this->getWithHeader(
+            "2/searches",
+            $queryParams,
+            $this->getHeaders()
+        );
+    }
+
+    /**
+     * @return array
+     */
+    private function getHeaders(): array
+    {
+        $headers = [
+            "X-Algolia-Application-Id" => $this->ALGOLIA_APP_ID,
+            "X-Algolia-API-Key" => $this->ALGOLIA_API_KEY,
+        ];
+        return $headers;
     }
 }

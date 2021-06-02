@@ -7,7 +7,6 @@ use Publy\ServiceClient\Api\ResponseException;
 use GuzzleHttp\Exception\RequestException;
 
 class Http {
-
     /**
      * Use the send method to call every endpoint except for oauth/tokens
      *
@@ -22,32 +21,16 @@ class Http {
      *
      * @return mixed The response body, parsed from JSON into an object. Also returns bool or null if something went wrong
      * @throws ResponseException
-     * @throws AuthException
      */
     public static function send(
         $apiService,
-        $endPoint,
-        $options = []
+        string $endPoint,
+        array $options = [],
+        array $headers = []
     ) {
-        $options = array_merge([
-                'method'      => 'GET',
-                'contentType' => 'application/json',
-                'postFields'  => null,
-                'queryParams' => null
-            ],
-            $options
-        );
-
-        $headers = [
-            'Accept'       => 'application/json',
-            'Content-Type' => $options['contentType']
-        ];
-
-        $request = new Request(
-            $options['method'],
-            $apiService->getApiUrl() . $endPoint,
-            $headers
-        );
+        $options = self::mergeWithDefaultOptions($options);
+        $headers = self::mergeWithDefaultHeaders($headers, $options['contentType']);
+        $request = self::createRequest($options['method'], $apiService, $endPoint, $headers);
 
         $requestOptions = [];
 
@@ -87,5 +70,52 @@ class Http {
         }
 
         return json_decode($response->getBody()->getContents(), true);
+    }
+
+    /**
+     * @param array $options
+     * @return array|string[]
+     */
+    private static function mergeWithDefaultOptions(array $options): array
+    {
+        return array_merge([
+            'method' => 'GET',
+            'contentType' => 'application/json',
+            'postFields' => null,
+            'queryParams' => null
+        ],
+            $options
+        );
+    }
+
+    /**
+     * @param array $headers
+     * @param $contentType
+     * @return array|string[]
+     */
+    private static function mergeWithDefaultHeaders(array $headers, $contentType): array
+    {
+        return array_merge([
+            'Accept' => 'application/json',
+            'Content-Type' => $contentType
+        ],
+            $headers
+        );
+    }
+
+    /**
+     * @param $method
+     * @param $apiService
+     * @param string $endPoint
+     * @param array $headers
+     * @return Request
+     */
+    private static function createRequest($method, $apiService, string $endPoint, array $headers): Request
+    {
+        return new Request(
+            $method,
+            $apiService->getApiUrl() . $endPoint,
+            $headers
+        );
     }
 }
