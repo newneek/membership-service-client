@@ -744,9 +744,10 @@ class PublyContentService extends BaseApiService
         return $this->get("content/{$contentId}");
     }
 
-    public function getContentsByIds($contentIds)
+    public function getContentsByIds($contentIds, $filterArray = [])
     {
-        return $this->get("content/by_ids", ['ids' => implode(',', $contentIds)]);
+        $filterArray['ids'] = implode(',', $contentIds);
+        return $this->get("content/by_ids", $filterArray);
     }
 
     public function getContentsByProject($projectId, $filterArray)
