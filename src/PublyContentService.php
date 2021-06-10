@@ -3394,6 +3394,11 @@ class PublyContentService extends BaseApiService
         return $this->get("comment/set/{$setId}", $filterArray);
     }
 
+    public function getCommentsByUser($userId, $filterArray = [])
+    {
+        return $this->get("comment/user/{$userId}", $filterArray);
+    }
+
     public function getCommentsCountBySet($setId, $filterArray = [])
     {
         return $this->get("comment/set/{$setId}/count", $filterArray);
