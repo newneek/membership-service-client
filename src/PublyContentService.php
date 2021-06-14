@@ -744,9 +744,10 @@ class PublyContentService extends BaseApiService
         return $this->get("content/{$contentId}");
     }
 
-    public function getContentsByIds($contentIds)
+    public function getContentsByIds($contentIds, $filterArray = [])
     {
-        return $this->get("content/by_ids", ['ids' => implode(',', $contentIds)]);
+        $filterArray['ids'] = implode(',', $contentIds);
+        return $this->get("content/by_ids", $filterArray);
     }
 
     public function getContentsByProject($projectId, $filterArray)
@@ -1279,10 +1280,8 @@ class PublyContentService extends BaseApiService
         return $this->get("user_content_progress/user/{$userId}/type/{$type}/by_set_ids", $filterArray);
     }
 
-    public function getUserContentProgressesByUser($userId, $page = 1, $limit = 10, $filterArray = [])
+    public function getUserContentProgressesByUser($userId, $filterArray = [])
     {
-        $filterArray['page'] = $page;
-        $filterArray['limit'] = $limit;
         return $this->get("user_content_progress/user/{$userId}", $filterArray);
     }
 
@@ -1915,6 +1914,11 @@ class PublyContentService extends BaseApiService
     public function getSetReviewCountBySetId($setId, $filterArray = [])
     {
         return $this->get("/set_review/set/{$setId}/count", $filterArray);
+    }
+
+    public function getSetReviewsByUser($userId, $filterArray = [])
+    {
+        return $this->get("/set_review/user/{$userId}", $filterArray);
     }
 
     public function updateSetReview($changerId, $userId, $setId, $rating, $comment)
@@ -3388,6 +3392,11 @@ class PublyContentService extends BaseApiService
         $filterArray['limit'] = $limit;
 
         return $this->get("comment/set/{$setId}", $filterArray);
+    }
+
+    public function getCommentsByUser($userId, $filterArray = [])
+    {
+        return $this->get("comment/user/{$userId}", $filterArray);
     }
 
     public function getCommentsCountBySet($setId, $filterArray = [])

@@ -628,6 +628,12 @@ class PublyExtraService extends BaseApiService
         return $this->get("review_like/set/{$setId}/user/{$userId}", $filterArray);
     }
 
+    public function getTotalSetReviewLikesCountByReviewIds($reviewIds, $filterArray = [])
+    {
+        $filterArray['review_ids'] = implode(',', $reviewIds);
+        return $this->get("review_like/counts/by_review_ids", $filterArray);
+    }
+
     public function updateOrCreateReviewLikeByReviewAndUser($changerId, $reviewId, $userId, $inputs)
     {
         $inputs['changer_id'] = $changerId;
