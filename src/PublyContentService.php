@@ -3527,14 +3527,8 @@ class PublyContentService extends BaseApiService
         return $this->get("user_content_subscribe", $filterArray);
     }
 
-
     public function getUserContentSubscriptionCount($filterArray = [])
     {
         return $this->get("user_content_subscribe/count", $filterArray);
-    }
-
-    public function getUserSubscribedContentByTargetIds($filterArray = [])
-    {
-        return $this->get("user_content_subscribe/subscribable_ids", $filterArray);
     }
 }
