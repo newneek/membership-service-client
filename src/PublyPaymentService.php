@@ -4582,4 +4582,10 @@ class PublyPaymentService extends BaseApiService
     {
         return $this->get("refund_history", $filterArray);
     }
+
+    public function getOrderCountsByRewardIds($rewardIds, $filterArray = [])
+    {
+        $filterArray['reward_ids'] = implode(',', $rewardIds);
+        return $this->get("/order/by_reward_ids/count", $filterArray);
+    }
 }
