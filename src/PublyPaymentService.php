@@ -4592,6 +4592,6 @@ class PublyPaymentService extends BaseApiService
 
     public function notifyCouponExpired()
     {
-        return $this->post("/coupon_option/notify_coupon_expired");
+        return $this->post("/coupon_v2/notify_coupon_expired");
     }
 }
