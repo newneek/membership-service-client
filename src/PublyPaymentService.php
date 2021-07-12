@@ -4583,10 +4583,10 @@ class PublyPaymentService extends BaseApiService
         return $this->get("refund_history", $filterArray);
     }
 
-    public function notifyOrderByDaysAfterPaid($dayAfterPaid)
+    public function notifyOrderByDaysAfterPaid($daysAfterPaid)
     {
         return $this->post("/order/notify_order_by_days_after_paid", [
-            'day_after_paid' => $dayAfterPaid
+            'days_after_paid' => $daysAfterPaid
         ]);
     }
 
