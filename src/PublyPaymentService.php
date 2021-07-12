@@ -4588,4 +4588,16 @@ class PublyPaymentService extends BaseApiService
         $filterArray['reward_ids'] = implode(',', $rewardIds);
         return $this->get("/order/by_reward_ids/count", $filterArray);
     }
+
+    public function notifyOrderByDaysAfterPaid($daysAfterPaid)
+    {
+        return $this->post("/order/notify_order_by_days_after_paid", [
+            'days_after_paid' => $daysAfterPaid
+        ]);
+    }
+
+    public function notifyCouponExpired()
+    {
+        return $this->post("/coupon_v2/notify_coupon_expired");
+    }
 }

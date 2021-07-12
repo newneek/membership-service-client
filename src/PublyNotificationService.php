@@ -515,4 +515,15 @@ class PublyNotificationService extends BaseApiService
     {
         return $this->get("/notification_send_history/notificationMessage/{$notificationMessageId}/user_ids");
     }
+
+    public function sendSolapiMessage($templateType, $variables, $destinationPhone)
+    {
+        $inputs = [
+            'template_type' => $templateType,
+            'variables' => $variables,
+            'dest_phone' => $destinationPhone
+        ];
+
+        return $this->post("template/send_solapi_template", $inputs);
+    }
 }
