@@ -524,6 +524,6 @@ class PublyNotificationService extends BaseApiService
             'dest_phone' => $destinationPhone
         ];
 
-        return $this->post("template/send_solapi_template", $inputs);
+        return $this->post("template/send_solapi_message", $inputs);
     }
 }
