@@ -48,4 +48,11 @@ class PublySkillupService extends BaseApiService {
     {
         return $this->get("like/project/{$projectId}/user/{$userId}");
     }
+
+    public function getSetReviewsBySetIds($setIds): array
+    {
+        return $this->get("review/set", [
+            'reviewableIds' => implode(',', $setIds)
+        ]);
+    }
 }
