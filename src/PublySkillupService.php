@@ -49,14 +49,14 @@ class PublySkillupService extends BaseApiService {
         return $this->get("like/project/{$projectId}/user/{$userId}");
     }
 
-    public function getSetReviewsBySetIds($setIds): array
+    public function getSetReviewsBySetIds($setIds, $filter = []): array
     {
-        return $this->get("review/set", [
-            'reviewableIds' => implode(',', $setIds)
-        ]);
+        $filter['reviewableIds'] = implode(',', $setIds);
+
+        return $this->get("review/set", $filter);
     }
 
-    public function getSetReviewsWithReactionCount($page, $limit, $setId): array
+    public function getSetReviewsWithReactionCount($page, $limit, $setId, $filter = []): array
     {
         return $this->get("review/set/with-reaction-count", [
             'reviewableId' => $setId,
@@ -78,6 +78,16 @@ class PublySkillupService extends BaseApiService {
         return $this->post("reaction/delete/review", [
             'reactableId' => $reviewId,
             'userId' => $userId
+        ]);
+    }
+
+    public function updateOrCreateSetReview($userId, $setId, $rating, $comment = null): array
+    {
+        return $this->post("review/set", [
+            'userId' => $userId,
+            'reviewableId' => $setId,
+            'rating' => $rating,
+            'comment' => $comment
         ]);
     }
 }
