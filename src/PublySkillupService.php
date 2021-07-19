@@ -55,4 +55,29 @@ class PublySkillupService extends BaseApiService {
             'reviewableIds' => implode(',', $setIds)
         ]);
     }
+
+    public function getSetReviewsWithReactionCount($page, $limit, $setId): array
+    {
+        return $this->get("review/set/with-reaction-count", [
+            'reviewableId' => $setId,
+            'page' => $page,
+            'limit' => $limit
+        ]);
+    }
+
+    public function addReviewReaction($userId, $reviewId): array
+    {
+        return $this->post("reaction/review", [
+            'reactableId' => $reviewId,
+            'userId' => $userId
+        ]);
+    }
+
+    public function removeReviewReaction($userId, $reviewId): array
+    {
+        return $this->post("reaction/delete/review", [
+            'reactableId' => $reviewId,
+            'userId' => $userId
+        ]);
+    }
 }
