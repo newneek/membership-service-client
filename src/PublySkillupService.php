@@ -5,9 +5,11 @@ namespace Publy\ServiceClient;
 use Publy\ServiceClient\Api\BaseApiService;
 use Publy\ServiceClient\Api\ResponseException;
 
-class PublySkillupService extends BaseApiService {
+class PublySkillupService extends BaseApiService
+{
 
-    public function __construct($domain) {
+    public function __construct($domain)
+    {
         parent::__construct();
 
         $this->domain = $domain;
@@ -88,6 +90,15 @@ class PublySkillupService extends BaseApiService {
             'reviewableId' => $setId,
             'rating' => $rating,
             'comment' => $comment
+        ]);
+    }
+
+    public function updateSetReviewIsRecommended($userId, $setId, $isRecommended): array
+    {
+        return $this->post("review/set", [
+            'userId' => $userId,
+            'reviewableId' => $setId,
+            'isRecommended' => $isRecommended
         ]);
     }
 }
