@@ -5,9 +5,11 @@ namespace Publy\ServiceClient;
 use Publy\ServiceClient\Api\BaseApiService;
 use Publy\ServiceClient\Api\ResponseException;
 
-class PublySkillupService extends BaseApiService {
+class PublySkillupService extends BaseApiService
+{
 
-    public function __construct($domain) {
+    public function __construct($domain)
+    {
         parent::__construct();
 
         $this->domain = $domain;
@@ -47,5 +49,56 @@ class PublySkillupService extends BaseApiService {
     public function getProjectLikeByProjectIdAndUserId($userId, $projectId): array
     {
         return $this->get("like/project/{$projectId}/user/{$userId}");
+    }
+
+    public function getSetReviewsBySetIds($setIds, $filter = []): array
+    {
+        $filter['reviewableIds'] = implode(',', $setIds);
+
+        return $this->get("review/set", $filter);
+    }
+
+    public function getSetReviewsWithReactionCount($page, $limit, $setId, $filter = []): array
+    {
+        return $this->get("review/set/with-reaction-count", [
+            'reviewableId' => $setId,
+            'page' => $page,
+            'limit' => $limit
+        ]);
+    }
+
+    public function addReviewReaction($userId, $reviewId): array
+    {
+        return $this->post("reaction/review", [
+            'reactableId' => $reviewId,
+            'userId' => $userId
+        ]);
+    }
+
+    public function removeReviewReaction($userId, $reviewId): array
+    {
+        return $this->post("reaction/delete/review", [
+            'reactableId' => $reviewId,
+            'userId' => $userId
+        ]);
+    }
+
+    public function updateOrCreateSetReview($userId, $setId, $rating, $comment = null): array
+    {
+        return $this->post("review/set", [
+            'userId' => $userId,
+            'reviewableId' => $setId,
+            'rating' => $rating,
+            'comment' => $comment
+        ]);
+    }
+
+    public function updateSetReviewIsRecommended($userId, $setId, $isRecommended): array
+    {
+        return $this->post("review/set", [
+            'userId' => $userId,
+            'reviewableId' => $setId,
+            'isRecommended' => $isRecommended
+        ]);
     }
 }
