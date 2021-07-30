@@ -101,4 +101,17 @@ class PublySkillupService extends BaseApiService
             'isRecommended' => $isRecommended
         ]);
     }
+
+    public function getCouponCampaign($campaignId): array
+    {
+        return $this->get("coupon/campaign/$campaignId");
+    }
+
+    public function getCouponCampaigns($page = 1, $limit = 10, $filterArray = []): array
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+
+        return $this->get("coupon/campaign", $filterArray);
+    }
 }
