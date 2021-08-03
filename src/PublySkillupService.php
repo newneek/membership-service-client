@@ -115,12 +115,20 @@ class PublySkillupService extends BaseApiService
         return $this->get("coupon/campaign", $filterArray);
     }
 
-
-    public function getVoucherByUserAndCampaign($userId, $campaignId)
+    public function getVoucherByUserAndCampaign($userId, $campaignId, $filter = [])
     {
-        return $this->get("coupon/voucher", [
+        $filter['userId'] = $userId;
+        $filter['campaignId'] = $campaignId;
+        return $this->get("coupon/voucher", $filter);
+    }
+
+    public function createVoucher($userId, $email, $userName, $campaignId)
+    {
+        return $this->post("coupon/voucher", [
             'userId' => $userId,
-            'campaignId' => $campaignId
+            'email' => $email,
+            'userName' => $userName,
+            'campaignName' => $campaignId
         ]);
     }
 }
