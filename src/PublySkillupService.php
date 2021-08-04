@@ -115,6 +115,11 @@ class PublySkillupService extends BaseApiService
         return $this->get("coupon/campaign", $filterArray);
     }
 
+    public function getVoucher($code)
+    {
+        return $this->get("coupon/voucher/$code");
+    }
+
     public function getVoucherByUser($userId, $filter = [])
     {
         $filter['userId'] = $userId;
@@ -128,6 +133,31 @@ class PublySkillupService extends BaseApiService
             'email' => $email,
             'userName' => $userName,
             'campaignName' => $campaignId
+        ]);
+    }
+
+    public function validateVoucher($voucherCode, $price, $productName, $userId, $email, $userName)
+    {
+        return $this->post("coupon/voucher/validate", [
+            'voucherCode' => $voucherCode,
+            'price' => $price,
+            'productName' => $productName,
+            'userId' => $userId,
+            'email' => $email,
+            'userName' => $userName
+        ]);
+    }
+
+
+    public function redeemVoucher($voucherCode, $price, $productName, $userId, $email, $userName)
+    {
+        return $this->post("coupon/voucher/redeem", [
+            'voucherCode' => $voucherCode,
+            'price' => $price,
+            'productName' => $productName,
+            'userId' => $userId,
+            'email' => $email,
+            'userName' => $userName
         ]);
     }
 }
