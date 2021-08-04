@@ -149,9 +149,10 @@ class PublySkillupService extends BaseApiService
     }
 
 
-    public function redeemVoucher($voucherCode, $price, $productName, $userId, $email, $userName)
+    public function redeemVoucher($orderId, $voucherCode, $price, $productName, $userId, $email, $userName)
     {
         return $this->post("coupon/voucher/redeem", [
+            'orderId' => $orderId,
             'voucherCode' => $voucherCode,
             'price' => $price,
             'productName' => $productName,
