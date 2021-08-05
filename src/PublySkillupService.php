@@ -161,4 +161,9 @@ class PublySkillupService extends BaseApiService
             'userName' => $userName
         ]);
     }
+
+    public function notifyVoucherExpired()
+    {
+        return $this->post("/coupon/voucher/notify-expired");
+    }
 }
