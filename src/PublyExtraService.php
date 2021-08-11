@@ -2,6 +2,7 @@
 
 namespace Publy\ServiceClient;
 
+use Illuminate\Support\Facades\Log;
 use Publy\ServiceClient\Api\BaseApiService;
 use Publy\ServiceClient\Api\ResponseException;
 
@@ -126,6 +127,14 @@ class PublyExtraService extends BaseApiService
         PublyExtraService::PUSH_NOTIFICATION_TYPE_NEW_CONTENT => '신규 콘텐츠',
         PublyExtraService::PUSH_NOTIFICATION_TYPE_NOTICE => '공지',
         PublyExtraService::PUSH_NOTIFICATION_TYPE_PROMOTION_EVENT => '이벤트/프로모션',
+    ];
+
+    CONST BADGE_TYPE_CHALLENGE = 1;
+    CONST BADGE_TYPE_CURRICULUM = 2;
+
+    const STRING_BADGE_TYPE = [
+        self::BADGE_TYPE_CHALLENGE => '챌린지',
+        self::BADGE_TYPE_CURRICULUM => '커리큘럼',
     ];
 
     public function __construct($domain)
@@ -1507,5 +1516,63 @@ class PublyExtraService extends BaseApiService
     public function updateRecommededSearchKeyWords()
     {
         return $this->post("recommended_search_keyword");
+    }
+
+    public function getBadges($page = 1, $limit = 10, $filterArray = [])
+    {
+        return $this->get("badge", $filterArray);
+    }
+
+    public function getBadge($badgeId)
+    {
+        return $this->get("badge/{$badgeId}");
+    }
+
+    public function createBadge($changerId, $name, $type, $note)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'name' => $name,
+            'type' => $type,
+            'note' => $note,
+        ];
+
+        return $this->post("badge", $inputs);
+    }
+
+    public function updateBadge($changerId, $badgeId, $name, $isVisible, $imageUrl, $type, $note, $deactivatedAt)
+    {
+        Log::info($isVisible);
+        $inputs = [
+            'changer_id' => $changerId,
+            'name' => $name,
+            'is_visible' => $isVisible,
+            'image_url' => $imageUrl,
+            'type' => $type,
+            'note' => $note,
+            'deactivated_at' => $deactivatedAt
+        ];
+
+        return $this->put("badge/{$badgeId}", $inputs);
+    }
+
+    public function deleteBadge($changerId, $badgeId)
+    {
+        return $this->post("badge/{$badgeId}/delete", ['changer_id' => $changerId]);
+    }
+
+    public function getUserBadges($filterArray = [])
+    {
+        return $this->get("user_badge", $filterArray);
+    }
+
+    public function createUserBadge($userId, $badgeId)
+    {
+        $inputs = [
+            'user_id' => $userId,
+            'badge_id' => $badgeId
+        ];
+
+        return $this->post("user_badge", $inputs);
     }
 }
