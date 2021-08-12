@@ -1520,7 +1520,14 @@ class PublyExtraService extends BaseApiService
 
     public function getBadges($page = 1, $limit = 10, $filterArray = [])
     {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
         return $this->get("badge", $filterArray);
+    }
+
+    public function getBadgesWithoutPagination($filterArray = [])
+    {
+        return $this->getBadges(1, 0, $filterArray);
     }
 
     public function getBadge($badgeId)
@@ -1561,9 +1568,16 @@ class PublyExtraService extends BaseApiService
         return $this->post("badge/{$badgeId}/delete", ['changer_id' => $changerId]);
     }
 
-    public function getUserBadges($filterArray = [])
+    public function getUserBadges($page = 1, $limit = 10, $filterArray = [])
     {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
         return $this->get("user_badge", $filterArray);
+    }
+
+    public function getUserBadgesWithoutPagination($filterArray = [])
+    {
+        return $this->getUserBadges(1, 0, $filterArray);
     }
 
     public function createUserBadge($userId, $badgeId)
