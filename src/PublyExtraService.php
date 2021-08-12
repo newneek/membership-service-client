@@ -1518,16 +1518,16 @@ class PublyExtraService extends BaseApiService
         return $this->post("recommended_search_keyword");
     }
 
-    public function getBadges($page = 1, $limit = 10, $filterArray = [])
+    public function getBadgesWithPagination($page = 1, $limit = 10, $filterArray = [])
     {
         $filterArray['page'] = $page;
         $filterArray['limit'] = $limit;
         return $this->get("badge", $filterArray);
     }
 
-    public function getBadgesWithoutPagination($filterArray = [])
+    public function getBadges($filterArray = [])
     {
-        return $this->getBadges(1, 0, $filterArray);
+        return $this->getBadgesWithPagination(1, 0, $filterArray);
     }
 
     public function getBadge($badgeId)
@@ -1568,16 +1568,16 @@ class PublyExtraService extends BaseApiService
         return $this->post("badge/{$badgeId}/delete", ['changer_id' => $changerId]);
     }
 
-    public function getUserBadges($page = 1, $limit = 10, $filterArray = [])
+    public function getUserBadgesWithPagination($page = 1, $limit = 10, $filterArray = [])
     {
         $filterArray['page'] = $page;
         $filterArray['limit'] = $limit;
         return $this->get("user_badge", $filterArray);
     }
 
-    public function getUserBadgesWithoutPagination($filterArray = [])
+    public function getUserBadges($filterArray = [])
     {
-        return $this->getUserBadges(1, 0, $filterArray);
+        return $this->getUserBadgesWithPagination(1, 0, $filterArray);
     }
 
     public function createUserBadge($userId, $badgeId)
