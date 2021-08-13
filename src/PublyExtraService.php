@@ -2,9 +2,7 @@
 
 namespace Publy\ServiceClient;
 
-use Illuminate\Support\Facades\Log;
 use Publy\ServiceClient\Api\BaseApiService;
-use Publy\ServiceClient\Api\ResponseException;
 
 class PublyExtraService extends BaseApiService
 {
@@ -1549,7 +1547,6 @@ class PublyExtraService extends BaseApiService
 
     public function updateBadge($changerId, $badgeId, $name, $isVisible, $imageUrl, $type, $note, $deactivatedAt)
     {
-        Log::info($isVisible);
         $inputs = [
             'changer_id' => $changerId,
             'name' => $name,
@@ -1588,5 +1585,45 @@ class PublyExtraService extends BaseApiService
         ];
 
         return $this->post("user_badge", $inputs);
+    }
+
+    public function getChallengesWithPagination($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("challenge", $filterArray);
+    }
+
+    public function getChallenges($filterArray = [])
+    {
+        return $this->getChallengesWithPagination(1, 0, $filterArray);
+    }
+
+    public function createChallenge($changerId, $title)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'title' => $title,
+        ];
+
+        return $this->post("challenge", $inputs);
+    }
+
+    public function getChallenge($challengeId)
+    {
+        return $this->get("challenge/{$challengeId}");
+    }
+
+    public function updateChallenge($changerId, $challengeId, $title, $isVisible, $startedAt, $endedAt)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'title' => $title,
+            'is_visible' => $isVisible,
+            'started_at' => $startedAt,
+            'ended_at' => $endedAt,
+        ];
+
+        return $this->put("challenge/{$challengeId}", $inputs);
     }
 }
