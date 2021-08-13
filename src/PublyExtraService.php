@@ -1626,4 +1626,14 @@ class PublyExtraService extends BaseApiService
 
         return $this->put("challenge/{$challengeId}", $inputs);
     }
+
+    public function updateChallengeDescription($changerId, $challengeId, $description)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'description' => $description,
+        ];
+
+        return $this->put("challenge/{$challengeId}", $inputs);
+    }
 }
