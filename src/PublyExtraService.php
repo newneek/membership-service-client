@@ -1636,4 +1636,35 @@ class PublyExtraService extends BaseApiService
 
         return $this->put("challenge/{$challengeId}", $inputs);
     }
+
+    public function getChallengeRewardsWithPagination($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("challenge_reward", $filterArray);
+    }
+
+    public function getChallengeRewards($filterArray = [])
+    {
+        return $this->getChallengeRewardsWithPagination(1, 0, $filterArray);
+    }
+
+    public function createChallengeReward($challengeId, $completeDayCount, $point, $badgeId)
+    {
+        $inputs = [
+            'challenge_id' => $challengeId,
+            'complete_day_count' => $completeDayCount,
+            'point' => $point,
+            'badge_id' => $badgeId,
+        ];
+
+        return $this->post("challenge_reward", $inputs);
+    }
+
+    public function deleteChallengeReward($challengeRewardId)
+    {
+        return $this->post("challenge_reward/{$challengeRewardId}/delete");
+    }
+
+
 }
