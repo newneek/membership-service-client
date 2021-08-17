@@ -1666,6 +1666,11 @@ class PublyExtraService extends BaseApiService
         return $this->post("challenge_reward/{$challengeRewardId}/delete");
     }
 
+    public function createUserChallengeHistoriesBySetReview($setReviewId, $userId)
+    {
+        return $this->post("user_challenge_history/set_review/{$setReviewId}", ['user_id' => $userId]);
+    }
+
     public function getUserChallengeProgressesWithPagination($page = 1, $limit = 10, $filterArray = [])
     {
         $filterArray['page'] = $page;
