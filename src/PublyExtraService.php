@@ -1666,5 +1666,15 @@ class PublyExtraService extends BaseApiService
         return $this->post("challenge_reward/{$challengeRewardId}/delete");
     }
 
+    public function getUserChallengeProgressesWithPagination($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("user_challenge_progress", $filterArray);
+    }
 
+    public function getUserChallengeProgresses($filterArray = [])
+    {
+        return $this->getUserChallengeProgressesWithPagination(1, 0, $filterArray);
+    }
 }
