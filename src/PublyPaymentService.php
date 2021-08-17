@@ -166,6 +166,11 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_APP_INSTALL => "앱 설치 축하 포인트 적립"
     ];
 
+    const POINT_HISTORY_PRODUCT_TYPE_MEMBERSHIP = 1;
+    const POINT_HISTORY_PRODUCT_TYPE_CAREERLY = 2;
+    const POINT_HISTORY_PRODUCT_TYPE_SKILLUP = 3;
+    const POINT_HISTORY_PRODUCT_TYPE_MAX = 4;
+
     const USER_DEFAULT_PLAN_TYPE_ADMIN = 1;
     const USER_DEFAULT_PLAN_TYPE_REFERRAL = 2;
     const USER_DEFAULT_PLAN_TYPE_CONTENT_RETURN = 3;
@@ -192,6 +197,7 @@ class PublyPaymentService extends BaseApiService
     const USE_POINT_ON_SUBSCRIPTION = self::PAY_WITH_POINT;
     const USE_POINT_ON_ORDER = self::PAY_WITHOUT_POINT;
     const USE_POINT_ON_RESERVE = self::PAY_WITHOUT_POINT;
+    const USE_POINT_ON_SKILLUP_ORDER = self::PAY_WITH_POINT;
 
     const NO_PAGE_LIMIT = 0;
 
@@ -1069,7 +1075,7 @@ class PublyPaymentService extends BaseApiService
         // 정상적으로 주문 되었음.
 
         // payment
-        $resultPayment = $this->pay3(
+        $resultPayment = $this->paySkillup(
             $changerId,
             $userId,
             $order['id'],
@@ -1416,7 +1422,7 @@ class PublyPaymentService extends BaseApiService
         // 정상적으로 주문 되었음.
 
         // reserve payment
-        $resultPayment = $this->pay3(
+        $resultPayment = $this->paySkillup(
             $changerId,
             $userId,
             $order['id'],
@@ -1790,6 +1796,47 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
+    public function paySkillup(
+        $changerId,
+        $userId,
+        $orderId,
+        $pgType,
+        $paymentMethodIdName,
+        $paymentMethodId,
+        $immediate,
+        $installmentMonth,
+        $note
+    ) {
+        $result = [ 'success' => false ];
+        try {
+            $resultPayment =
+                $this->post('payment', [
+                    'changer_id' => $changerId,
+                    'user_id' => $userId,
+                    'order_id' => $orderId,
+                    'pg_type' => $pgType,
+                    $paymentMethodIdName => $paymentMethodId,
+                    'immediate' => $immediate,
+                    'note' => $note,
+                    'use_point' => static::USE_POINT_ON_SKILLUP_ORDER,
+                    'installment_month' => $installmentMonth
+                ]);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $result['success'] = true;
+        $result['item'] = $resultPayment['success']['data'];
+
+        return $result;
+    }
+
+
     public function payByNaverpaySimple(
         $changerId,
         $userId,
@@ -1846,7 +1893,7 @@ class PublyPaymentService extends BaseApiService
                     'pg_type' => static::PAYMENT_TYPE_SKILLUP_NAVERPAY,
                     'immediate' => $immediate,
                     'note' => $note,
-                    'use_point' => static::USE_POINT_ON_ORDER
+                    'use_point' => static::USE_POINT_ON_SKILLUP_ORDER
                 ]);
         } catch (ResponseException $e) {
             $result['success'] = false;
@@ -3709,15 +3756,16 @@ class PublyPaymentService extends BaseApiService
         $userId,
         $delta,
         $adminId,
-        $note
-    )
-    {
+        $note,
+        $productType
+    ) {
         $input = [
             'user_id' => $userId,
             'delta' => $delta,
             'transaction_type' => static::POINT_HISTORY_TRANSACTION_TYPE_ADJUSTED_BY_ADMIN,
             'admin_id' => $adminId,
-            'note' => $note
+            'note' => $note,
+            'product_type' => $productType
         ];
 
         return $this->post("point_history", $input);
@@ -3787,10 +3835,11 @@ class PublyPaymentService extends BaseApiService
         return $this->post('point_history', $input);
     }
 
-    public function updatePointHistory($pointHistoryId, $note)
+    public function updatePointHistory($pointHistoryId, $note, $productType)
     {
         $input = [
-            'note' => $note
+            'note' => $note,
+            'product_type' => $productType
         ];
 
         return $this->put("point_history/{$pointHistoryId}", $input);
@@ -3800,7 +3849,8 @@ class PublyPaymentService extends BaseApiService
         $userIds,
         $delta,
         $adminId,
-        $note
+        $note,
+        $productType
     )
     {
         $input = [
@@ -3808,7 +3858,8 @@ class PublyPaymentService extends BaseApiService
             'delta' => $delta,
             'transaction_type' => static::POINT_HISTORY_TRANSACTION_TYPE_ADJUSTED_BY_ADMIN,
             'admin_id' => $adminId,
-            'note' => $note
+            'note' => $note,
+            'product_type' => $productType
         ];
 
         return $this->post("point_history/store_point_histories_by_admin", $input);
@@ -3866,6 +3917,14 @@ class PublyPaymentService extends BaseApiService
     public function getPointSumByPayment($paymentId)
     {
         return $this->get("point_history/payment/{$paymentId}/sum");
+    }
+
+    public function getPointSumByOrders($orderIds)
+    {
+        $orderIds = implode(',', $orderIds);
+        return $this->get("point_history/by_payments/sum", [
+            'order_ids' => $orderIds
+        ]);
     }
 
     public function getReferralProgram($referralProgramId)
