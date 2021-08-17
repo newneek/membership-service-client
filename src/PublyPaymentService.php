@@ -166,6 +166,11 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_APP_INSTALL => "앱 설치 축하 포인트 적립"
     ];
 
+    const POINT_HISTORY_PRODUCT_TYPE_MEMBERSHIP = 1;
+    const POINT_HISTORY_PRODUCT_TYPE_CAREERLY = 2;
+    const POINT_HISTORY_PRODUCT_TYPE_SKILLUP = 3;
+    const POINT_HISTORY_PRODUCT_TYPE_MAX = 4;
+
     const USER_DEFAULT_PLAN_TYPE_ADMIN = 1;
     const USER_DEFAULT_PLAN_TYPE_REFERRAL = 2;
     const USER_DEFAULT_PLAN_TYPE_CONTENT_RETURN = 3;
@@ -3751,15 +3756,16 @@ class PublyPaymentService extends BaseApiService
         $userId,
         $delta,
         $adminId,
-        $note
-    )
-    {
+        $note,
+        $productType
+    ) {
         $input = [
             'user_id' => $userId,
             'delta' => $delta,
             'transaction_type' => static::POINT_HISTORY_TRANSACTION_TYPE_ADJUSTED_BY_ADMIN,
             'admin_id' => $adminId,
-            'note' => $note
+            'note' => $note,
+            'product_type' => $productType
         ];
 
         return $this->post("point_history", $input);
@@ -3829,10 +3835,11 @@ class PublyPaymentService extends BaseApiService
         return $this->post('point_history', $input);
     }
 
-    public function updatePointHistory($pointHistoryId, $note)
+    public function updatePointHistory($pointHistoryId, $note, $productType)
     {
         $input = [
-            'note' => $note
+            'note' => $note,
+            'product_type' => $productType
         ];
 
         return $this->put("point_history/{$pointHistoryId}", $input);
@@ -3842,7 +3849,8 @@ class PublyPaymentService extends BaseApiService
         $userIds,
         $delta,
         $adminId,
-        $note
+        $note,
+        $productType
     )
     {
         $input = [
@@ -3850,7 +3858,8 @@ class PublyPaymentService extends BaseApiService
             'delta' => $delta,
             'transaction_type' => static::POINT_HISTORY_TRANSACTION_TYPE_ADJUSTED_BY_ADMIN,
             'admin_id' => $adminId,
-            'note' => $note
+            'note' => $note,
+            'product_type' => $productType
         ];
 
         return $this->post("point_history/store_point_histories_by_admin", $input);
