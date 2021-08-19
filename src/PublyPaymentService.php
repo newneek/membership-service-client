@@ -151,7 +151,8 @@ class PublyPaymentService extends BaseApiService
     const POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_USER_REFERRAL_SIGNUP = 8;
     const POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_AUTHOR_REFERRAL_SIGNUP = 9;
     const POINT_HISTORY_TRANSACTION_TYPE_APP_INSTALL = 10;
-    const POINT_HISTORY_TRANSACTION_TYPE_MAX = 11;
+    const POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_CHALLENGE = 11;
+    const POINT_HISTORY_TRANSACTION_TYPE_MAX = 12;
 
     const STRING_TRANSACTION_TYPE = [
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_USED_FOR_PAYMENT => "포인트 사용",
@@ -163,7 +164,14 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_DAILY_VIEW_CONTENT => "퍼블리 습관 응원 포인트",
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_USER_REFERRAL_SIGNUP => "유저 레퍼럴 회원가입 포인트 적립",
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_AUTHOR_REFERRAL_SIGNUP => "저자 레퍼럴 회원가입 포인트 적립",
-        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_APP_INSTALL => "앱 설치 축하 포인트 적립"
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_APP_INSTALL => "앱 설치 축하 포인트 적립",
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_CHALLENGE => "챌린지 보상 포인트 적립",
+    ];
+
+    public const POINT_HISTORY_ONLY_ADD_POINT_TRANSACTION_TYPES = [
+        self::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_DAILY_VIEW_CONTENT,
+        self::POINT_HISTORY_TRANSACTION_TYPE_APP_INSTALL,
+        self::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_CHALLENGE
     ];
 
     const POINT_HISTORY_PRODUCT_TYPE_MEMBERSHIP = 1;
@@ -3829,6 +3837,18 @@ class PublyPaymentService extends BaseApiService
             'user_id' => $userId,
             'delta' => $delta,
             'transaction_type' => static::POINT_HISTORY_TRANSACTION_TYPE_APP_INSTALL,
+            'note' => $note
+        ];
+
+        return $this->post('point_history', $input);
+    }
+
+    public function createPointHistoryByChallengeReward($userId, $delta, $note = '')
+    {
+        $input = [
+            'user_id' => $userId,
+            'delta' => $delta,
+            'transaction_type' => static::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_CHALLENGE,
             'note' => $note
         ];
 
