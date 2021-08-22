@@ -1637,6 +1637,11 @@ class PublyExtraService extends BaseApiService
         return $this->put("challenge/{$challengeId}", $inputs);
     }
 
+    public function getChallengeReward($challengeRewardId, $withArray = [])
+    {
+        return $this->get("challenge_reward/{$challengeRewardId}", $withArray);
+    }
+
     public function getChallengeRewardsWithPagination($page = 1, $limit = 10, $filterArray = [])
     {
         $filterArray['page'] = $page;
@@ -1690,6 +1695,15 @@ class PublyExtraService extends BaseApiService
             'challenge_id' => $challengeId,
         ];
         return $this->post("user_challenge_progress", $inputs);
+    }
+
+    public function receiveUserChallengeProgressReward($challengeId, $userId)
+    {
+        $inputs = [
+            'user_id' => $userId,
+            'challenge_id' => $challengeId,
+        ];
+        return $this->put("user_challenge_progress/receive_reward", $inputs);
     }
 
     public function getUserChallengeHistoriesWithPagination($page = 1, $limit = 10, $filterArray = [])
