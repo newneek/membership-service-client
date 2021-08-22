@@ -1682,4 +1682,25 @@ class PublyExtraService extends BaseApiService
     {
         return $this->getUserChallengeProgressesWithPagination(1, 0, $filterArray);
     }
+
+    public function createUserChallengeProgress($challengeId, $userId)
+    {
+        $inputs = [
+            'user_id' => $userId,
+            'challenge_id' => $challengeId,
+        ];
+        return $this->post("user_challenge_progress", $inputs);
+    }
+
+    public function getUserChallengeHistoriesWithPagination($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("user_challenge_history", $filterArray);
+    }
+
+    public function getUserChallengeHistories($filterArray = [])
+    {
+        return $this->getUserChallengeHistoriesWithPagination(1, 0, $filterArray);
+    }
 }
