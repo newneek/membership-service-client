@@ -182,7 +182,7 @@ class PublySkillupService extends BaseApiService
 
     public function updateFreeContentOrder($contentIds)
     {
-        $contentIds = implode($contentIds);
+        $contentIds = implode(',', $contentIds);
 
         return $this->put("free-content/update-order", [
             'contentIds' => $contentIds
