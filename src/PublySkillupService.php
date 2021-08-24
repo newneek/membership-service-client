@@ -167,4 +167,30 @@ class PublySkillupService extends BaseApiService
     {
         return $this->post("coupon/voucher/notify-expired");
     }
+
+    public function createFreeContent($contentId)
+    {
+        return $this->post("free-content", [
+            'contentId' => $contentId
+        ]);
+    }
+
+    public function deleteFreeContent($freeContentId)
+    {
+        return $this->delete("free-content/{$freeContentId}");
+    }
+
+    public function updateFreeContentOrder($contentIds)
+    {
+        $contentIds = implode($contentIds);
+
+        return $this->put("free-content/update-order", [
+            'contentIds' => $contentIds
+        ]);
+    }
+
+    public function getFreeContents($filterArray = [])
+    {
+        return $this->get("free-content", $filterArray);
+    }
 }
