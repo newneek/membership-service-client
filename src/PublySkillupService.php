@@ -102,6 +102,15 @@ class PublySkillupService extends BaseApiService
         ]);
     }
 
+    public function updateSetReviewIsHidden($userId, $setId, $isHidden): array
+    {
+        return $this->post("review/set", [
+            'userId' => $userId,
+            'reviewableId' => $setId,
+            'isHidden' => $isHidden
+        ]);
+    }
+
     public function getCouponCampaign($campaignId): array
     {
         return $this->get("coupon/campaign/$campaignId");
