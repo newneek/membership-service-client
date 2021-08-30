@@ -3758,6 +3758,10 @@ class PublyPaymentService extends BaseApiService
         return $this->get("point_history/user/{$userId}/sum");
     }
 
+    public function getPointHistoriesSumsByUserIds($userIds) {
+        return $this->get("point_history/by_user_ids/sums", ['user_ids' => implode(',', $userIds)]);
+    }
+
     public function getPointHistory($pointHistoryId)
     {
         return $this->get("point_history/{$pointHistoryId}");
