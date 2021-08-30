@@ -60,11 +60,11 @@ class PublySkillupService extends BaseApiService
 
     public function getSetReviewsWithReactionCount($page, $limit, $setId, $filter = []): array
     {
-        return $this->get("review/set/with-reaction-count", [
-            'reviewableId' => $setId,
-            'page' => $page,
-            'limit' => $limit
-        ]);
+        $filter['reviewableId'] = $setId;
+        $filter['page'] = $page;
+        $filter['limit'] = $limit;
+
+        return $this->get("review/set/with-reaction-count", $filter);
     }
 
     public function addReviewReaction($userId, $reviewId): array
