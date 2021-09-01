@@ -1572,22 +1572,24 @@ class PublyContentService extends BaseApiService
         return $this->post("set_reader/delete", $params);
     }
 
-    public function createSetReaders($changerId, $userIds, $setId, $sourceType, $note)
+    public function createSetReaders($changerId, $userIds, $setId, $adminId, $sourceType, $note)
     {
         return $this->post("set_reader/store_set_readers", [
             'changer_id' => $changerId,
             'user_ids' => implode(',', $userIds),
             'set_id' => $setId,
+            'admin_id' => $adminId,
             'source_type' => $sourceType,
             'note' => $note
         ]);
     }
 
-    public function deleteSetReaders($changerId, $userIds)
+    public function deleteSetReaders($changerId, $userIds, $setId)
     {
         return $this->post("set_reader/delete_set_readers", [
             'changer_id' => $changerId,
-            'user_ids' => implode(',', $userIds)
+            'user_ids' => implode(',', $userIds),
+            'set_id' => $setId
         ]);
     }
 
