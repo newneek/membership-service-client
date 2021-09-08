@@ -177,6 +177,13 @@ class PublySkillupService extends BaseApiService
         return $this->post("coupon/voucher/notify-expired");
     }
 
+    public function rollbackVoucherRedemption($orderId)
+    {
+        return $this->post("coupon/voucher/redeem/rollback", [
+            'orderId' => $orderId
+        ]);
+    }
+
     public function createFreeContent($contentId)
     {
         return $this->post("free-content", [
