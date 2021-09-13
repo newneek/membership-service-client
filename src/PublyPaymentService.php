@@ -4694,6 +4694,13 @@ class PublyPaymentService extends BaseApiService
         ]);
     }
 
+    public function notifyUpcomingFreeTrialStart($daysBeforeExpired)
+    {
+        return $this->post("/subscription/notify_free_trial_start", [
+            'days_before_expired' => $daysBeforeExpired
+        ]);
+    }
+
     public function notifyMembershipOnboardingGuide($daysAfterRegister)
     {
         return $this->post("/subscription/notify_membership_onboarding_guide", [
