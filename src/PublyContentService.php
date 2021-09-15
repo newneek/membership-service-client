@@ -157,7 +157,8 @@ class PublyContentService extends BaseApiService
         $quantity,
         $description,
         $basePrice,
-        $priceDescription
+        $priceDescription,
+        $validMonth
     ) {
         return $this->post("reward", [
             'changer_id' => $changerId,
@@ -167,7 +168,8 @@ class PublyContentService extends BaseApiService
             'quantity' => $quantity,
             'description' => $description,
             'base_price' => $basePrice,
-            'price_description' => $priceDescription
+            'price_description' => $priceDescription,
+            'valid_month' => $validMonth
         ]);
     }
 
