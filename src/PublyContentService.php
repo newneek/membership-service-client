@@ -128,6 +128,12 @@ class PublyContentService extends BaseApiService
     const CATEGORY_ORDER_TYPE_SET = 1;
     const CATEGORY_ORDER_TYPE_PROJECT = 2;
 
+    const COMMENTABLE_TYPE_SET = 'set';
+    const COMMENTABLE_TYPE_QUETSION = 'question';
+
+    const REACTABLE_TYPE_COMMENT = 'comment';
+    const REACTABLE_TYPE_QUESTION = 'question';
+
     public function __construct($domain)
     {
         parent::__construct();
