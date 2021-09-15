@@ -1571,11 +1571,12 @@ class PublyContentService extends BaseApiService
         }
     }
 
-    public function updateSetReader($setReaderId, $changerId, $note)
+    public function updateSetReader($setReaderId, $changerId, $note, $expirationDate = null)
     {
         return $this->put("set_reader/{$setReaderId}", [
             'changer_id' => $changerId,
-            'note' => $note
+            'note' => $note,
+            'expiration_date' => $expirationDate
         ]);
     }
 
@@ -1584,7 +1585,7 @@ class PublyContentService extends BaseApiService
         return $this->post("set_reader/delete", $params);
     }
 
-    public function createSetReaders($changerId, $userIds, $setId, $adminId, $sourceType, $note)
+    public function createSetReaders($changerId, $userIds, $setId, $adminId, $sourceType, $note, $expirationDate = null)
     {
         return $this->post("set_reader/store_set_readers", [
             'changer_id' => $changerId,
@@ -1592,7 +1593,8 @@ class PublyContentService extends BaseApiService
             'set_id' => $setId,
             'admin_id' => $adminId,
             'source_type' => $sourceType,
-            'note' => $note
+            'note' => $note,
+            'expiration_date' => $expirationDate
         ]);
     }
 
