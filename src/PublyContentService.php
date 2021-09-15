@@ -1607,6 +1607,11 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
+    public function expireSetReaders($changerId)
+    {
+        return $this->post("set_reader/expire_set_readers", ['changer_id' => $changerId]);
+    }
+
     public function togglePreorder($projectId)
     {
         return $this->post("project/{$projectId}/toggle_preorder");
