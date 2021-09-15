@@ -438,6 +438,15 @@ class PublyNotificationService extends BaseApiService
         return $this->post('/event/comment_created', $inputs);
     }
 
+    public function eventQuestionCreated($question)
+    {
+        $inputs = [
+            'question' => $question
+        ];
+
+        return $this->post('/event/question_created', $inputs);
+    }
+
     public function getNotificationMessages($page = 1, $limit = 5, $filterArray = [])
     {
         $filterArray['page'] = $page;
