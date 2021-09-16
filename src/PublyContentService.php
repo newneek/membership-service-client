@@ -31,6 +31,9 @@ class PublyContentService extends BaseApiService
     const SET_READER_SOURCE_TYPE_ORDER_SINGLE = 2;
     const SET_READER_SOURCE_TYPE_ORDER_BUNDLE = 3;
 
+    const SET_READER_STATUS_ACTIVATION = 1;
+    const SET_READER_STATUS_EXPIRATION = 2;
+
     const PACKAGE_READER_SOURCE_TYPE_ADMIN = 1;
     const PACKAGE_READER_SOURCE_TYPE_SUBSCRIPTION = 2;
     const PACKAGE_READER_SOURCE_TYPE_COUPON = 3;
@@ -154,7 +157,8 @@ class PublyContentService extends BaseApiService
         $quantity,
         $description,
         $basePrice,
-        $priceDescription
+        $priceDescription,
+        $validMonth
     ) {
         return $this->post("reward", [
             'changer_id' => $changerId,
@@ -164,7 +168,8 @@ class PublyContentService extends BaseApiService
             'quantity' => $quantity,
             'description' => $description,
             'base_price' => $basePrice,
-            'price_description' => $priceDescription
+            'price_description' => $priceDescription,
+            'valid_month' => $validMonth
         ]);
     }
 
@@ -1544,7 +1549,7 @@ class PublyContentService extends BaseApiService
         return $this->get("set_reader/user/{$userId}/count", $filterArray);
     }
 
-    public function createSetReader($changerId, $userId, $setId, $sourceType, $adminId, $orderId, $note)
+    public function createSetReader($changerId, $userId, $setId, $sourceType, $adminId, $orderId, $note, $expirationDate = null)
     {
         try {
             return $this->post("set_reader", [
@@ -1554,7 +1559,8 @@ class PublyContentService extends BaseApiService
                 'source_type' => $sourceType,
                 'admin_id' => $adminId,
                 'order_id' => $orderId,
-                'note' => $note
+                'note' => $note,
+                'expiration_date' => $expirationDate
             ]);
         } catch (\Exception $e) {
             $result['success'] = false;
@@ -1565,11 +1571,12 @@ class PublyContentService extends BaseApiService
         }
     }
 
-    public function updateSetReader($setReaderId, $changerId, $note)
+    public function updateSetReader($setReaderId, $changerId, $note, $expirationDate = null)
     {
         return $this->put("set_reader/{$setReaderId}", [
             'changer_id' => $changerId,
-            'note' => $note
+            'note' => $note,
+            'expiration_date' => $expirationDate
         ]);
     }
 
@@ -1578,7 +1585,7 @@ class PublyContentService extends BaseApiService
         return $this->post("set_reader/delete", $params);
     }
 
-    public function createSetReaders($changerId, $userIds, $setId, $adminId, $sourceType, $note)
+    public function createSetReaders($changerId, $userIds, $setId, $adminId, $sourceType, $note, $expirationDate = null)
     {
         return $this->post("set_reader/store_set_readers", [
             'changer_id' => $changerId,
@@ -1586,7 +1593,8 @@ class PublyContentService extends BaseApiService
             'set_id' => $setId,
             'admin_id' => $adminId,
             'source_type' => $sourceType,
-            'note' => $note
+            'note' => $note,
+            'expiration_date' => $expirationDate
         ]);
     }
 
@@ -1597,6 +1605,11 @@ class PublyContentService extends BaseApiService
             'user_ids' => implode(',', $userIds),
             'set_id' => $setId
         ]);
+    }
+
+    public function expireSetReaders($changerId)
+    {
+        return $this->post("set_reader/expire_set_readers", ['changer_id' => $changerId]);
     }
 
     public function togglePreorder($projectId)
