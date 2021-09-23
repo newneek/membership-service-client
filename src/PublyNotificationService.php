@@ -62,6 +62,14 @@ class PublyNotificationService extends BaseApiService
         ]);
     }
 
+    public function notifyBatchByTemplate(string $templateType, array $batchData)
+    {
+        return $this->post("/template/send_batch", [
+            'template_type' => $templateType,
+            'batch_data' => $batchData,
+        ]);
+    }
+
     public function sendEmail($destEmails, $subject, $body, $isAuto, $sourceEmail = null, $sourceName = null)
     {
         return $this->post("/email/send", [
