@@ -359,6 +359,16 @@ class PublyContentService extends BaseApiService
             ]);
     }
 
+    public function attachSetToReward($rewardId, $setId)
+    {
+        return $this->post("reward/$rewardId/set/$setId/attach");
+    }
+
+    public function detachSetToReward($rewardId, $setId)
+    {
+        return $this->post("reward/$rewardId/set/$setId/detach");
+    }
+
     /*
      * Content Related Functions
      */
