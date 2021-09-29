@@ -455,6 +455,16 @@ class PublyNotificationService extends BaseApiService
         return $this->post('/event/question_created', $inputs);
     }
 
+    public function eventDailyFirstSetReviewChallengeHistoryCreated($userId, $challenges)
+    {
+        $inputs = [
+            'challenges' => $challenges,
+            'user_id' => $userId
+        ];
+
+        return $this->post('/event/daily_first_set_review_challenge_history_created', $inputs);
+    }
+
     public function getNotificationMessages($page = 1, $limit = 5, $filterArray = [])
     {
         $filterArray['page'] = $page;
