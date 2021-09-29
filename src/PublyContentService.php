@@ -245,9 +245,9 @@ class PublyContentService extends BaseApiService
         return $this->put("reward/{$rewardId}", $inputs);
     }
 
-    public function getReward($rewardId)
+    public function getReward($rewardId, $filterArray = [])
     {
-        return $this->get("reward/{$rewardId}");
+        return $this->get("reward/{$rewardId}", $filterArray);
     }
 
     public function getRewardsByIds($rewardIds, $includeHidden = false)
