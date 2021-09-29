@@ -21,6 +21,10 @@ class PublyNotificationService extends BaseApiService
         PublyNotificationService::PUSH_NOTIFICATION_TYPE_COMMUNITY => '커뮤니티'
     ];
 
+    const NOTIFICATION_STATUS_TYPE_BASIC = 'push_notification_agree';
+    const NOTIFICATION_STATUS_TYPE_ROUTINE = 'push_notification_for_routine_agree';
+    const NOTIFICATION_STATUS_TYPE_CHALLENGE = 'push_notification_for_challenge_agree';
+
     public function __construct($domain)
     {
         parent::__construct();
