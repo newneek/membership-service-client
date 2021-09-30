@@ -21,6 +21,10 @@ class PublyNotificationService extends BaseApiService
         PublyNotificationService::PUSH_NOTIFICATION_TYPE_COMMUNITY => '커뮤니티'
     ];
 
+    const NOTIFICATION_STATUS_TYPE_BASIC = 'push_notification_agree';
+    const NOTIFICATION_STATUS_TYPE_ROUTINE = 'push_notification_for_routine_agree';
+    const NOTIFICATION_STATUS_TYPE_CHALLENGE = 'push_notification_for_challenge_agree';
+
     public function __construct($domain)
     {
         parent::__construct();
@@ -453,6 +457,16 @@ class PublyNotificationService extends BaseApiService
         ];
 
         return $this->post('/event/question_created', $inputs);
+    }
+
+    public function eventDailyFirstSetReviewChallengeHistoryCreated($userId, $challenges)
+    {
+        $inputs = [
+            'challenges' => $challenges,
+            'user_id' => $userId
+        ];
+
+        return $this->post('/event/daily_first_set_review_challenge_history_created', $inputs);
     }
 
     public function getNotificationMessages($page = 1, $limit = 5, $filterArray = [])
