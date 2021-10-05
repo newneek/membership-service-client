@@ -245,9 +245,9 @@ class PublyContentService extends BaseApiService
         return $this->put("reward/{$rewardId}", $inputs);
     }
 
-    public function getReward($rewardId)
+    public function getReward($rewardId, $filterArray = [])
     {
-        return $this->get("reward/{$rewardId}");
+        return $this->get("reward/{$rewardId}", $filterArray);
     }
 
     public function getRewardsByIds($rewardIds, $includeHidden = false)
@@ -357,6 +357,16 @@ class PublyContentService extends BaseApiService
                 'changer_id' => $changerId,
                 'ids' => implode(',', $rewardIds)
             ]);
+    }
+
+    public function attachSetToReward($rewardId, $setId)
+    {
+        return $this->post("reward/$rewardId/set/$setId/attach");
+    }
+
+    public function detachSetToReward($rewardId, $setId)
+    {
+        return $this->post("reward/$rewardId/set/$setId/detach");
     }
 
     /*
