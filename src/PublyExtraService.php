@@ -135,6 +135,9 @@ class PublyExtraService extends BaseApiService
         self::BADGE_TYPE_CURRICULUM => '커리큘럼',
     ];
 
+    const CHALLENGE_TYPE_TIME_LIMITED = 1;
+    const CHALLENGE_TYPE_TIME_UNLIMITED = 2;
+
     public function __construct($domain)
     {
         parent::__construct();
