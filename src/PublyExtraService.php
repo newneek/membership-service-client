@@ -1617,7 +1617,7 @@ class PublyExtraService extends BaseApiService
         return $this->get("challenge/{$challengeId}");
     }
 
-    public function updateChallenge($changerId, $challengeId, $title, $isVisible, $startedAt, $endedAt)
+    public function updateChallenge($changerId, $challengeId, $title, $isVisible, $startedAt, $endedAt, $type)
     {
         $inputs = [
             'changer_id' => $changerId,
@@ -1625,6 +1625,7 @@ class PublyExtraService extends BaseApiService
             'is_visible' => $isVisible,
             'started_at' => $startedAt,
             'ended_at' => $endedAt,
+            'type' => $type,
         ];
 
         return $this->put("challenge/{$challengeId}", $inputs);
