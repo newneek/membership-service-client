@@ -75,10 +75,10 @@ class AmplitudeService extends BaseApiService
         $retryCount = 3;
         while ($retryCount > 0) {
             try {
-                $result = $this->get("httpapi",
+                $result = $this->post("batch",
                     [
                         'api_key' => $this->apiKey,
-                        'event' => json_encode($events)
+                        'events' => $events
                     ]);
                 return $result;
             } catch (ResponseException $e) {
