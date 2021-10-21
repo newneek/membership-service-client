@@ -1721,4 +1721,12 @@ class PublyExtraService extends BaseApiService
     {
         return $this->getUserChallengeHistoriesWithPagination(1, 0, $filterArray);
     }
+
+    public function getUniqueChallengeDateCountByUserChallengeHistories(int $userId, array $challengeIds, array $filterArray = [])
+    {
+        $filterArray['user_id'] = $userId;
+        $filterArray['challenge_ids'] = implode(',', $challengeIds);
+        return $this->get("user_challenge_history/unique_date_count", $filterArray);
+    }
+
 }
