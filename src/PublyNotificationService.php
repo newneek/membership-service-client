@@ -12,13 +12,15 @@ class PublyNotificationService extends BaseApiService
     const PUSH_NOTIFICATION_TYPE_PROMOTION_EVENT = 3;
     const PUSH_NOTIFICATION_TYPE_PUBLISHED_CONTENT = 4;
     const PUSH_NOTIFICATION_TYPE_COMMUNITY = 5;
+    const PUSH_NOTIFICATION_TYPE_QNA = 6;
 
     const STRING_PUSH_NOTIFICATION_TYPE = [
         PublyNotificationService::PUSH_NOTIFICATION_TYPE_NEW_CONTENT => '신규 콘텐츠',
         PublyNotificationService::PUSH_NOTIFICATION_TYPE_NOTICE => '공지',
         PublyNotificationService::PUSH_NOTIFICATION_TYPE_PROMOTION_EVENT => '이벤트/프로모션',
         PublyNotificationService::PUSH_NOTIFICATION_TYPE_PUBLISHED_CONTENT => '발행 알림',
-        PublyNotificationService::PUSH_NOTIFICATION_TYPE_COMMUNITY => '커뮤니티'
+        PublyNotificationService::PUSH_NOTIFICATION_TYPE_COMMUNITY => '커뮤니티',
+        PublyNotificationService::PUSH_NOTIFICATION_TYPE_QNA => 'Q&A'
     ];
 
     const NOTIFICATION_STATUS_TYPE_BASIC = 'push_notification_agree';
