@@ -475,7 +475,7 @@ class PublyNotificationService extends BaseApiService
             'user_id' => $userId
         ];
 
-        return $this->post('/event/user_complete_onboarding_challenge', $inputs);
+        return $this->post('event/user_complete_onboarding_challenge', $inputs);
     }
 
     public function getNotificationMessages($page = 1, $limit = 5, $filterArray = [])
