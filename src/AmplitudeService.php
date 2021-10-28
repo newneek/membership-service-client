@@ -57,6 +57,9 @@ class AmplitudeService extends BaseApiService
                             'event_properties' => $eventProperties,
                             'user_properties' => $userProperties
                         ]
+                    ],
+                    'options' => [
+                        'min_id_length' => 1
                     ]
                 ]);
                 return $result;
@@ -78,7 +81,10 @@ class AmplitudeService extends BaseApiService
                 $result = $this->post("batch",
                     [
                         'api_key' => $this->apiKey,
-                        'events' => $events
+                        'events' => $events,
+                        'options' => [
+                            'min_id_length' => 1
+                        ]
                     ]);
                 return $result;
             } catch (ResponseException $e) {
@@ -113,6 +119,9 @@ class AmplitudeService extends BaseApiService
                             'time' => $time,
                             'event_properties' => $eventProperties
                         ]
+                    ],
+                    'options' => [
+                        'min_id_length' => 1
                     ]
                 ]);
                 return $result;
