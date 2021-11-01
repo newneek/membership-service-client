@@ -2993,6 +2993,11 @@ class PublyContentService extends BaseApiService
         return $this->post("job/challenge-push/send");
     }
 
+    public function findTargetAndSendTimeUnlimitedChallengePush()
+    {
+        return $this->post("job/challenge-push-time-unlimited/send");
+    }
+
    public function getSetSegment($setId)
    {
        return $this->get("set_segment/{$setId}");
