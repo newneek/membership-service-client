@@ -3454,6 +3454,14 @@ class PublyContentService extends BaseApiService
         return $this->get("comment/set/{$setId}", $filterArray);
     }
 
+    public function getCommentsByQuestion($questionId, $page = 1, $limit = 3, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+
+        return $this->get("comment/question/{$questionId}", $filterArray);
+    }
+
     public function getCommentsByUser($userId, $filterArray = [])
     {
         return $this->get("comment/user/{$userId}", $filterArray);
@@ -3478,6 +3486,17 @@ class PublyContentService extends BaseApiService
         ];
 
         return $this->post("comment/set/{$setId}", $inputs);
+    }
+
+    public function createQuestionComment($userId, $changerId, $questionId, $content)
+    {
+        $inputs = [
+            'user_id' => $userId,
+            'changer_id' => $changerId,
+            'content' => $content
+        ];
+
+        return $this->post("comment/question/{$questionId}", $inputs);
     }
 
     public function createCommentReply($userId, $changerId, $content, $parentCommentId)
@@ -3541,6 +3560,17 @@ class PublyContentService extends BaseApiService
         return $this->post("reaction/comment/{$commentId}", $inputs);
     }
 
+    public function createQuestionReaction($userId, $changerId, $questionId, $reactionTypeId)
+    {
+        $inputs = [
+            'user_id' => $userId,
+            'changer_id' => $changerId,
+            'reaction_type_id' => $reactionTypeId
+        ];
+
+        return $this->post("reaction/question/{$questionId}", $inputs);
+    }
+
     public function deleteReaction($reactionId, $changerId)
     {
         $inputs = [
@@ -3592,8 +3622,36 @@ class PublyContentService extends BaseApiService
         return $this->get("user_content_subscribe/count", $filterArray);
     }
 
+    public function getQuestions($filterArray = [])
+    {
+        return $this->get("question", $filterArray);
+    }
+
     public function getQuestion($questionId, $filterArray = [])
     {
         return $this->get("question/{$questionId}", $filterArray);
+    }
+
+    public function createQuestion($userId, $changerId, $title, $content)
+    {
+        $inputs = [
+            'user_id' => $userId,
+            'changer_id' => $changerId,
+            'title' => $title,
+            'content' => $content
+        ];
+
+        return $this->post('question', $inputs);
+    }
+
+    public function updateQuestion($changerId, $questionId, $title, $content)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'title' => $title,
+            'content' => $content
+        ];
+
+        return $this->put("question/{$questionId}", $inputs);
     }
 }
