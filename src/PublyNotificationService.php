@@ -348,6 +348,11 @@ class PublyNotificationService extends BaseApiService
         ]);
     }
 
+    public function sendManyPush($pushMessages) {
+        return $this->post("/push/send-many", [
+            'pushMessages' => $pushMessages
+        ]);
+    }
 
     public function eventAmplitude($userId, $eventType, $eventProperties, $userProperties = []){
         return $this->post("/amplitude/event", [
