@@ -796,7 +796,7 @@ class PublyExtraService extends BaseApiService
         $imageUrl,
         $isVisibleToSubscription,
         $category,
-        $isVisibleToDevice
+        $visibleDeviceType
     ) {
         $inputs = [
             'changer_id' => $changerId,
@@ -806,7 +806,7 @@ class PublyExtraService extends BaseApiService
             'image_url' => $imageUrl,
             'is_visible_to_subscription' => $isVisibleToSubscription,
             'category' => $category,
-            'is_visible_to_device' => $isVisibleToDevice
+            'visible_device_type' => $visibleDeviceType
         ];
 
         return $this->post("featured_banner_item", $inputs);
@@ -821,7 +821,7 @@ class PublyExtraService extends BaseApiService
         $imageUrl,
         $isVisibleToSubscription,
         $category,
-        $isVisibleToDevice
+        $visibleDeviceType
     ) {
         $inputs = [
             'changer_id' => $changerId,
@@ -831,7 +831,7 @@ class PublyExtraService extends BaseApiService
             'image_url' => $imageUrl,
             'is_visible_to_subscription' => $isVisibleToSubscription,
             'category' => $category,
-            'is_visible_to_device' => $isVisibleToDevice
+            'visible_device_type' => $visibleDeviceType
         ];
 
         return $this->put("featured_banner_item/{$featuredBannerItemId}", $inputs);
