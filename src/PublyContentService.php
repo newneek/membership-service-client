@@ -3654,4 +3654,20 @@ class PublyContentService extends BaseApiService
 
         return $this->put("question/{$questionId}", $inputs);
     }
+
+    public function updateQuestionIsHidden($changerId, $questionId, $isHidden)
+    {
+        return $this->put("question/{$questionId}", [
+            'changer_id' => $changerId,
+            'is_hidden' => $isHidden
+        ]);
+    }
+
+    public function updateQuestionIsRecommended($changerId, $questionId, $isRecommended)
+    {
+        return $this->put("question/{$questionId}", [
+            'changer_id' => $changerId,
+            'is_recommended' => $isRecommended
+        ]);
+    }
 }
