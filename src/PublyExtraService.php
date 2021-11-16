@@ -26,6 +26,10 @@ class PublyExtraService extends BaseApiService
     const FEATURED_BANNER_ITEM_CATEGORY_HOME = 1;
     const FEATURED_BANNER_ITEM_CATEGORY_ONAIR = 2;
 
+    const FEATURED_BANNER_ITEM_VISIBILITY_WEB_AND_APP = 1;
+    const FEATURED_BANNER_ITEM_VISIBILITY_WEB = 2;
+    const FEATURED_BANNER_ITEM_VISIBILITY_APP = 3;
+
     // deprecated
     const COMPANY_TYPE_SMALL_AND_MEDIUM_SIZED_COMPANY = 1;
     const COMPANY_TYPE_LARGE_COMPANY = 2;
@@ -791,7 +795,8 @@ class PublyExtraService extends BaseApiService
         $payload,
         $imageUrl,
         $isVisibleToSubscription,
-        $category
+        $category,
+        $visibleDeviceType
     ) {
         $inputs = [
             'changer_id' => $changerId,
@@ -800,7 +805,8 @@ class PublyExtraService extends BaseApiService
             'payload' => $payload,
             'image_url' => $imageUrl,
             'is_visible_to_subscription' => $isVisibleToSubscription,
-            'category' => $category
+            'category' => $category,
+            'visible_device_type' => $visibleDeviceType
         ];
 
         return $this->post("featured_banner_item", $inputs);
@@ -814,7 +820,8 @@ class PublyExtraService extends BaseApiService
         $payload,
         $imageUrl,
         $isVisibleToSubscription,
-        $category
+        $category,
+        $visibleDeviceType
     ) {
         $inputs = [
             'changer_id' => $changerId,
@@ -823,7 +830,8 @@ class PublyExtraService extends BaseApiService
             'payload' => $payload,
             'image_url' => $imageUrl,
             'is_visible_to_subscription' => $isVisibleToSubscription,
-            'category' => $category
+            'category' => $category,
+            'visible_device_type' => $visibleDeviceType
         ];
 
         return $this->put("featured_banner_item/{$featuredBannerItemId}", $inputs);
