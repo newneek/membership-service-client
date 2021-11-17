@@ -4709,4 +4709,12 @@ class PublyPaymentService extends BaseApiService
             'days_after_register' => $daysAfterRegister
         ]);
     }
+
+    public function getExpirationExpectedPoints($userId, $expirationDateStart, $expirationDateEnd)
+    {
+        return $this->get("/point_history_detail/expiration_expected", [
+            'user_id' => $userId,
+            'expiration_date_between' => implode(',', [$expirationDateStart, $expirationDateEnd]),
+        ]);
+    }
 }
