@@ -3774,7 +3774,8 @@ class PublyPaymentService extends BaseApiService
         $delta,
         $adminId,
         $note,
-        $productType
+        $productType,
+        $expirationDate = null
     ) {
         $input = [
             'user_id' => $userId,
@@ -3782,7 +3783,8 @@ class PublyPaymentService extends BaseApiService
             'transaction_type' => static::POINT_HISTORY_TRANSACTION_TYPE_ADJUSTED_BY_ADMIN,
             'admin_id' => $adminId,
             'note' => $note,
-            'product_type' => $productType
+            'product_type' => $productType,
+            'expiration_date' => $expirationDate,
         ];
 
         return $this->post("point_history", $input);
