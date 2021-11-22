@@ -3778,7 +3778,8 @@ class PublyPaymentService extends BaseApiService
         $delta,
         $adminId,
         $note,
-        $productType
+        $productType,
+        $expirationDate = null
     ) {
         $input = [
             'user_id' => $userId,
@@ -3786,7 +3787,8 @@ class PublyPaymentService extends BaseApiService
             'transaction_type' => static::POINT_HISTORY_TRANSACTION_TYPE_ADJUSTED_BY_ADMIN,
             'admin_id' => $adminId,
             'note' => $note,
-            'product_type' => $productType
+            'product_type' => $productType,
+            'expiration_date' => $expirationDate,
         ];
 
         return $this->post("point_history", $input);
@@ -4711,6 +4713,14 @@ class PublyPaymentService extends BaseApiService
     {
         return $this->post("/subscription/notify_membership_onboarding_guide", [
             'days_after_register' => $daysAfterRegister
+        ]);
+    }
+
+    public function getExpirationExpectedPoints($userId, $expirationDateStart, $expirationDateEnd)
+    {
+        return $this->get("/point_history_detail/expiration_expected", [
+            'user_id' => $userId,
+            'expiration_date_between' => implode(',', [$expirationDateStart, $expirationDateEnd]),
         ]);
     }
 }
