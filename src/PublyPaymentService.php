@@ -172,8 +172,8 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_CHALLENGE => "챌린지 보상 포인트 적립",
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_COMPLETE_CAREERLY_PROFILE => "커리어리 프로필 완성 축하 포인트 적립",
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_EXPIRATION => '포인트 유효기간 만료',
-        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_PRMOTION_REFERRAL_SIGNUP_REFERRER => '프로모션 레퍼럴 포인트',
-        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_PRMOTION_REFERRAL_SIGNUP_REFEREE => '프로모션 레퍼럴 포인트',
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_PROMOTION_REFERRAL_SIGNUP_REFERRER => '프로모션 레퍼럴 포인트',
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_PROMOTION_REFERRAL_SIGNUP_REFEREE => '프로모션 레퍼럴 포인트',
     ];
 
     public const POINT_HISTORY_ONLY_ADD_POINT_TRANSACTION_TYPES = [
