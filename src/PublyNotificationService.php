@@ -466,6 +466,13 @@ class PublyNotificationService extends BaseApiService
         return $this->post('/event/question_created', $inputs);
     }
 
+    public function eventPromotionReferralPointRewarded($pointHistory)
+    {
+        $inputs = ['pointHistory' => $pointHistory];
+
+        return $this->post('/event/promotion_referral_point_rewarded', $inputs);
+    }
+
     public function eventDailyFirstSetReviewChallengeHistoryCreated($userId, $challenges)
     {
         $inputs = [
