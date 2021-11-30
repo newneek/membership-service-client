@@ -4725,4 +4725,11 @@ class PublyPaymentService extends BaseApiService
             'expiration_date_between' => implode(',', [$expirationDateStart, $expirationDateEnd]),
         ]);
     }
+
+    public function handleExpiredPoints($beginDate = null)
+    {
+        return $this->post("/point_history_detail/expired_points", [
+            'begin_date' => $beginDate
+        ]);
+    }
 }
