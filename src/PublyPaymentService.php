@@ -4732,4 +4732,12 @@ class PublyPaymentService extends BaseApiService
             'begin_date' => $beginDate
         ]);
     }
+
+    public function notifyExpirationExpectedPointsToUser($expirationDate = null)
+    {
+        return $this->post("/point_history_detail/notify_expiration_expected_points_to_users", [
+            'expiration_date' => $expirationDate
+        ]);
+    }
+
 }
