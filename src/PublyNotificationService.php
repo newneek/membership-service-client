@@ -581,4 +581,9 @@ class PublyNotificationService extends BaseApiService
 
         return $this->post("template/send_solapi_message", $inputs);
     }
+
+    public function notifyPromotionRevenueToSlack()
+    {
+        return $this->post("notify/promotion_revenue_to_slack");
+    }
 }
