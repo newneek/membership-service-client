@@ -42,6 +42,7 @@ class PublyExtraService extends BaseApiService
     const MANAGEMENT_LEVEL_HANDS_ON_WORKER = 1;
     const MANAGEMENT_LEVEL_MANAGER = 2;
     const MANAGEMENT_LEVEL_DECISION_MAKER = 3;
+    const MANAGEMENT_LEVEL_ETC = 4;
 
     // TODO 마이그레이션 코드 삭제, 타깃 직책 + 경력
     const CAREER_TYPE_HANDS_ON_WORKER_JUNIOR = 1;
