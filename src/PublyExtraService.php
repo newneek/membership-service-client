@@ -143,6 +143,9 @@ class PublyExtraService extends BaseApiService
     const CHALLENGE_TYPE_TIME_LIMITED = 0;
     const CHALLENGE_TYPE_TIME_UNLIMITED = 1;
 
+    const CHALLENGE_MISSION_TYPE_SET_REVIEW = 1;
+    const CHALLENGE_MISSION_TYPE_HIGHLIGHT = 2;
+
     public function __construct($domain)
     {
         parent::__construct();
