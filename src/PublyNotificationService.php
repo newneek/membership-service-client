@@ -473,6 +473,17 @@ class PublyNotificationService extends BaseApiService
         return $this->post('/event/promotion_referral_point_rewarded', $inputs);
     }
 
+    public function eventDailyFirstChallengeHistoryCreated($userId, $challenges)
+    {
+        $inputs = [
+            'challenges' => $challenges,
+            'user_id' => $userId
+        ];
+
+        return $this->post('/event/daily_first_challenge_history_created', $inputs);
+    }
+
+    // deprecated
     public function eventDailyFirstSetReviewChallengeHistoryCreated($userId, $challenges)
     {
         $inputs = [
