@@ -1629,8 +1629,16 @@ class PublyExtraService extends BaseApiService
         return $this->get("challenge/{$challengeId}");
     }
 
-    public function updateChallenge($changerId, $challengeId, $title, $isVisible, $startedAt, $endedAt, $type)
-    {
+    public function updateChallenge(
+        $changerId,
+        $challengeId,
+        $title,
+        $isVisible,
+        $startedAt,
+        $endedAt,
+        $type,
+        $missionType = self::CHALLENGE_MISSION_TYPE_SET_REVIEW
+    ) {
         $inputs = [
             'changer_id' => $changerId,
             'title' => $title,
@@ -1638,6 +1646,7 @@ class PublyExtraService extends BaseApiService
             'started_at' => $startedAt,
             'ended_at' => $endedAt,
             'type' => $type,
+            'mission_type' => $missionType
         ];
 
         return $this->put("challenge/{$challengeId}", $inputs);
