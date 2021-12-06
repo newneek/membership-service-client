@@ -2075,6 +2075,42 @@ class PublyContentService extends BaseApiService
         return $this->get("curation/type/{$curationType}", $filterArray);
     }
 
+    /*
+     * CurationItem Related Functions
+     */
+
+    public function getCurationItemsByIds($curationItemIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $curationItemIds);
+        return $this->get("curation_item", $filterArray);
+    }
+
+    public function createCutraionItem($changerId, $curationId, $curatableItemId, $curatableItemType) {
+        return $this->post("curation_item", [
+            'changer_id' => $changerId,
+            'curation_id' => $curationId,
+            'curatable_item_id' => $curatableItemId,
+            'curatable_item_type' => $curatableItemType
+        ]);
+    }
+
+    public function deleteCurationItem($changerId, $curationId, $curatableItemId) {
+        return $this->post("curation_item/{$curatableItemId}/delete", [
+            'changer_id' => $changerId,
+            'curation_id' => $curationId
+        ]);
+    }
+
+    public function updateCurationItemOrder($changerId, $curationId, $curationItemIds, $curatableItemType)
+    {
+        return $this->put("curation_item/order", [
+            'changer_id' => $changerId,
+            'curation_id' => $curationId,
+            'ids' => implode(',', $curationItemIds),
+            'curatable_item_type' => $curatableItemType
+        ]);
+    }
+
     //deprecated
     public function createCuration($changerId, $title)
     {
