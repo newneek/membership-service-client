@@ -497,11 +497,11 @@ class PublyAuthService extends BaseApiService {
         ]);
     }
 
-    public function updateDeleteRequestedUser($changerId, $deleteRequestedUserId, $requestStatus = null, $reason = null)
+    public function updateDeleteRequestedUser($changerId, $deleteRequestedUserId, $userId, $requestStatus = null, $reason = null)
     {
         $inputs = [
             'changer_id' => $changerId,
-            'id' => $deleteRequestedUserId,
+            'user_id' => $userId
         ];
 
         if ($requestStatus) {
