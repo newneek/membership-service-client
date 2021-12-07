@@ -2542,10 +2542,14 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function updateCategory2($changerId, $categoryId, $name, $mastheadImageUrl)
+    public function updateCategory2($changerId, $categoryId, $name, $mastheadImageUrl, $iconUrl, $description)
     {
         return $this->put("category/{$categoryId}", [
-            'changer_id' => $changerId, 'name' => $name, 'masthead_image_url' => $mastheadImageUrl
+            'changer_id' => $changerId,
+            'name' => $name,
+            'masthead_image_url' => $mastheadImageUrl,
+            'icon_url' => $iconUrl,
+            'description' => $description
         ]);
     }
 
