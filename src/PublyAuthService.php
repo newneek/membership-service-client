@@ -15,9 +15,9 @@ class PublyAuthService extends BaseApiService {
     const GROUP_CURATOR = 6;
     const GROUP_MAX = 7;
 
-    const DELETE_REQUESTED_USER_REQUEST_STATE_DELETE_REQUESTED = 1; // 탈퇴 요청
-    const DELETE_REQUESTED_USER_REQUEST_STATE_DELETE_COMPLETE = 2; // 탈퇴 완료 (유저 삭제 완료)
-    const DELETE_REQUESTED_USER_REQUEST_STATE_DELETE_FAILED = 3; // 탈퇴 실패 (유저 삭제 실패)
+    const DELETE_REQUESTED_USER_REQUEST_STATUS_DELETE_REQUESTED = 1; // 탈퇴 요청
+    const DELETE_REQUESTED_USER_REQUEST_STATUS_DELETE_COMPLETE = 2; // 탈퇴 완료 (유저 삭제 완료)
+    const DELETE_REQUESTED_USER_REQUEST_STATUS_DELETE_FAILED = 3; // 탈퇴 실패 (유저 삭제 실패)
 
     const STRING_GROUP = [
         PublyAuthService::GROUP_ADMIN => "최고관리자",
@@ -488,29 +488,29 @@ class PublyAuthService extends BaseApiService {
         return $this->get("delete_requested_user", $filterArray);
     }
 
-    public function createDeleteRequestedUser($changerId, $userId, $requestState)
+    public function createDeleteRequestedUser($changerId, $userId, $requestStatus)
     {
         return $this->post("delete_requested_user", [
             'changer_id' => $changerId,
             'user_id' => $userId,
-            'request_state' => $requestState,
+            'request_status' => $requestStatus,
         ]);
     }
 
-    public function updateDeleteRequestedUser($changerId, $deleteRequestedUserId, $requestState = null, $reason = null)
+    public function updateDeleteRequestedUser($changerId, $deleteRequestedUserId, $requestStatus = null, $reason = null)
     {
         $inputs = [
             'changer_id' => $changerId,
             'id' => $deleteRequestedUserId,
         ];
 
-        if ($requestState) {
-            $inputs['request_state'] = $requestState;
+        if ($requestStatus) {
+            $inputs['request_status'] = $requestStatus;
         }
         if ($reason) {
             $inputs['reason'] = $reason;
         }
-        
+
         return $this->patch("delete_requested_user/{$deleteRequestedUserId}", $inputs);
     }
 
