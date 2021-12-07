@@ -504,14 +504,13 @@ class PublyAuthService extends BaseApiService {
             'id' => $deleteRequestedUserId,
         ];
 
-        if (!$requestState) {
+        if ($requestState) {
             $inputs['request_state'] = $requestState;
         }
-
-        if (!$reason) {
+        if ($reason) {
             $inputs['reason'] = $reason;
         }
-
+        
         return $this->patch("delete_requested_user/{$deleteRequestedUserId}", $inputs);
     }
 
