@@ -3710,4 +3710,35 @@ class PublyContentService extends BaseApiService
             'is_recommended' => $isRecommended
         ]);
     }
+
+    public function getCollections($filterArray = []) {
+        return $this->get('/collection', $filterArray);
+    }
+
+    public function getCollection($collectionId, $filterArray = []) {
+        return $this->get("/collection/${collectionId}", $filterArray);
+    }
+
+    public function addCollection($userId, $title) {
+        return $this->post('/collection', [
+            'user_id' => $userId,
+            'title' => $title,
+        ]);
+    }
+
+    public function updateCollection($collectionId, $title) {
+        return $this->patch('/collection', [
+            'title' => $title,
+        ]);
+    }
+
+    public function removeCollection($collectionId) {
+        return $this->delete("/collection/${collectionId}");
+    }
+
+    public function editCollection($collectionId, $actions) {
+        return $this->post("/collection/${collectionId}/edit", [
+            'actions' => $actions,
+        ]);
+    }
 }
