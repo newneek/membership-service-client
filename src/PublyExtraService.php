@@ -143,6 +143,9 @@ class PublyExtraService extends BaseApiService
     const CHALLENGE_TYPE_TIME_LIMITED = 0;
     const CHALLENGE_TYPE_TIME_UNLIMITED = 1;
 
+    const CHALLENGE_MISSION_TYPE_SET_REVIEW = 1;
+    const CHALLENGE_MISSION_TYPE_HIGHLIGHT = 2;
+
     public function __construct($domain)
     {
         parent::__construct();
@@ -1626,8 +1629,16 @@ class PublyExtraService extends BaseApiService
         return $this->get("challenge/{$challengeId}");
     }
 
-    public function updateChallenge($changerId, $challengeId, $title, $isVisible, $startedAt, $endedAt, $type)
-    {
+    public function updateChallenge(
+        $changerId,
+        $challengeId,
+        $title,
+        $isVisible,
+        $startedAt,
+        $endedAt,
+        $type,
+        $missionType = self::CHALLENGE_MISSION_TYPE_SET_REVIEW
+    ) {
         $inputs = [
             'changer_id' => $changerId,
             'title' => $title,
@@ -1635,6 +1646,7 @@ class PublyExtraService extends BaseApiService
             'started_at' => $startedAt,
             'ended_at' => $endedAt,
             'type' => $type,
+            'mission_type' => $missionType
         ];
 
         return $this->put("challenge/{$challengeId}", $inputs);
