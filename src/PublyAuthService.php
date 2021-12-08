@@ -17,7 +17,6 @@ class PublyAuthService extends BaseApiService {
 
     const DELETE_REQUESTED_USER_REQUEST_STATUS_DELETE_REQUESTED = 1; // 탈퇴 요청
     const DELETE_REQUESTED_USER_REQUEST_STATUS_DELETE_COMPLETE = 2; // 탈퇴 완료 (유저 삭제 완료)
-    const DELETE_REQUESTED_USER_REQUEST_STATUS_DELETE_FAILED = 3; // 탈퇴 실패 (유저 삭제 실패)
 
     const STRING_GROUP = [
         PublyAuthService::GROUP_ADMIN => "최고관리자",
