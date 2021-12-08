@@ -3741,4 +3741,25 @@ class PublyContentService extends BaseApiService
             'actions' => $actions,
         ]);
     }
+
+    public function getAllCollectionItemsByCollection($collectionId, $filterArray = []) {
+        return $this->get("/collection-item/collection/{$collectionId}", $filterArray);
+    }
+
+    public function addCollectionItem($collectionId, $collectableType, $collectableId) {
+        return $this->post("/collection-item", [
+            'collection_id' => $collectionId,
+            'collectable_type' => $collectableType,
+            'collectable_id' => $collectableId,
+        ]);
+    }
+
+    public function getCollectionItem($collectableType ,$collectableId) {
+        return $this->get("/collection-item/{$collectableType}/{$collectableId}");
+    }
+
+    public function removeCollectionItem($collectableType ,$collectableId)
+    {
+        return $this->delete("/collection-item/{$collectableType}/{$collectableId}");
+    }
 }
