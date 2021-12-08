@@ -149,6 +149,30 @@ class BaseApiService
     }
 
     /**
+     * This is a helper method to do a patch request.
+     *
+     * @param       $endpoint
+     * @param array $patchData
+     *
+     * @return array
+     * @throws ResponseException
+     */
+    public function patch($endpoint, $patchData = [])
+    {
+        $response = Http::send(
+            $this,
+            $endpoint,
+            [
+                'postFields' => $patchData,
+                'method' => 'PATCH',
+                'timeout' => $this->timeout
+            ]
+        );
+
+        return $response;
+    }
+
+    /**
      * This is a helper method to do a delete request.
      *
      * @param $endpoint
