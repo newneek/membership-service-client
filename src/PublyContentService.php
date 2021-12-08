@@ -3737,22 +3737,20 @@ class PublyContentService extends BaseApiService
         return $this->post("/collection/${collectionId}/edit", $inputs);
     }
 
-    public function getAllCollectionItemsByCollection($collectionId, $filterArray = []) {
-        return $this->get("/collection-item/collection/{$collectionId}", $filterArray);
+    public function getCollectionItemsByCollection($collectionId, $filterArray = []) {
+        return $this->get("/collection/{$collectionId}/item", $filterArray);
     }
 
-    public function addCollectionItem($collectionId, $inputs) {
-        $inputs = array_merge($inputs, ['collection_id' => $collectionId,]);
-
+    public function addCollectionItem($inputs) {
         return $this->post("/collection-item", $inputs);
     }
 
-    public function getCollectionItem($collectableType ,$collectableId) {
-        return $this->get("/collection-item/{$collectableType}/{$collectableId}");
+    public function getCollectionItem($collectionId, $collectableType ,$collectableId) {
+        return $this->get("/collection/{$collectionId}/item/{$collectableType}/{$collectableId}");
     }
 
-    public function removeCollectionItem($collectableType ,$collectableId)
+    public function removeCollectionItem($collectionId, $collectableType ,$collectableId)
     {
-        return $this->delete("/collection-item/{$collectableType}/{$collectableId}");
+        return $this->delete("/collection/{$collectionId}/item/{$collectableType}/{$collectableId}");
     }
 }
