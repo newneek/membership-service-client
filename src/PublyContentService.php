@@ -3716,7 +3716,7 @@ class PublyContentService extends BaseApiService
     }
 
     public function getCollection($collectionId, $filterArray = []) {
-        return $this->get("/collection/${collectionId}", $filterArray);
+        return $this->get("/collection/{$collectionId}", $filterArray);
     }
 
     public function addCollection($userId, $inputs) {
@@ -3725,20 +3725,16 @@ class PublyContentService extends BaseApiService
         return $this->post('/collection', $inputs);
     }
 
-    public function updateCollection($collectionId, $title) {
-        return $this->patch('/collection', [
-            'title' => $title,
-        ]);
+    public function updateCollection($collectionId, $inputs) {
+        return $this->patch("/collection/${collectionId}", $inputs);
     }
 
     public function removeCollection($collectionId) {
         return $this->delete("/collection/${collectionId}");
     }
 
-    public function editCollection($collectionId, $actions) {
-        return $this->post("/collection/${collectionId}/edit", [
-            'actions' => $actions,
-        ]);
+    public function editCollection($collectionId, $inputs) {
+        return $this->post("/collection/${collectionId}/edit", $inputs);
     }
 
     public function getAllCollectionItemsByCollection($collectionId, $filterArray = []) {
