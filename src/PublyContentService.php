@@ -3719,11 +3719,10 @@ class PublyContentService extends BaseApiService
         return $this->get("/collection/${collectionId}", $filterArray);
     }
 
-    public function addCollection($userId, $title) {
-        return $this->post('/collection', [
-            'user_id' => $userId,
-            'title' => $title,
-        ]);
+    public function addCollection($userId, $inputs) {
+        $inputs = array_merge($inputs, ['user_id' => $userId]);
+
+        return $this->post('/collection', $inputs);
     }
 
     public function updateCollection($collectionId, $title) {
@@ -3746,12 +3745,10 @@ class PublyContentService extends BaseApiService
         return $this->get("/collection-item/collection/{$collectionId}", $filterArray);
     }
 
-    public function addCollectionItem($collectionId, $collectableType, $collectableId) {
-        return $this->post("/collection-item", [
-            'collection_id' => $collectionId,
-            'collectable_type' => $collectableType,
-            'collectable_id' => $collectableId,
-        ]);
+    public function addCollectionItem($collectionId, $inputs) {
+        $inputs = array_merge($inputs, ['collection_id' => $collectionId,]);
+
+        return $this->post("/collection-item", $inputs);
     }
 
     public function getCollectionItem($collectableType ,$collectableId) {
