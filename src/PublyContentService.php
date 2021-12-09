@@ -3715,6 +3715,11 @@ class PublyContentService extends BaseApiService
         return $this->get('/collection', $filterArray);
     }
 
+    public function getCollectionCountByUser($userId, $filterArray = []) {
+        $filterArray = array_merge($filterArray, ['user_id' => $userId]);
+        return $this->get('/collection/count', $filterArray);
+    }
+
     public function getCollection($collectionId, $filterArray = []) {
         return $this->get("/collection/{$collectionId}", $filterArray);
     }
