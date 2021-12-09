@@ -81,7 +81,8 @@ class PublyExtraService extends BaseApiService
     const STRING_MANAGEMENT_LEVEL = [
         PublyExtraService::MANAGEMENT_LEVEL_HANDS_ON_WORKER => 'hands-on-worker',
         PublyExtraService::MANAGEMENT_LEVEL_MANAGER => 'manager',
-        PublyExtraService::MANAGEMENT_LEVEL_DECISION_MAKER => 'decision-maker'
+        PublyExtraService::MANAGEMENT_LEVEL_DECISION_MAKER => 'decision-maker',
+        PublyExtraService::MANAGEMENT_LEVEL_ETC => 'etc'
     ];
 
     const STRING_RECOMMENDED_CONTENT_TYPE = [
