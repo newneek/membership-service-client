@@ -4531,6 +4531,11 @@ class PublyPaymentService extends BaseApiService
         return $this->put("plan/{$planId}", $inputs);
     }
 
+    public function updatePlan2($planId, $inputs)
+    {
+        return $this->put("plan/{$planId}", $inputs);
+    }
+
     public function updatePlanNextPlanId($changerId, $planId, $nextPlanId)
     {
         $inputs = [
