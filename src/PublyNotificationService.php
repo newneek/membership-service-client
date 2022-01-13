@@ -439,6 +439,16 @@ class PublyNotificationService extends BaseApiService
         return $this->post('/event/free_trial_app_installed', $inputs);
     }
 
+    public function eventFreeTrialExpiredByUser($userId, $usablePoint)
+    {
+        $inputs = [
+            'user_id' => $userId,
+            'usable_point' => $usablePoint
+        ];
+
+        return $this->post('/event/free_trial_expired_by_user', $inputs);
+    }
+
     public function eventCommentReplied($replyComment)
     {
         $inputs = [
