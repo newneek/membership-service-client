@@ -2216,6 +2216,8 @@ class PublyPaymentService extends BaseApiService
 
     public function updateOrder($changerId,
                                 $orderId,
+                                $userCompany,
+                                $userTeam,
                                 $userName,
                                 $userEmail,
                                 $userPhone,
@@ -2223,6 +2225,7 @@ class PublyPaymentService extends BaseApiService
                                 $deliveryPhone = null,
                                 $deliveryZipcode = null,
                                 $deliveryAddress = null,
+                                $marketingAgree,
                                 $note,
                                 $force = false)
     {
@@ -2231,9 +2234,12 @@ class PublyPaymentService extends BaseApiService
             $inputs = [ 'changer_id' => $changerId,
                 'force' => $force ? 1 : 0,
                 'action' => 'modify',
+                'user_company' => $userCompany,
+                'user_team' => $userTeam,
                 'user_name' => $userName,
                 'user_email' => $userEmail,
                 'user_phone' => $userPhone,
+                'marketing_agree' => $marketingAgree,
                 'note' => $note ];
             if ($deliveryName || $deliveryPhone || $deliveryZipcode || $deliveryAddress) {
                 $inputs = array_merge($inputs, [ 'delivery_name' => $deliveryName,
