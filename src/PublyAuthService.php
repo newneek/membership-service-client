@@ -169,6 +169,11 @@ class PublyAuthService extends BaseApiService {
         return $this->post("user/{$userId}/delete", [ 'changer_id' => $changerId ]);
     }
 
+    public function deleteUserByIds($changerId, $ids)
+    {
+        return $this->post("user/delete", [ 'changer_id' => $changerId, 'ids' => $ids ]);
+    }
+
     /*
      * User Email Change History Related Interfaces
      */
