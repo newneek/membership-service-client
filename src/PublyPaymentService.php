@@ -3765,9 +3765,9 @@ class PublyPaymentService extends BaseApiService
         return $this->get("point_history/user/{$userId}", $filterArray);
     }
 
-    public function getPointHistoriesSumByUserId($userId)
+    public function getPointHistoriesSumByUserId($userId, $type)
     {
-        return $this->get("point_history/user/{$userId}/sum");
+        return $this->get("point_history/user/{$userId}/sum", ['type' => $type]);
     }
 
     public function getPointHistoriesSumsByUserIds($userIds) {
