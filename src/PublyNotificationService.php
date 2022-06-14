@@ -190,6 +190,23 @@ class PublyNotificationService extends BaseApiService
         );
     }
 
+    public function eventRequestDeleteAccount($userId, $product)
+    {
+        return $this->post("/event/request_delete_account", [
+            'user_id' => $userId,
+            'product' => $product,
+        ]);
+    }
+
+    public function eventDeleteAccount($changerId, $userId, $product)
+    {
+        return $this->post("/event/delete_account", [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'product' => $product,
+        ]);
+    }
+
     public function notifyComingSubscriptionExpiration()
     {
         return $this->post("/event/coming_subscription_expiration", []);
@@ -214,22 +231,5 @@ class PublyNotificationService extends BaseApiService
     public function triggerNotificationTemplate()
     {
         return $this->post("/trigger/all");
-    }
-
-    public function eventRequestDeleteAccount($userId, $product)
-    {
-        return $this->post("/event/request_delete_account", [
-            'user_id' => $userId,
-            'product' => $product,
-        ]);
-    }
-
-    public function eventDeleteAccount($changerId, $userId, $product)
-    {
-        return $this->post("/event/delete_account", [
-            'changer_id' => $changerId,
-            'user_id' => $userId,
-            'product' => $product,
-        ]);
     }
 }
