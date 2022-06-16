@@ -18,26 +18,8 @@ class ProjectStateSales implements ProjectState
 
     public function canStatusEnter($project)
     {
-        $currDate = \Carbon\Carbon::now();
-        $finishDate = new \Carbon\Carbon($project['preorder_finish_at']);
-
-        if ($currDate->lt($finishDate)) {
-            throw new ProjectStateException(ProjectStateException::UNCHANGEABLE_STATUS, '프로젝트 종료일이 현재시간보다 늦습니다.');
-        }
-
-        // 리워드 - 리워드가 1개만 남아 있어야 함
-        $count = 0;
-        foreach ($project['rewards'] as $reward) {
-            if ($reward['is_active']) {
-                $count++;
-                if ($reward['has_offline']) {
-                    throw new ProjectStateException(ProjectStateException::UNCHANGEABLE_STATUS, '즉시구매 상품은 오프라인 행사를 포함하지 않습니다.');
-                }
-            }
-        }
-
-        if ($count != 1) {
-            throw new ProjectStateException(ProjectStateException::UNCHANGEABLE_STATUS, '즉시구매는 상품이 1개여야 합니다.');
+        if ($project['type'] === PublyContentService::PROJECT_TYPE_BUNDLE && !$project['guide_id']) {
+            throw new ProjectStateException(ProjectStateException::UNCHANGEABLE_STATUS, '가이드를 등록해야 합니다.');
         }
 
         return true;

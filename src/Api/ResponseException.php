@@ -18,8 +18,10 @@ class ResponseException extends \Exception
 
     public $responseBody;
 
-    public function __construct(RequestException $e)
+    public function __construct(RequestException $e, $options = [])
     {
+        $request = $e->getRequest();
+
         $message = '';
         if ($e instanceof ClientException) {
             $response = $e->getResponse();
@@ -28,30 +30,18 @@ class ResponseException extends \Exception
             $response = $e->getResponse();
             $message .= $response->getBody()->getContents();
         } elseif (! $e->hasResponse()) {
-            $request = $e->getRequest();
-            //Unsuccessful response, log what we can
-            // $message .= ' [url] ' . $request->getUri();
-            // $message .= ' [http method] ' . $request->getMethod();
             $message .= $request->getBody()->getContents();
         }
 
-        // $message = $e->getMessage();
-        // if ($e instanceof ClientException) {
-        //     $response           = $e->getResponse();
-        //     $responseBody       = $response->getBody()->getContents();
-        //     $this->errorDetails = $responseBody;
-        //     $message .= ' [details] ' . $this->errorDetails;
-        // } elseif ($e instanceof ServerException) {
-        //     $message .= ' [details] Server may be experiencing internal issues or undergoing scheduled maintenance.';
-        //     $response = $e->getResponse();
-        //     $message = $response->getBody()->getContents();
-        // } elseif (! $e->hasResponse()) {
-        //     $request = $e->getRequest();
-        //     //Unsuccessful response, log what we can
-        //     $message .= ' [url] ' . $request->getUri();
-        //     $message .= ' [http method] ' . $request->getMethod();
-        //     $message .= ' [body] ' . $request->getBody()->getContents();
-        // }
+        $this->errorDetails = [
+            'url' => (string)$request->getUri(),
+            'method' => $request->getMethod(),
+            'body' => $request->getBody()->getContents()
+        ];
+
+        if (isset($options['postFields'])) {
+            $this->errorDetails['postFields'] = $options['postFields'];
+        }
 
         parent::__construct($message, $e->getCode());
     }

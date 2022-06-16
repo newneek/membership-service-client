@@ -11,6 +11,10 @@ class PublyPaymentService extends BaseApiService
     const PAYMENT_TYPE_ADMIN = 2;
     const PAYMENT_TYPE_BANK_TRANSFER = 3;
     const PAYMENT_TYPE_PAYPAL = 4;
+    const PAYMENT_TYPE_NAVERPAY = 5;
+    const PAYMENT_TYPE_NAVERPAY_ONETIME = 6;
+    const PAYMENT_TYPE_SKILLUP_NAVERPAY = 7;
+    const PAYMENT_TYPE_SKILLUP_NICEPAY_CREDIT_CARD = 8;
     const PAYMENT_TYPE_IAMPORT = 90;
     const PAYMENT_TYPE_OLD_ADMIN = 91;
 
@@ -18,6 +22,7 @@ class PublyPaymentService extends BaseApiService
     const PAYMENT_STATUS_COMPLETED = 2;
     const PAYMENT_STATUS_FAILED = 3;
     const PAYMENT_STATUS_IN_PROGRESS = 4;
+    const PAYMENT_STATUS_REFUNDED = 5;
 
     const ORDER_STATUS_CHECKEDOUT = 1; // no payment was assigned.
     const ORDER_STATUS_WAITING_PAYMENT = 2; // Reserved Payment. payment can be canceled, changed.
@@ -29,35 +34,48 @@ class PublyPaymentService extends BaseApiService
     const ORDER_STATUS_REFUND_REQUESTED = 8;
     const ORDER_STATUS_REFUND_COMPLETED = 9; // requested 단계를 무조건 거치고 이동해야 함
     const ORDER_STATUS_PROJECT_DROP = 10;
-    const ORDER_STATUS_MAX = 11;
+    const ORDER_STATUS_CONTENT_RETURNED = 11;
+    const ORDER_STATUS_REFUND_FAILED = 12;
+    const ORDER_STATUS_MAX = 13;
+
+    const COUPON_V2_STATUS_USABLE = 1;
+    const COUPON_V2_STATUS_USED = 2;
+    const COUPON_V2_STATUS_EXPIRED = 3;
 
     const STRING_PAYMENT_TYPE = [
         PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD => "Nicepay 신용카드",
         PublyPaymentService::PAYMENT_TYPE_ADMIN => "관리자 추가",
         PublyPaymentService::PAYMENT_TYPE_BANK_TRANSFER => "계좌이체",
         PublyPaymentService::PAYMENT_TYPE_PAYPAL => "PayPal",
+        PublyPaymentService::PAYMENT_TYPE_NAVERPAY => "NaverPay",
+        PublyPaymentService::PAYMENT_TYPE_NAVERPAY_ONETIME => "NaverPay 간편결제",
         PublyPaymentService::PAYMENT_TYPE_IAMPORT => "아임포트",
-        PublyPaymentService::PAYMENT_TYPE_OLD_ADMIN => "구 관리자 추가"
+        PublyPaymentService::PAYMENT_TYPE_OLD_ADMIN => "구 관리자 추가",
+        PublyPaymentService::PAYMENT_TYPE_SKILLUP_NAVERPAY => "NaverPay (스킬업)",
+        PublyPaymentService::PAYMENT_TYPE_SKILLUP_NICEPAY_CREDIT_CARD => "Nicepay 신용카드 (스킬업)",
     ];
 
     const STRING_PAYMENT_STATUS = [
-        PublyPaymentService::PAYMENT_STATUS_WAITING => "결제대기",
+        PublyPaymentService::PAYMENT_STATUS_WAITING => "예약 완료",
         PublyPaymentService::PAYMENT_STATUS_COMPLETED => "결제성공",
         PublyPaymentService::PAYMENT_STATUS_FAILED => "결제실패",
-        PublyPaymentService::PAYMENT_STATUS_IN_PROGRESS => "결제중"
+        PublyPaymentService::PAYMENT_STATUS_IN_PROGRESS => "결제중",
+        PublyPayMentService::PAYMENT_STATUS_REFUNDED => "결제환불"
     ];
 
     const STRING_ORDER_STATUS = [
         PublyPaymentService::ORDER_STATUS_CHECKEDOUT => "주문완료",
-        PublyPaymentService::ORDER_STATUS_WAITING_PAYMENT => "결제대기",
-        PublyPaymentService::ORDER_STATUS_PAID => "결제성공",
-        PublyPaymentService::ORDER_STATUS_CANCELLED => "결제전 취소",
-        PublyPaymentService::ORDER_STATUS_PROJECT_FAILED => "프로젝트 실패",
+        PublyPaymentService::ORDER_STATUS_WAITING_PAYMENT => "결제 대기",
+        PublyPaymentService::ORDER_STATUS_PAID => "결제 완료",
+        PublyPaymentService::ORDER_STATUS_CANCELLED => "주문 취소",
+        PublyPaymentService::ORDER_STATUS_PROJECT_FAILED => "중단",
         PublyPaymentService::ORDER_STATUS_PAYMENT_IN_PROGRESS => "결제중",
         PublyPaymentService::ORDER_STATUS_PAYMENT_FAILED => "결제실패",
         PublyPaymentService::ORDER_STATUS_REFUND_REQUESTED => "환불 신청",
         PublyPaymentService::ORDER_STATUS_REFUND_COMPLETED => "환불 완료",
-        PublyPaymentService::ORDER_STATUS_PROJECT_DROP => "프로젝트 중단"
+        PublyPaymentService::ORDER_STATUS_PROJECT_DROP => "프로젝트 중단",
+        PublyPaymentService::ORDER_STATUS_CONTENT_RETURNED => "포인트 환급",
+        PublyPaymentService::ORDER_STATUS_REFUND_FAILED => "환불 실패"
     ];
 
 
@@ -74,6 +92,8 @@ class PublyPaymentService extends BaseApiService
     const SUBSCRIPTION_RENEWAL_HISTORY_STATUS_RENEWED = 1;
     const SUBSCRIPTION_RENEWAL_HISTORY_STATUS_REFUND_REQUESTED = 2;
     const SUBSCRIPTION_RENEWAL_HISTORY_STATUS_REFUND_COMPLETED = 3;
+    const SUBSCRIPTION_RENEWAL_HISTORY_STATUS_DUPLICATED = 4;
+    const SUBSCRIPTION_RENEWAL_HISTORY_STATUS_REFUND_FAILED = 5;
 
     const STRING_SUBSCRIPTION_TYPE = [
         PublyPaymentService::SUBSCRIPTION_STATUS_INIT => "초기상태",
@@ -91,7 +111,15 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::SUBSCRIPTION_RENEWAL_HISTORY_STATUS_REFUND_COMPLETED => "환불 완료"
     ];
 
+    const PLAN_TYPE_ONE_MONTH = 1;
+    const PLAN_TYPE_SIX_MONTHS = 2;
+    const PLAN_TYPE_TWELVE_MONTHS = 3;
 
+    const STRING_PLAN_TYPE = [
+        PublyPaymentService::PLAN_TYPE_ONE_MONTH => "1개월마다",
+        PublyPaymentService::PLAN_TYPE_SIX_MONTHS => "6개월마다",
+        PublyPaymentService::PLAN_TYPE_TWELVE_MONTHS => "12개월마다"
+    ];
 
     const EVENT_CONDITION_ALL = 1;
     const EVENT_CONDITION_SUBSCRIPTION = 2;
@@ -113,9 +141,125 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::EVENT_CONDITION_ORDER_AND_SUBSCRIPTION => "멤버십 이용자 또는 연관 콘텐츠를 예약 구매한 독자만 구매할 수 있습니다."
     ];
 
-    const TRANSACTION_TYPE_USED_FOR_PAYMENT = 1;
-    const TRANSACTION_TYPE_ADJUSTED_BY_ADMIN = 2;
-    const TRANSACTION_TYPE_REWORDED_BY_REFERER = 3;
+    const POINT_HISTORY_TRANSACTION_TYPE_USED_FOR_PAYMENT = 1;
+    const POINT_HISTORY_TRANSACTION_TYPE_ADJUSTED_BY_ADMIN = 2;
+    const POINT_HISTORY_TRANSACTION_TYPE_REWORDED_BY_REFERER = 3;
+    const POINT_HISTORY_TRANSACTION_TYPE_FAILED_IN_PAYMENT = 4;
+    const POINT_HISTORY_TRANSACTION_TYPE_CONTENT_RETURNED = 5;
+    const POINT_HISTORY_TRANSACTION_TYPE_PROJECT_SPONSOR = 6;
+    const POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_DAILY_VIEW_CONTENT = 7;
+    const POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_USER_REFERRAL_SIGNUP = 8;
+    const POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_AUTHOR_REFERRAL_SIGNUP = 9;
+    const POINT_HISTORY_TRANSACTION_TYPE_APP_INSTALL = 10;
+    const POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_CHALLENGE = 11;
+    const POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_COMPLETE_CAREERLY_PROFILE = 12;
+    const POINT_HISTORY_TRANSACTION_TYPE_EXPIRATION = 13;
+    const POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_PROMOTION_REFERRAL_SIGNUP_REFERRER = 14;
+    const POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_PROMOTION_REFERRAL_SIGNUP_REFEREE = 15;
+    const POINT_HISTORY_TRANSACTION_TYPE_MAX = 16;
+
+    const STRING_TRANSACTION_TYPE = [
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_USED_FOR_PAYMENT => "포인트 사용",
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_ADJUSTED_BY_ADMIN => "어드민 포인트 적립",
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWORDED_BY_REFERER => "친구 초대 리워드 포인트",
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_FAILED_IN_PAYMENT => "포인트 결제 취소",
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_CONTENT_RETURNED => "콘텐츠 환급 포인트",
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_PROJECT_SPONSOR => "후원 하기 포인트",
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_DAILY_VIEW_CONTENT => "퍼블리 습관 응원 포인트",
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_USER_REFERRAL_SIGNUP => "친구 초대 리워드 포인트",
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_AUTHOR_REFERRAL_SIGNUP => "저자 레퍼럴 회원가입 포인트 적립",
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_APP_INSTALL => "앱 설치 축하 포인트 적립",
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_CHALLENGE => "챌린지 보상 포인트 적립",
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_COMPLETE_CAREERLY_PROFILE => "커리어리 프로필 완성 축하 포인트 적립",
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_EXPIRATION => '포인트 유효기간 만료',
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_PROMOTION_REFERRAL_SIGNUP_REFERRER => '프로모션 레퍼럴 포인트',
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_PROMOTION_REFERRAL_SIGNUP_REFEREE => '프로모션 레퍼럴 포인트',
+    ];
+
+    public const POINT_HISTORY_ONLY_ADD_POINT_TRANSACTION_TYPES = [
+        self::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_DAILY_VIEW_CONTENT,
+        self::POINT_HISTORY_TRANSACTION_TYPE_APP_INSTALL,
+        self::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_CHALLENGE,
+        self::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_COMPLETE_CAREERLY_PROFILE,
+    ];
+
+    const POINT_HISTORY_PRODUCT_TYPE_MEMBERSHIP = 1;
+    const POINT_HISTORY_PRODUCT_TYPE_CAREERLY = 2;
+    const POINT_HISTORY_PRODUCT_TYPE_SKILLUP = 3;
+    const POINT_HISTORY_PRODUCT_TYPE_MAX = 4;
+
+    const USER_DEFAULT_PLAN_TYPE_ADMIN = 1;
+    const USER_DEFAULT_PLAN_TYPE_REFERRAL = 2;
+    const USER_DEFAULT_PLAN_TYPE_CONTENT_RETURN = 3;
+    const USER_DEFAULT_PLAN_TYPE_AUTHOR_REFERRAL = 4;
+
+    const STRING_USER_DEFAULT_PLAN_TYPE = [
+        PublyPaymentService::USER_DEFAULT_PLAN_TYPE_ADMIN => "관리자 추가",
+        PublyPaymentService::USER_DEFAULT_PLAN_TYPE_REFERRAL => "공유 콘텐츠 읽음",
+        PublyPaymentService::USER_DEFAULT_PLAN_TYPE_CONTENT_RETURN => "콘텐츠 환급",
+        PublyPaymentService::USER_DEFAULT_PLAN_TYPE_AUTHOR_REFERRAL => "저자 공유"
+    ];
+
+
+    const VOUCHER_STATUS_INVITATION_REQUESTED = 1;
+    const VOUCHER_STATUS_INVITATION_ACCEPTED = 2;
+    const VOUCHER_STATUS_CANCELLED = 3;
+
+    const VOUCHER_USE_HISTORY_STATUS_ACTIVATED = 1;
+    const VOUCHER_USE_HISTORY_STATUS_EXPIRED = 2;
+
+    const PAY_WITHOUT_POINT = 0;
+    const PAY_WITH_POINT = 1;
+
+    const USE_POINT_ON_SUBSCRIPTION = self::PAY_WITH_POINT;
+    const USE_POINT_ON_ORDER = self::PAY_WITHOUT_POINT;
+    const USE_POINT_ON_RESERVE = self::PAY_WITHOUT_POINT;
+    const USE_POINT_ON_SKILLUP_ORDER = self::PAY_WITH_POINT;
+
+    const NO_PAGE_LIMIT = 0;
+
+
+    const NICAPAY_ERROR_MESSAGES = [
+        "카드번호오류" => "카드번호를 다시 확인해 주세요",
+        "유효하지않은 카드번호를 입력하셨습니다. (card_bin 없음)" => "올바른 카드번호를 입력해 주세요",
+        "주민OR사업자등록번호오류" => "주민등록번호 또는 사업자등록 번호를 다시 확인해 주세요",
+        "비밀번호틀림" => "비밀번호를 다시 확인해 주세요",
+        "유효기간오류" => "유효기간을 다시 확인해 주세요",
+    ];
+
+    const NAVERPAY_ERROR_MESSAGES = [
+        "userCancel" => "결제를 취소하셨습니다. 주문 내용 확인 후 다시 결제해주세요.",
+        "OwnerAuthFail" => "타인 명의 카드는 결제가 불가능합니다. 회원 본인 명의의 카드로 결제해주세요.",
+        "paymentTimeExpire" => "결제 가능한 시간이 지났습니다. 주문 내용 확인 후 다시 결제해주세요."
+    ];
+
+    const NAVERPAY_APPROVAL_TYPES = [
+        'ALL' => '전체',
+        'APPROVAL' => '승인',
+        'CANCEL' => '취소',
+        'CANCEL_FAIL' => '취소실패'
+    ];
+
+    const NAVERPAY_DIFFERENCE_STATUS_EXIST = 1;
+    const NAVERPAY_DIFFERENCE_STATUS_NOT_EXIST = 2;
+    const NAVERPAY_DIFFERENCE_STATUS_NO_NEED = 3;
+
+    const NAVERPAY_DIFFERENCE_STATUS = [
+        PublyPaymentService::NAVERPAY_DIFFERENCE_STATUS_EXIST => "내역 존재",
+        PublyPaymentService::NAVERPAY_DIFFERENCE_STATUS_NOT_EXIST => "내역 미존재",
+        PublyPaymentService::NAVERPAY_DIFFERENCE_STATUS_NO_NEED => "해당 없음",
+    ];
+
+    const REFUND_HISTORY_STATUS_COMPLETED = 1;
+    const REFUND_HISTORY_STATUS_FAILED = 2;
+
+    const NAVERPAY_USED_KEY_MEMBERSHIP = 1;
+    const NAVERPAY_USED_KEY_SKILLUP = 2;
+
+    const STRING_NAVERPAY_USED_KEY = [
+        PublyPaymentService::NAVERPAY_USED_KEY_MEMBERSHIP => '멤버십',
+        PublyPaymentService::NAVERPAY_USED_KEY_SKILLUP => '스킬업',
+    ];
 
     public function __construct($domain)
     {
@@ -131,15 +275,15 @@ class PublyPaymentService extends BaseApiService
     public function payReservedOrdersByContent($changerId, $contentId)
     {
         return $this->put("order/content/{$contentId}",
-                          [ 'changer_id' => $changerId,
-                            'action' => 'pay' ]);
+            [ 'changer_id' => $changerId,
+                'action' => 'pay' ]);
     }
 
     public function failReservedOrdersByContent($changerId, $contentId)
     {
         return $this->put("order/content/{$contentId}",
-                          [ 'changer_id' => $changerId,
-                            'action' => 'fail' ]);
+            [ 'changer_id' => $changerId,
+                'action' => 'fail' ]);
     }
 
     public function dropOrdersByProject($changerId, $projectId)
@@ -156,6 +300,12 @@ class PublyPaymentService extends BaseApiService
         return $this->get("order", $filterArray);
     }
 
+    public function getOrdersByIds($orderIds, $filterArray = [])
+    {
+        $filterArray['order_ids'] = implode(',', $orderIds);
+        return $this->get("order/order_ids", $filterArray);
+    }
+
     public function getOrdersByUser($userId, $page, $limit, $filterArray = [])
     {
         $filterArray['page'] = $page;
@@ -168,12 +318,17 @@ class PublyPaymentService extends BaseApiService
         return $this->get("order/{$orderId}", $filterArray);
     }
 
-    public function deleteOrder(
-                        $changerId,
-                        $orderId)
+    public function getOrderByUserIdAndProjectId($userId, $projectId, $filterArray = [])
     {
-        return $this->post("order/{$orderId}/delete", 
-                           ['changer_id' => $changerId]);        
+        return $this->get("order/user/{$userId}/project/{$projectId}", $filterArray);
+    }
+
+    public function deleteOrder(
+        $changerId,
+        $orderId)
+    {
+        return $this->post("order/{$orderId}/delete",
+            ['changer_id' => $changerId]);
     }
 
     public function getTotalOrdersByRewardId($rewardId, $filterArray = [])
@@ -216,36 +371,42 @@ class PublyPaymentService extends BaseApiService
         $filterArray['project_ids'] = implode(',', $projectIds);
         return $this->get("order/project_ids", $filterArray);
     }
-    
+
+    public function getOrdersByEventIds($eventIds, $filterArray = [])
+    {
+        $filterArray['event_ids'] = implode(',', $eventIds);
+        return $this->get("order/event_ids", $filterArray);
+    }
+
     public function order(
-                        $userId,
-                        $contentId,
-                        $rewardId,
-                        $price,
-                        $userName,
-                        $userEmail,
-                        $userPhone,
-                        $deliveryName = null,
-                        $deliveryPhone = null,
-                        $deliveryZipcode = null,
-                        $deliveryAddress = null)
+        $userId,
+        $contentId,
+        $rewardId,
+        $price,
+        $userName,
+        $userEmail,
+        $userPhone,
+        $deliveryName = null,
+        $deliveryPhone = null,
+        $deliveryZipcode = null,
+        $deliveryAddress = null)
     {
         $result = [ 'success' => false ];
         try {
             $inputs = [ 'changer_id' => $userId,
-                        'content_id' => $contentId,
-                        'reward_id' => $rewardId,
-                        'user_id' => $userId,
-                        'price' => $price,
-                        'user_name' => $userName,
-                        'user_email' => $userEmail,
-                        'user_phone' => $userPhone ];
+                'content_id' => $contentId,
+                'reward_id' => $rewardId,
+                'user_id' => $userId,
+                'price' => $price,
+                'user_name' => $userName,
+                'user_email' => $userEmail,
+                'user_phone' => $userPhone ];
             if ($deliveryName || $deliveryPhone || $deliveryZipcode || $deliveryAddress) {
                 $inputs = array_merge($inputs, [ 'delivery_name' => $deliveryName,
-                                                 'delivery_phone' => $deliveryPhone,
-                                                 'delivery_zipcode' => $deliveryZipcode,
-                                                 'delivery_address' => $deliveryAddress,
-                                               ]);
+                    'delivery_phone' => $deliveryPhone,
+                    'delivery_zipcode' => $deliveryZipcode,
+                    'delivery_address' => $deliveryAddress,
+                ]);
             }
             $resultOrder = $this->post('order', $inputs);
         } catch (ResponseException $e) {
@@ -263,36 +424,36 @@ class PublyPaymentService extends BaseApiService
     }
 
     public function order2(
-                        $changerId,
-                        $userId,
-                        $contentId,
-                        $rewardId,
-                        $price,
-                        $userName,
-                        $userEmail,
-                        $userPhone,
-                        $deliveryName = null,
-                        $deliveryPhone = null,
-                        $deliveryZipcode = null,
-                        $deliveryAddress = null,
-                        $isPreorder = null)
+        $changerId,
+        $userId,
+        $contentId,
+        $rewardId,
+        $price,
+        $userName,
+        $userEmail,
+        $userPhone,
+        $deliveryName = null,
+        $deliveryPhone = null,
+        $deliveryZipcode = null,
+        $deliveryAddress = null,
+        $isPreorder = null)
     {
         $result = [ 'success' => false ];
         try {
             $inputs = [ 'changer_id' => $changerId,
-                        'content_id' => $contentId,
-                        'reward_id' => $rewardId,
-                        'user_id' => $userId,
-                        'price' => $price,
-                        'user_name' => $userName,
-                        'user_email' => $userEmail,
-                        'user_phone' => $userPhone ];
+                'content_id' => $contentId,
+                'reward_id' => $rewardId,
+                'user_id' => $userId,
+                'price' => $price,
+                'user_name' => $userName,
+                'user_email' => $userEmail,
+                'user_phone' => $userPhone ];
             if ($deliveryName || $deliveryPhone || $deliveryZipcode || $deliveryAddress) {
                 $inputs = array_merge($inputs, [ 'delivery_name' => $deliveryName,
-                                                 'delivery_phone' => $deliveryPhone,
-                                                 'delivery_zipcode' => $deliveryZipcode,
-                                                 'delivery_address' => $deliveryAddress,
-                                               ]);
+                    'delivery_phone' => $deliveryPhone,
+                    'delivery_zipcode' => $deliveryZipcode,
+                    'delivery_address' => $deliveryAddress,
+                ]);
             }
 
             if (is_null($isPreorder) == false) {
@@ -333,14 +494,14 @@ class PublyPaymentService extends BaseApiService
         $result = [ 'success' => false ];
         try {
             $inputs = [ 'changer_id' => $changerId,
-                        'content_id' => $contentId,
-                        'reward_id' => $rewardId,
-                        'user_id' => $userId,
-                        'price' => $price,
-                        'is_subscription' => $usingSubscriptionReward,
-                        'user_name' => $userName,
-                        'user_email' => $userEmail,
-                        'user_phone' => $userPhone ];
+                'content_id' => $contentId,
+                'reward_id' => $rewardId,
+                'user_id' => $userId,
+                'price' => $price,
+                'is_subscription' => $usingSubscriptionReward,
+                'user_name' => $userName,
+                'user_email' => $userEmail,
+                'user_phone' => $userPhone ];
             if ($deliveryName || $deliveryPhone || $deliveryZipcode || $deliveryAddress) {
                 $inputs = array_merge($inputs, [ 'delivery_name' => $deliveryName,
                     'delivery_phone' => $deliveryPhone,
@@ -372,34 +533,34 @@ class PublyPaymentService extends BaseApiService
      * Helpers
      */
     public function orderAndReservePayment(
-                        $userId,
-                        $creditCardId,
-                        $contentId,
-                        $rewardId,
-                        $price,
-                        $userName,
-                        $userEmail,
-                        $userPhone,
-                        $deliveryName = null,
-                        $deliveryPhone = null,
-                        $deliveryZipcode = null,
-                        $deliveryAddress = null)
+        $userId,
+        $creditCardId,
+        $contentId,
+        $rewardId,
+        $price,
+        $userName,
+        $userEmail,
+        $userPhone,
+        $deliveryName = null,
+        $deliveryPhone = null,
+        $deliveryZipcode = null,
+        $deliveryAddress = null)
     {
         $result = [ 'success' => false ];
 
         // order
         $resultOrder = $this->order(
-                                $userId,
-                                $contentId,
-                                $rewardId,
-                                $price,
-                                $userName,
-                                $userEmail,
-                                $userPhone,
-                                $deliveryName,
-                                $deliveryPhone,
-                                $deliveryZipcode,
-                                $deliveryAddress);
+            $userId,
+            $contentId,
+            $rewardId,
+            $price,
+            $userName,
+            $userEmail,
+            $userPhone,
+            $deliveryName,
+            $deliveryPhone,
+            $deliveryZipcode,
+            $deliveryAddress);
 
         if (!$resultOrder['success']) {
             $result['success'] = false;
@@ -411,14 +572,14 @@ class PublyPaymentService extends BaseApiService
 
         $order = $resultOrder['item'];
 
-        // 정상적으로 주문 되었음. 
+        // 정상적으로 주문 되었음.
 
         // reserve payment
         $resultPayment = $this->reservePayment(
-                                $userId,
-                                $order['id'],
-                                static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
-                                $creditCardId);
+            $userId,
+            $order['id'],
+            static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+            $creditCardId);
 
         if (!$resultPayment['success']) {
             $result['success'] = false;
@@ -437,33 +598,33 @@ class PublyPaymentService extends BaseApiService
     }
 
     public function addCreditCardAndOrderAndReservePayment(
-                        $userId,
-                        $creditCardNumber,
-                        $expireYear,
-                        $expireMonth,
-                        $id,
-                        $password,
-                        $contentId,
-                        $rewardId,
-                        $price,
-                        $userName,
-                        $userEmail,
-                        $userPhone,
-                        $deliveryName = null,
-                        $deliveryPhone = null,
-                        $deliveryZipcode = null,
-                        $deliveryAddress = null)
+        $userId,
+        $creditCardNumber,
+        $expireYear,
+        $expireMonth,
+        $id,
+        $password,
+        $contentId,
+        $rewardId,
+        $price,
+        $userName,
+        $userEmail,
+        $userPhone,
+        $deliveryName = null,
+        $deliveryPhone = null,
+        $deliveryZipcode = null,
+        $deliveryAddress = null)
     {
         $result = [ 'success' => false ];
 
         // add credit card
         $resultCreditCard = $this->addCreditCard(
-                                    $userId,
-                                    $creditCardNumber,
-                                    $expireYear,
-                                    $expireMonth,
-                                    $id,
-                                    $password);
+            $userId,
+            $creditCardNumber,
+            $expireYear,
+            $expireMonth,
+            $id,
+            $password);
 
         if (!$resultCreditCard['success']) {
             $result['success'] = false;
@@ -474,21 +635,21 @@ class PublyPaymentService extends BaseApiService
         }
 
         $creditCard = $resultCreditCard['item'];
-        // 정상적으로 카드 등록 되었음. 
+        // 정상적으로 카드 등록 되었음.
 
         // order
         $resultOrder = $this->order(
-                                $userId,
-                                $contentId,
-                                $rewardId,
-                                $price,
-                                $userName,
-                                $userEmail,
-                                $userPhone,
-                                $deliveryName,
-                                $deliveryPhone,
-                                $deliveryZipcode,
-                                $deliveryAddress);
+            $userId,
+            $contentId,
+            $rewardId,
+            $price,
+            $userName,
+            $userEmail,
+            $userPhone,
+            $deliveryName,
+            $deliveryPhone,
+            $deliveryZipcode,
+            $deliveryAddress);
 
         if (!$resultOrder['success']) {
             $result['success'] = false;
@@ -499,14 +660,14 @@ class PublyPaymentService extends BaseApiService
         }
 
         $order = $resultOrder['item'];
-        // 정상적으로 주문 되었음. 
+        // 정상적으로 주문 되었음.
 
         // reserve payment
         $resultPayment = $this->reservePayment(
-                                $userId,
-                                $order['id'],
-                                static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
-                                $creditCard['id']);
+            $userId,
+            $order['id'],
+            static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+            $creditCard['id']);
 
         if (!$resultPayment['success']) {
             $result['success'] = false;
@@ -526,38 +687,38 @@ class PublyPaymentService extends BaseApiService
     }
 
     public function orderAndReservePayment2(
-                        $changerId,
-                        $userId,
-                        $creditCardId,
-                        $contentId,
-                        $rewardId,
-                        $price,
-                        $userName,
-                        $userEmail,
-                        $userPhone,
-                        $deliveryName = null,
-                        $deliveryPhone = null,
-                        $deliveryZipcode = null,
-                        $deliveryAddress = null,
-                        $isPreorder = null)
+        $changerId,
+        $userId,
+        $creditCardId,
+        $contentId,
+        $rewardId,
+        $price,
+        $userName,
+        $userEmail,
+        $userPhone,
+        $deliveryName = null,
+        $deliveryPhone = null,
+        $deliveryZipcode = null,
+        $deliveryAddress = null,
+        $isPreorder = null)
     {
         $result = [ 'success' => false ];
 
         // order
         $resultOrder = $this->order2(
-                                $changerId,
-                                $userId,
-                                $contentId,
-                                $rewardId,
-                                $price,
-                                $userName,
-                                $userEmail,
-                                $userPhone,
-                                $deliveryName,
-                                $deliveryPhone,
-                                $deliveryZipcode,
-                                $deliveryAddress,
-                                $isPreorder);
+            $changerId,
+            $userId,
+            $contentId,
+            $rewardId,
+            $price,
+            $userName,
+            $userEmail,
+            $userPhone,
+            $deliveryName,
+            $deliveryPhone,
+            $deliveryZipcode,
+            $deliveryAddress,
+            $isPreorder);
 
         if (!$resultOrder['success']) {
             $result['success'] = false;
@@ -568,15 +729,15 @@ class PublyPaymentService extends BaseApiService
         }
 
         $order = $resultOrder['item'];
-        // 정상적으로 주문 되었음. 
+        // 정상적으로 주문 되었음.
 
         // reserve payment
         $resultPayment = $this->reservePayment2(
-                                $changerId,
-                                $userId,
-                                $order['id'],
-                                static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
-                                $creditCardId);
+            $changerId,
+            $userId,
+            $order['id'],
+            static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+            $creditCardId);
 
         if (!$resultPayment['success']) {
             $result['success'] = false;
@@ -808,38 +969,39 @@ class PublyPaymentService extends BaseApiService
     }
 
     public function orderAndPay(
-                        $changerId,
-                        $userId,
-                        $creditCardId,
-                        $contentId,
-                        $rewardId,
-                        $price,
-                        $userName,
-                        $userEmail,
-                        $userPhone,
-                        $deliveryName = null,
-                        $deliveryPhone = null,
-                        $deliveryZipcode = null,
-                        $deliveryAddress = null,
-                        $isPreorder = null)
+        $changerId,
+        $userId,
+        $creditCardId,
+        $contentId,
+        $rewardId,
+        $price,
+        $installmentMonth,
+        $userName,
+        $userEmail,
+        $userPhone,
+        $deliveryName = null,
+        $deliveryPhone = null,
+        $deliveryZipcode = null,
+        $deliveryAddress = null,
+        $isPreorder = null)
     {
         $result = [ 'success' => false ];
 
         // order
         $resultOrder = $this->order2(
-                                $changerId,
-                                $userId,
-                                $contentId,
-                                $rewardId,
-                                $price,
-                                $userName,
-                                $userEmail,
-                                $userPhone,
-                                $deliveryName,
-                                $deliveryPhone,
-                                $deliveryZipcode,
-                                $deliveryAddress,
-                                $isPreorder);
+            $changerId,
+            $userId,
+            $contentId,
+            $rewardId,
+            $price,
+            $userName,
+            $userEmail,
+            $userPhone,
+            $deliveryName,
+            $deliveryPhone,
+            $deliveryZipcode,
+            $deliveryAddress,
+            $isPreorder);
 
         if (!$resultOrder['success']) {
             $result['success'] = false;
@@ -853,15 +1015,235 @@ class PublyPaymentService extends BaseApiService
         // 정상적으로 주문 되었음.
 
         // payment
-        $resultPayment = $this->pay2(
-                                $changerId,
-                                $userId,
-                                $order['id'],
-                                static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
-                                'credit_card_id',
-                                $creditCardId,
-                                true,
-                                '');
+        $resultPayment = $this->pay3(
+            $changerId,
+            $userId,
+            $order['id'],
+            static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+            'credit_card_id',
+            $creditCardId,
+            true,
+            $installmentMonth,
+            '');
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $payment = $resultPayment['item'];
+
+        $orderResult = $this->get("order/".$order['id'], []);
+        $order = $orderResult['success']['data'];
+
+        $result['success'] = true;
+        $result['order'] = $order;
+        $result['payment'] = $payment;
+        return $result;
+    }
+
+    public function orderAndPaySkillup(
+        $changerId,
+        $userId,
+        $creditCardId,
+        $contentId,
+        $rewardId,
+        $price,
+        $installmentMonth,
+        $userName,
+        $userEmail,
+        $userPhone,
+        $deliveryName = null,
+        $deliveryPhone = null,
+        $deliveryZipcode = null,
+        $deliveryAddress = null,
+        $isPreorder = null)
+    {
+        $result = [ 'success' => false ];
+
+        // order
+        $resultOrder = $this->order2(
+            $changerId,
+            $userId,
+            $contentId,
+            $rewardId,
+            $price,
+            $userName,
+            $userEmail,
+            $userPhone,
+            $deliveryName,
+            $deliveryPhone,
+            $deliveryZipcode,
+            $deliveryAddress,
+            $isPreorder);
+
+        if (!$resultOrder['success']) {
+            $result['success'] = false;
+            $result['from'] = 'order';
+            $result['error_code'] = $resultOrder['error_code'];
+            $result['message'] = $resultOrder['message'];
+            return $result;
+        }
+
+        $order = $resultOrder['item'];
+        // 정상적으로 주문 되었음.
+
+        // payment
+        $resultPayment = $this->paySkillup(
+            $changerId,
+            $userId,
+            $order['id'],
+            static::PAYMENT_TYPE_SKILLUP_NICEPAY_CREDIT_CARD,
+            'credit_card_id',
+            $creditCardId,
+            true,
+            $installmentMonth,
+            '');
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $payment = $resultPayment['item'];
+
+        $orderResult = $this->get("order/".$order['id'], []);
+        $order = $orderResult['success']['data'];
+
+        $result['success'] = true;
+        $result['order'] = $order;
+        $result['payment'] = $payment;
+        return $result;
+    }
+
+    public function orderAndPayByNaverpay(
+        $changerId,
+        $userId,
+        $naverpayOnetimeId,
+        $projectId,
+        $rewardId,
+        $price,
+        $userName,
+        $userEmail,
+        $userPhone,
+        $isPreorder
+    ) {
+        $result = [ 'success' => false ];
+
+        // order
+        $resultOrder = $this->order2(
+            $changerId,
+            $userId,
+            $projectId,
+            $rewardId,
+            $price,
+            $userName,
+            $userEmail,
+            $userPhone,
+            null,
+            null,
+            null,
+            null,
+            $isPreorder
+        );
+
+        if (!$resultOrder['success']) {
+            $result['success'] = false;
+            $result['from'] = 'order';
+            $result['error_code'] = $resultOrder['error_code'];
+            $result['message'] = $resultOrder['message'];
+            return $result;
+        }
+
+        $order = $resultOrder['item'];
+        // 정상적으로 주문 되었음.
+
+        // payment
+        $resultPayment = $this->payByNaverpaySimple(
+            $changerId,
+            $userId,
+            $order['id'],
+            $naverpayOnetimeId,
+            true,
+            ''
+        );
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $payment = $resultPayment['item'];
+
+        $orderResult = $this->get("order/".$order['id'], []);
+        $order = $orderResult['success']['data'];
+
+        $result['success'] = true;
+        $result['order'] = $order;
+        $result['payment'] = $payment;
+        return $result;
+    }
+
+    public function orderAndPayBySkillupNaverpay(
+        $changerId,
+        $userId,
+        $naverpayOnetimeId,
+        $projectId,
+        $rewardId,
+        $price,
+        $userName,
+        $userEmail,
+        $userPhone,
+        $isPreorder
+    ) {
+        $result = [ 'success' => false ];
+
+        // order
+        $resultOrder = $this->order2(
+            $changerId,
+            $userId,
+            $projectId,
+            $rewardId,
+            $price,
+            $userName,
+            $userEmail,
+            $userPhone,
+            null,
+            null,
+            null,
+            null,
+            $isPreorder
+        );
+
+        if (!$resultOrder['success']) {
+            $result['success'] = false;
+            $result['from'] = 'order';
+            $result['error_code'] = $resultOrder['error_code'];
+            $result['message'] = $resultOrder['message'];
+            return $result;
+        }
+
+        $order = $resultOrder['item'];
+        // 정상적으로 주문 되었음.
+
+        // payment
+        $resultPayment = $this->payBySkillupNaverpay(
+            $changerId,
+            $userId,
+            $order['id'],
+            $naverpayOnetimeId,
+            true,
+            ''
+        );
 
         if (!$resultPayment['success']) {
             $result['success'] = false;
@@ -883,36 +1265,37 @@ class PublyPaymentService extends BaseApiService
     }
 
     public function addCreditCardAndOrderAndPay(
-                        $changerId,
-                        $userId,
-                        $creditCardNumber,
-                        $expireYear,
-                        $expireMonth,
-                        $id,
-                        $password,
-                        $contentId,
-                        $rewardId,
-                        $price,
-                        $userName,
-                        $userEmail,
-                        $userPhone,
-                        $deliveryName = null,
-                        $deliveryPhone = null,
-                        $deliveryZipcode = null,
-                        $deliveryAddress = null,
-                        $isPreorder = null)
+        $changerId,
+        $userId,
+        $creditCardNumber,
+        $expireYear,
+        $expireMonth,
+        $id,
+        $password,
+        $contentId,
+        $rewardId,
+        $price,
+        $installmentMonth,
+        $userName,
+        $userEmail,
+        $userPhone,
+        $deliveryName = null,
+        $deliveryPhone = null,
+        $deliveryZipcode = null,
+        $deliveryAddress = null,
+        $isPreorder = null)
     {
         $result = [ 'success' => false ];
 
         // add credit card
         $resultCreditCard = $this->addCreditCard2(
-                                    $changerId,
-                                    $userId,
-                                    $creditCardNumber,
-                                    $expireYear,
-                                    $expireMonth,
-                                    $id,
-                                    $password);
+            $changerId,
+            $userId,
+            $creditCardNumber,
+            $expireYear,
+            $expireMonth,
+            $id,
+            $password);
 
         if (!$resultCreditCard['success']) {
             $result['success'] = false;
@@ -923,23 +1306,23 @@ class PublyPaymentService extends BaseApiService
         }
 
         $creditCard = $resultCreditCard['item'];
-        // 정상적으로 카드 등록 되었음. 
+        // 정상적으로 카드 등록 되었음.
 
         // order
         $resultOrder = $this->order2(
-                                $changerId,
-                                $userId,
-                                $contentId,
-                                $rewardId,
-                                $price,
-                                $userName,
-                                $userEmail,
-                                $userPhone,
-                                $deliveryName,
-                                $deliveryPhone,
-                                $deliveryZipcode,
-                                $deliveryAddress,
-                                $isPreorder);
+            $changerId,
+            $userId,
+            $contentId,
+            $rewardId,
+            $price,
+            $userName,
+            $userEmail,
+            $userPhone,
+            $deliveryName,
+            $deliveryPhone,
+            $deliveryZipcode,
+            $deliveryAddress,
+            $isPreorder);
 
         if (!$resultOrder['success']) {
             $result['success'] = false;
@@ -950,18 +1333,19 @@ class PublyPaymentService extends BaseApiService
         }
 
         $order = $resultOrder['item'];
-        // 정상적으로 주문 되었음. 
+        // 정상적으로 주문 되었음.
 
         // reserve payment
-        $resultPayment = $this->pay2(
-                                $changerId,
-                                $userId,
-                                $order['id'],
-                                static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
-                                'credit_card_id',
-                                $creditCard['id'],
-                                true,
-                                '');
+        $resultPayment = $this->pay3(
+            $changerId,
+            $userId,
+            $order['id'],
+            static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+            'credit_card_id',
+            $creditCard['id'],
+            true,
+            $installmentMonth,
+            '');
 
         if (!$resultPayment['success']) {
             $result['success'] = false;
@@ -972,7 +1356,110 @@ class PublyPaymentService extends BaseApiService
         }
 
         $payment = $resultPayment['item'];
-        
+
+        $orderResult = $this->get("order/".$order['id'], []);
+        $order = $orderResult['success']['data'];
+
+        $result['success'] = true;
+        $result['order'] = $order;
+        $result['payment'] = $payment;
+        $result['creditCard'] = $creditCard;
+        return $result;
+    }
+
+    public function addCreditCardAndOrderAndPaySkillup(
+        $changerId,
+        $userId,
+        $creditCardNumber,
+        $expireYear,
+        $expireMonth,
+        $id,
+        $password,
+        $contentId,
+        $rewardId,
+        $price,
+        $installmentMonth,
+        $userName,
+        $userEmail,
+        $userPhone,
+        $deliveryName = null,
+        $deliveryPhone = null,
+        $deliveryZipcode = null,
+        $deliveryAddress = null,
+        $isPreorder = null)
+    {
+        $result = [ 'success' => false ];
+
+        // add credit card
+        $resultCreditCard = $this->addCreditCard2(
+            $changerId,
+            $userId,
+            $creditCardNumber,
+            $expireYear,
+            $expireMonth,
+            $id,
+            $password);
+
+        if (!$resultCreditCard['success']) {
+            $result['success'] = false;
+            $result['from'] = 'credit_card';
+            $result['error_code'] = $resultCreditCard['error_code'];
+            $result['message'] = $resultCreditCard['message'];
+            return $result;
+        }
+
+        $creditCard = $resultCreditCard['item'];
+        // 정상적으로 카드 등록 되었음.
+
+        // order
+        $resultOrder = $this->order2(
+            $changerId,
+            $userId,
+            $contentId,
+            $rewardId,
+            $price,
+            $userName,
+            $userEmail,
+            $userPhone,
+            $deliveryName,
+            $deliveryPhone,
+            $deliveryZipcode,
+            $deliveryAddress,
+            $isPreorder);
+
+        if (!$resultOrder['success']) {
+            $result['success'] = false;
+            $result['from'] = 'order';
+            $result['error_code'] = $resultOrder['error_code'];
+            $result['message'] = $resultOrder['message'];
+            return $result;
+        }
+
+        $order = $resultOrder['item'];
+        // 정상적으로 주문 되었음.
+
+        // reserve payment
+        $resultPayment = $this->paySkillup(
+            $changerId,
+            $userId,
+            $order['id'],
+            static::PAYMENT_TYPE_SKILLUP_NICEPAY_CREDIT_CARD,
+            'credit_card_id',
+            $creditCard['id'],
+            true,
+            $installmentMonth,
+            '');
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $payment = $resultPayment['item'];
+
         $orderResult = $this->get("order/".$order['id'], []);
         $order = $orderResult['success']['data'];
 
@@ -984,36 +1471,36 @@ class PublyPaymentService extends BaseApiService
     }
 
     public function addCreditCardAndOrderAndReservePayment2(
-                        $changerId,
-                        $userId,
-                        $creditCardNumber,
-                        $expireYear,
-                        $expireMonth,
-                        $id,
-                        $password,
-                        $contentId,
-                        $rewardId,
-                        $price,
-                        $userName,
-                        $userEmail,
-                        $userPhone,
-                        $deliveryName = null,
-                        $deliveryPhone = null,
-                        $deliveryZipcode = null,
-                        $deliveryAddress = null,
-                        $isPreorder = null)
+        $changerId,
+        $userId,
+        $creditCardNumber,
+        $expireYear,
+        $expireMonth,
+        $id,
+        $password,
+        $contentId,
+        $rewardId,
+        $price,
+        $userName,
+        $userEmail,
+        $userPhone,
+        $deliveryName = null,
+        $deliveryPhone = null,
+        $deliveryZipcode = null,
+        $deliveryAddress = null,
+        $isPreorder = null)
     {
         $result = [ 'success' => false ];
 
         // add credit card
         $resultCreditCard = $this->addCreditCard2(
-                                    $changerId,
-                                    $userId,
-                                    $creditCardNumber,
-                                    $expireYear,
-                                    $expireMonth,
-                                    $id,
-                                    $password);
+            $changerId,
+            $userId,
+            $creditCardNumber,
+            $expireYear,
+            $expireMonth,
+            $id,
+            $password);
 
         if (!$resultCreditCard['success']) {
             $result['success'] = false;
@@ -1024,23 +1511,23 @@ class PublyPaymentService extends BaseApiService
         }
 
         $creditCard = $resultCreditCard['item'];
-        // 정상적으로 카드 등록 되었음. 
+        // 정상적으로 카드 등록 되었음.
 
         // order
         $resultOrder = $this->order2(
-                                $changerId,
-                                $userId,
-                                $contentId,
-                                $rewardId,
-                                $price,
-                                $userName,
-                                $userEmail,
-                                $userPhone,
-                                $deliveryName,
-                                $deliveryPhone,
-                                $deliveryZipcode,
-                                $deliveryAddress,
-                                $isPreorder);
+            $changerId,
+            $userId,
+            $contentId,
+            $rewardId,
+            $price,
+            $userName,
+            $userEmail,
+            $userPhone,
+            $deliveryName,
+            $deliveryPhone,
+            $deliveryZipcode,
+            $deliveryAddress,
+            $isPreorder);
 
         if (!$resultOrder['success']) {
             $result['success'] = false;
@@ -1051,15 +1538,15 @@ class PublyPaymentService extends BaseApiService
         }
 
         $order = $resultOrder['item'];
-        // 정상적으로 주문 되었음. 
+        // 정상적으로 주문 되었음.
 
         // reserve payment
         $resultPayment = $this->reservePayment2(
-                                $changerId,
-                                $userId,
-                                $order['id'],
-                                static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
-                                $creditCard['id']);
+            $changerId,
+            $userId,
+            $order['id'],
+            static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+            $creditCard['id']);
 
         if (!$resultPayment['success']) {
             $result['success'] = false;
@@ -1179,10 +1666,10 @@ class PublyPaymentService extends BaseApiService
      * Payment related functions
      */
     public function reservePayment(
-                        $userId,
-                        $orderId,
-                        $pgType,
-                        $creditCardId)
+        $userId,
+        $orderId,
+        $pgType,
+        $creditCardId)
     {
         $result = [ 'success' => false ];
         try {
@@ -1193,7 +1680,8 @@ class PublyPaymentService extends BaseApiService
                     'order_id' => $orderId,
                     'pg_type' => $pgType,
                     'credit_card_id' => $creditCardId,
-                    'immediate' => false
+                    'immediate' => false,
+                    'use_point' => static::USE_POINT_ON_RESERVE
                 ]);
         } catch (ResponseException $e) {
             $result['success'] = false;
@@ -1211,11 +1699,11 @@ class PublyPaymentService extends BaseApiService
     }
 
     public function reservePayment2(
-                        $changerId,
-                        $userId,
-                        $orderId,
-                        $pgType,
-                        $creditCardId)
+        $changerId,
+        $userId,
+        $orderId,
+        $pgType,
+        $creditCardId)
     {
         $result = [ 'success' => false ];
         try {
@@ -1226,7 +1714,8 @@ class PublyPaymentService extends BaseApiService
                     'order_id' => $orderId,
                     'pg_type' => $pgType,
                     'credit_card_id' => $creditCardId,
-                    'immediate' => false
+                    'immediate' => false,
+                    'use_point' => static::USE_POINT_ON_RESERVE
                 ]);
         } catch (ResponseException $e) {
             $result['success'] = false;
@@ -1247,15 +1736,15 @@ class PublyPaymentService extends BaseApiService
      * Payment related functions
      */
     public function pay2(
-                        $changerId,
-                        $userId,
-                        $orderId,
-                        $pgType,
-                        $paymentMethodIdName,
-                        $paymentMethodId,
-                        $immediate,
-                        $note
-                        ) {
+        $changerId,
+        $userId,
+        $orderId,
+        $pgType,
+        $paymentMethodIdName,
+        $paymentMethodId,
+        $immediate,
+        $note
+    ) {
         $result = [ 'success' => false ];
         try {
             $resultPayment =
@@ -1266,7 +1755,8 @@ class PublyPaymentService extends BaseApiService
                     'pg_type' => $pgType,
                     $paymentMethodIdName => $paymentMethodId,
                     'immediate' => $immediate,
-                    'note' => $note
+                    'note' => $note,
+                    'use_point' => static::USE_POINT_ON_ORDER
                 ]);
         } catch (ResponseException $e) {
             $result['success'] = false;
@@ -1283,7 +1773,161 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
-    /* 
+    public function pay3(
+        $changerId,
+        $userId,
+        $orderId,
+        $pgType,
+        $paymentMethodIdName,
+        $paymentMethodId,
+        $immediate,
+        $installmentMonth,
+        $note
+    ) {
+        $result = [ 'success' => false ];
+        try {
+            $resultPayment =
+                $this->post('payment', [
+                    'changer_id' => $changerId,
+                    'user_id' => $userId,
+                    'order_id' => $orderId,
+                    'pg_type' => $pgType,
+                    $paymentMethodIdName => $paymentMethodId,
+                    'immediate' => $immediate,
+                    'note' => $note,
+                    'use_point' => static::USE_POINT_ON_ORDER,
+                    'installment_month' => $installmentMonth
+                ]);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $result['success'] = true;
+        $result['item'] = $resultPayment['success']['data'];
+
+        return $result;
+    }
+
+    public function paySkillup(
+        $changerId,
+        $userId,
+        $orderId,
+        $pgType,
+        $paymentMethodIdName,
+        $paymentMethodId,
+        $immediate,
+        $installmentMonth,
+        $note
+    ) {
+        $result = [ 'success' => false ];
+        try {
+            $resultPayment =
+                $this->post('payment', [
+                    'changer_id' => $changerId,
+                    'user_id' => $userId,
+                    'order_id' => $orderId,
+                    'pg_type' => $pgType,
+                    $paymentMethodIdName => $paymentMethodId,
+                    'immediate' => $immediate,
+                    'note' => $note,
+                    'use_point' => static::USE_POINT_ON_SKILLUP_ORDER,
+                    'installment_month' => $installmentMonth
+                ]);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $result['success'] = true;
+        $result['item'] = $resultPayment['success']['data'];
+
+        return $result;
+    }
+
+
+    public function payByNaverpaySimple(
+        $changerId,
+        $userId,
+        $orderId,
+        $naverpayOnetimeId,
+        $immediate,
+        $note = ''
+    ) {
+        $result = [ 'success' => false ];
+        try {
+            $resultPayment =
+                $this->post('payment', [
+                    'changer_id' => $changerId,
+                    'user_id' => $userId,
+                    'order_id' => $orderId,
+                    'naverpay_onetime_id' => $naverpayOnetimeId,
+                    'pg_type' => static::PAYMENT_TYPE_NAVERPAY_ONETIME,
+                    'immediate' => $immediate,
+                    'note' => $note,
+                    'use_point' => static::USE_POINT_ON_ORDER
+                ]);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $result['success'] = true;
+        $result['item'] = $resultPayment['success']['data'];
+
+        return $result;
+    }
+
+
+    public function payBySkillupNaverpay(
+        $changerId,
+        $userId,
+        $orderId,
+        $naverpayOnetimeId,
+        $immediate,
+        $note = ''
+    ) {
+        $result = [ 'success' => false ];
+        try {
+            $resultPayment =
+                $this->post('payment', [
+                    'changer_id' => $changerId,
+                    'user_id' => $userId,
+                    'order_id' => $orderId,
+                    'naverpay_onetime_id' => $naverpayOnetimeId,
+                    'pg_type' => static::PAYMENT_TYPE_SKILLUP_NAVERPAY,
+                    'immediate' => $immediate,
+                    'note' => $note,
+                    'use_point' => static::USE_POINT_ON_SKILLUP_ORDER
+                ]);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $result['success'] = true;
+        $result['item'] = $resultPayment['success']['data'];
+
+        return $result;
+    }
+
+    /*
      * Payment Methods related functions
      */
 
@@ -1297,13 +1941,28 @@ class PublyPaymentService extends BaseApiService
         return $this->get("credit_card/user/{$userId}");
     }
 
+    public function getBankTransfer($bankTransferId)
+    {
+        return $this->get("bank_transfer/{$bankTransferId}");
+    }
+
+    public function getBankTransferByUser($userId, $filterArray = [])
+    {
+        return $this->get("bank_transfer/user/{$userId}", $filterArray);
+    }
+
+    public function getNaverpaysByUser($userId)
+    {
+        return $this->get("naverpay/user/{$userId}");
+    }
+
     public function addCreditCard(
-                        $userId,
-                        $creditCardNumber,
-                        $expireYear,
-                        $expireMonth,
-                        $id,
-                        $password)
+        $userId,
+        $creditCardNumber,
+        $expireYear,
+        $expireMonth,
+        $id,
+        $password)
     {
         $result = [ 'success' => false ];
         try {
@@ -1333,13 +1992,13 @@ class PublyPaymentService extends BaseApiService
     }
 
     public function addCreditCard2(
-                        $changerId,
-                        $userId,
-                        $creditCardNumber,
-                        $expireYear,
-                        $expireMonth,
-                        $id,
-                        $password)
+        $changerId,
+        $userId,
+        $creditCardNumber,
+        $expireYear,
+        $expireMonth,
+        $id,
+        $password)
     {
         $result = [ 'success' => false ];
         try {
@@ -1369,8 +2028,8 @@ class PublyPaymentService extends BaseApiService
     }
 
     public function deleteCreditCard(
-                        $userId,
-                        $creditCardId)
+        $userId,
+        $creditCardId)
     {
         $result = [ 'success' => false ];
         try {
@@ -1392,7 +2051,81 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
-    /* 
+    public function deleteNaverpay(
+        $userId,
+        $naverpayId
+    ) {
+        $result = [ 'success' => false ];
+        try {
+            $resultNaverpay =
+                $this->post("naverpay/{$naverpayId}/delete", [
+                    'changer_id' => $userId,
+                    'user_id' => $userId
+                ]);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['from'] = 'naverpay';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $result['success'] = true;
+        return $result;
+    }
+
+    public function deleteNaverpayByAdmin(
+        $changerId,
+        $userId,
+        $naverpayId
+    ) {
+        $result = [ 'success' => false ];
+        try {
+            $resultNaverpay =
+                $this->post("naverpay/{$naverpayId}/delete", [
+                    'changer_id' => $changerId,
+                    'user_id' => $userId,
+                    'force' => true
+                ]);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['from'] = 'naverpay';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $result['success'] = true;
+        return $result;
+    }
+
+    public function addBankTransfer($changerId, $userId, $name)
+    {
+        $result['success'] = false;
+        try {
+            $inputs = [
+                'changer_id' => $changerId,
+                'user_id' => $userId,
+                'name' => $name
+            ];
+            $bankTransferResult = $this->post("bank_transfer", $inputs);
+        } catch (\Exception $e) {
+            $result['success'] = false;
+            $result['from'] = 'bank_transfer';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $result['item'] = $bankTransferResult['success']['data'];
+        $result['success'] = true;
+        return $result;
+    }
+
+    /*
      * Main Payment Method related functions
      */
     public function getMainPaymentMethod($userId)
@@ -1415,7 +2148,34 @@ class PublyPaymentService extends BaseApiService
         try {
             $resultMainPaymentMethod =
                 $this->put("user_main_payment_method/user/{$userId}/pg_type/{$pgType}",
-                           [ 'credit_card_id' => $creditCardId ]);
+                    [ 'credit_card_id' => $creditCardId ]);
+            $result['success'] = true;
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+        }
+
+        return $result;
+    }
+
+    public function setMainPaymentMethod2($userId, $methodId, $methodIdName)
+    {
+        $result = [ 'success' => false ];
+        $pgType = null;
+
+        if ($methodIdName == 'credit_card_id') {
+            $pgType = static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD;
+        } else if ($methodIdName == 'naverpay_id') {
+            $pgType = static::PAYMENT_TYPE_NAVERPAY;
+        }
+
+        try {
+            $this->put(
+                "user_main_payment_method/user/{$userId}/pg_type/{$pgType}",
+                [ $methodIdName => $methodId ]
+            );
             $result['success'] = true;
         } catch (ResponseException $e) {
             $result['success'] = false;
@@ -1432,18 +2192,17 @@ class PublyPaymentService extends BaseApiService
         $inputs = [];
         $inputs['changer_id'] = $changerId;
         $inputs['action'] = 'pay';
-        
+
         return $this->put("/payment/{$paymentId}", $inputs);
     }
 
     public function updatePayment($changerId, $paymentId, $inputs)
     {
         $inputs['changer_id'] = $changerId;
-        
+
         $result = [ 'success' => false ];
         try {
-            $resultApi =
-                $this->put("/payment/{$paymentId}", $inputs);
+            $resultApi = $this->put("/payment/{$paymentId}", $inputs);
             $result['success'] = true;
         } catch (ResponseException $e) {
             $result['success'] = false;
@@ -1451,12 +2210,14 @@ class PublyPaymentService extends BaseApiService
             $result['error_code'] = $e->getCode();
             $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
         }
-        
+
         return $result;
     }
 
     public function updateOrder($changerId,
                                 $orderId,
+                                $userCompany,
+                                $userTeam,
                                 $userName,
                                 $userEmail,
                                 $userPhone,
@@ -1464,24 +2225,28 @@ class PublyPaymentService extends BaseApiService
                                 $deliveryPhone = null,
                                 $deliveryZipcode = null,
                                 $deliveryAddress = null,
+                                $marketingAgree,
                                 $note,
                                 $force = false)
     {
         $result = [ 'success' => false ];
         try {
             $inputs = [ 'changer_id' => $changerId,
-                        'force' => $force ? 1 : 0,
-                        'action' => 'modify',
-                        'user_name' => $userName,
-                        'user_email' => $userEmail,
-                        'user_phone' => $userPhone,
-                        'note' => $note ];
+                'force' => $force ? 1 : 0,
+                'action' => 'modify',
+                'user_company' => $userCompany,
+                'user_team' => $userTeam,
+                'user_name' => $userName,
+                'user_email' => $userEmail,
+                'user_phone' => $userPhone,
+                'marketing_agree' => $marketingAgree,
+                'note' => $note ];
             if ($deliveryName || $deliveryPhone || $deliveryZipcode || $deliveryAddress) {
                 $inputs = array_merge($inputs, [ 'delivery_name' => $deliveryName,
-                                                 'delivery_phone' => $deliveryPhone,
-                                                 'delivery_zipcode' => $deliveryZipcode,
-                                                 'delivery_address' => $deliveryAddress,
-                                               ]);
+                    'delivery_phone' => $deliveryPhone,
+                    'delivery_zipcode' => $deliveryZipcode,
+                    'delivery_address' => $deliveryAddress,
+                ]);
             }
 
             $resultApi = $this->put("/order/{$orderId}", $inputs);
@@ -1492,7 +2257,7 @@ class PublyPaymentService extends BaseApiService
             $result['error_code'] = $e->getCode();
             $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
         }
-        
+
         return $result;
     }
 
@@ -1502,9 +2267,9 @@ class PublyPaymentService extends BaseApiService
         try {
             $resultApi =
                 $this->put("/order/{$orderId}",
-                           [ 'changer_id' => $changerId,
-                             'action' => 'cancel',
-                             'force' => $force ? 1 : 0 ]);
+                    [ 'changer_id' => $changerId,
+                        'action' => 'cancel',
+                        'force' => $force ? 1 : 0 ]);
             $result['success'] = true;
         } catch (ResponseException $e) {
             $result['success'] = false;
@@ -1512,32 +2277,49 @@ class PublyPaymentService extends BaseApiService
             $result['error_code'] = $e->getCode();
             $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
         }
-        
+
         return $result;
     }
 
     public function cancelOrder2($changerId, $orderId, $force = false)
     {
         return $this->put("/order/{$orderId}",
-                          [ 'changer_id' => $changerId,
-                            'action' => 'cancel',
-                            'force' => $force ? 1 : 0 ]);      
+            [ 'changer_id' => $changerId,
+                'action' => 'cancel',
+                'force' => $force ? 1 : 0 ]);
     }
 
     public function requestRefundOrder($changerId, $orderId, $force = false)
     {
         return $this->put("/order/{$orderId}",
-                          [ 'changer_id' => $changerId,
-                            'action' => 'request-refund',
-                            'force' => $force ? 1 : 0 ]);
+            [ 'changer_id' => $changerId,
+                'action' => 'request-refund',
+                'force' => $force ? 1 : 0 ]);
     }
 
     public function completeRefundOrder($changerId, $orderId, $force = false)
     {// only for admin. do not use this interface on www.
         return $this->put("/order/{$orderId}",
-                          [ 'changer_id' => $changerId,
-                            'action' => 'complete-refund',
-                            'force' => $force ? 1 : 0 ]);
+            [ 'changer_id' => $changerId,
+                'action' => 'complete-refund',
+                'force' => $force ? 1 : 0 ]);
+    }
+
+    public function returnContent($changerId, $orderId, $force = false)
+    {
+        return $this->put("/order/{$orderId}",
+            [ 'changer_id' => $changerId,
+                'action' => 'return-content',
+                'force' => $force ? 1 : 0 ]);
+    }
+
+    public function returnContents($changerId, $orderIds)
+    {
+        $inputs = [];
+        $inputs['order_ids'] = implode(',', $orderIds);
+        $inputs['changer_id'] = $changerId;
+
+        return $this->post("/order/contents_return", $inputs);
     }
 
     public function refreshSetReaderByProject($projectId)
@@ -1555,20 +2337,21 @@ class PublyPaymentService extends BaseApiService
     public function addOrderComment($changerId, $orderId, $comment)
     {
         return $this->post("/order_comment/", [ 'changer_id' => $changerId,
-                                                'order_id' => $orderId, 
-                                                'comment' => $comment ]);
+            'order_id' => $orderId,
+            'comment' => $comment ]);
     }
 
-    public function subscriptionAndPay($changerId, $userId, $creditCardId, $planId, $price)
+    public function subscriptionAndPay3($changerId, $userId, $paymentMethodId, $paymentMethodIdName, $pgType, $planId, $price, $installmentMonth, $useReferralPlanIfPossible)
     {
         $result = [ 'success' => false ];
 
         // subscription
-        $resultSubscription= $this->subscription(
+        $resultSubscription = $this->subscription2(
             $changerId,
             $userId,
             $planId,
-            $price
+            $price,
+            $useReferralPlanIfPossible
         );
 
         if (!$resultSubscription['success']) {
@@ -1587,11 +2370,13 @@ class PublyPaymentService extends BaseApiService
             $changerId,
             $userId,
             $subscription['id'],
-            static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
-            'credit_card_id',
-            $creditCardId,
+            $pgType,
+            $paymentMethodIdName,
+            $paymentMethodId,
             //            true,
-            '');
+            '',
+            $installmentMonth
+        );
 
         if (!$resultPayment['success']) {
             $result['success'] = false;
@@ -1604,25 +2389,143 @@ class PublyPaymentService extends BaseApiService
 
         $payment = $resultPayment['item'];
 
-        $subscriptionResult = $this->get("subscription/{$subscription['id']}", []);
+        $subscriptionResult = $this->get("subscription/{$subscription['id']}");
         $subscription = $subscriptionResult['success']['data'];
 
         $result['success'] = true;
         $result['subscription'] = $subscription;
         $result['payment'] = $payment;
+
         return $result;
     }
 
-    public function addCreditCardAndSubscriptionAndPay($changerId,
-                                                       $userId,
-                                                       $creditCardNumber,
-                                                       $expireYear,
-                                                       $expireMonth,
-                                                       $id,
-                                                       $password,
-                                                       $planId,
-                                                       $price)
-    {
+    public function addNaverpay(
+        $userId,
+        $reserveId,
+        $tempReceiptId,
+        $totalPayAmount
+    ) {
+        $result = [ 'success' => false ];
+        try {
+            $resultNaverpay =
+                $this->post('naverpay', [
+                    'changer_id' => $userId,
+                    'user_id' => $userId,
+                    'reserve_id' => $reserveId,
+                    'temp_receipt_id' => $tempReceiptId,
+                    'total_pay_amount' => $totalPayAmount
+                ]);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['from'] = 'naverpay';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $result['success'] = true;
+        $result['item'] = $resultNaverpay['success']['data'];
+
+        return $result;
+    }
+
+    public function addNaverpayAndSubscriptionAndPay(
+        $changerId,
+        $userId,
+        $reserveId,
+        $tempReceiptId,
+        $planId,
+        $price,
+        $useReferralPlanIfPossible
+    ) {
+        $result = [ 'success' => false ];
+
+        // add naverpay
+        $resultNaverpay = $this->addNaverpay(
+            $userId,
+            $reserveId,
+            $tempReceiptId,
+            $price
+        );
+
+        if (!$resultNaverpay['success']) {
+            $result['success'] = false;
+            $result['from'] = 'naverpay';
+            $result['error_code'] = $resultNaverpay['error_code'];
+            $result['message'] = $resultNaverpay['message'];
+            return $result;
+        }
+
+        $naverpay = $resultNaverpay['item'];
+        $naverpayId = $naverpay['id'];
+        $result['naverpay'] = $naverpay;
+
+        // subscription
+        $resultSubscription = $this->subscription2(
+            $changerId,
+            $userId,
+            $planId,
+            $price,
+            $useReferralPlanIfPossible
+        );
+
+        if (!$resultSubscription['success']) {
+            $result['success'] = false;
+            $result['from'] = 'subscription';
+            $result['error_code'] = $resultSubscription['error_code'];
+            $result['message'] = $resultSubscription['message'];
+            return $result;
+        }
+
+        $subscription = $resultSubscription['item'];
+        $result['subscription'] = $subscription;
+
+        // payment
+        $resultPayment = $this->paySubscription(
+            $changerId,
+            $userId,
+            $subscription['id'],
+            static::PAYMENT_TYPE_NAVERPAY,
+            'naverpay_id',
+            $naverpayId,
+            //            true,
+            ''
+        );
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+
+            return $result;
+        }
+        $payment = $resultPayment['item'];
+        $result['payment'] = $payment;
+
+        $subscriptionResult = $this->get("subscription/{$subscription['id']}", []);
+        $subscription = $subscriptionResult['success']['data'];
+        $result['subscription'] = $subscription; // refresh subscription after payment
+
+        $result['success'] = true;
+
+        return $result;
+    }
+
+    public function addCreditCardAndSubscriptionAndPay2(
+        $changerId,
+        $userId,
+        $creditCardNumber,
+        $expireYear,
+        $expireMonth,
+        $id,
+        $password,
+        $planId,
+        $price,
+        $installmentMonth,
+        $useReferralPlanIfPossible
+    ) {
         $result = [ 'success' => false ];
 
         // add credit card
@@ -1647,11 +2550,12 @@ class PublyPaymentService extends BaseApiService
         $result['creditCard'] = $creditCard;
 
         // subscription
-        $resultSubscription= $this->subscription(
+        $resultSubscription= $this->subscription2(
             $changerId,
             $userId,
             $planId,
-            $price
+            $price,
+            $useReferralPlanIfPossible
         );
 
         if (!$resultSubscription['success']) {
@@ -1674,7 +2578,9 @@ class PublyPaymentService extends BaseApiService
             'credit_card_id',
             $creditCardId,
             //            true,
-            '');
+            '',
+            $installmentMonth
+        );
 
         if (!$resultPayment['success']) {
             $result['success'] = false;
@@ -1739,6 +2645,37 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
+    public function subscription2(
+        $changerId,
+        $userId,
+        $planId,
+        $price,
+        $useReferralPlanIfPossible)
+    {
+        $result = [ 'success' => false ];
+        try {
+            $inputs = [ 'changer_id' => $changerId,
+                'user_id' => $userId,
+                'plan_id' => $planId,
+                'price' => $price,
+                'use_referral_plan_if_possible'=> $useReferralPlanIfPossible
+            ];
+
+            $resultSubscription = $this->post('subscription', $inputs);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $result['success'] = true;
+        $result['item'] = $resultSubscription['success']['data'];
+
+        return $result;
+    }
+
     public function paySubscription(
         $changerId,
         $userId,
@@ -1746,7 +2683,8 @@ class PublyPaymentService extends BaseApiService
         $pgType,
         $paymentMethodIdName,
         $paymentMethodId,
-        $note
+        $note,
+        $installmentMonth = null
     ) {
         $result = [ 'success' => false ];
         try {
@@ -1758,7 +2696,9 @@ class PublyPaymentService extends BaseApiService
                     'pg_type' => $pgType,
                     $paymentMethodIdName => $paymentMethodId,
                     'immediate' => true,
-                    'note' => $note
+                    'note' => $note,
+                    'use_point' => static::USE_POINT_ON_SUBSCRIPTION,
+                    'installment_month' => $installmentMonth
                 ]);
         } catch (ResponseException $e) {
             $result['success'] = false;
@@ -1775,7 +2715,7 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
-    public function changeCardAndKeepSubscription(
+    public function changeCardAndResumeSubscription(
         $changerId,
         $paymentId,
         $subscriptionId,
@@ -1799,16 +2739,13 @@ class PublyPaymentService extends BaseApiService
             return $result;
         }
 
-        $resultPayment = $this->put("/subscription/{$subscriptionId}",
-            [ 'changer_id' => $changerId,
-                'action' => 'renewal',
-                'force' => $force ? 1 : 0 ]);
-
-        if (!$resultPayment['success']) {
+        try {
+            $resultSubscription = $this->resumeSubscription($changerId, $subscriptionId, $force);
+        } catch (ResponseException $e) {
             $result['success'] = false;
-            $result['from'] = 'payment';
-            $result['error_code'] = $resultPayment['error_code'];
-            $result['message'] = $resultPayment['message'];
+            $result['from'] = 'subscription';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
 
             return $result;
         }
@@ -1821,7 +2758,62 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
-    public function addCreditCardAndKeepSubscription(
+    public function changePaymentMethodAndResumeSubscription(
+        $changerId,
+        $paymentId,
+        $subscriptionId,
+        $paymentMethodId,
+        $paymentMethodIdName,
+        $installmentMonth,
+        $force = false
+    ) {
+
+        $pgType = null;
+        if ($paymentMethodIdName == 'credit_card_id') {
+            $pgType = PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD;
+        } else if ($paymentMethodIdName == 'naverpay_id') {
+            $pgType = PublyPaymentService::PAYMENT_TYPE_NAVERPAY;
+        }
+
+        $resultPayment = $this->updatePayment(
+            $changerId,
+            $paymentId,
+            [
+                'action' => 'change_payment_method',
+                'pg_type' => $pgType,
+                $paymentMethodIdName => $paymentMethodId,
+                'installment_month' => $installmentMonth
+            ]
+        );
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        try {
+            $resultSubscription = $this->resumeSubscription($changerId, $subscriptionId, $force);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['from'] = 'subscription';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+
+            return $result;
+        }
+
+        $subscriptionResult = $this->get("subscription/{$subscriptionId}", []);
+        $subscription = $subscriptionResult['success']['data'];
+        $result['subscription'] = $subscription; // refresh subscription after payment
+
+        $result['success'] = true;
+        return $result;
+    }
+
+    public function addCreditCardAndResumeSubscription(
         $changerId,
         $userId,
         $paymentId,
@@ -1869,16 +2861,13 @@ class PublyPaymentService extends BaseApiService
             return $result;
         }
 
-        $resultPayment = $this->put("/subscription/{$subscriptionId}",
-            [ 'changer_id' => $changerId,
-                'action' => 'renewal',
-                'force' => $force ? 1 : 0 ]);
-
-        if (!$resultPayment['success']) {
+        try {
+            $resultSubscription = $this->resumeSubscription($changerId, $subscriptionId, $force);
+        } catch (ResponseException $e) {
             $result['success'] = false;
-            $result['from'] = 'payment';
-            $result['error_code'] = $resultPayment['error_code'];
-            $result['message'] = $resultPayment['message'];
+            $result['from'] = 'subscription';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
 
             return $result;
         }
@@ -1891,19 +2880,21 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
-    public function keepSubscription($changerId, $subscriptionId, $force = false)
+    public function resumeSubscription($changerId, $subscriptionId, $force = false)
     {
-        return $this->put("/subscription/{$subscriptionId}",
+        return $this->put(
+            "/subscription/{$subscriptionId}",
             [ 'changer_id' => $changerId,
-                'action' => 'renewal',
-                'force' => $force ? 1 : 0 ]);
+                'action' => 'resume',
+                'force' => $force ? 1 : 0 ]
+        );
     }
 
     public function changeCardAndRecoverSubscription($changerId,
-                                                     $subscriptionId,
-                                                     $paymentId,
-                                                     $creditCardId,
-                                                     $force = false)
+        $subscriptionId,
+        $paymentId,
+        $creditCardId,
+        $force = false)
     {
         $resultPayment = $this->updatePayment($changerId,
             $paymentId,
@@ -1947,17 +2938,131 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
-    public function addCreditCardAndRecoverSubscription($changerId,
-                                                        $userId,
-                                                        $subscriptionId,
-                                                        $paymentId,
-                                                        $creditCardNumber,
-                                                        $expireYear,
-                                                        $expireMonth,
-                                                        $id,
-                                                        $password,
-                                                        $force = false)
-    {
+    public function changeCardAndRecoverSubscription2(
+        $changerId,
+        $subscriptionId,
+        $paymentId,
+        $paymentMethodId,
+        $paymentMethodIdName,
+        $installmentMonth,
+        $force = false
+    ) {
+        $pgType = null;
+        if ($paymentMethodIdName == 'credit_card_id') {
+            $pgType = PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD;
+        } else if ($paymentMethodIdName == 'naverpay_id') {
+            $pgType = PublyPaymentService::PAYMENT_TYPE_NAVERPAY;
+        }
+
+        $resultPayment = $this->updatePayment(
+            $changerId,
+            $paymentId,
+            [
+                'action' => 'change_payment_method',
+                'pg_type' => $pgType,
+                $paymentMethodIdName => $paymentMethodId,
+                'installment_month' => $installmentMonth
+            ]
+        );
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $inputs = [];
+        $inputs['changer_id'] = $changerId;
+        $inputs['action'] = 'pay';
+
+        $resultPayment = $this->put("/payment/{$paymentId}", $inputs);
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+
+            return $result;
+        }
+
+        $payment = $resultPayment['success']['data'];
+        $result['payment'] = $payment;
+
+        $subscriptionResult = $this->get("subscription/{$subscriptionId}", []);
+        $subscription = $subscriptionResult['success']['data'];
+        $result['subscription'] = $subscription; // refresh subscription after payment
+
+        $result['success'] = true;
+        return $result;
+    }
+
+    public function changeNaverpayAndRecoverSubscription(
+        $changerId,
+        $subscriptionId,
+        $paymentId,
+        $naverpayId,
+        $force = false
+    ) {
+        $resultPayment = $this->updatePayment(
+            $changerId,
+            $paymentId,
+            [
+                'action' => 'change_payment_method',
+                'pg_type' => PublyPaymentService::PAYMENT_TYPE_NAVERPAY,
+                'naverpay_id' => $naverpayId
+            ]
+        );
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $inputs = [];
+        $inputs['changer_id'] = $changerId;
+        $inputs['action'] = 'pay';
+
+        $resultPayment = $this->put("/payment/{$paymentId}", $inputs);
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+
+            return $result;
+        }
+
+        $payment = $resultPayment['success']['data'];
+        $result['payment'] = $payment;
+
+        $subscriptionResult = $this->get("subscription/{$subscriptionId}", []);
+        $subscription = $subscriptionResult['success']['data'];
+        $result['subscription'] = $subscription; // refresh subscription after payment
+
+        $result['success'] = true;
+        return $result;
+    }
+
+    public function addCreditCardAndRecoverSubscription(
+        $changerId,
+        $userId,
+        $subscriptionId,
+        $paymentId,
+        $creditCardNumber,
+        $expireYear,
+        $expireMonth,
+        $id,
+        $password,
+        $installmentMonth,
+        $force = false
+    ) {
         $resultCreditCard = $this->addCreditCard2(
             $changerId,
             $userId,
@@ -1984,7 +3089,8 @@ class PublyPaymentService extends BaseApiService
             [
                 'action' => 'change_payment_method',
                 'pg_type' => PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
-                'credit_card_id' => $creditCard['id']
+                'credit_card_id' => $creditCard['id'],
+                'installment_month' => $installmentMonth
             ]);
 
         if (!$resultPayment['success']) {
@@ -2034,7 +3140,7 @@ class PublyPaymentService extends BaseApiService
     {
         return $this->put("/subscription/{$subscriptionId}",
             [ 'changer_id' => $changerId,
-                'action' => 'expired',
+                'action' => 'expire',
                 'force' => $force ? 1 : 0 ]);
     }
 
@@ -2068,19 +3174,13 @@ class PublyPaymentService extends BaseApiService
                 'renew_day' => implode(',', $days)]);
     }
 
-    public function changeSubscriptionPlanId($changerId, $subscriptionId, $planId)
+    public function expireSubscriptions($changerId)
     {
-        return $this->put("/subscription/{$subscriptionId}",
-            [ 'changer_id' => $changerId,
-                'action' => 'change_plan',
-                'plan_id' => $planId ]);
-    }
-
-    public function expireSubscriptions($changerId, $days)
-    {
-        return $this->put("/subscription/expire_subscriptions",
-            ['changer_id' => $changerId,
-                'renew_day' => implode(',', $days)]);
+        return $this->put(
+            "/subscription/expire_subscriptions",
+            [
+                'changer_id' => $changerId
+            ]);
     }
 
     public function updateSubscription($changerId, $subscriptionId, $note, $force = false)
@@ -2089,7 +3189,27 @@ class PublyPaymentService extends BaseApiService
             [ 'changer_id' => $changerId,
                 'action' => 'update',
                 'note' => $note,
-                'force' => $force ? 1 : 0 ]);
+                'force' => $force ? 1 : 0
+            ]);
+    }
+
+    // deprecated: SubscriptionController@www-l5 is using this
+    public function changeSubscriptionPlanId($changerId, $subscriptionId, $planId)
+    {
+        return $this->put("/subscription/{$subscriptionId}",
+            [ 'changer_id' => $changerId,
+                'action' => 'change_plan',
+                'plan_id' => $planId ]);
+    }
+
+    public function changeSubscriptionNextPlan($changerId, $subscriptionId, $plan_id, $force = false)
+    {
+        return $this->put("/subscription/{$subscriptionId}",
+            [ 'changer_id' => $changerId,
+                'action' => 'change_plan',
+                'plan_id'=> $plan_id,
+                'force' => $force ? 1 : 0
+            ]);
     }
 
     public function getSubscriptions($page = 1, $limit = 10, $filterArray = [])
@@ -2131,11 +3251,21 @@ class PublyPaymentService extends BaseApiService
         return $this->get("subscription_renewal_history", $filterArray);
     }
 
+    public function getSubscriptionRenewalHistoriesBySubscription2($subscriptionId, $filterArray = [])
+    {
+        return $this->get("subscription_renewal_history/subscription/{$subscriptionId}", $filterArray);
+    }
+
     public function getSubscriptionRenewalHistoriesBySettlement($settlementYear, $settlementMonth, $filterArray = [])
     {
         return $this->get("subscription_renewal_history/settlement_year/{$settlementYear}/settlement_month/{$settlementMonth}", $filterArray);
     }
-    
+
+    public function getSubscriptionRenewalHistory($subscriptionRenewalHistoryId)
+    {
+        return $this->get("subscription_renewal_history/{$subscriptionRenewalHistoryId}");
+    }
+
     // deprecated
     public function getSubscriptionRenewalHistories($userId, $settlementYear, $settlementMonth, $filterArray = [])
     {
@@ -2152,9 +3282,9 @@ class PublyPaymentService extends BaseApiService
     {
         return $this->put("subscription_renewal_history/{$subscriptionRenewalHistoryId}",
             ['changer_id' => $changerId,
-             'subscription_id' => $subscriptionId,
-             'action' => 'request-refund',
-             'force' => $force ? 1 : 0]);
+                'subscription_id' => $subscriptionId,
+                'action' => 'request-refund',
+                'force' => $force ? 1 : 0]);
     }
 
     public function completeRefundSubscriptionRenewalHistory($changerId,
@@ -2169,9 +3299,20 @@ class PublyPaymentService extends BaseApiService
                 'force' => $force ? 1 : 0]);
     }
 
-    public function getPlans()
+    public function existsSubscriptionByUserId($userId)
     {
-        return $this->get("plan");
+        return $this->get("subscription/user/{$userId}/exists");
+    }
+
+    public function getPlans($filterArray = [])
+    {
+        return $this->get("plan", $filterArray);
+    }
+
+    public function getPlansByIds($planIds, $filterArray = [])
+    {
+        $filterArray['ids'] = implode(',', $planIds);
+        return $this->get("plan/plan_ids", $filterArray);
     }
 
     public function getDefaultPlan()
@@ -2182,6 +3323,11 @@ class PublyPaymentService extends BaseApiService
     public function getPlan($planId)
     {
         return $this->get("plan/{$planId}");
+    }
+
+    public function getPlansByNextPlanId($planId)
+    {
+        return $this->get("plan/next_plan/{$planId}");
     }
 
     public function changeSubscriptionCreditCard($changerId, $paymentId, $creditCardId)
@@ -2206,6 +3352,38 @@ class PublyPaymentService extends BaseApiService
         return $result;
     }
 
+    public function changeSubscriptionPaymentMethod($changerId, $paymentId, $paymentMethodId, $paymentMethodIdName, $installmentMonth)
+    {
+        $pgType = null;
+        if ($paymentMethodIdName == 'credit_card_id') {
+            $pgType = PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD;
+        } else if ($paymentMethodIdName == 'naverpay_id') {
+            $pgType = PublyPaymentService::PAYMENT_TYPE_NAVERPAY;
+        }
+
+        $resultPayment = $this->updatePayment(
+            $changerId,
+            $paymentId,
+            [
+                'action' => 'change_payment_method',
+                'pg_type' => $pgType,
+                $paymentMethodIdName => $paymentMethodId,
+                'installment_month' => $installmentMonth
+            ]
+        );
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $result['success'] = true;
+        return $result;
+    }
+
     public function addCreditCardAndChangeSubscriptionCreditCard(
         $changerId,
         $userId,
@@ -2214,8 +3392,9 @@ class PublyPaymentService extends BaseApiService
         $expireYear,
         $expireMonth,
         $id,
-        $password)
-    {
+        $password,
+        $installmentMonth
+    ) {
         $resultCreditCard = $this->addCreditCard2(
             $changerId,
             $userId,
@@ -2241,7 +3420,8 @@ class PublyPaymentService extends BaseApiService
             [
                 'action' => 'change_payment_method',
                 'pg_type' => PublyPaymentService::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
-                'credit_card_id' => $creditCard['id']
+                'credit_card_id' => $creditCard['id'],
+                'installment_month' => $installmentMonth
             ]);
 
         if (!$resultPayment['success']) {
@@ -2253,6 +3433,7 @@ class PublyPaymentService extends BaseApiService
         }
 
         $result['success'] = true;
+        $result['credit_card'] = $creditCard;
         return $result;
     }
 
@@ -2404,8 +3585,8 @@ class PublyPaymentService extends BaseApiService
     }
 
     public function getEvents($page = 1,
-                                    $limit = 10,
-                                    $filterArray = [])
+                              $limit = 10,
+                              $filterArray = [])
     {
         $filterArray['page'] = $page;
         $filterArray['limit'] = $limit;
@@ -2424,7 +3605,7 @@ class PublyPaymentService extends BaseApiService
         return $this->get("event/set/{$setId}", $filterArray);
     }
 
-    // deprecated 
+    // deprecated
     public function getEventsBySetIds($setIds, $filterArray = [])
     {
         $filterArray['ids'] = implode(',', $setIds);
@@ -2512,21 +3693,33 @@ class PublyPaymentService extends BaseApiService
         );
     }
 
-    public function addPlanToken($changerId, $userId, $planId, $expireDate)
+    public function createPlanToken($changerId, $planId, $expireDate, $isReuseable, $quantity)
     {
         $inputs = [
             'changer_id' => $changerId,
-            'user_id' => $userId,
             'plan_id' => $planId,
-            'expire_date' => $expireDate
+            'expire_date' => $expireDate,
+            'is_reuseable' => $isReuseable,
+            'quantity' => $quantity
         ];
 
-        return $this->put("plan_token", $inputs);
+        return $this->post("plan_token", $inputs);
     }
 
-    public function getPlanTokenByToken($token)
+    public function updatePlanToken($changerId, $planTokenId, $expireDate, $quantity)
     {
-        return $this->get("plan_token/token/{$token}");
+        $inputs = [
+            'changer_id' => $changerId,
+            'expire_date' => $expireDate,
+            'quantity' => $quantity
+        ];
+
+        return $this->put("plan_token/{$planTokenId}", $inputs);
+    }
+
+    public function getPlanTokenByToken($token, $filterArray)
+    {
+        return $this->get("plan_token/token/{$token}", $filterArray);
     }
 
     public function getPlanTokenByUser($userId)
@@ -2546,17 +3739,39 @@ class PublyPaymentService extends BaseApiService
         return $this->post("plan_token/token", $inputs);
     }
 
-    public function getPointHistoriesByUserId($userId, $page =1, $limit = 10, $filterArray)
+    public function getPlanTokens($page = 1, $limit = 10, $filterArray = [])
     {
         $filterArray['page'] = $page;
         $filterArray['limit'] = $limit;
-        $filterArray['user_id'] = $userId;
-        return $this->get("point_history/", $filterArray);
+        return $this->get("plan_token", $filterArray);
     }
 
-    public function getPointHistoriesSumByUserId($userId)
+    public function getPlanToken($planTokenId)
     {
-        return $this->get("point_history/{$userId}/sum");
+        return $this->get("plan_token/{$planTokenId}");
+    }
+
+    public function getPointHistories($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("point_history", $filterArray);
+    }
+
+    public function getPointHistoriesByUserId($userId, $page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("point_history/user/{$userId}", $filterArray);
+    }
+
+    public function getPointHistoriesSumByUserId($userId, $type)
+    {
+        return $this->get("point_history/user/{$userId}/sum", ['type' => $type]);
+    }
+
+    public function getPointHistoriesSumsByUserIds($userIds) {
+        return $this->get("point_history/by_user_ids/sums", ['user_ids' => implode(',', $userIds)]);
     }
 
     public function getPointHistory($pointHistoryId)
@@ -2568,31 +3783,34 @@ class PublyPaymentService extends BaseApiService
         $userId,
         $delta,
         $adminId,
-        $note
-    )
-    {
+        $note,
+        $productType,
+        $expirationDate = null
+    ) {
         $input = [
             'user_id' => $userId,
             'delta' => $delta,
-            'transaction_type' => static::TRANSACTION_TYPE_ADJUSTED_BY_ADMIN,
+            'transaction_type' => static::POINT_HISTORY_TRANSACTION_TYPE_ADJUSTED_BY_ADMIN,
             'admin_id' => $adminId,
-            'note' => $note
+            'note' => $note,
+            'product_type' => $productType,
+            'expiration_date' => $expirationDate,
         ];
 
         return $this->post("point_history", $input);
     }
 
     public function createPointHistoryByReferee(
-        $userId,
+        $refereeId,
+        $referrerId,
         $delta,
-        $note,
-        $refereeId
+        $note
     )
     {
         $input = [
-            'user_id' => $userId,
+            'user_id' => $referrerId,
             'delta' => $delta,
-            'transaction_type' => static::TRANSACTION_TYPE_REWORDED_BY_REFERER,
+            'transaction_type' => static::POINT_HISTORY_TRANSACTION_TYPE_REWORDED_BY_REFERER,
             'referee_id' => $refereeId,
             'note' => $note
         ];
@@ -2610,7 +3828,7 @@ class PublyPaymentService extends BaseApiService
         $input = [
             'user_id' => $userId,
             'delta' => $delta,
-            'transaction_type' => static::TRANSACTION_TYPE_USED_FOR_PAYMENT,
+            'transaction_type' => static::POINT_HISTORY_TRANSACTION_TYPE_USED_FOR_PAYMENT,
             'payment_id' => $paymentId,
             'note' => $note
         ];
@@ -2618,12 +3836,924 @@ class PublyPaymentService extends BaseApiService
         return $this->post("point_history", $input);
     }
 
-    public function updatePointHistory($pointHistoryId, $note)
+    public function createPointHistoryByDailyViewContentReward(
+        $userId,
+        $delta,
+        $note
+    )
     {
         $input = [
+            'user_id' => $userId,
+            'delta' => $delta,
+            'transaction_type' => static::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_DAILY_VIEW_CONTENT,
             'note' => $note
+        ];
+
+        return $this->post("point_history", $input);
+    }
+
+    public function createPointHistoryByAppInstall($userId, $delta, $note = '')
+    {
+        $input = [
+            'user_id' => $userId,
+            'delta' => $delta,
+            'transaction_type' => static::POINT_HISTORY_TRANSACTION_TYPE_APP_INSTALL,
+            'note' => $note
+        ];
+
+        return $this->post('point_history', $input);
+    }
+
+    public function createPointHistoryByChallengeReward($userId, $delta, $note = '')
+    {
+        $input = [
+            'user_id' => $userId,
+            'delta' => $delta,
+            'transaction_type' => static::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_CHALLENGE,
+            'note' => $note
+        ];
+
+        return $this->post('point_history', $input);
+    }
+
+    public function updatePointHistory($pointHistoryId, $note, $productType)
+    {
+        $input = [
+            'note' => $note,
+            'product_type' => $productType
         ];
 
         return $this->put("point_history/{$pointHistoryId}", $input);
     }
+
+    public function createPointHistoriesByAdmin(
+        $userIds,
+        $delta,
+        $adminId,
+        $note,
+        $productType,
+        $expirationDate = null
+    )
+    {
+        $input = [
+            'user_ids' => implode(',', $userIds),
+            'delta' => $delta,
+            'transaction_type' => static::POINT_HISTORY_TRANSACTION_TYPE_ADJUSTED_BY_ADMIN,
+            'admin_id' => $adminId,
+            'note' => $note,
+            'product_type' => $productType,
+            'expiration_date' => $expirationDate
+        ];
+
+        return $this->post("point_history/store_point_histories_by_admin", $input);
+    }
+
+    public function createPointHistoryByReferralSignup(
+        $userId,
+        $referrerId,
+        $delta,
+        $transactionType,
+        $note = null
+    ) {
+        $input = [
+            'user_id' => $userId,
+            'referrer_id' => $referrerId,
+            'delta' => $delta,
+            'transaction_type' => $transactionType,
+            'note' => $note
+        ];
+
+        return $this->post("point_history", $input);
+    }
+
+    public function updateOrCreateReferralRelation($referrerId, $refereeId, $referralProgramId)
+    {
+        $inputs = [
+            'referrer_id' => $referrerId,
+            'referee_id' => $refereeId,
+            'referral_program_id' => $referralProgramId
+        ];
+
+        return $this->put("referral_relation", $inputs);
+    }
+
+    public function getReferralRelationByUser($userId) // getReferralRelationByReferee 로 대체됨 사용되는 곳이 없을시 지웁니다.
+    {
+        return $this->get("referral_relation/referee/{$userId}");
+    }
+
+    public function getReferralRelationByReferee($userId)
+    {
+        return $this->get("referral_relation/referee/{$userId}");
+    }
+
+    public function getReferralCountByReferrerId($userId)
+    {
+        return $this->get("referral_relation/referrer/{$userId}/count");
+    }
+
+    public function getPointSumByUser($userId)
+    {
+        return $this->get("point_history/user/{$userId}/sum");
+    }
+
+    public function getPointReceivedSumByUser($userId)
+    {
+        return $this->get("point_history/user/{$userId}/sum-received");
+    }
+
+    public function getPointSumByPayment($paymentId)
+    {
+        return $this->get("point_history/payment/{$paymentId}/sum");
+    }
+
+    public function getPointSumByOrders($orderIds)
+    {
+        $orderIds = implode(',', $orderIds);
+        return $this->get("point_history/by_orders/sum", [
+            'order_ids' => $orderIds
+        ]);
+    }
+
+    public function getReferralProgram($referralProgramId)
+    {
+        return $this->get("referral_program/{$referralProgramId}");
+    }
+
+    public function getPayment($paymentId)
+    {
+        return $this->get("payment/{$paymentId}");
+    }
+
+    public function getPayments($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("payment", $filterArray);
+    }
+
+    public function getPaymentsNoPagination($filterArray = [])
+    {
+        $filterArray['limit'] = static::NO_PAGE_LIMIT;
+        return $this->get("payment", $filterArray);
+    }
+
+    public function getPaymentByOrder($orderId)
+    {
+        return $this->get("payment/order/{$orderId}");
+    }
+
+    //    user default plan
+    public function getUserDefaultPlansByUser($userId, $page =1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("user_default_plan/user/{$userId}", $filterArray);
+    }
+
+    public function getUserDefaultPlan($userDefaultPlanId)
+    {
+        return $this->get("user_default_plan/{$userDefaultPlanId}");
+    }
+
+    public function createUserDefaultPlan($changerId, $inputs)
+    {
+        $inputs['changer_id'] = $changerId;
+
+        return $this->post("user_default_plan", $inputs);
+    }
+
+    public function updateUserDefaultPlanByUserDefaultPlan($changerId, $userDefaultPlanId, $inputs)
+    {
+        $inputs['changer_id'] = $changerId;
+        return $this->put("user_default_plan/{$userDefaultPlanId}", $inputs);
+    }
+
+    public function getPlanByToken($token, $filterArray = [])
+    {
+        return $this->get("plan/token/{$token}", $filterArray);
+    }
+
+    public function getCheapestPlanByUser($userId, $filterArray = [])
+    {
+        return $this->get("plan/user/{$userId}/cheapest", $filterArray);
+    }
+
+    public function addBankTransferAndOrderAndPayVoucher(
+        $changerId,
+        $userId,
+        $name,
+        $price,
+        $planId,
+        $quantity)
+    {
+        $result = [ 'success' => false ];
+
+        // add credit card
+        $resultBankTransfer = $this->addBankTransfer(
+            $changerId,
+            $userId,
+            $name);
+
+        if (!$resultBankTransfer['success']) {
+            $result['success'] = false;
+            $result['from'] = 'bank_transfer';
+            $result['error_code'] = $resultBankTransfer['error_code'];
+            $result['message'] = $resultBankTransfer['message'];
+            return $result;
+        }
+
+        $bankTransfer = $resultBankTransfer['item'];
+        $result['bank_transfer'] = $bankTransfer;
+        // 정상적으로 카드 등록 되었음.
+
+        try {
+            $inputs = [ 'changer_id' => $changerId,
+                'plan_id' => $planId,
+                'user_id' => $userId,
+                'quantity' => $quantity,
+                'price' => $price
+            ];
+
+            $resultOrder = $this->post('order', $inputs);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['from'] = 'order';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+            return $result;
+        }
+
+        // order
+        $order = $resultOrder['success']['data'];
+        // 정상적으로 주문 되었음.
+
+        // payment
+        $resultPayment = $this->pay2(
+            $changerId,
+            $userId,
+            $order['id'],
+            static::PAYMENT_TYPE_BANK_TRANSFER,
+            'bank_transfer_id',
+            $bankTransfer['id'],
+            false,
+            '');
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $payment = $resultPayment['item'];
+
+        $orderResult = $this->get("order/".$order['id'], []);
+        $order = $orderResult['success']['data'];
+
+        $result['success'] = true;
+        $result['order'] = $order;
+        $result['payment'] = $payment;
+        $result['bank_transfer'] = $bankTransfer;
+        return $result;
+    }
+
+    public function addCreditCardAndOrderAndPayVoucher(
+        $changerId,
+        $userId,
+        $creditCardNumber,
+        $expireYear,
+        $expireMonth,
+        $id,
+        $password,
+        $price,
+        $planId,
+        $quantity)
+    {
+        $result = [ 'success' => false ];
+
+        // add credit card
+        $resultCreditCard = $this->addCreditCard(
+            $userId,
+            $creditCardNumber,
+            $expireYear,
+            $expireMonth,
+            $id,
+            $password);
+
+        if (!$resultCreditCard['success']) {
+            $result['success'] = false;
+            $result['from'] = 'credit_card';
+            $result['error_code'] = $resultCreditCard['error_code'];
+            $result['message'] = $resultCreditCard['message'];
+            return $result;
+        }
+
+        $creditCard = $resultCreditCard['item'];
+        // 정상적으로 카드 등록 되었음.
+
+        $result = $this->orderAndPayVoucher(
+            $changerId,
+            $userId,
+            $price,
+            $planId,
+            $quantity,
+            static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD,
+            'credit_card_id',
+            $creditCard['id']
+        );
+
+        return $result;
+    }
+
+    public function orderAndPayVoucher(
+        $changerId,
+        $userId,
+        $price,
+        $planId,
+        $quantity,
+        $pgType,
+        $paymentMethodIdName,
+        $paymentMethodId)
+    {
+        $result = [ 'success' => false ];
+
+        try {
+            $inputs = [ 'changer_id' => $changerId,
+                'plan_id' => $planId,
+                'user_id' => $userId,
+                'quantity' => $quantity,
+                'price' => $price
+            ];
+
+            $resultOrder = $this->post('order', $inputs);
+        } catch (ResponseException $e) {
+            $result['success'] = false;
+            $result['from'] = 'order';
+            $result['error_code'] = $e->getCode();
+            $result['message'] = json_decode($e->getMessage(), true)['error']['message'];
+            return $result;
+        }
+
+        // order
+        $order = $resultOrder['success']['data'];
+        // 정상적으로 주문 되었음.
+
+        // payment
+        $resultPayment = $this->pay2(
+            $changerId,
+            $userId,
+            $order['id'],
+            $pgType,
+            $paymentMethodIdName,
+            $paymentMethodId,
+            true,
+            '');
+
+        if (!$resultPayment['success']) {
+            $result['success'] = false;
+            $result['from'] = 'payment';
+            $result['error_code'] = $resultPayment['error_code'];
+            $result['message'] = $resultPayment['message'];
+            return $result;
+        }
+
+        $payment = $resultPayment['item'];
+
+        $orderResult = $this->get("order/".$order['id'], []);
+        $order = $orderResult['success']['data'];
+
+        $result['success'] = true;
+        $result['order'] = $order;
+        $result['payment'] = $payment;
+        return $result;
+    }
+
+    public function createVoucher($changerId, $userId, $voucherOptionId, $planId, $sentTo)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'voucher_option_id' => $voucherOptionId,
+            'plan_id' => $planId,
+            'sent_to' => $sentTo
+        ];
+
+        return $this->post("voucher", $inputs);
+    }
+
+    public function createVouchersByLengthMonth($changerId, $userId, $lengthMonth, $emails)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'length_month' => $lengthMonth,
+            'emails' => implode(',', $emails)
+        ];
+
+        return $this->post("voucher/store_vouchers_by_length_month", $inputs);
+    }
+
+    public function getVoucherByCode($code)
+    {
+        return $this->get("voucher/code/{$code}");
+    }
+
+    public function cancelVoucher($changerId, $voucherId)
+    {
+        return $this->put("voucher/{$voucherId}", [
+            'changer_id' => $changerId,
+            'action' => 'cancel'
+        ]);
+    }
+
+    public function resendVoucher($changerId, $voucherId)
+    {
+        return $this->put("voucher/resend_voucher/{$voucherId}", [
+            'changer_id' => $changerId
+        ]);
+    }
+
+    public function getVoucherDiscountRates($filterArray = [])
+    {
+        return $this->get("voucher_discount_rate", $filterArray);
+    }
+
+    public function getVoucherOption($voucherOptionId)
+    {
+        return $this->get("voucher_option/{$voucherOptionId}");
+    }
+
+    public function getVoucherOptions($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("voucher_option", $filterArray);
+    }
+
+    public function getVoucherOptionsByUser($userId, $filterArray = [])
+    {
+        return $this->get("voucher_option/user/{$userId}", $filterArray);
+    }
+
+    public function getVoucherByVoucherOptions($voucherOptionIds, $filterArray = [])
+    {
+        $filterArray['voucher_option_ids'] = implode(',', $voucherOptionIds);
+        return $this->get("voucher/voucher_options", $filterArray);
+    }
+
+    public function registerVoucherByCode($changerId, $userId, $code, $force = false)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'force' => $force ? 1 : 0
+        ];
+
+        return $this->post("voucher_use_history/code/{$code}", $inputs);
+    }
+
+    public function registerVoucherUseHistoryByPartnerUser($changerId, $userId, $planId)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'plan_id' => $planId
+        ];
+
+        return $this->post("voucher_use_history/user/{$userId}", $inputs);
+    }
+
+    public function getVoucherUseHistoriesBySettlement($settlementYear, $settlementMonth, $filterArray = [])
+    {
+        return $this->get("voucher_use_history/settlement_year/{$settlementYear}/settlement_month/{$settlementMonth}", $filterArray);
+    }
+
+    public function getVoucherUseHistoriesByUser($userId, $filterArray = [])
+    {
+        return $this->get("voucher_use_history/user/{$userId}", $filterArray);
+    }
+
+    public function expireVoucherUseHistories($changerId)
+    {
+        return $this->post(
+            "voucher_use_history/expire_voucher_use_histories",
+            [
+                'changer_id' => $changerId
+            ]);
+    }
+
+    public function refreshVoucherUseHistories($changerId, $days)
+    {
+        return $this->post("voucher_use_history/refresh_voucher_use_histories", [
+            'changer_id' => $changerId,
+            'base_days' => $days
+        ]);
+    }
+
+    public function createVoucherOption($changerId, $userId, $planId, $quantity, $note)
+    {
+        return $this->post("voucher_option", [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'plan_id' => $planId,
+            'quantity' => $quantity,
+            'note' => $note
+        ]);
+    }
+
+    public function createVoucherOptions($changerId, $userIds, $planId, $quantity, $note)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_ids' => implode(',', $userIds),
+            'plan_id' => $planId,
+            'quantity' => $quantity,
+            'note' => $note
+        ];
+
+        return $this->post("voucher_option/store_voucher_options", $inputs);
+    }
+
+    public function getVouchers($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("voucher", $filterArray);
+    }
+
+    public function getVoucherUseHistoryByVoucher($voucherId)
+    {
+        return $this->get("voucher_use_history/voucher/{$voucherId}");
+    }
+
+    public function getVoucherUseHistoriesByVoucherIds($voucherIds, $filterArray = [])
+    {
+        $filterArray['voucher_ids'] = implode(',', $voucherIds);
+        return $this->get("voucher_use_history/voucher_ids", $filterArray);
+    }
+
+    public function getVoucher($voucherId)
+    {
+        return $this->get("voucher/{$voucherId}");
+    }
+
+    public function expireVoucherUseHistory($changerId, $voucherUseHistoryId)
+    {
+        return $this->put("voucher_use_history/{$voucherUseHistoryId}", [
+            'changer_id' => $changerId,
+            'action' => 'expire'
+        ]);
+    }
+
+    public function updateVoucherOptionQuantity($changerId, $voucherOptionId, $quantity, $note)
+    {
+        return $this->put("voucher_option/{$voucherOptionId}", [
+            'changer_id' => $changerId,
+            'quantity' => $quantity,
+            'note' => $note
+        ]);
+    }
+
+    public function existsCreditCardByUserId($userId)
+    {
+        return $this->get("credit_card/user/{$userId}/exists");
+    }
+
+    public function existsNaverpayByUserId($userId)
+    {
+        return $this->get("naverpay/user/{$userId}/exists");
+    }
+
+    public function existsPaymentMethodByPgType($userId, $pgType)
+    {
+        if ($pgType == static::PAYMENT_TYPE_NICEPAY_CREDIT_CARD) {
+            return $this->existsCreditCardByUserId($userId);
+        } else if ($pgType == static::PAYMENT_TYPE_NAVERPAY) {
+            return $this->existsNaverpayByUserId($userId);
+        } else {
+            return $result['success']['data'] = false;
+        }
+    }
+
+    public function getNaverpayDifferenceWithHistory($page, $limit, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get('naverpay_difference/payment/history', $filterArray);
+    }
+
+
+    public function createNaverpayDifference(
+        $changerId,
+        $paymentId,
+        $payHistId,
+        $cancel,
+        $tradeDate,
+        $amount,
+        $productName,
+        $usedKey = PublyPaymentService::NAVERPAY_USED_KEY_MEMBERSHIP
+    ) {
+        $inputs = [
+            'changer_id' => $changerId,
+            'payment_id' => $paymentId,
+            'pay_hist_id' => $payHistId,
+            'cancel' => $cancel,
+            'trade_date' => $tradeDate,
+            'amount' => $amount,
+            'product_name' => $productName,
+            $usedKey
+        ];
+
+        return $this->post('naverpay_difference', $inputs);
+    }
+
+
+    public function createNaverpayDifferenceRequests($changerId, $batch = 'request')
+    {
+        return $this->post("naverpay_difference/requests", [
+            'changer_id' => $changerId,
+            'batch' => $batch,
+        ]);
+    }
+
+    public function createNaverpayDifferenceResults($changerId, $batch = 'result')
+    {
+        return $this->post("naverpay_difference/results", [
+            'changer_id' => $changerId,
+            'batch' => $batch,
+        ]);
+    }
+
+    public function createNaverpayDifferenceRequestBatch($changerId)
+    {
+        return $this->post("naverpay_difference/request_batch", [
+            'changer_id' => $changerId,
+        ]);
+    }
+
+    public function createNaverpayDifferenceResultBatch($changerId, $completeDate = null)
+    {
+        $inputs = [
+            'changer_id' => $changerId
+        ];
+        if ($completeDate) {
+            $inputs = array_merge($inputs, ['complete_date' => $completeDate]);
+        }
+
+        return $this->post("naverpay_difference/result_batch", $inputs);
+    }
+
+    public function getCreditCardFreeInterestInstallments()
+    {
+        $cacheKey = 'FREE_INTEREST_INSTALLMENT';
+        return \Cache::remember($cacheKey, 1440, function () {
+            return $this->get("credit_card/free_interests_installments");
+        });
+    }
+
+    public function createPlan($changerId, $name, $price, $settlementPrice, $note, $lengthMonth, $nextPlanId)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'name' => $name,
+            'price' => $price,
+            'settlement_price' => $settlementPrice,
+            'note' => $note,
+            'length_month' => $lengthMonth,
+            'next_plan_id' => $nextPlanId
+        ];
+
+        return $this->post("plan", $inputs);
+    }
+
+    public function updatePlan($changerId, $planId, $name, $price, $settlementPrice, $note, $lengthMonth, $nextPlanId)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'name' => $name,
+            'price' => $price,
+            'settlement_price' => $settlementPrice,
+            'note' => $note,
+            'length_month' => $lengthMonth,
+            'next_plan_id' => $nextPlanId
+        ];
+
+        return $this->put("plan/{$planId}", $inputs);
+    }
+
+    public function updatePlan2($planId, $inputs)
+    {
+        return $this->put("plan/{$planId}", $inputs);
+    }
+
+    public function updatePlanNextPlanId($changerId, $planId, $nextPlanId)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'next_plan_id' => $nextPlanId
+        ];
+
+        return $this->put("plan/{$planId}", $inputs);
+    }
+
+    public function getCouponOption($couponOptionId)
+    {
+        return $this->get("coupon_option/{$couponOptionId}");
+    }
+
+    public function getCouponOptionByCode($code)
+    {
+        return $this->get("coupon_option/code/{$code}");
+    }
+
+
+    public function getCouponOptions($page, $limit, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+
+        return $this->get("coupon_option", $filterArray);
+    }
+
+    public function getCouponOptionsByProject($projectId, $filterArray = [])
+    {
+        return $this->get("coupon_option/project/{$projectId}", $filterArray);
+    }
+
+    public function createCouponOption($name, $projectId, $discountPrice, $expireAt, $note)
+    {
+        $inputs = [
+            'name' => $name,
+            'project_id' => $projectId,
+            'discount_price' => $discountPrice,
+            'expire_at' => $expireAt,
+            'note' => $note
+        ];
+
+        return $this->post("coupon_option", $inputs);
+    }
+
+    public function updateCouponOption($couponOptionId, $name, $discountPrice, $expireAt, $note)
+    {
+        $inputs = [
+            'name' => $name,
+            'discount_price' => $discountPrice,
+            'expire_at' => $expireAt,
+            'note' => $note
+        ];
+
+        return $this->put("coupon_option/{$couponOptionId}", $inputs);
+    }
+
+    public function getCouponsV2ByUserAndCouponOptionIds($userId, $couponOptionIds, $filterArray = [])
+    {
+        $filterArray['coupon_option_ids'] = implode(',', $couponOptionIds);
+
+        return $this->get("coupon_v2/user/{$userId}/by_coupon_option_ids", $filterArray);
+    }
+
+    public function createCouponV2($changerId, $userId, $couponOptionId)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'coupon_option_id' => $couponOptionId
+        ];
+
+        return $this->post("coupon_v2", $inputs);
+    }
+
+    public function updateCouponOptionIsActive($couponOptionId, $isActive)
+    {
+        $inputs = [
+            'is_active' => $isActive
+        ];
+
+        return $this->put("coupon_option/{$couponOptionId}", $inputs);
+    }
+
+    public function getCouponV2($couponV2Id)
+    {
+        return $this->get("coupon_v2/{$couponV2Id}");
+    }
+
+    public function updateCouponV2($changerId, $couponV2Id, $orderId, $status)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'status' => $status,
+            'order_id' => $orderId
+        ];
+
+        return $this->put("coupon_v2/{$couponV2Id}", $inputs);
+    }
+
+    public function getCouponV2sByOrder($orderId, $filterArray = [])
+    {
+        return $this->get("coupon_v2/order/{$orderId}", $filterArray);
+    }
+
+    public function refundSubscriptionRenewalHistory(
+        $subscriptionRenewalHistoryId,
+        $payCancelAmount,
+        $pointCancelAmount,
+        $cancelReason,
+        $requestUserId,
+        $force = false)
+    {
+        $inputs = [
+            'pay_cancel_amount' => $payCancelAmount,
+            'point_cancel_amount' => $pointCancelAmount,
+            'cancel_reason' => $cancelReason,
+            'request_user_id' => $requestUserId,
+            'force' => $force,
+        ];
+        return $this->post("/refund/subscription_renewal_history/{$subscriptionRenewalHistoryId}", $inputs);
+    }
+
+    public function refundOrder(
+        $orderId,
+        $payCancelAmount,
+        $pointCancelAmount,
+        $cancelReason,
+        $requestUserId,
+        $force = false)
+    {
+        $inputs = [
+            'pay_cancel_amount' => $payCancelAmount,
+            'point_cancel_amount' => $pointCancelAmount,
+            'cancel_reason' => $cancelReason,
+            'request_user_id' => $requestUserId,
+            'force' => $force,
+        ];
+        return $this->post("/refund/order/{$orderId}", $inputs);
+    }
+
+    public function getRefundHistory($page, $limit, $filterArray = [])
+    {
+        return $this->get("refund_history", $filterArray);
+    }
+
+    public function getOrderCountsByRewardIds($rewardIds, $filterArray = [])
+    {
+        $filterArray['reward_ids'] = implode(',', $rewardIds);
+        return $this->get("/order/by_reward_ids/count", $filterArray);
+    }
+
+    public function notifyOrderByDaysAfterPaid($daysAfterPaid)
+    {
+        return $this->post("/order/notify_order_by_days_after_paid", [
+            'days_after_paid' => $daysAfterPaid
+        ]);
+    }
+
+    public function notifyCouponExpired()
+    {
+        return $this->post("/coupon_v2/notify_coupon_expired");
+    }
+
+    public function notifyUpcomingFreeTrialExpired($daysBeforeExpired)
+    {
+        return $this->post("/subscription/notify_free_trial_expired", [
+            'days_before_expired' => $daysBeforeExpired
+        ]);
+    }
+
+    public function notifyCustomContentRecommendation($daysBeforeExpired)
+    {
+        return $this->post("/subscription/notify_custom_content_recommendation", [
+            'days_before_expired' => $daysBeforeExpired
+        ]);
+    }
+
+    public function notifyMembershipOnboardingGuide($daysAfterRegister)
+    {
+        return $this->post("/subscription/notify_membership_onboarding_guide", [
+            'days_after_register' => $daysAfterRegister
+        ]);
+    }
+
+    public function getExpirationExpectedPoints($userId, $expirationDateStart, $expirationDateEnd)
+    {
+        return $this->get("/point_history_detail/expiration_expected", [
+            'user_id' => $userId,
+            'expiration_date_between' => implode(',', [$expirationDateStart, $expirationDateEnd]),
+        ]);
+    }
+
+    public function handleExpiredPoints($beginDate = null)
+    {
+        return $this->post("/point_history_detail/expired_points", [
+            'begin_date' => $beginDate
+        ]);
+    }
+
+    public function notifyExpirationExpectedPointsToUser($expirationDate = null)
+    {
+        return $this->post("/point_history_detail/notify_expiration_expected_points_to_users", [
+            'expiration_date' => $expirationDate
+        ]);
+    }
+
 }

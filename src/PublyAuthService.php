@@ -27,7 +27,8 @@ class PublyAuthService extends BaseApiService
         PublyAuthService::GROUP_NORMAL => "일반회원",
         PublyAuthService::GROUP_MANAGER => "관리자",
         PublyAuthService::GROUP_AUTHOR => "저자",
-        PublyAuthService::GROUP_EDITOR => "에디터"
+        PublyAuthService::GROUP_EDITOR => "에디터",
+        PublyAuthService::GROUP_CURATOR => "뉴스 큐레이터"
     ];
 
     public function __construct($domain)
@@ -41,9 +42,14 @@ class PublyAuthService extends BaseApiService
     /*
      * User Related Interfaces
      */
-    public function getUser($userId)
+    public function getUser($userId, $filterArray = [])
     {
-        return $this->get("user/{$userId}");
+        return $this->get("user/{$userId}", $filterArray);
+    }
+
+    public function getAuthUser($userId, $filterArray = [])
+    {
+        return $this->getUser($userId, array_merge($filterArray, ['use_auth_only' => true]));
     }
 
     public function getUsers($page = 1, $limit = 10, $filterArray = [])
@@ -53,11 +59,21 @@ class PublyAuthService extends BaseApiService
         return $this->get("user", $filterArray);
     }
 
+    public function getAuthUsers($page = 1, $limit = 10, $filterArray = [])
+    {
+        return $this->getUsers($page, $limit, array_merge($filterArray, ['use_auth_only' => true]));
+    }
+
     public function getUsersByIds($userIds, $filterArray = [])
     {
         $filterArray['ids'] = implode(',', $userIds);
 
         return $this->get("user/by_ids", $filterArray);
+    }
+
+    public function getAuthUsersByIds($userIds, $filterArray = [])
+    {
+        return $this->getUsersByIds($userIds, array_merge($filterArray, ['use_auth_only' => true]));
     }
 
     public function updateUser($changerId, $userId, $name, $email, $phone)
@@ -147,9 +163,24 @@ class PublyAuthService extends BaseApiService
         return $this->put("user/{$userId}", $inputs);
     }
 
+    public function updateUserPushNotificaionAgree($changerId, $userId, $pushNotificationAgree)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'push_notification_agree' => $pushNotificationAgree
+        ];
+
+        return $this->put("user/{$userId}", $inputs);
+    }
+
     public function deleteUser($changerId, $userId)
     {
         return $this->post("user/{$userId}/delete", ['changer_id' => $changerId]);
+    }
+
+    public function deleteUserByIds($changerId, $ids)
+    {
+        return $this->post("user/delete", ['changer_id' => $changerId, 'ids' => $ids]);
     }
 
     /*
@@ -166,16 +197,37 @@ class PublyAuthService extends BaseApiService
         return $this->get("user/email_disagree_token/{$token}");
     }
 
+    public function getAllUserIds()
+    {
+        return $this->get("user/all_user_ids");
+    }
+
     public function retrieveById($id)
     {
         return $this->get('retrieve_by_id', array('id' => $id));
     }
 
+    /**
+     * @param $id
+     * @param $token
+     * @return mixed
+     * @throws ResponseException
+     */
     public function retrieveByToken($id, $token)
     {
         return $this->get('retrieve_by_token', array(
             'id' => $id,
             'token' => $token
+        ));
+    }
+
+    public function retrieveByTokenOnlyUser($id, $token)
+    {
+        return $this->get('retrieve_by_token', array(
+            'id' => $id,
+            'token' => $token,
+            'with_group' => 0,
+            'use_auth_only' => true,
         ));
     }
 
@@ -231,7 +283,7 @@ class PublyAuthService extends BaseApiService
         ));
     }
 
-    public function signup($changerId, $name, $email, $password, $subscribeToWeeklyLetter = 0)
+    public function signup($changerId, $name, $email, $password, $subscribeToWeeklyLetter = 0, $sendMail = 1)
     {
         return $this->post("signup", [
             'changer_id' => $changerId,
@@ -242,7 +294,7 @@ class PublyAuthService extends BaseApiService
         ]);
     }
 
-    public function signup2($changerId, $name, $email, $password, $subscribeToWeeklyLetter, $margetingEmailAgree)
+    public function signup2($changerId, $name, $email, $password, $subscribeToWeeklyLetter, $margetingEmailAgree, $product = 'membership')
     {
         return $this->post("signup", [
             'changer_id' => $changerId,
@@ -250,7 +302,8 @@ class PublyAuthService extends BaseApiService
             'email' => $email,
             'password' => $password,
             'subscribe_to_weekly_letter' => $subscribeToWeeklyLetter,
-            'marketing_email_agree' => $margetingEmailAgree
+            'marketing_email_agree' => $margetingEmailAgree,
+            'product' => $product
         ]);
     }
 
@@ -260,6 +313,23 @@ class PublyAuthService extends BaseApiService
             'access_token' => $accessToken,
             'ip_address' => $ipAddress
         ));
+    }
+
+    public function createUser($changerId, $name)
+    {
+        return $this->post('create_user', [
+            'name' => $name, 'changer_id' => $changerId
+        ]);
+    }
+
+    public function createPartnerUser($changerId, $partnerUserId, $userId, $planId)
+    {
+        return $this->post('partner_user', [
+            'changer_id' => $changerId,
+            'partner_user_id' => $partnerUserId,
+            'user_id' => $userId,
+            'plan_id' => $planId
+        ]);
     }
 
     public function changePassword($id, $currentPassword, $newPassword)
@@ -278,6 +348,17 @@ class PublyAuthService extends BaseApiService
         }
 
         return $result;
+    }
+
+    public function createNewPassword($userId, $newPassword, $newPasswordConfirm)
+    {
+        $inputs = [
+            "user_id" => $userId,
+            "new_password" => $newPassword,
+            "new_password_confirm" => $newPasswordConfirm,
+        ];
+
+        return $this->post('create_new_password', $inputs);
     }
 
     public function forgotPassword($email)

@@ -2,14 +2,13 @@
 
 namespace Publy\ServiceClient\Api;
 
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 use GuzzleHttp\Psr7\Response as Psr7Response;
-use GuzzleHttp\Psr7\LazyOpenStream;
-use GuzzleHttp\Psr7\Request;
 
-class BaseApiService {
+class BaseApiService
+{
 
     public $guzzle;
 
@@ -61,6 +60,7 @@ class BaseApiService {
     {
         return $response && $response->getStatusCode() >= 500;
     }
+
     /**
      * @param RequestException $exception
      * @return bool
@@ -80,6 +80,12 @@ class BaseApiService {
         return $this->apiUrl;
     }
 
+    /**
+     * @param $endpoint
+     * @param array $queryParams
+     * @return mixed
+     * @throws ResponseException
+     */
     public function get($endpoint, $queryParams = [])
     {
         $response = Http::send(
@@ -110,7 +116,7 @@ class BaseApiService {
             $endpoint,
             [
                 'postFields' => $postData,
-                'method'     => 'POST',
+                'method' => 'POST',
                 'timeout' => $this->timeout
             ]
         );
@@ -143,6 +149,30 @@ class BaseApiService {
     }
 
     /**
+     * This is a helper method to do a patch request.
+     *
+     * @param       $endpoint
+     * @param array $patchData
+     *
+     * @return array
+     * @throws ResponseException
+     */
+    public function patch($endpoint, $patchData = [])
+    {
+        $response = Http::send(
+            $this,
+            $endpoint,
+            [
+                'postFields' => $patchData,
+                'method' => 'PATCH',
+                'timeout' => $this->timeout
+            ]
+        );
+
+        return $response;
+    }
+
+    /**
      * This is a helper method to do a delete request.
      *
      * @param $endpoint
@@ -162,5 +192,47 @@ class BaseApiService {
         );
 
         return $response;
-    }    
+    }
+
+    /**
+     * @param $endpoint
+     * @param $queryParams
+     * @param $headers
+     * @return mixed
+     * @throws ResponseException
+     */
+    public function getWithHeader($endpoint, $queryParams, $headers)
+    {
+        return Http::send(
+            $this,
+            $endpoint,
+            [
+                'method' => 'GET',
+                'queryParams' => $queryParams,
+                'timeout' => $this->timeout
+            ],
+            $headers
+        );
+    }
+
+    /**
+     * @param $endpoint
+     * @param $postData
+     * @param $headers
+     * @return mixed
+     * @throws ResponseException
+     */
+    public function postWithHeader($endpoint, $postData, $headers)
+    {
+        return Http::send(
+            $this,
+            $endpoint,
+            [
+                'method' => 'POST',
+                'postFields' => $postData,
+                'timeout' => $this->timeout
+            ],
+            $headers
+        );
+    }
 }
