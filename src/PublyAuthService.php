@@ -5,14 +5,22 @@ namespace Publy\ServiceClient;
 use Publy\ServiceClient\Api\BaseApiService;
 use Publy\ServiceClient\Api\ResponseException;
 
-class PublyAuthService extends BaseApiService {
+class PublyAuthService extends BaseApiService
+{
 
     const GROUP_ADMIN = 1;
     const GROUP_NORMAL = 2;
     const GROUP_MANAGER = 3;
     const GROUP_AUTHOR = 4;
     const GROUP_EDITOR = 5;
-    const GROUP_MAX = 6;
+    const GROUP_CURATOR = 6;
+    const GROUP_MAX = 7;
+
+    const DELETE_REQUESTED_USER_REQUEST_STATUS_DELETE_REQUESTED = 1; // 탈퇴 요청
+    const DELETE_REQUESTED_USER_REQUEST_STATUS_DELETE_COMPLETE = 2; // 탈퇴 완료 (유저 삭제 완료)
+    const DELETE_REQUESTED_USER_REQUESTED_FROM_ALL = 'all';
+    const DELETE_REQUESTED_USER_REQUESTED_FROM_MEMBERSHIP = 'membership';
+    const DELETE_REQUESTED_USER_REQUESTED_FROM_CAREERLY = 'careerly';
 
     const STRING_GROUP = [
         PublyAuthService::GROUP_ADMIN => "최고관리자",
@@ -22,11 +30,12 @@ class PublyAuthService extends BaseApiService {
         PublyAuthService::GROUP_EDITOR => "에디터"
     ];
 
-    public function __construct($domain) {
+    public function __construct($domain)
+    {
         parent::__construct();
 
         $this->domain = $domain;
-        $this->apiUrl = "$this->domain/";        
+        $this->apiUrl = "$this->domain/";
     }
 
     /*
@@ -53,10 +62,12 @@ class PublyAuthService extends BaseApiService {
 
     public function updateUser($changerId, $userId, $name, $email, $phone)
     {
-        return $this->put("user/{$userId}", [ 'changer_id' => $changerId,
-                                              'name' => $name,
-                                              'email' => $email,
-                                              'phone' => $phone ]);
+        return $this->put("user/{$userId}", [
+            'changer_id' => $changerId,
+            'name' => $name,
+            'email' => $email,
+            'phone' => $phone
+        ]);
     }
 
     public function updateUser2($changerId, $userId, $name, $email, $phone)
@@ -67,14 +78,14 @@ class PublyAuthService extends BaseApiService {
         }
 
         if ($email !== null) {
-            $inputs['email'] = $email;            
+            $inputs['email'] = $email;
         }
 
         if ($phone !== null) {
             $inputs['phone'] = $phone;
         }
 
-        return $this->put("user/{$userId}", array_merge([ 'changer_id' => $changerId], $inputs));
+        return $this->put("user/{$userId}", array_merge(['changer_id' => $changerId], $inputs));
     }
 
     public function updateUser3($changerId, $userId, $name, $email, $phone, $groups)
@@ -96,29 +107,31 @@ class PublyAuthService extends BaseApiService {
             $inputs['groups'] = $groups;
         }
 
-        return $this->put("user/{$userId}", array_merge([ 'changer_id' => $changerId], $inputs));
+        return $this->put("user/{$userId}", array_merge(['changer_id' => $changerId], $inputs));
     }
 
-    public function updateUser4($changerId,
-                                $userId,
-                                $name,
-                                $email,
-                                $password,
-                                $passwordConfirm,
-                                $phone,
-                                $groups,
-                                $linkUrls,
-                                $imageUrl)
-    {
-        $inputs = ['changer_id' => $changerId,
-                   'name' => $name,
-                   'email' => $email,
-                   'password' => $password,
-                   'password_confirmation' => $passwordConfirm,
-                   'phone' => $phone,
-                   'groups' => $groups,
-                   'link_urls' => $linkUrls,
-                   'image_url' => $imageUrl
+    public function updateUser4(
+        $changerId,
+        $userId,
+        $name,
+        $email,
+        $password,
+        $passwordConfirm,
+        $phone,
+        $groups,
+        $linkUrls,
+        $imageUrl
+    ) {
+        $inputs = [
+            'changer_id' => $changerId,
+            'name' => $name,
+            'email' => $email,
+            'password' => $password,
+            'password_confirmation' => $passwordConfirm,
+            'phone' => $phone,
+            'groups' => $groups,
+            'link_urls' => $linkUrls,
+            'image_url' => $imageUrl
         ];
 
         return $this->put("user/{$userId}", $inputs);
@@ -136,7 +149,7 @@ class PublyAuthService extends BaseApiService {
 
     public function deleteUser($changerId, $userId)
     {
-        return $this->post("user/{$userId}/delete", [ 'changer_id' => $changerId ]);
+        return $this->post("user/{$userId}/delete", ['changer_id' => $changerId]);
     }
 
     /*
@@ -155,38 +168,46 @@ class PublyAuthService extends BaseApiService {
 
     public function retrieveById($id)
     {
-    	return $this->get('retrieve_by_id', array('id'=>$id));
+        return $this->get('retrieve_by_id', array('id' => $id));
     }
 
     public function retrieveByToken($id, $token)
     {
-    	return $this->get('retrieve_by_token', array('id'=> $id, 
-    											     'token' => $token));
+        return $this->get('retrieve_by_token', array(
+            'id' => $id,
+            'token' => $token
+        ));
     }
 
     public function retrieveByPasswordToken($id, $passwordToken)
     {
-        return $this->get('retrieve_by_password_token', array('id' => $id,
-                                                              'password_token' => $passwordToken));
+        return $this->get('retrieve_by_password_token', array(
+            'id' => $id,
+            'password_token' => $passwordToken
+        ));
     }
 
     public function updateRememberToken($id, $token)
     {
-    	return $this->post('update_remember_token', array('id'=> $id, 
-    	 											      'token' => $token));
+        return $this->post('update_remember_token', array(
+            'id' => $id,
+            'token' => $token
+        ));
     }
 
     public function deleteUserRememberToken($id, $token)
     {
-        return $this->post('delete_remember_token', array('id'=> $id,
-            'token' => $token));
+        return $this->post('delete_remember_token', array(
+            'id' => $id,
+            'token' => $token
+        ));
     }
 
     public function retrieveByEmail($email)
     {
-        return $this->get('retrieve_by_email', array('email'=> $email));
+        return $this->get('retrieve_by_email', array('email' => $email));
     }
-    
+
     public function retrieveByFacebookToken($accessToken)
     {
         return $this->get('retrieve_by_facebook_token', array('access_token' => $accessToken));
@@ -194,7 +215,7 @@ class PublyAuthService extends BaseApiService {
 
     public function retrieveByCode($code)
     {
-        return $this->get('retrieve_by_code', array('code'=> $code));
+        return $this->get('retrieve_by_code', array('code' => $code));
     }
 
     public function overwriteUserByFacebookToken($accessToken)
@@ -204,22 +225,27 @@ class PublyAuthService extends BaseApiService {
 
     public function validateCredentials($id, $password)
     {
-    	return $this->post('validate_credentials', array('id'=> $id, 
-    												     'password' => $password));
+        return $this->post('validate_credentials', array(
+            'id' => $id,
+            'password' => $password
+        ));
     }
 
     public function signup($changerId, $name, $email, $password, $subscribeToWeeklyLetter = 0)
     {
-        return $this->post("signup", [ 'changer_id' => $changerId,
-                                       'name' => $name,
-                                       'email' => $email,
-                                       'password' => $password,
-                                       'subscribe_to_weekly_letter' => $subscribeToWeeklyLetter]);
+        return $this->post("signup", [
+            'changer_id' => $changerId,
+            'name' => $name,
+            'email' => $email,
+            'password' => $password,
+            'subscribe_to_weekly_letter' => $subscribeToWeeklyLetter
+        ]);
     }
 
     public function signup2($changerId, $name, $email, $password, $subscribeToWeeklyLetter, $margetingEmailAgree)
     {
-        return $this->post("signup", [ 'changer_id' => $changerId,
+        return $this->post("signup", [
+            'changer_id' => $changerId,
             'name' => $name,
             'email' => $email,
             'password' => $password,
@@ -230,17 +256,21 @@ class PublyAuthService extends BaseApiService {
 
     public function signupByFacebookToken($accessToken, $ipAddress)
     {
-        return $this->post('signup_by_facebook_token', array('access_token' => $accessToken,
-                                                             'ip_address' => $ipAddress));
+        return $this->post('signup_by_facebook_token', array(
+            'access_token' => $accessToken,
+            'ip_address' => $ipAddress
+        ));
     }
 
     public function changePassword($id, $currentPassword, $newPassword)
     {
-        $result = [ 'success' => false ];
+        $result = ['success' => false];
         try {
-            $this->post('change_password', array('id' => $id,
-                                                 'current_password' => $currentPassword,
-                                                 'new_password' => $newPassword));
+            $this->post('change_password', array(
+                'id' => $id,
+                'current_password' => $currentPassword,
+                'new_password' => $newPassword
+            ));
             $result['success'] = true;
         } catch (ResponseException $e) {
             $result['success'] = false;
@@ -257,17 +287,186 @@ class PublyAuthService extends BaseApiService {
 
     public function resetPassword($id, $passwordToken, $newPassword)
     {
-        return $this->post('reset_password', array('id' => $id,
-                                                   'password_token' => $passwordToken,
-                                                   'new_password' => $newPassword));
+        return $this->post('reset_password', array(
+            'id' => $id,
+            'password_token' => $passwordToken,
+            'new_password' => $newPassword
+        ));
     }
 
     public function createUserLoginHistory($userId, $ipAddress, $os, $browser, $deviceId)
     {
-        return $this->post('user_login_history', array( 'user_id' => $userId,
-                                                        'ip_address' => $ipAddress,
-                                                        'os' => $os,
-                                                        'browser' => $browser,
-                                                        'device_id' => $deviceId ));
+        return $this->post('user_login_history', array(
+            'user_id' => $userId,
+            'ip_address' => $ipAddress,
+            'os' => $os,
+            'browser' => $browser,
+            'device_id' => $deviceId
+        ));
+    }
+
+    public function userLogin($userId, $ipAddress, $os, $browser, $deviceId, $method, $product = 'membership')
+    {
+        return $this->post('user_login', [
+            'user_id' => $userId,
+            'ip_address' => $ipAddress,
+            'os' => $os,
+            'browser' => $browser,
+            'device_id' => $deviceId,
+            'method' => $method,
+            'product' => $product
+        ]);
+    }
+
+    public function getPartnerUser($partnerUserId)
+    {
+        return $this->get("/partner_user/partner_user_id/{$partnerUserId}");
+    }
+
+    public function getPartnerUserByUser($userId)
+    {
+        return $this->get("/partner_user/user/{$userId}");
+    }
+
+    public function getPartnerUsers($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("/partner_user", $filterArray);
+    }
+
+    public function syncOneSignalData()
+    {
+        return $this->post("/sync");
+    }
+
+    public function retrieveBySocialLogin($socialType, $socialUserId)
+    {
+        return $this->get(
+            'retrieve_by_social_login',
+            array('social_type' => $socialType, 'social_user_id' => $socialUserId)
+        );
+    }
+
+    public function signupByKakaoId($kakaoUserId, $username, $email, $phone)
+    {
+        return $this->post('signup_by_kakao', array(
+            'kakao_user_id' => $kakaoUserId,
+            'username' => $username,
+            'email' => $email,
+            'phone' => $phone,
+        ));
+    }
+
+    public function signupByAppleId($appleUserId, $username, $email)
+    {
+        return $this->post('signup_by_apple', array(
+            'apple_user_id' => $appleUserId,
+            'username' => $username,
+            'email' => $email,
+        ));
+    }
+
+    public function showSocialLoginTypes($userId)
+    {
+        return $this->get("user/{$userId}/social_login_types");
+    }
+
+    public function initializeUserNotificationStatus($userId)
+    {
+        return $this->put("user/{$userId}/initialize_notification_status");
+    }
+
+    public function getUserNotificationStatus($userId, $filterArray = [])
+    {
+        return $this->get("user/{$userId}/notification_status", $filterArray);
+    }
+
+    public function updateOrCreateUserNotificationStatus($userId, $notificationStatus)
+    {
+        return $this->put("user/{$userId}/notification_status", ['notification_status' => $notificationStatus]);
+    }
+
+    public function checkPasswordModifyAllowed($userId)
+    {
+        return $this->get("user/{$userId}/check_password_modify_allowed");
+    }
+
+    public function findUserNotificationStatus($filterArray = [])
+    {
+        return $this->get("user_notification_status", $filterArray);
+    }
+
+    public function findUserDevice($userId, $deviceId, $filterArray = [])
+    {
+        $filterArray['user_id'] = $userId;
+        $filterArray['device_id'] = $deviceId;
+        return $this->get("user_device", $filterArray);
+    }
+
+    public function findUserDeviceByUserId($userId, $filterArray = [])
+    {
+        $filterArray['user_id'] = $userId;
+        return $this->get("user_device", $filterArray);
+    }
+
+    public function updateOrCreateUserDevice($userId, $deviceId, $params = [])
+    {
+        $params['user_id'] = $userId;
+        $params['device_id'] = $deviceId;
+        return $this->put("user_device", $params);
+    }
+
+    public function updateUserDeviceLastUsedAt($userId, $deviceId)
+    {
+        $filterArray = [];
+        $filterArray['user_id'] = $userId;
+        $filterArray['device_id'] = $deviceId;
+        return $this->put("user_device/last_used_at", $filterArray);
+    }
+
+    public function activateUserDevice($userId, $deviceId, $params = [])
+    {
+        $params['user_id'] = $userId;
+        $params['device_id'] = $deviceId;
+        return $this->put("user_device/activate", $params);
+    }
+
+    public function getDeleteRequestedUsers($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("delete_requested_user", $filterArray);
+    }
+
+    public function createDeleteRequestedUser($changerId, $userId, $requestStatus)
+    {
+        return $this->post("delete_requested_user", [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'request_status' => $requestStatus,
+        ]);
+    }
+
+    public function updateDeleteRequestedUser($changerId, $deleteRequestedUserId, $userId, $requestStatus = null, $reason = null)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId
+        ];
+
+        if ($requestStatus) {
+            $inputs['request_status'] = $requestStatus;
+        }
+        if ($reason) {
+            $inputs['reason'] = $reason;
+        }
+
+        return $this->patch("delete_requested_user/{$deleteRequestedUserId}", $inputs);
+    }
+
+    public function deleteDeleteRequestedUser($changerId, $deleteRequestedUserId)
+    {
+        return $this->post("delete_requested_user/{$deleteRequestedUserId}/delete", ['changer_id' => $changerId]);
     }
 }
