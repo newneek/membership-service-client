@@ -290,7 +290,8 @@ class PublyAuthService extends BaseApiService
             'name' => $name,
             'email' => $email,
             'password' => $password,
-            'subscribe_to_weekly_letter' => $subscribeToWeeklyLetter
+            'subscribe_to_weekly_letter' => $subscribeToWeeklyLetter,
+            'send_mail' => $sendMail
         ]);
     }
 
