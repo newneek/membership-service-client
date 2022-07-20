@@ -200,6 +200,7 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::USER_DEFAULT_PLAN_TYPE_AUTHOR_REFERRAL => "저자 공유"
     ];
 
+    const VOUCHER_OPTION_CANCELLABLE_DAYS = 93;
 
     const VOUCHER_STATUS_INVITATION_REQUESTED = 1;
     const VOUCHER_STATUS_INVITATION_ACCEPTED = 2;
