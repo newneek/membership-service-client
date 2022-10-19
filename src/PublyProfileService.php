@@ -21,35 +21,41 @@ class PublyProfileService extends BaseApiService
 
     public function getCareersByProfileId($profileId)
     {
-        return $this->get("careers/",
+        return $this->get(
+            "careers/",
             [
                 'profileId' => $profileId,
-                'limit'=> 100,
-                'page'=> 1,
+                'limit' => 100,
+                'page' => 1,
                 'sortBy' => 'displaySequence',
                 'orderBy' => 'asc'
-            ]);
+            ]
+        );
     }
 
     public function addCareer($profileId, $type, $company, $title)
     {
-        return $this->post("careers/",
+        return $this->post(
+            "careers/",
             [
                 'profileId' => $profileId,
                 'type' => $type,
                 'company' => $company,
                 'title' => $title,
-            ]);
+            ]
+        );
     }
 
     public function updateCareer($careerId, $type, $company, $title)
     {
-        return $this->put("careers/$careerId",
+        return $this->put(
+            "careers/$careerId",
             [
                 'type' => $type,
                 'company' => $company,
                 'title' => $title,
-            ]);
+            ]
+        );
     }
 
     public function deleteCareer($careerId)
@@ -59,18 +65,22 @@ class PublyProfileService extends BaseApiService
 
     public function updateOrder($careerId, $order)
     {
-        return $this->put("careers/$careerId",
+        return $this->put(
+            "careers/$careerId",
             [
                 'displaySequence' => $order,
-            ]);
+            ]
+        );
     }
 
     public function getProfile($profileId)
     {
-        return $this->get("profiles/",
+        return $this->get(
+            "profiles/",
             [
                 'id' => $profileId
-            ]);
+            ]
+        );
     }
 
     public function getProfiles($page = 1, $limit = 100, $sortBy = 'id', $orderBy = 'desc', $filterArray = [])
@@ -86,40 +96,46 @@ class PublyProfileService extends BaseApiService
     {
         $profileIds = implode(',', $profileIds);
 
-        return $this->get("profiles/",
+        return $this->get(
+            "profiles/",
             [
                 'id' => $profileIds,
-                'limit'=> $limit,
-                'page'=> $page,
+                'limit' => $limit,
+                'page' => $page,
                 'sortBy' => $sortBy,
                 'orderBy' => $orderBy
-            ]);
+            ]
+        );
     }
 
     public function getProfilesByUserId($userId, $page = 1, $limit = 100, $sortBy = 'p.id', $orderBy = 'desc')
     {
-        return $this->get("profiles/",
+        return $this->get(
+            "profiles/",
             [
                 'userId' => $userId,
-                'limit'=> $limit,
-                'page'=> $page,
+                'limit' => $limit,
+                'page' => $page,
                 'sortBy' => $sortBy,
                 'orderBy' => $orderBy
-            ]);
+            ]
+        );
     }
 
     public function getProfilesByUserIds($userIds, $page = 1, $limit = 100, $sortBy = 'p.id', $orderBy = 'desc')
     {
         $userIds = implode(',', $userIds);
 
-        return $this->get("profiles/",
+        return $this->get(
+            "profiles/",
             [
                 'userId' => $userIds,
-                'limit'=> $limit,
-                'page'=> $page,
+                'limit' => $limit,
+                'page' => $page,
                 'sortBy' => $sortBy,
                 'orderBy' => $orderBy
-            ]);
+            ]
+        );
     }
 
     public function createProfile($name)
@@ -183,11 +199,12 @@ class PublyProfileService extends BaseApiService
         return $this->getProfileUsers(
             [
                 'profileId' => $profileId,
-                'limit'=> $limit,
-                'page'=> $page,
+                'limit' => $limit,
+                'page' => $page,
                 'sortBy' => $sortBy,
                 'orderBy' => $orderBy
-            ]);
+            ]
+        );
     }
 
     public function getProfileUsersByUserId($userId, $page = 1, $limit = 100, $sortBy = 'id', $orderBy = 'desc')
@@ -195,10 +212,25 @@ class PublyProfileService extends BaseApiService
         return $this->getProfileUsers(
             [
                 'userId' => $userId,
-                'limit'=> $limit,
-                'page'=> $page,
+                'limit' => $limit,
+                'page' => $page,
                 'sortBy' => $sortBy,
                 'orderBy' => $orderBy
-            ]);
+            ]
+        );
+    }
+
+    public function getResumes($params, $page = 1, $limit = 100, $sortBy = 'id', $orderBy = 'desc')
+    {
+        $params['limit'] = $limit;
+        $params['page'] = $page;
+        $params['sortBy'] = $sortBy;
+        $params['orderBy'] = $orderBy;
+        return $this->get("resumes/", $params);
+    }
+
+    public function deleteResumeById($resumeId)
+    {
+        return $this->delete("resumes/$resumeId");
     }
 }
