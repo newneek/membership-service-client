@@ -175,6 +175,7 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_EXPIRATION => '포인트 유효기간 만료',
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_PROMOTION_REFERRAL_SIGNUP_REFERRER => '프로모션 레퍼럴 포인트',
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_PROMOTION_REFERRAL_SIGNUP_REFEREE => '프로모션 레퍼럴 포인트',
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_2022_PROMOTION => '[프로모션] 스킬업 결제 포인트 ',
     ];
 
     public const POINT_HISTORY_ONLY_ADD_POINT_TRANSACTION_TYPES = [
