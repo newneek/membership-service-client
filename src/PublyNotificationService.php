@@ -221,7 +221,8 @@ class PublyNotificationService extends BaseApiService
         $newStatus,
         $withPayment
     ) {
-        return $this->post("/event/subscription_status_changed",
+        return $this->post(
+            "/event/subscription_status_changed",
             [
                 'subscription' => $subscription,
                 'next_payment' => $nextPayment,
@@ -229,7 +230,8 @@ class PublyNotificationService extends BaseApiService
                 'old_status' => $oldStatus,
                 'new_status' => $newStatus,
                 'with_payment' => $withPayment
-            ]);
+            ]
+        );
     }
 
     public function eventSubscriptionStatusChanged2(
@@ -240,7 +242,8 @@ class PublyNotificationService extends BaseApiService
         $newStatus,
         $usedPoints
     ) {
-        return $this->post("/event/subscription_status_changed",
+        return $this->post(
+            "/event/subscription_status_changed",
             [
                 'subscription' => $subscription,
                 'next_payment' => $nextPayment,
@@ -248,7 +251,25 @@ class PublyNotificationService extends BaseApiService
                 'old_status' => $oldStatus,
                 'new_status' => $newStatus,
                 'used_points' => $usedPoints
-            ]);
+            ]
+        );
+    }
+
+    public function eventRequestDeleteAccount($userId, $product)
+    {
+        return $this->post("/event/request_delete_account", [
+            'user_id' => $userId,
+            'product' => $product,
+        ]);
+    }
+
+    public function eventDeleteAccount($changerId, $userId, $product)
+    {
+        return $this->post("/event/delete_account", [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'product' => $product,
+        ]);
     }
 
     public function eventSubscriptionNextPlanChanged($subscription)

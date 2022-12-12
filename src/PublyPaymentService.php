@@ -156,17 +156,18 @@ class PublyPaymentService extends BaseApiService
     const POINT_HISTORY_TRANSACTION_TYPE_EXPIRATION = 13;
     const POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_PROMOTION_REFERRAL_SIGNUP_REFERRER = 14;
     const POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_PROMOTION_REFERRAL_SIGNUP_REFEREE = 15;
-    const POINT_HISTORY_TRANSACTION_TYPE_MAX = 16;
+    const POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_2022_PROMOTION = 16;
+    const POINT_HISTORY_TRANSACTION_TYPE_MAX = 17;
 
     const STRING_TRANSACTION_TYPE = [
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_USED_FOR_PAYMENT => "포인트 사용",
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_ADJUSTED_BY_ADMIN => "어드민 포인트 적립",
-        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWORDED_BY_REFERER => "포인트 적립",
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWORDED_BY_REFERER => "친구 초대 리워드 포인트",
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_FAILED_IN_PAYMENT => "포인트 결제 취소",
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_CONTENT_RETURNED => "콘텐츠 환급 포인트",
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_PROJECT_SPONSOR => "후원 하기 포인트",
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_DAILY_VIEW_CONTENT => "퍼블리 습관 응원 포인트",
-        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_USER_REFERRAL_SIGNUP => "유저 레퍼럴 회원가입 포인트 적립",
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_USER_REFERRAL_SIGNUP => "친구 초대 리워드 포인트",
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_AUTHOR_REFERRAL_SIGNUP => "저자 레퍼럴 회원가입 포인트 적립",
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_APP_INSTALL => "앱 설치 축하 포인트 적립",
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_CHALLENGE => "챌린지 보상 포인트 적립",
@@ -174,6 +175,7 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_EXPIRATION => '포인트 유효기간 만료',
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_PROMOTION_REFERRAL_SIGNUP_REFERRER => '프로모션 레퍼럴 포인트',
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_PROMOTION_REFERRAL_SIGNUP_REFEREE => '프로모션 레퍼럴 포인트',
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_2022_PROMOTION => '[프로모션] 스킬업 결제 포인트 ',
     ];
 
     public const POINT_HISTORY_ONLY_ADD_POINT_TRANSACTION_TYPES = [
@@ -200,6 +202,7 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::USER_DEFAULT_PLAN_TYPE_AUTHOR_REFERRAL => "저자 공유"
     ];
 
+    const VOUCHER_OPTION_CANCELLABLE_DAYS = 93;
 
     const VOUCHER_STATUS_INVITATION_REQUESTED = 1;
     const VOUCHER_STATUS_INVITATION_ACCEPTED = 2;
@@ -3765,9 +3768,9 @@ class PublyPaymentService extends BaseApiService
         return $this->get("point_history/user/{$userId}", $filterArray);
     }
 
-    public function getPointHistoriesSumByUserId($userId)
+    public function getPointHistoriesSumByUserId($userId, $type)
     {
-        return $this->get("point_history/user/{$userId}/sum");
+        return $this->get("point_history/user/{$userId}/sum", ['type' => $type]);
     }
 
     public function getPointHistoriesSumsByUserIds($userIds) {
@@ -3945,6 +3948,11 @@ class PublyPaymentService extends BaseApiService
     public function getReferralRelationByReferee($userId)
     {
         return $this->get("referral_relation/referee/{$userId}");
+    }
+
+    public function getReferralCountByReferrerId($userId)
+    {
+        return $this->get("referral_relation/referrer/{$userId}/count");
     }
 
     public function getPointSumByUser($userId)
