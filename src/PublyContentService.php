@@ -30,6 +30,7 @@ class PublyContentService extends BaseApiService
     const SET_READER_SOURCE_TYPE_ADMIN = 1;
     const SET_READER_SOURCE_TYPE_ORDER_SINGLE = 2;
     const SET_READER_SOURCE_TYPE_ORDER_BUNDLE = 3;
+    const SET_READER_SOURCE_TYPE_PROMOTION = 4;
 
     const SET_READER_STATUS_ACTIVATION = 1;
     const SET_READER_STATUS_EXPIRATION = 2;
@@ -1614,6 +1615,28 @@ class PublyContentService extends BaseApiService
             'changer_id' => $changerId,
             'user_ids' => implode(',', $userIds),
             'set_id' => $setId
+        ]);
+    }
+
+    public function createSetReaderBySetIds($changerId, $userId, $setIds, $adminId, $sourceType, $note, $expirationDate = null)
+    {
+        return $this->post("set_reader/store_by_set_ids", [
+            'changer_id' => $changerId,
+            'set_ids' => implode(',', $setIds),
+            'user_id' => $userId,
+            'admin_id' => $adminId,
+            'source_type' => $sourceType,
+            'note' => $note,
+            'expiration_date' => $expirationDate
+        ]);
+    }
+
+    public function deleteSetReaderBySetIds($changerId, $userId, $setIds)
+    {
+        return $this->post("set_reader/delete_set_readers", [
+            'changer_id' => $changerId,
+            'set_ids' => implode(',', $setIds),
+            'user_id' => $userId
         ]);
     }
 
