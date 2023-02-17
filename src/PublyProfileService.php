@@ -33,6 +33,49 @@ class PublyProfileService extends BaseApiService
         );
     }
 
+    public function getCareersV2(array $params)
+    {
+        $profileIds = implode(",", $params['profileIds']);
+
+        return $this->get(
+            "careers/",
+            [
+                'profileIds' => $profileIds,
+                'page' => $params['page'],
+                'limit' => $params['limit'],
+                'version' => 2,
+            ]
+        );
+    }
+
+    public function addCareerV2(array $params)
+    {
+        return $this->post("careers?version=2", [
+            'profileId' => (int) $params['profileId'],
+            'company' => $params['company'],
+            'title' => $params['title'],
+            'isCurrent' => $params['isCurrent'],
+            'startDate' => $params['startDate'] ?? null,
+            'endDate' => $params['endDate'] ?? null,
+            'description' => $params['description'] ?? null,
+            'url' => $params['url'] ?? null,
+        ]);
+    }
+
+    public function updateCareerV2(int $careerId, array $params)
+    {
+        return $this->put("careers/{$careerId}?version=2", [
+            'profileId' => (int) $params['profileId'],
+            'company' => $params['company'],
+            'title' => $params['title'],
+            'isCurrent' => $params['isCurrent'],
+            'startDate' => $params['startDate'] ?? null,
+            'endDate' => $params['endDate'] ?? null,
+            'description' => $params['description'] ?? null,
+            'url' => $params['url'] ?? null,
+        ]);
+    }
+
     public function addCareer($profileId, $type, $company, $title)
     {
         return $this->post(
@@ -61,6 +104,53 @@ class PublyProfileService extends BaseApiService
     public function deleteCareer($careerId)
     {
         return $this->delete("careers/$careerId");
+    }
+
+    public function getEducations(array $params)
+    {
+        $profileIds = implode(",", $params['profileIds']);
+
+        return $this->get(
+            "educations/",
+            [
+                'profileIds' => $profileIds,
+                'page' => $params['page'],
+                'limit' => $params['limit'],
+            ]
+        );
+    }
+
+    public function addEducation(array $params)
+    {
+        return $this->post("educations", [
+            'profileId' => (int) $params['profileId'],
+            'institute' => $params['institute'],
+            'major' => $params['major'],
+            'isCurrent' => $params['isCurrent'],
+            'startDate' => $params['startDate'] ?? null,
+            'endDate' => $params['endDate'] ?? null,
+            'description' => $params['description'] ?? null,
+            'url' => $params['url'] ?? null,
+        ]);
+    }
+
+    public function updateEducation(int $educationId, array $params)
+    {
+        return $this->put("educations/{$educationId}", [
+            'profileId' => (int) $params['profileId'],
+            'institute' => $params['institute'],
+            'major' => $params['major'],
+            'isCurrent' => $params['isCurrent'],
+            'startDate' => $params['startDate'] ?? null,
+            'endDate' => $params['endDate'] ?? null,
+            'description' => $params['description'] ?? null,
+            'url' => $params['url'] ?? null,
+        ]);
+    }
+
+    public function deleteEducation(int $educationId)
+    {
+        return $this->delete("educations/{$educationId}");
     }
 
     public function updateOrder($careerId, $order)
@@ -148,6 +238,20 @@ class PublyProfileService extends BaseApiService
     public function updateProfile($profileId, $name, $imageUrl, $headline, $description, $longDescription, $adminNote, $links, $hashtags)
     {
         return $this->put("profiles/$profileId", [
+            'name' => $name,
+            'imageUrl' => $imageUrl,
+            'headline' => $headline,
+            'adminNote' => $adminNote,
+            'description' => $description,
+            'links' => $links,
+            'hashtags' => $hashtags,
+            'longDescription' => $longDescription
+        ]);
+    }
+
+    public function updateProfilePartial($profileId, $name, $imageUrl, $headline, $description, $longDescription, $adminNote, $links, $hashtags)
+    {
+        return $this->patch("profiles/$profileId", [
             'name' => $name,
             'imageUrl' => $imageUrl,
             'headline' => $headline,
