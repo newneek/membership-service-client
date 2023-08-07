@@ -138,6 +138,13 @@ class PublyContentService extends BaseApiService
     const REACTABLE_TYPE_COMMENT = 'comment';
     const REACTABLE_TYPE_QUESTION = 'question';
 
+    const EMAIL_DOMAIN_TO_CATEGORY_IDS_TO_FILTER_MAP = [
+        'coupangpay' => [187, 220],
+        'coupangfinancial' => [187, 220],
+        'publy' => [187, 220],
+    ];
+
+
     public function __construct($domain)
     {
         parent::__construct();
@@ -241,7 +248,8 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function updateReward4($changerId, $rewardId, $inputs = []) {
+    public function updateReward4($changerId, $rewardId, $inputs = [])
+    {
         $inputs = array_merge($inputs, ['changer_id' => $changerId]);
         return $this->put("reward/{$rewardId}", $inputs);
     }
@@ -357,7 +365,8 @@ class PublyContentService extends BaseApiService
             [
                 'changer_id' => $changerId,
                 'ids' => implode(',', $rewardIds)
-            ]);
+            ]
+        );
     }
 
     public function attachSetToReward($rewardId, $setId)
@@ -656,12 +665,14 @@ class PublyContentService extends BaseApiService
         $setId,
         $orderInSet
     ) {
-        return $this->put("content/{$contentId}",
+        return $this->put(
+            "content/{$contentId}",
             [
                 'changer_id' => $changerId,
                 'set_id' => $setId,
                 'order_in_set' => $orderInSet
-            ]);
+            ]
+        );
     }
 
     public function updateContentSetAndContentGroup(
@@ -671,13 +682,15 @@ class PublyContentService extends BaseApiService
         $contentGroupId,
         $orderInContentGroup
     ) {
-        return $this->put("content/{$contentId}",
+        return $this->put(
+            "content/{$contentId}",
             [
                 'changer_id' => $changerId,
                 'set_id' => $setId,
                 'order_in_content_group' => $orderInContentGroup,
                 'content_group_id' => $contentGroupId
-            ]);
+            ]
+        );
     }
 
     public function updateContentIsPicked(
@@ -685,11 +698,13 @@ class PublyContentService extends BaseApiService
         $contentId,
         $isPicked
     ) {
-        return $this->put("content/{$contentId}",
+        return $this->put(
+            "content/{$contentId}",
             [
                 'changer_id' => $changerId,
                 'is_picked' => $isPicked
-            ]);
+            ]
+        );
     }
 
     public function updateContentProjectId($contentId, $projectId)
@@ -699,11 +714,13 @@ class PublyContentService extends BaseApiService
 
     public function updateContentProjectId2($changerId, $contentId, $projectId)
     {
-        return $this->put("content/{$contentId}",
+        return $this->put(
+            "content/{$contentId}",
             [
                 'changer_id' => $changerId,
                 'project_id' => $projectId
-            ]);
+            ]
+        );
     }
 
     public function updateContentsOrderInSet($setId, $contentIds)
@@ -713,20 +730,24 @@ class PublyContentService extends BaseApiService
 
     public function updateContentsOrderInSet2($changerId, $setId, $contentIds)
     {
-        return $this->put("content/set/{$setId}",
+        return $this->put(
+            "content/set/{$setId}",
             [
                 'changer_id' => $changerId,
                 'ids' => implode(',', $contentIds)
-            ]);
+            ]
+        );
     }
 
     public function updateContentsOrderInContentGroup($changerId, $contentGroupId, $contentIds)
     {
-        return $this->put("content/content_group/{$contentGroupId}",
+        return $this->put(
+            "content/content_group/{$contentGroupId}",
             [
                 'changer_id' => $changerId,
                 'ids' => implode(',', $contentIds)
-            ]);
+            ]
+        );
     }
 
     // deprecated
@@ -777,43 +798,50 @@ class PublyContentService extends BaseApiService
         return $this->get("content/project/{$projectId}", $filterArray);
     }
 
-    public function getTotalContentCount() {
+    public function getTotalContentCount()
+    {
         return $this->get("content/total");
     }
 
-    public function getTotalContentCount2() {
+    public function getTotalContentCount2()
+    {
         return $this->get("content/total")['success']['data'];
     }
 
-    public function getTotalSetCount() {
+    public function getTotalSetCount()
+    {
         return $this->get("set/total");
     }
 
-    public function getTotalAuthorCount() {
+    public function getTotalAuthorCount()
+    {
         return $this->get("writer/total");
     }
 
-    public function getTotalAuthorCount2($filterArray = []) {
+    public function getTotalAuthorCount2($filterArray = [])
+    {
         return $this->get("writer/total", $filterArray)['success']['data'];
     }
 
-    public function getTotalContentCountFromCache() {
+    public function getTotalContentCountFromCache()
+    {
         $cacheKey = 'TOTAL_CONTENT_COUNT';
-        $totalContentCount = \Cache::remember($cacheKey, 60, function() {
+        $totalContentCount = \Cache::remember($cacheKey, 60, function () {
             return $this->getTotalContentCount2();
         });
 
         return $totalContentCount;
     }
 
-    public function getTotalPackageSetCountFromCache() {
+    public function getTotalPackageSetCountFromCache()
+    {
         $cacheKey = 'TOTAL_PACKAGE_SET_COUNT';
         $latestPackageSetFilter =
             [
                 'is_package' => 1,
                 'status' => 2,
             ];
-        $totalPackageSetCount = \Cache::remember($cacheKey, 60, function() use ($latestPackageSetFilter) {
+        $totalPackageSetCount = \Cache::remember($cacheKey, 60, function () use ($latestPackageSetFilter) {
             $latestPackageSetResult = $this->getSets(1, 1, $latestPackageSetFilter);
             $totalPackageSetCount = $latestPackageSetResult['paginator']['total_count'];
 
@@ -823,7 +851,8 @@ class PublyContentService extends BaseApiService
         return $totalPackageSetCount;
     }
 
-    public function getTotalWebBookSetCountFromCache() {
+    public function getTotalWebBookSetCountFromCache()
+    {
         $cacheKey = 'TOTAL_WEB_BOOK_SET_COUNT';
         $webBookSetFilter =
             [
@@ -831,7 +860,7 @@ class PublyContentService extends BaseApiService
                 'status' => 2,
                 'type' => self::SET_TYPE_WEB_BOOK,
             ];
-        $totalWebBookSetCount = \Cache::remember($cacheKey, 60, function() use ($webBookSetFilter) {
+        $totalWebBookSetCount = \Cache::remember($cacheKey, 60, function () use ($webBookSetFilter) {
             $webBookSetResult = $this->getSets(1, 1, $webBookSetFilter);
             $totalWebBookSetCount = $webBookSetResult['paginator']['total_count'];
 
@@ -841,7 +870,8 @@ class PublyContentService extends BaseApiService
         return $totalWebBookSetCount;
     }
 
-    public function getTotalArticleSetCountFromCache() {
+    public function getTotalArticleSetCountFromCache()
+    {
         $cacheKey = 'TOTAL_ARTICLE_SET_COUNT';
         $articleSetFilter =
             [
@@ -849,7 +879,7 @@ class PublyContentService extends BaseApiService
                 'status' => 2,
                 'type' => self::SET_TYPE_ARTICLE
             ];
-        $totalArticleSetCount = \Cache::remember($cacheKey, 60, function() use ($articleSetFilter) {
+        $totalArticleSetCount = \Cache::remember($cacheKey, 60, function () use ($articleSetFilter) {
             $articleSetResult = $this->getSets(1, 1, $articleSetFilter);
             $totalArticleSetCount = $articleSetResult['paginator']['total_count'];
 
@@ -859,9 +889,10 @@ class PublyContentService extends BaseApiService
         return $totalArticleSetCount;
     }
 
-    public function getTotalAuthorCountFromCache($filterArray = []) {
+    public function getTotalAuthorCountFromCache($filterArray = [])
+    {
         $cacheKey = 'TOTAL_AUTHOR_COUNT';
-        $totalAuthorCount = \Cache::remember($cacheKey, 60, function() use ($filterArray) {
+        $totalAuthorCount = \Cache::remember($cacheKey, 60, function () use ($filterArray) {
             return $this->getTotalAuthorCount2($filterArray);
         });
 
@@ -894,7 +925,8 @@ class PublyContentService extends BaseApiService
 
     public function getContentItemsByContentIds($contentIds)
     {
-        return $this->get("content_item/content_ids",
+        return $this->get(
+            "content_item/content_ids",
             ['content_ids' => implode(',', $contentIds)]
         );
     }
@@ -946,7 +978,8 @@ class PublyContentService extends BaseApiService
 
     public function getContentListsByContentIds($contentIds)
     {
-        return $this->get("content_list/content_ids",
+        return $this->get(
+            "content_list/content_ids",
             ['content_ids' => implode(',', $contentIds)]
         );
     }
@@ -986,7 +1019,8 @@ class PublyContentService extends BaseApiService
         $guideId,
         $pageBase
     ) {
-        return $this->put("project/{$projectId}", [ 'changer_id' => $changerId,
+        return $this->put("project/{$projectId}", [
+            'changer_id' => $changerId,
             'title' => $title,
             'image' => $imageUrl,
             'image_vertical' => $imageVerticalUrl,
@@ -1161,23 +1195,25 @@ class PublyContentService extends BaseApiService
         $projectId,
         $projectSummary,
         $projectTargetReader,
-//                                           $projectRecommnend,
+        //                                           $projectRecommnend,
         $projectAuthors,
         $projectDetail,
         $projectTableOfContents,
         $projectRewardDescription
     ) {
-        return $this->put("project/{$projectId}/sections",
+        return $this->put(
+            "project/{$projectId}/sections",
             [
                 'changer_id' => $changerId,
-//              'project_recommend' => $projectRecommnend,
+                //              'project_recommend' => $projectRecommnend,
                 'project_summary' => $projectSummary,
                 'project_target_reader' => $projectTargetReader,
                 'project_authors' => $projectAuthors,
                 'project_detail' => $projectDetail,
                 'project_table_of_contents' => $projectTableOfContents,
                 'project_reward_description' => $projectRewardDescription
-            ]);
+            ]
+        );
     }
 
     public function updateProjectRewardDescription(
@@ -1185,11 +1221,13 @@ class PublyContentService extends BaseApiService
         $projectId,
         $projectRewardDescription
     ) {
-        return $this->put("project/{$projectId}/reward_description",
+        return $this->put(
+            "project/{$projectId}/reward_description",
             [
                 'changer_id' => $changerId,
                 'reward_description' => $projectRewardDescription
-            ]);
+            ]
+        );
     }
 
     /*
@@ -1496,7 +1534,8 @@ class PublyContentService extends BaseApiService
         $tableOfContents,
         $authorsDescription
     ) {
-        return $this->put("set/{$setId}",
+        return $this->put(
+            "set/{$setId}",
             [
                 'changer_id' => $changerId,
                 'summary' => $summary,
@@ -1504,7 +1543,8 @@ class PublyContentService extends BaseApiService
                 'content_detail' => $contentDetail,
                 'table_of_contents' => $tableOfContents,
                 'authors_description' => $authorsDescription,
-            ]);
+            ]
+        );
     }
 
     /*
@@ -2108,7 +2148,8 @@ class PublyContentService extends BaseApiService
         return $this->get("curation_item", $filterArray);
     }
 
-    public function createCutraionItem($changerId, $curationId, $curatableItemId, $curatableItemType) {
+    public function createCutraionItem($changerId, $curationId, $curatableItemId, $curatableItemType)
+    {
         return $this->post("curation_item", [
             'changer_id' => $changerId,
             'curation_id' => $curationId,
@@ -2117,7 +2158,8 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function deleteCurationItem($changerId, $curationId, $curatableItemId) {
+    public function deleteCurationItem($changerId, $curationId, $curatableItemId)
+    {
         return $this->post("curation_item/{$curatableItemId}/delete", [
             'changer_id' => $changerId,
             'curation_id' => $curationId
@@ -2618,12 +2660,14 @@ class PublyContentService extends BaseApiService
 
     public function createCategoryOrder($changerId, $categoryId, $categoryType)
     {
-        return $this->post("category_order",
+        return $this->post(
+            "category_order",
             [
                 'category_id' => $categoryId,
                 'changer_id' => $changerId,
                 'type' => $categoryType
-            ]);
+            ]
+        );
     }
 
     public function getCategoryOrders($filterArray = [])
@@ -2643,19 +2687,23 @@ class PublyContentService extends BaseApiService
 
     public function deleteCategoryOrder($changerId, $categoryOrderId)
     {
-        return $this->post("category_order/{$categoryOrderId}/delete",
+        return $this->post(
+            "category_order/{$categoryOrderId}/delete",
             [
                 'changer_id' => $changerId
-            ]);
+            ]
+        );
     }
 
     public function updateCategoryOrderOrder($changerId, $categoryOrderIds)
     {
-        return $this->put("category_order/update_order",
+        return $this->put(
+            "category_order/update_order",
             [
-                'changer_id'=> $changerId,
+                'changer_id' => $changerId,
                 'ids' => implode(',', $categoryOrderIds)
-            ]);
+            ]
+        );
     }
 
     public function getSortedCategoriesFromCache()
@@ -2688,6 +2736,45 @@ class PublyContentService extends BaseApiService
         return $sortedCategories;
     }
 
+    public function getSortedCategories($user = null)
+    {
+        $categories = $this->getSortedCategoriesFromCache();
+
+        if (is_null($user)) {
+            return $categories;
+        }
+
+        $userId = $user->id ?? null;
+        $userEmail = $user->email ?? null;
+        if (is_null($userId) || is_null($userEmail)) {
+            return $categories;
+        }
+
+        if (!check_package_reader()) {
+            return $categories;
+        }
+
+        $domain = get_domain_from_email($userEmail);
+        $categoryIdsToFilter = PublyContentService::EMAIL_DOMAIN_TO_CATEGORY_IDS_TO_FILTER_MAP[$domain] ?? false;
+
+        if (!$categoryIdsToFilter) {
+            return $categories;
+        }
+
+        $filteredCategories = array_filter(
+            $categories,
+            function ($category) use ($categoryIdsToFilter) {
+                return !in_array($category['id'], $categoryIdsToFilter);
+            }
+        );
+
+        if (empty($filteredCategories)) {
+            return $categories;
+        }
+
+        return $filteredCategories;
+    }
+
     public function getOnboardingSets($filterArray = [])
     {
         return $this->get("onboarding_set", $filterArray);
@@ -2695,10 +2782,12 @@ class PublyContentService extends BaseApiService
 
     public function createOnboardingSet($setId)
     {
-        return $this->post("onboarding_set",
+        return $this->post(
+            "onboarding_set",
             [
                 'set_id' => $setId
-            ]);
+            ]
+        );
     }
 
     public function deleteOnboardingSet($setId)
@@ -2707,10 +2796,12 @@ class PublyContentService extends BaseApiService
     }
     public function updateOnboardingSetOrder($onboardingSetIds)
     {
-        return $this->put("onboarding_set/update_order",
+        return $this->put(
+            "onboarding_set/update_order",
             [
                 'ids' => implode(',', $onboardingSetIds)
-            ]);
+            ]
+        );
     }
 
     public function getOnboardingCategories($filterArray = [])
@@ -2720,10 +2811,12 @@ class PublyContentService extends BaseApiService
 
     public function createOnboardingCategory($categoryId)
     {
-        return $this->post("onboarding_category",
+        return $this->post(
+            "onboarding_category",
             [
                 'category_id' => $categoryId
-            ]);
+            ]
+        );
     }
 
     public function deleteOnboardingCategory($categoryId)
@@ -2733,10 +2826,12 @@ class PublyContentService extends BaseApiService
 
     public function updateOnboardingCategoryOrder($onboardingCategoryIds)
     {
-        return $this->put("onboarding_category/update_order",
+        return $this->put(
+            "onboarding_category/update_order",
             [
                 'ids' => implode(',', $onboardingCategoryIds)
-            ]);
+            ]
+        );
     }
 
     public function getProfiles($page = 1, $limit = 10, $filterArray = [])
@@ -3046,10 +3141,10 @@ class PublyContentService extends BaseApiService
         return $this->get("/set_review", $filterArray);
     }
 
-   public function findTargetGroupAndSendPush()
-   {
-       return $this->post("job/push/send");
-   }
+    public function findTargetGroupAndSendPush()
+    {
+        return $this->post("job/push/send");
+    }
 
     public function findTargetAndSendChallengePush()
     {
@@ -3061,10 +3156,10 @@ class PublyContentService extends BaseApiService
         return $this->post("job/challenge-push-time-unlimited/send");
     }
 
-   public function getSetSegment($setId)
-   {
-       return $this->get("set_segment/{$setId}");
-   }
+    public function getSetSegment($setId)
+    {
+        return $this->get("set_segment/{$setId}");
+    }
 
     public function getSetSegmentBySetIds($setIds, $filterArray = [])
     {
@@ -3537,7 +3632,7 @@ class PublyContentService extends BaseApiService
 
     public function getComment($commentId, $filterArray = [])
     {
-        return $this->get("comment/{$commentId}". $filterArray);
+        return $this->get("comment/{$commentId}" . $filterArray);
     }
 
     public function createSetComment($userId, $changerId, $setId, $content)
@@ -3734,50 +3829,60 @@ class PublyContentService extends BaseApiService
         ]);
     }
 
-    public function getCollections($filterArray = []) {
+    public function getCollections($filterArray = [])
+    {
         return $this->get('/collection', $filterArray);
     }
 
-    public function getCollectionCountByUser($userId, $filterArray = []) {
+    public function getCollectionCountByUser($userId, $filterArray = [])
+    {
         $filterArray = array_merge($filterArray, ['user_id' => $userId]);
         return $this->get('/collection/count', $filterArray);
     }
 
-    public function getCollection($collectionId, $filterArray = []) {
+    public function getCollection($collectionId, $filterArray = [])
+    {
         return $this->get("/collection/{$collectionId}", $filterArray);
     }
 
-    public function addCollection($userId, $inputs) {
+    public function addCollection($userId, $inputs)
+    {
         $inputs = array_merge($inputs, ['user_id' => $userId]);
 
         return $this->post('/collection', $inputs);
     }
 
-    public function updateCollection($collectionId, $inputs) {
+    public function updateCollection($collectionId, $inputs)
+    {
         return $this->patch("/collection/${collectionId}", $inputs);
     }
 
-    public function removeCollection($collectionId) {
+    public function removeCollection($collectionId)
+    {
         return $this->delete("/collection/${collectionId}");
     }
 
-    public function editCollection($collectionId, $inputs) {
+    public function editCollection($collectionId, $inputs)
+    {
         return $this->post("/collection/${collectionId}/edit", $inputs);
     }
 
-    public function getCollectionItemsByCollection($collectionId, $filterArray = []) {
+    public function getCollectionItemsByCollection($collectionId, $filterArray = [])
+    {
         return $this->get("/collection/{$collectionId}/item", $filterArray);
     }
 
-    public function addCollectionItem($inputs) {
+    public function addCollectionItem($inputs)
+    {
         return $this->post("/collection-item", $inputs);
     }
 
-    public function getCollectionItem($collectionId, $collectableType ,$collectableId) {
+    public function getCollectionItem($collectionId, $collectableType, $collectableId)
+    {
         return $this->get("/collection/{$collectionId}/item/{$collectableType}/{$collectableId}");
     }
 
-    public function removeCollectionItem($collectionId, $collectableType ,$collectableId)
+    public function removeCollectionItem($collectionId, $collectableType, $collectableId)
     {
         return $this->delete("/collection/{$collectionId}/item/{$collectableType}/{$collectableId}");
     }
