@@ -141,7 +141,6 @@ class PublyContentService extends BaseApiService
     const EMAIL_DOMAIN_TO_CATEGORY_IDS_TO_FILTER_MAP = [
         'coupangpay' => [187, 220],
         'coupangfinancial' => [187, 220],
-        'publy' => [187, 220],
     ];
 
 
