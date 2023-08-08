@@ -138,11 +138,6 @@ class PublyContentService extends BaseApiService
     const REACTABLE_TYPE_COMMENT = 'comment';
     const REACTABLE_TYPE_QUESTION = 'question';
 
-    const EMAIL_DOMAIN_TO_CATEGORY_IDS_TO_FILTER_MAP = [
-        'coupangpay' => [187, 220],
-        'coupangfinancial' => [187, 220],
-    ];
-
 
     public function __construct($domain)
     {
@@ -2735,44 +2730,6 @@ class PublyContentService extends BaseApiService
         return $sortedCategories;
     }
 
-    public function getSortedCategories($user = null)
-    {
-        $categories = $this->getSortedCategoriesFromCache();
-
-        if (is_null($user)) {
-            return $categories;
-        }
-
-        $userId = $user->id ?? null;
-        $userEmail = $user->email ?? null;
-        if (is_null($userId) || is_null($userEmail)) {
-            return $categories;
-        }
-
-        if (!check_package_reader()) {
-            return $categories;
-        }
-
-        $domain = get_domain_from_email($userEmail);
-        $categoryIdsToFilter = PublyContentService::EMAIL_DOMAIN_TO_CATEGORY_IDS_TO_FILTER_MAP[$domain] ?? false;
-
-        if (!$categoryIdsToFilter) {
-            return $categories;
-        }
-
-        $filteredCategories = array_filter(
-            $categories,
-            function ($category) use ($categoryIdsToFilter) {
-                return !in_array($category['id'], $categoryIdsToFilter);
-            }
-        );
-
-        if (empty($filteredCategories)) {
-            return $categories;
-        }
-
-        return $filteredCategories;
-    }
 
     public function getOnboardingSets($filterArray = [])
     {
