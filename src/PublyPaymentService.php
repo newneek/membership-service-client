@@ -4914,4 +4914,9 @@ class PublyPaymentService extends BaseApiService
             'expiration_date' => $expirationDate
         ]);
     }
+
+    public function getOnboardingEmailCandidates()
+    {
+        return $this->get("subscription/onboarding-email-candidates/");
+    }
 }
