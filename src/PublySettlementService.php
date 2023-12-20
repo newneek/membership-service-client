@@ -356,6 +356,14 @@ class PublySettlementService extends BaseApiService
         ]);
     }
 
+    public function cancelAuthorSettlementTransfer($changerId, $authorSettlementTransferId)
+    {
+        return $this->put("author_settlement_transfer/{$authorSettlementTransferId}", [
+            'changer_id' => $changerId,
+            'action' => 'cancel'
+        ]);
+    }
+
     public function deleteAuthorSettlementTransfer($changerId, $authorSettlementTransferId)
     {
         return $this->post("author_settlement_transfer/{$authorSettlementTransferId}/delete", [
