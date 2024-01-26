@@ -623,7 +623,8 @@ class PublyContentService extends BaseApiService
         $curationTitle,
         $type,
         $metaKeywords,
-        $imgAlt
+        $imgAlt,
+        $isBranded
     ) {
         return $this->put("content/{$contentId}", [
             'changer_id' => $changerId,
@@ -640,7 +641,8 @@ class PublyContentService extends BaseApiService
             'curation_title' => $curationTitle,
             'type' => $type,
             'meta_keywords' => $metaKeywords,
-            'img_alt' => $imgAlt
+            'img_alt' => $imgAlt,
+            'is_branded' => $isBranded
         ]);
     }
 
