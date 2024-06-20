@@ -330,6 +330,11 @@ class PublySettlementService extends BaseApiService
         return $this->get("author_settlement_transfer/total_price_before_tax_group_by_author", $filterArray);
     }
 
+    public function getAuthorSettlementTransferTotalPriceBeforeTaxGroupForExcelExport($filterArray = [])
+    {
+        return $this->get("author_settlement_transfer/total_price_before_tax_group_for_excel_export", $filterArray);
+    }
+
     public function modifyAuthorSettlementTransfer($changerId, $authorSettlementTransferId)
     {
         return $this->put("author_settlement_transfer/{$authorSettlementTransferId}", [
@@ -345,6 +350,14 @@ class PublySettlementService extends BaseApiService
             'action' => 'complete',
             'tax' => $tax,
             'transferred_at' => $transferredAt
+        ]);
+    }
+
+    public function transferSelectedAuthor($changerId, $selectedAuthorIds) {
+        return $this->put("author_settlement_transfer", [
+            'changer_id' => $changerId,
+            'author_ids' => $selectedAuthorIds,
+            'transferred_at' => \Carbon\Carbon::now()
         ]);
     }
 
