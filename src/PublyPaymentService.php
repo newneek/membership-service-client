@@ -4919,4 +4919,9 @@ class PublyPaymentService extends BaseApiService
     {
         return $this->get("subscription/onboarding-email-candidates/");
     }
+
+    public function backupSubscription() 
+    {
+        return $this->post("subscription/backup");
+    }
 }
