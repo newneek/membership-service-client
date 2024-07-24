@@ -3844,4 +3844,9 @@ class PublyContentService extends BaseApiService
     {
         return $this->delete("/collection/{$collectionId}/item/{$collectableType}/{$collectableId}");
     }
+
+    public function runBatchReadComplateUser()
+    {
+        return $this->post("/user_set_progress/job/read_completed_user");
+    }
 }
