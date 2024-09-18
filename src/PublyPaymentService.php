@@ -4894,6 +4894,13 @@ class PublyPaymentService extends BaseApiService
         ]);
     }
 
+    public function notifyMembershipOnboardingMail($daysAfterRegister)
+    {
+        return $this->post("/subscription/notify_membership_onboarding_mail", [
+            'days_after_register' => $daysAfterRegister
+        ]);
+    }
+
     public function getExpirationExpectedPoints($userId, $expirationDateStart, $expirationDateEnd)
     {
         return $this->get("/point_history_detail/expiration_expected", [
