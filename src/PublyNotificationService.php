@@ -628,4 +628,9 @@ class PublyNotificationService extends BaseApiService
     {
         return $this->post("notify/promotion_revenue_to_slack");
     }
+
+    public function registerAddressBook($userIds)
+    {                           
+        return $this->post("email/register_address_book", ['user_ids' => $userIds]);
+    }
 }
