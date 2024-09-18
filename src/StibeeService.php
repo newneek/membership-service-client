@@ -8,22 +8,21 @@ class StibeeService extends BaseApiService
 {
     protected $apiKey;
 
-    public function __construct($apiKey, $listId)
+    public function __construct($apiKey)
     {
         parent::__construct();
 
         $this->domain = 'https://api.stibee.com';
         $this->apiUrl = "$this->domain/v1/";
         $this->apiKey = $apiKey;
-        $this->listId = $listId;
     }
 
-    public function subscribeToList($email, $name, $marketingEmailAgreed)
+    public function subscribeToList($listId, $email, $name, $marketingEmailAgreed)
     {
         $retryCount = 3;
         while ($retryCount > 0) {
             try {
-                $result = $this->postWithHeader("lists/{$this->listId}/subscribers", [
+                $result = $this->postWithHeader("lists/{$listId}/subscribers", [
                     'eventOccurredBy' => 'SUBSCRIBER',
                     'subscribers' => [
                         [
@@ -32,6 +31,38 @@ class StibeeService extends BaseApiService
                             '$ad_agreed' => $marketingEmailAgreed ? 'Y' : 'N'
                         ]
                     ]
+                ],[
+                    'AccessToken' => $this->apiKey,
+                    'Content-Type' => 'application/json'
+                ]);
+                return $result;
+
+            } catch (ResponseException $e) {
+                // for any response exception, retry
+                $retryCount--;
+                if ($retryCount == 0) {
+                    throw $e;
+                }
+            }
+        }
+    }
+
+    public function subscribesToList($listId, $users, $marketingEmailAgreed)
+    {
+        $retryCount = 3;
+        foreach ($users as $user) {
+            $subscribers[] = [
+                'email' => $user['email'],
+                'name' => $user['name'],
+                '$ad_agreed' => $marketingEmailAgreed ? 'Y' : 'N'
+            ];
+        }   
+        
+        while ($retryCount > 0) {
+            try {
+                $result = $this->postWithHeader("lists/{$listId}/subscribers", [
+                    'eventOccurredBy' => 'SUBSCRIBER',
+                    'subscribers' => $subscribers,
                 ],[
                     'AccessToken' => $this->apiKey,
                     'Content-Type' => 'application/json'

@@ -66,7 +66,11 @@ class PublyAuthService extends BaseApiService
 
     public function getUsersByIds($userIds, $filterArray = [])
     {
-        $filterArray['ids'] = implode(',', $userIds);
+        if(is_array($userIds)) {
+            $filterArray['ids'] = implode(',', $userIds);
+        }else {
+            $filterArray['ids'] = $userIds;
+        }
 
         return $this->get("user/by_ids", $filterArray);
     }
