@@ -629,6 +629,11 @@ class PublyNotificationService extends BaseApiService
         return $this->post("notify/promotion_revenue_to_slack");
     }
 
+    public function notifyMarketingEmailAgreement($today)
+    {
+        return $this->post("notify/marketing_email_agreement", ['today' => $today]);
+    }
+
     public function registerAddressBook($userIds)
     {                           
         return $this->post("email/register_address_book", ['user_ids' => $userIds]);

@@ -235,4 +235,25 @@ class BaseApiService
             $headers
         );
     }
+
+      /**
+     * @param $endpoint
+     * @param $postData
+     * @param $headers
+     * @return mixed
+     * @throws ResponseException
+     */
+    public function deleteWithHeader($endpoint, $deleteData, $headers)
+    {
+        return Http::send(
+            $this,
+            $endpoint,
+            [
+                'method' => 'DELETE',
+                'postFields' => $deleteData,
+                'timeout' => $this->timeout
+            ],
+            $headers
+        );
+    }
 }

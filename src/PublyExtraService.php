@@ -114,6 +114,17 @@ class PublyExtraService extends BaseApiService
         PublyExtraService::COMPLETE_READING_MESSAGE_TYPE_CONTENT => '챕터',
     ];
 
+    const STRING_FEATURED_BANNER_ITEM_TYPE = [
+        PublyExtraService::FEATURED_BANNER_ITEM_TYPE_EMPTY_PAYLOAD => 'NONE',
+        PublyExtraService::FEATURED_BANNER_ITEM_TYPE_SET => '세트',
+        PublyExtraService::FEATURED_BANNER_ITEM_TYPE_CONTENT => '콘텐츠',
+        PublyExtraService::FEATURED_BANNER_ITEM_TYPE_GUIDE => '가이드',
+        PublyExtraService::FEATURED_BANNER_ITEM_TYPE_EXTERNAL_URL => 'URL',
+        PublyExtraService::FEATURED_BANNER_ITEM_TYPE_SERIES => '시리즈',
+        PublyExtraService::FEATURED_BANNER_ITEM_TYPE_QNA => 'QnA',
+    ];
+        
+
     const STRING_FEATURED_BANNER_ITEM_CATEGORY = [
         PublyExtraService::FEATURED_BANNER_ITEM_CATEGORY_HOME => '홈',
         PublyExtraService::FEATURED_BANNER_ITEM_CATEGORY_ONAIR => '온에어'
@@ -818,6 +829,34 @@ class PublyExtraService extends BaseApiService
         return $this->post("featured_banner_item", $inputs);
     }
 
+    public function createFeaturedBannerItem4(
+        $changerId,
+        $note,
+        $type,
+        $payload,
+        $imageUrl,
+        $title,
+        $color,
+        $isVisibleToSubscription,
+        $category,
+        $visibleDeviceType
+    ) {
+        $inputs = [
+            'changer_id' => $changerId,
+            'note' => $note,
+            'type' => $type,
+            'payload' => $payload,
+            'image_url' => $imageUrl,
+            'title' => $title,
+            'color' => $color,
+            'is_visible_to_subscription' => $isVisibleToSubscription,
+            'category' => $category,
+            'visible_device_type' => $visibleDeviceType
+        ];
+
+        return $this->post("featured_banner_item", $inputs);
+    }
+
     public function updateFeaturedBannerItem3(
         $changerId,
         $featuredBannerItemId,
@@ -832,6 +871,35 @@ class PublyExtraService extends BaseApiService
         $inputs = [
             'changer_id' => $changerId,
             'note' => $note,
+            'type' => $type,
+            'payload' => $payload,
+            'image_url' => $imageUrl,
+            'is_visible_to_subscription' => $isVisibleToSubscription,
+            'category' => $category,
+            'visible_device_type' => $visibleDeviceType
+        ];
+
+        return $this->put("featured_banner_item/{$featuredBannerItemId}", $inputs);
+    }
+
+    public function updateFeaturedBannerItem4(
+        $changerId,
+        $featuredBannerItemId,
+        $title,
+        $color,
+        $note,
+        $type,
+        $payload,
+        $imageUrl,
+        $isVisibleToSubscription,
+        $category,
+        $visibleDeviceType
+    ) {
+        $inputs = [
+            'changer_id' => $changerId,
+            'note' => $note,
+            'title' => $title,
+            'color' => $color,
             'type' => $type,
             'payload' => $payload,
             'image_url' => $imageUrl,

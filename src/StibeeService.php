@@ -47,6 +47,29 @@ class StibeeService extends BaseApiService
         }
     }
 
+    public function deleteSubscriber($listId, $email)
+    {
+        $retryCount = 3;
+        while ($retryCount > 0) {
+            try {
+                $result = $this->deleteWithHeader("lists/{$listId}/subscribers", [
+                    $email
+                ],[
+                    'AccessToken' => $this->apiKey,
+                    'Content-Type' => 'application/json'
+                ]);
+                return $result;
+
+            } catch (ResponseException $e) {
+                // for any response exception, retry
+                $retryCount--;
+                if ($retryCount == 0) {
+                    throw $e;
+                }
+            }
+        }
+    }
+
     public function subscribesToList($listId, $users, $marketingEmailAgreed)
     {
         $retryCount = 3;
