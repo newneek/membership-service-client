@@ -1669,7 +1669,7 @@ class PublyContentService extends BaseApiService
 
     public function deleteSetReaderBySetIds($changerId, $userId, $setIds)
     {
-        return $this->post("set_reader/delete_set_readers", [
+        return $this->post("set_reader/delete_by_set_ids", [
             'changer_id' => $changerId,
             'set_ids' => implode(',', $setIds),
             'user_id' => $userId
