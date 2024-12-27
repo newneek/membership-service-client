@@ -101,7 +101,7 @@ class AmplitudeService extends BaseApiService
         }
     }
 
-    public function revenue($userId, $revenueType, $eventType, $price, $productId, $insertId, $time, $eventProperties = null)
+    public function revenueWithQuantity($userId, $revenueType, $eventType, $price, $productId, $insertId, $time, $quantity, $eventProperties = null)
     {
         $retryCount = 3;
         while ($retryCount > 0) {
@@ -112,6 +112,7 @@ class AmplitudeService extends BaseApiService
                         [
                             'user_id' => $userId,
                             'price' => $price,
+                            'quantity' => $quantity,
                             'productId' => $productId,
                             'revenueType' => $revenueType,
                             'event_type' => $eventType,
@@ -133,5 +134,10 @@ class AmplitudeService extends BaseApiService
                 }
             }
         }
+    }
+
+    public function revenue($userId, $revenueType, $eventType, $price, $productId, $insertId, $time, $eventProperties = null)
+    {
+        $this->revenueWithQuantity($userId, $revenueType, $eventType, $price, $productId, $insertId, $time, 1, $eventProperties);
     }
 }
