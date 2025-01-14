@@ -1820,4 +1820,49 @@ class PublyExtraService extends BaseApiService
         return $this->get("user_challenge_history/unique_date_count", $filterArray);
     }
 
+    public function getCancelSurveyQuestionsWithPagination($page = 1, $limit = 10, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("survey_option", $filterArray);
+    }
+
+    public function getCancelSurveyQuestion($cancelSurveyQuestionId)
+    {
+        return $this->get("survey_option/{$cancelSurveyQuestionId}");
+    }
+
+    public function createCancelSurveyQuestion($changerId, $optionText, $optionQuestion)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'option_text' => $optionText,
+            'option_question' => $optionQuestion,
+            'is_active' => 0,
+        ];
+        return $this->post("survey_option", $inputs);
+    }
+
+    public function updateCancelSurveyQuestion($changerId, $cancelSurveyQuestionId, $params)
+    {
+        $params['changer_id'] = $changerId;
+        return $this->put("survey_option/{$cancelSurveyQuestionId}", $params);
+    }
+
+    public function updateCancelSurveyQuestionOrder($changerId, $questionIds)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'ids' => $questionIds,
+        ];
+        return $this->put("survey_option/order", $inputs);
+    }
+
+    public function deleteCancelSurveyQuestion($changerId, $cancelSurveyQuestionId)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+        ];
+        return $this->post("survey_option/{$cancelSurveyQuestionId}/delete", $inputs);
+    }
 }
