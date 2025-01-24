@@ -26,17 +26,21 @@ class FlarelaneService extends BaseApiService
                 'Authorization' => 'Bearer ' . $this->appKey
             ];
 
-        $userId = [strval($userId)];
+        if(is_array($userId)){
+            $userIds = array_map('strval', $userId);
+        } else {
+            $userIds = array_map('strval', array($userId));
+        }
+
 
         $fields = array(
             'targetType' => 'userId',
-            'targetIds'=> $userId,
+            'targetIds'=> $userIds,
             'title' => $title,
             'body' => $msg,
             'data' => $data
         );
 
-        \Log::debug('FlarelaneService::sendPush', $fields);
         // TODO : sendPushWithRetry 테스트 완료 후, sendPushWithRetry 를 사용하도록 수정해야함
         $retryCount = 3;
         $client = new Client();

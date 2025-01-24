@@ -37,15 +37,20 @@ class OneSignalService extends BaseApiService
             "en" => $title
         );
 
-        $userId = array_map('strval', array($userId));
+        if(is_array($userId)){
+            $userIds = array_map('strval', $userId);
+        } else {
+            $userIds = array_map('strval', array($userId));
+        }
 
         $fields = array(
             'app_id' => $this->appId,
-            'include_external_user_ids' => $userId,
+            'include_external_user_ids' => $userIds,
             'contents' => $contents,
             'headings' => $headings,
             'data' => $data
         );
+
         if (isset($sendTime)) {
             $fields['delayed_option'] = 'timezone';
             $fields['delivery_time_of_day'] = $sendTime;
