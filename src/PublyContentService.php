@@ -1411,6 +1411,11 @@ class PublyContentService extends BaseApiService
         return $this->get("set/series_item/{$seriesItemId}", $filterArray);
     }
 
+    public function getSetsBySeriesItem2($seriesItemId, $filterArray = [])
+    {
+        return $this->get("series_set/{$seriesItemId}", $filterArray);
+    }
+
     public function getSet($setId, $filterArray = [])
     {
         return $this->get("set/{$setId}", $filterArray);
@@ -3532,26 +3537,46 @@ class PublyContentService extends BaseApiService
         return $this->post("series_item", $inputs);
     }
 
-    public function updateSeriesItem($changerId, $seriesItemId, $title, $description, $imageUrl)
+    public function updateSeriesItem($changerId, $seriesItemId, $title, $description, $imageUrl, $isActive)
     {
         $inputs = [
             'changer_id' => $changerId,
             'title' => $title,
             'description' => $description,
-            'image_url' => $imageUrl
+            'image_url' => $imageUrl,
+            'is_active' => $isActive
         ];
 
         return $this->put("series_item/{$seriesItemId}", $inputs);
     }
 
-    public function updateSeriesSet($changerId, $seriesItemId, $setId)
+    public function getSeriesSet($seriesSetId)
+    {
+        return $this->get("series_set/{$seriesSetId}");
+    }
+
+    public function updateSeriesSet($seriesItemId, $setId)
     {
         $inputs = [
-            'changer_id' => $changerId,
-            'series_item_id' => $seriesItemId
+            'series_item_id' => $seriesItemId,
+            'set_id' => $setId
         ];
 
-        return $this->put("set/{$setId}", $inputs);
+        return $this->post("series_set", $inputs);
+    }
+
+    public function removeSeriesSet($seriesSetId)
+    {
+        return $this->delete("series_set/{$seriesSetId}");
+    }
+
+    public function updateSeriesSetOrder($seriesSetIds)
+    {
+        $inputs = [
+            'ids' => $seriesSetIds
+        ];
+
+        return $this->put("series_set/update_order", $inputs);
     }
 
     public function getComments($page = 1, $limit = 3, $filterArray = [])
