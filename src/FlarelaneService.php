@@ -94,25 +94,32 @@ class FlarelaneService extends BaseApiService
         $headers = [
             'accept' => 'application/json',
             'content-type' => 'application/json',
-            'Authorization' => 'Basic ' . $this->appKey
+            'Authorization' => 'Bearer ' . $this->appKey
         ];
 
         $fields = [
             'tags' => [
                 "tags"=> $tags,
-                "subjectType" => "userId",
+                "subjectType" => "user",
                 "subjectId" => $userId
             ]
         ];
 
+
         $retryCount = 3;
         $client = new Client();
-        $url = $this->apiUrl . '/track';
+        $url = $this->apiUrl . 'track';
         while ($retryCount > 0) {
             try {
-                $response = $client->request('POST',  $url, ['headers' => $headers, 'body' => $fields]);
-                return json_decode($response->getBody()->getContents(), true);
+            
+                $response = $client->request(
+                    'POST',  
+                    $url, 
+                    ['headers' => $headers, 'body' => $fields]
+                );
+                return $json_decode($response->getBody()->getContents(), true);
             } catch (\Exception $e) {
+                \Log::error($e->getMessage());
                 $retryCount--;
                 if ($retryCount == 0) {
                     throw $e;
