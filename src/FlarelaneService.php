@@ -38,7 +38,8 @@ class FlarelaneService extends BaseApiService
             'targetIds'=> $userIds,
             'title' => $title,
             'body' => $msg,
-            'data' => $data
+            'data' => $data,
+            'targetPlatforms'=>['android','ios']
         );
 
         // TODO : sendPushWithRetry 테스트 완료 후, sendPushWithRetry 를 사용하도록 수정해야함
