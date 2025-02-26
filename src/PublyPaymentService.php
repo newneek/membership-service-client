@@ -3360,6 +3360,11 @@ class PublyPaymentService extends BaseApiService
         return $this->get("subscription/user/{$userId}");
     }
 
+    public function getSubscriptionsByRecurrentId($recurrentId)
+    {
+        return $this->get("subscription/recurrent/{$recurrentId}");
+    }
+
     public function getSubscriptionsByRenewDays($renewDays, $filterArray = [])
     {
         $filterArray['renew_day_in'] = implode(',', $renewDays);
