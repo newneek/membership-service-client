@@ -182,7 +182,7 @@ class PublyPaymentService extends BaseApiService
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_PROMOTION => '[프로모션] 결제 지원 포인트 ',
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_EVENT => 'URL 이벤트 포인트',
         PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_POPUP_STORE_LOGIN => 'URL 이벤트 포인트',
-        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_EXPIRING_CAMPAIGN => '만료 D-1 제공 포인트',
+        PublyPaymentService::POINT_HISTORY_TRANSACTION_TYPE_REWARDED_BY_EXPIRING_CAMPAIGN => '한정 혜택 포인트',
     ];
 
     public const POINT_HISTORY_ONLY_ADD_POINT_TRANSACTION_TYPES = [
