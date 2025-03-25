@@ -97,11 +97,13 @@ class FlarelaneService extends BaseApiService
             'Authorization' => 'Bearer ' . $this->appKey
         ];
 
-        $fields = [
+        $fields = [    
             'tags' => [
-                "tags"=> $tags,
-                "subjectType" => "user",
-                "subjectId" => $userId
+                [
+                    "tags"=> $tags,
+                    "subjectType" => "user",
+                    "subjectId" => strval($userId)
+                ]
             ]
         ];
 
@@ -111,13 +113,13 @@ class FlarelaneService extends BaseApiService
         $url = $this->apiUrl . 'track';
         while ($retryCount > 0) {
             try {
-            
                 $response = $client->request(
                     'POST',  
                     $url, 
-                    ['headers' => $headers, 'body' => $fields]
+                    ['headers' => $headers, 'json' => $fields]
                 );
-                return $json_decode($response->getBody()->getContents(), true);
+
+                return json_decode($response->getBody()->getContents(), true);
             } catch (\Exception $e) {
                 \Log::error($e->getMessage());
                 $retryCount--;
