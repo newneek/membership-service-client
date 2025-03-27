@@ -1406,6 +1406,11 @@ class PublyContentService extends BaseApiService
         return $this->get("set/category/{$categoryId}", $filterArray);
     }
 
+    public function getSetsByCareerPathId($careerPathId, $filterArray = [])
+    {
+        return $this->get("set/career_path/{$careerPathId}", $filterArray);
+    }
+
     public function getSetsBySeriesItem($seriesItemId, $filterArray = [])
     {
         return $this->get("set/series_item/{$seriesItemId}", $filterArray);
