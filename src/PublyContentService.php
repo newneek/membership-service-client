@@ -3191,6 +3191,31 @@ class PublyContentService extends BaseApiService
         return $this->get("set_career_path/by_set_ids", $filterArray);
     }
 
+    public function getSetCareerPathsBySetId($setId, $filterArray = [])
+    {
+        return $this->get("set_career_path/set/{$setId}", $filterArray);
+    }
+
+    public function createSetCareerPaths($setId, $career_path_ids)
+    {
+        $inputs = [
+            'set_id' => $setId,
+            'career_path_ids' => $career_path_ids
+        ];
+
+        return $this->post("set_career_path/create_set_career_paths", $inputs);
+    }
+
+    public function deleteSetCareerPaths($setId, $career_path_ids)
+    {
+        $inputs = [
+            'set_id' => $setId,
+            'career_path_ids' => $career_path_ids
+        ];
+
+        return $this->post("set_career_path/delete_set_career_paths", $inputs);
+    }
+
     public function getDailyCareerPathContent($userId, $careerPathId, $date)
     {
         return $this->get("user_daily_career_path_content/{$careerPathId}/user/{$userId}/date/{$date}");
