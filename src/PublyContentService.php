@@ -3191,6 +3191,11 @@ class PublyContentService extends BaseApiService
         return $this->get("set_career_path/by_set_ids", $filterArray);
     }
 
+    public function getDailyCareerPathContent($userId, $careerPathId, $date)
+    {
+        return $this->get("user_daily_career_path_content/{$careerPathId}/user/{$userId}/date/{$date}");
+    }
+
     public function getContentCharacteristics($filterArray = [])
     {
         return $this->get("content_characteristic", $filterArray);
