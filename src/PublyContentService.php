@@ -3217,6 +3217,11 @@ class PublyContentService extends BaseApiService
         return $this->post("set_career_path/delete_set_career_paths", $inputs);
     }
 
+    public function getDailyCareerPathContent($userId, $careerPathId, $date)
+    {
+        return $this->get("user_daily_career_path_content/{$careerPathId}/user/{$userId}/date/{$date}");
+    }
+
     public function getContentCharacteristics($filterArray = [])
     {
         return $this->get("content_characteristic", $filterArray);
