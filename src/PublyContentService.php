@@ -3916,4 +3916,190 @@ class PublyContentService extends BaseApiService
     {
         return $this->post("/user_set_progress/job/read_completed_user");
     }
+
+    public function getTemplates($page = 1, $limit = 20, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+
+        return $this->get("template/list", $filterArray);
+    }
+
+    public function getTemplate($templateId, $filterArray = [])
+    {
+        return $this->get("template/{$templateId}/admin", $filterArray);
+    }
+
+    public function createTemplate($title)
+    {
+        return $this->post("template", [
+            'title' => $title
+        ]);
+    }
+
+    public function updateTemplate($templateId, $inputs)
+    {
+        return $this->put("template/{$templateId}", $inputs);
+    }
+
+    public function getTemplateCategories()
+    {
+        return $this->get("template/categories");
+    }
+
+    // 직무(JobRole) 관련 API
+    public function getJobRoles($filterArray = [])
+    {
+        return $this->get('template/job_roles', $filterArray);
+    }
+
+    public function createJobRole($id, $name, $displaySequence = 999)
+    {
+        return $this->post('template/job_role', [
+            'id' => $id,
+            'name' => $name,
+            'display_sequence' => $displaySequence
+        ]);
+    }
+
+    public function updateJobRole($id, $name)
+    {
+        return $this->put("template/job_role/{$id}", [
+            'name' => $name,
+        ]);
+    }
+
+    public function deleteJobRole($id)
+    {
+        return $this->delete("template/job_role/{$id}");
+    }
+
+    // 주제(Subject) 관련 API
+    public function getSubjects($filterArray = [])
+    {
+        return $this->get('template/subjects', $filterArray);
+    }
+
+    public function createSubject($id, $name, $displaySequence = 999)
+    {
+        return $this->post('template/subject', [
+            'id' => $id,
+            'name' => $name,
+            'display_sequence' => $displaySequence
+        ]);
+    }
+
+    public function updateSubject($id, $name)
+    {
+        return $this->put("template/subject/{$id}", [
+            'name' => $name
+        ]);
+    }
+
+    public function deleteSubject($id)
+    {
+        return $this->delete("template/subject/{$id}");
+    }
+
+    // 커리어패스(CareerPath) 관련 API
+    public function getCareerPaths($filterArray = [])
+    {
+        return $this->get('template/career_paths', $filterArray);
+    }
+
+    public function createCareerPath($id, $name, $displaySequence = 999)
+    {
+        return $this->post('template/career_path', [
+            'id' => $id,
+            'name' => $name,
+            'display_sequence' => $displaySequence
+        ]);
+    }
+
+    public function updateCareerPath($id, $name)
+    {
+        return $this->put("template/career_path/{$id}", [
+            'name' => $name,
+        ]);
+    }
+
+    public function deleteCareerPath($id)
+    {
+        return $this->delete("template/career_paths/{$id    }");
+    }
+
+    // 도구(Tool) 관련 API
+    public function getTools($filterArray = [])
+    {
+        return $this->get('template/tools', $filterArray);
+    }
+
+    public function createTool($id, $name, $displaySequence = 999)
+    {
+        return $this->post('template/tool', [
+            'id' => $id,
+            'name' => $name,
+            'display_sequence' => $displaySequence
+        ]);
+    }
+
+    public function updateTool($id, $name)
+    {
+        return $this->put("template/tool/{$id}", [
+            'name' => $name,
+        ]);
+    }
+
+    public function deleteTool($id)
+    {
+        return $this->delete("template/tool/{$id}");
+    }
+
+    /**
+     * 직무 display_sequence 일괄 변경
+     * @param array $jobRoleIds
+     * @return array
+     */
+    public function updateJobRoleDisplaySequence(array $jobRoleIds)
+    {
+        return $this->put('template/job_roles/order', [
+            'job_role_ids' => $jobRoleIds
+        ]);
+    }
+
+    /**
+     * 주제 display_sequence 일괄 변경
+     * @param array $subjectIds
+     * @return array
+     */
+    public function updateSubjectDisplaySequence(array $subjectIds)
+    {
+        return $this->put('template/subjects/order', [
+            'subject_ids' => $subjectIds
+        ]);
+    }
+
+    /**
+     * 커리어패스 display_sequence 일괄 변경
+     * @param array $careerPathIds
+     * @return array
+     */
+    public function updateCareerPathDisplaySequence(array $careerPathIds)
+    {
+        return $this->put('template/career_paths/order', [
+            'career_path_ids' => $careerPathIds
+        ]);
+    }
+
+    /**
+     * 툴 display_sequence 일괄 변경
+     * @param array $toolIds
+     * @return array
+     */
+    public function updateToolDisplaySequence(array $toolIds)
+    {
+        return $this->put('template/tools/order', [
+            'tool_ids' => $toolIds
+        ]);
+    }
 }
