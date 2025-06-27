@@ -4025,7 +4025,7 @@ class PublyContentService extends BaseApiService
 
     public function deleteCareerPath($id)
     {
-        return $this->delete("template/career_paths/{$id    }");
+        return $this->delete("template/career_paths/{$id}");
     }
 
     // 도구(Tool) 관련 API
@@ -4101,5 +4101,14 @@ class PublyContentService extends BaseApiService
         return $this->put('template/tools/order', [
             'tool_ids' => $toolIds
         ]);
+    }
+
+    public function getUserTemplateViewsByUserId($userId, $page, $limit, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        $filterArray['user_id'] = $userId;
+
+        return $this->get("user_template_view", $filterArray);
     }
 }
