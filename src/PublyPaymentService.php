@@ -4687,7 +4687,7 @@ class PublyPaymentService extends BaseApiService
         });
     }
 
-    public function createPlan($changerId, $name, $price, $settlementPrice, $note, $lengthMonth, $nextPlanId)
+    public function createPlan($changerId, $name, $price, $settlementPrice, $note, $lengthMonth, $nextPlanId, $trialDay)
     {
         $inputs = [
             'changer_id' => $changerId,
@@ -4696,13 +4696,14 @@ class PublyPaymentService extends BaseApiService
             'settlement_price' => $settlementPrice,
             'note' => $note,
             'length_month' => $lengthMonth,
-            'next_plan_id' => $nextPlanId
+            'next_plan_id' => $nextPlanId,
+            'trial_day' => $trialDay
         ];
 
         return $this->post("plan", $inputs);
     }
 
-    public function updatePlan($changerId, $planId, $name, $price, $settlementPrice, $note, $lengthMonth, $nextPlanId)
+    public function updatePlan($changerId, $planId, $name, $price, $settlementPrice, $note, $lengthMonth, $nextPlanId, $trialDay)
     {
         $inputs = [
             'changer_id' => $changerId,
@@ -4711,7 +4712,8 @@ class PublyPaymentService extends BaseApiService
             'settlement_price' => $settlementPrice,
             'note' => $note,
             'length_month' => $lengthMonth,
-            'next_plan_id' => $nextPlanId
+            'next_plan_id' => $nextPlanId,
+            'trial_day' => $trialDay
         ];
 
         return $this->put("plan/{$planId}", $inputs);
