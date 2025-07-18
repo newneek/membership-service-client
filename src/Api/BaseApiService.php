@@ -37,7 +37,7 @@ class BaseApiService
             $retries,
             Psr7Request $request,
             Psr7Response $response = null,
-            RequestException $exception = null
+            \Exception $exception = null
         ) {
 
             if ($retries >= $this->maxRetryCount) {
