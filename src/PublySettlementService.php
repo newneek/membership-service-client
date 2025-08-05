@@ -412,6 +412,23 @@ class PublySettlementService extends BaseApiService
         return $this->post("other_author_settlement", $inputs);
     }
 
+    public function createOtherAuthorSettlements(
+        $changerId,
+        $authorSettlements
+    ) {
+        $inputs = [];
+
+        // 각 저자의 기타 정산을 개별 객체로 추가
+        foreach ($authorSettlements as $index => $settlement) {
+            $inputs["changer_id_{$index}"] = $changerId;
+            $inputs["author_id_{$index}"] = $settlement['author_id'];
+            $inputs["note_{$index}"] = $settlement['note'];
+            $inputs["price_{$index}"] = $settlement['price'];
+        }
+
+        return $this->post("other_author_settlement/batch", $inputs);
+    }
+
     public function getOtherAuthorSettlements(
         $page = 1,
         $limit = 10,
