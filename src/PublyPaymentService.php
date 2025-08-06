@@ -4948,7 +4948,7 @@ class PublyPaymentService extends BaseApiService
 
     public function backupSubscription() 
     {
-        return $this->post("/subscription/backup");
+        return $this->post("subscription/backup");
     }
 
     /**
@@ -4959,7 +4959,7 @@ class PublyPaymentService extends BaseApiService
      */
     public function getReferralRelationsByPeriod($baseMonth, $nextMonth)
     {
-        return $this->get("/referral/relations", [
+        return $this->get("/referral_relation/relations", [
             'base_month' => $baseMonth,
             'next_month' => $nextMonth
         ]);
