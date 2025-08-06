@@ -4948,6 +4948,20 @@ class PublyPaymentService extends BaseApiService
 
     public function backupSubscription() 
     {
-        return $this->post("subscription/backup");
+        return $this->post("/subscription/backup");
+    }
+
+    /**
+     * 레퍼럴 관계 데이터 조회
+     * @param string $baseMonth 시작 월 (YYYY-MM 형식)
+     * @param string $nextMonth 종료 월 (YYYY-MM 형식)
+     * @return array
+     */
+    public function getReferralRelationsByPeriod($baseMonth, $nextMonth)
+    {
+        return $this->get("/referral/relations", [
+            'base_month' => $baseMonth,
+            'next_month' => $nextMonth
+        ]);
     }
 }
