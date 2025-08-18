@@ -366,6 +366,13 @@ class PublySettlementService extends BaseApiService
         ]);
     }
 
+    public function storeAndTransferMultiple($changerId, $authors) {
+        return $this->post("author_settlement_transfer/store-and-transfer-multiple", [
+            'changer_id' => $changerId,
+            'authors' => $authors
+        ]);
+    }
+
     public function rejectSelectedAuthor($changerId, $selectedAuthorIds) {
         return $this->put("author_settlement_transfer/reject", [
             'changer_id' => $changerId,
