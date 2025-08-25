@@ -4430,6 +4430,17 @@ class PublyPaymentService extends BaseApiService
         return $this->post("voucher/store_vouchers_by_length_month", $inputs);
     }
 
+    public function createVouchersWithoutEmail($changerId, $voucherOptionId, $quantity)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'voucher_option_id' => $voucherOptionId,
+            'quantity' => $quantity
+        ];
+
+        return $this->post("voucher/store_vouchers_without_email", $inputs);
+    }
+
     public function getVoucherByCode($code)
     {
         return $this->get("voucher/code/{$code}");
