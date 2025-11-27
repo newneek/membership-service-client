@@ -16,6 +16,7 @@ class PublyGateway extends BaseApiService
         $this->apiUrl = "$this->domain/api";
     }
 
+    
     public function saveContent($contentId)
     {
         return $this->post('/ai-search/save-content', [
