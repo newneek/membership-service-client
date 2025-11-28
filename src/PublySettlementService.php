@@ -123,6 +123,12 @@ class PublySettlementService extends BaseApiService
         $filterArray['set_id'] = $setId;
         return $this->get("author_rate", $filterArray);
     }
+    
+    public function getAuthorRatesBySetIds($setIds, $filterArray = [])
+    {
+        $filterArray['set_ids'] = implode(',', $setIds);
+        return $this->get("author_rate", $filterArray);
+    }
 
     public function getSettlementResults($filterArray = [])
     {
