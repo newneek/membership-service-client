@@ -248,9 +248,9 @@ class PublySettlementService extends BaseApiService
         return $this->get("author_settlement_profile/{$authorId}");
     }
 
-    public function updateOrCreateAuthorSettlementProfile($changerId, $authorId, $taxPayerTypeId, $contractor, $number, $bankName, $accountHolder, $accountNumber)
+    public function updateOrCreateAuthorSettlementProfile($changerId, $authorId, $taxPayerTypeId, $contractor, $number, $bankName, $accountHolder, $accountNumber, $email = null)
     {
-        return $this->put("author_settlement_profile/{$authorId}", [
+        $data = [
             'changer_id' => $changerId,
             'tax_payer_type_id' => $taxPayerTypeId,
             'contractor' => $contractor,
@@ -258,7 +258,13 @@ class PublySettlementService extends BaseApiService
             'bank_name' => $bankName,
             'account_holder' => $accountHolder,
             'account_number' => $accountNumber
-        ]);
+        ];
+        
+        if ($email !== null) {
+            $data['email'] = $email;
+        }
+        
+        return $this->put("author_settlement_profile/{$authorId}", $data);
     }
 
     public function calculateSettlementAuthorResult($changerId, $authorId, $settlementYear, $settlementMonth)
