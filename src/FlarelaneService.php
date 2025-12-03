@@ -130,4 +130,45 @@ class FlarelaneService extends BaseApiService
         }
     }
 
+    public function trackEvent($userId, $eventName, $eventData = [])
+    {
+        $headers = [
+            'accept' => 'application/json',
+            'content-type' => 'application/json',
+            'Authorization' => 'Bearer ' . $this->appKey
+        ];
+
+        $fields = [
+            'events' => [
+                [
+                    'name' => $eventName,
+                    'data' => $eventData,
+                    'subjectType' => 'user',
+                    'subjectId' => strval($userId)
+                ]
+            ]
+        ];
+
+        $retryCount = 3;
+        $client = new Client();
+        $url = $this->apiUrl . 'track';
+        while ($retryCount > 0) {
+            try {
+                $response = $client->request(
+                    'POST',
+                    $url,
+                    ['headers' => $headers, 'json' => $fields]
+                );
+
+                return json_decode($response->getBody()->getContents(), true);
+            } catch (\Exception $e) {
+                \Log::error($e->getMessage());
+                $retryCount--;
+                if ($retryCount == 0) {
+                    throw $e;
+                }
+            }
+        }
+    }
+
 }
