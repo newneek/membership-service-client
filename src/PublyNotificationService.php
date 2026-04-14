@@ -635,7 +635,84 @@ class PublyNotificationService extends BaseApiService
     }
 
     public function registerAddressBook($userIds)
-    {                           
+    {
         return $this->post("email/register_address_book", ['user_ids' => $userIds]);
+    }
+
+    // ========================================
+    // Kakao AlimTalk
+    // ========================================
+
+    public function getKakaoTemplates($filterArray = [])
+    {
+        return $this->get("/kakao_alimtalk/templates", $filterArray);
+    }
+
+    public function getKakaoTemplate($id)
+    {
+        return $this->get("/kakao_alimtalk/template/{$id}");
+    }
+
+    public function storeKakaoTemplate($inputs)
+    {
+        return $this->put("/kakao_alimtalk/template", $inputs);
+    }
+
+    public function updateKakaoTemplate($id, $inputs)
+    {
+        return $this->post("/kakao_alimtalk/template/{$id}", $inputs);
+    }
+
+    public function deactivateKakaoTemplate($id)
+    {
+        return $this->post("/kakao_alimtalk/template/{$id}/deactivate");
+    }
+
+    public function getKakaoTemplateVariables($id)
+    {
+        return $this->get("/kakao_alimtalk/template/{$id}/variables");
+    }
+
+    public function sendKakaoAlimTalk($destPhones, $kakaoTemplateId, $variables, $isAuto = false)
+    {
+        return $this->post("/kakao_alimtalk/send", [
+            'kakao_template_id' => $kakaoTemplateId,
+            'dest_phones' => $destPhones,
+            'variables' => $variables,
+            'is_auto' => $isAuto,
+        ]);
+    }
+
+    public function sendKakaoAlimTalkByUsers($userIds, $kakaoTemplateId, $variables, $isAuto = false)
+    {
+        return $this->post("/kakao_alimtalk/send/byUserId", [
+            'kakao_template_id' => $kakaoTemplateId,
+            'user_ids' => $userIds,
+            'variables' => $variables,
+            'is_auto' => $isAuto,
+        ]);
+    }
+
+    public function sendKakaoAlimTalkReserved($destPhones, $kakaoTemplateId, $variables, $sendTime, $isAuto = false)
+    {
+        return $this->post("/kakao_alimtalk/send/reserved", [
+            'kakao_template_id' => $kakaoTemplateId,
+            'dest_phones' => $destPhones,
+            'variables' => $variables,
+            'send_time' => $sendTime,
+            'is_auto' => $isAuto,
+        ]);
+    }
+
+    public function getKakaoSendLogs($page, $limit, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("/kakao_alimtalk/logs", $filterArray);
+    }
+
+    public function getKakaoSendLog($logId)
+    {
+        return $this->get("/kakao_alimtalk/log/{$logId}");
     }
 }
