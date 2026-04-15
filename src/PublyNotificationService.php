@@ -673,35 +673,32 @@ class PublyNotificationService extends BaseApiService
         return $this->get("/kakao_alimtalk/template/{$id}/variables");
     }
 
-    public function sendKakaoAlimTalk($destPhones, $kakaoTemplateId, $variables, $isAuto = false)
+    public function sendKakaoAlimTalk($destPhones, $kakaoTemplateId, $variables, $isAuto = false, $sendTime = null)
     {
         return $this->post("/kakao_alimtalk/send", [
             'kakao_template_id' => $kakaoTemplateId,
             'dest_phones' => $destPhones,
             'variables' => $variables,
             'is_auto' => $isAuto,
+            'send_time' => $sendTime,
         ]);
     }
 
-    public function sendKakaoAlimTalkByUsers($userIds, $kakaoTemplateId, $variables, $isAuto = false)
+    public function sendKakaoAlimTalkByUsers($userIds, $kakaoTemplateId, $variables, $isAuto = false, $sendTime = null)
     {
         return $this->post("/kakao_alimtalk/send/byUserId", [
             'kakao_template_id' => $kakaoTemplateId,
             'user_ids' => $userIds,
             'variables' => $variables,
             'is_auto' => $isAuto,
+            'send_time' => $sendTime,
         ]);
     }
 
+    // deprecated: sendKakaoAlimTalk()의 $sendTime 파라미터를 사용하세요.
     public function sendKakaoAlimTalkReserved($destPhones, $kakaoTemplateId, $variables, $sendTime, $isAuto = false)
     {
-        return $this->post("/kakao_alimtalk/send/reserved", [
-            'kakao_template_id' => $kakaoTemplateId,
-            'dest_phones' => $destPhones,
-            'variables' => $variables,
-            'send_time' => $sendTime,
-            'is_auto' => $isAuto,
-        ]);
+        return $this->sendKakaoAlimTalk($destPhones, $kakaoTemplateId, $variables, $isAuto, $sendTime);
     }
 
     public function getKakaoSendLogs($page, $limit, $filterArray = [])
