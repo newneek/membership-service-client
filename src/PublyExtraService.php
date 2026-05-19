@@ -1865,4 +1865,157 @@ class PublyExtraService extends BaseApiService
         ];
         return $this->post("survey_option/{$cancelSurveyQuestionId}/delete", $inputs);
     }
+
+    // ---------------------------------------------------------------------
+    // Promotion (banner + promotion + promotion-copy)
+    // ---------------------------------------------------------------------
+
+    const BANNER_POSITIONS = ['home_middle', 'signup', 'content_top', 'template', 'template_detail'];
+    const BANNER_AUDIENCES = ['subscribed', 'expired', 'new', 'guest', 'pass_in_use'];
+
+    const PROMOTION_COPY_SLOTS = ['paywall', 'floating', 'content_top', 'home_bottom'];
+
+    public function getPromotions()
+    {
+        return $this->get('promotion');
+    }
+
+    public function getPromotion($promotionId)
+    {
+        return $this->get("promotion/{$promotionId}");
+    }
+
+    public function getCurrentPromotion()
+    {
+        return $this->get('promotion/current');
+    }
+
+    public function createPromotion(
+        $changerId,
+        $name,
+        array $planIds,
+        $displayStartAt,
+        $actualStartAt,
+        $displayEndAt,
+        $actualEndAt,
+        $memo = null
+    ) {
+        return $this->post('promotion', [
+            'changer_id' => $changerId,
+            'name' => $name,
+            'plan_ids' => $planIds,
+            'display_start_at' => $displayStartAt,
+            'actual_start_at' => $actualStartAt,
+            'display_end_at' => $displayEndAt,
+            'actual_end_at' => $actualEndAt,
+            'memo' => $memo,
+        ]);
+    }
+
+    public function updatePromotion(
+        $changerId,
+        $promotionId,
+        $name,
+        array $planIds,
+        $displayStartAt,
+        $actualStartAt,
+        $displayEndAt,
+        $actualEndAt,
+        $memo = null
+    ) {
+        return $this->put("promotion/{$promotionId}", [
+            'changer_id' => $changerId,
+            'name' => $name,
+            'plan_ids' => $planIds,
+            'display_start_at' => $displayStartAt,
+            'actual_start_at' => $actualStartAt,
+            'display_end_at' => $displayEndAt,
+            'actual_end_at' => $actualEndAt,
+            'memo' => $memo,
+        ]);
+    }
+
+    public function deletePromotion($changerId, $promotionId)
+    {
+        return $this->post("promotion/{$promotionId}/delete", [
+            'changer_id' => $changerId,
+        ]);
+    }
+
+    public function getBanners(array $filter = [])
+    {
+        return $this->get('banner', $filter);
+    }
+
+    public function upsertDefaultBanner(
+        $changerId,
+        $position,
+        $audience,
+        $imagePcUrl,
+        $imageMobileUrl,
+        $linkUrl,
+        $altText,
+        $isActive = true
+    ) {
+        return $this->post('banner', [
+            'changer_id' => $changerId,
+            'position' => $position,
+            'audience' => $audience,
+            'image_pc_url' => $imagePcUrl,
+            'image_mobile_url' => $imageMobileUrl,
+            'link_url' => $linkUrl,
+            'alt_text' => $altText,
+            'is_active' => $isActive ? 1 : 0,
+        ]);
+    }
+
+    public function upsertPromotionBanner(
+        $changerId,
+        $promotionId,
+        $position,
+        $audience,
+        $imagePcUrl,
+        $imageMobileUrl,
+        $linkUrl,
+        $altText,
+        $isActive = true
+    ) {
+        return $this->post("promotion/{$promotionId}/banner", [
+            'changer_id' => $changerId,
+            'position' => $position,
+            'audience' => $audience,
+            'image_pc_url' => $imagePcUrl,
+            'image_mobile_url' => $imageMobileUrl,
+            'link_url' => $linkUrl,
+            'alt_text' => $altText,
+            'is_active' => $isActive ? 1 : 0,
+        ]);
+    }
+
+    public function deleteBanner($changerId, $bannerId)
+    {
+        return $this->post("banner/{$bannerId}/delete", [
+            'changer_id' => $changerId,
+        ]);
+    }
+
+    public function getPromotionCopies($promotionId)
+    {
+        return $this->get("promotion/{$promotionId}/copy");
+    }
+
+    public function upsertPromotionCopy($changerId, $promotionId, $slotType, array $fields)
+    {
+        return $this->post("promotion/{$promotionId}/copy", array_merge([
+            'changer_id' => $changerId,
+            'slot_type' => $slotType,
+        ], $fields));
+    }
+
+    public function deletePromotionCopy($changerId, $promotionId, $copyId)
+    {
+        return $this->post("promotion/{$promotionId}/copy/{$copyId}/delete", [
+            'changer_id' => $changerId,
+        ]);
+    }
 }
