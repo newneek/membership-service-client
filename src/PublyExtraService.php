@@ -1871,7 +1871,8 @@ class PublyExtraService extends BaseApiService
     // ---------------------------------------------------------------------
 
     const BANNER_POSITIONS = ['home_middle', 'signup', 'content_top', 'template', 'template_detail'];
-    const BANNER_AUDIENCES = ['subscribed', 'expired', 'new', 'guest', 'pass_in_use'];
+    // 프론트엔드 USER_ROLE 명칭과 일치 (anonymous / nonMemebership / membership / expiredUser).
+    const BANNER_AUDIENCES = ['anonymous', 'nonMemebership', 'membership', 'expiredUser'];
 
     const PROMOTION_COPY_SLOTS = ['paywall', 'floating', 'content_top', 'home_bottom'];
 
