@@ -1956,7 +1956,8 @@ class PublyExtraService extends BaseApiService
         $imageMobileUrl,
         $linkUrl,
         $altText,
-        $isActive = true
+        $isActive = true,
+        $backgroundColor = null
     ) {
         return $this->post('banner', [
             'changer_id' => $changerId,
@@ -1966,6 +1967,7 @@ class PublyExtraService extends BaseApiService
             'image_mobile_url' => $imageMobileUrl,
             'link_url' => $linkUrl,
             'alt_text' => $altText,
+            'background_color' => $backgroundColor,
             'is_active' => $isActive ? 1 : 0,
         ]);
     }
@@ -1979,7 +1981,8 @@ class PublyExtraService extends BaseApiService
         $imageMobileUrl,
         $linkUrl,
         $altText,
-        $isActive = true
+        $isActive = true,
+        $backgroundColor = null
     ) {
         return $this->post("promotion/{$promotionId}/banner", [
             'changer_id' => $changerId,
@@ -1989,6 +1992,7 @@ class PublyExtraService extends BaseApiService
             'image_mobile_url' => $imageMobileUrl,
             'link_url' => $linkUrl,
             'alt_text' => $altText,
+            'background_color' => $backgroundColor,
             'is_active' => $isActive ? 1 : 0,
         ]);
     }
