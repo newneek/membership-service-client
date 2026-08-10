@@ -2004,6 +2004,25 @@ class PublyExtraService extends BaseApiService
         ]);
     }
 
+    /**
+     * 평시 문구 목록 (promotion_id IS NULL).
+     */
+    public function getDefaultPromotionCopies()
+    {
+        return $this->get('promotion-copy/default');
+    }
+
+    /**
+     * 평시 문구 upsert. slot_type 당 1건.
+     */
+    public function upsertDefaultPromotionCopy($changerId, $slotType, array $fields)
+    {
+        return $this->post('promotion-copy/default', array_merge([
+            'changer_id' => $changerId,
+            'slot_type' => $slotType,
+        ], $fields));
+    }
+
     public function getPromotionCopies($promotionId)
     {
         return $this->get("promotion/{$promotionId}/copy");
