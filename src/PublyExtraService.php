@@ -2042,4 +2042,23 @@ class PublyExtraService extends BaseApiService
             'changer_id' => $changerId,
         ]);
     }
+
+    public function getContentBanners()
+    {
+        return $this->get('content-banner');
+    }
+
+    public function upsertContentBanner($changerId, $contentId, array $fields)
+    {
+        // $fields: image_url, copy, link_url(공통), section_index/paragraph_index(전용), is_active
+        return $this->post('content-banner', array_merge([
+            'changer_id' => $changerId,
+            'content_id' => $contentId,   // null = 공통
+        ], $fields));
+    }
+
+    public function deleteContentBanner($changerId, $id)
+    {
+        return $this->post("content-banner/{$id}/delete", ['changer_id' => $changerId]);
+    }
 }
