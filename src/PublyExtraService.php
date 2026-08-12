@@ -2043,9 +2043,10 @@ class PublyExtraService extends BaseApiService
         ]);
     }
 
-    public function getContentBanners()
+    public function getContentBanners(array $filter = [])
     {
-        return $this->get('content-banner');
+        // $filter: content_id, type(common|content), page, limit
+        return $this->get('content-banner', $filter);
     }
 
     public function upsertContentBanner($changerId, $contentId, array $fields)
