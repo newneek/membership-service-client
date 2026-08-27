@@ -712,4 +712,60 @@ class PublyNotificationService extends BaseApiService
     {
         return $this->get("/kakao_alimtalk/log/{$logId}");
     }
+
+    /* ---------- Content Push Schedule ---------- */
+
+    public function getContentPushSchedules($filterArray = [])
+    {
+        return $this->get('/content_push_schedule', $filterArray);
+    }
+
+    public function getContentPushSchedule($scheduleId)
+    {
+        return $this->get("/content_push_schedule/{$scheduleId}");
+    }
+
+    public function createContentPushSchedule($changerId, $inputs)
+    {
+        $inputs['changer_id'] = $changerId;
+        return $this->post('/content_push_schedule', $inputs);
+    }
+
+    public function updateContentPushSchedule($changerId, $scheduleId, $inputs)
+    {
+        $inputs['changer_id'] = $changerId;
+        return $this->put("/content_push_schedule/{$scheduleId}", $inputs);
+    }
+
+    public function cancelContentPushSchedule($changerId, $scheduleId)
+    {
+        return $this->post("/content_push_schedule/{$scheduleId}/cancel", ['changer_id' => $changerId]);
+    }
+
+    public function sendDueContentPushes()
+    {
+        return $this->post('/content_push_schedule/send_due');
+    }
+
+    /* ---------- Push Segment ---------- */
+
+    public function getPushSegments()
+    {
+        return $this->get('/push_segment');
+    }
+
+    public function createPushSegment($inputs)
+    {
+        return $this->post('/push_segment', $inputs);
+    }
+
+    public function updatePushSegment($segmentId, $inputs)
+    {
+        return $this->put("/push_segment/{$segmentId}", $inputs);
+    }
+
+    public function deletePushSegment($segmentId)
+    {
+        return $this->post("/push_segment/{$segmentId}/delete");
+    }
 }
