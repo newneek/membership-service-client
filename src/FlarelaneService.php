@@ -69,6 +69,8 @@ class FlarelaneService extends BaseApiService
      * 세그먼트 대상 푸시 발송.
      * targetPlatforms는 의도적으로 싣지 않는다 — 세그먼트가 앱/웹 대상을 이미 결정하며,
      * 플랫폼을 지정하면 웹 세그먼트 발송 시 교집합이 비어 조용히 0명 발송된다.
+     * 재시도 루프를 의도적으로 두지 않는다 — 호출부 크론이 매분 재시도하며,
+     * Idempotency-Key가 이중 발송을 막는다. 실패는 그대로 throw.
      *
      * @param array $segmentIds FlareLane 세그먼트 ID 배열 (최대 5개)
      * @param string $title
@@ -116,6 +118,7 @@ class FlarelaneService extends BaseApiService
             [
                 'headers' => $headers,
                 'json' => $fields,
+                'timeout' => 10,
             ]
         );
 
