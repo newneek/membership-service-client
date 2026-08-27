@@ -65,6 +65,66 @@ class FlarelaneService extends BaseApiService
         }
     }
 
+    /**
+     * 세그먼트 대상 푸시 발송.
+     * targetPlatforms는 의도적으로 싣지 않는다 — 세그먼트가 앱/웹 대상을 이미 결정하며,
+     * 플랫폼을 지정하면 웹 세그먼트 발송 시 교집합이 비어 조용히 0명 발송된다.
+     * 재시도 루프를 의도적으로 두지 않는다 — 호출부 크론이 매분 재시도하며,
+     * Idempotency-Key가 이중 발송을 막는다. 실패는 그대로 throw.
+     *
+     * @param array $segmentIds FlareLane 세그먼트 ID 배열 (최대 5개)
+     * @param string $title
+     * @param string $body
+     * @param array $data 랜딩 데이터 (예: ['content' => '8157'])
+     * @param string|null $imageUrl
+     * @param string|null $idempotencyKey 재시도 시 이중 발송 방지 키
+     * @return array 디코딩된 응답 (성공 시 data.id에 notification id)
+     * @throws \Exception
+     */
+    public function sendPushToSegments($segmentIds, $title, $body, $data = [], $imageUrl = null, $idempotencyKey = null)
+    {
+        if (empty($segmentIds)) {
+            throw new \InvalidArgumentException('segmentIds is empty');
+        }
+        if (count($segmentIds) > 5) {
+            throw new \InvalidArgumentException('segmentIds max count is 5');
+        }
+
+        $headers = [
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer ' . $this->appKey,
+        ];
+        if ($idempotencyKey !== null) {
+            $headers['Idempotency-Key'] = $idempotencyKey;
+        }
+
+        $fields = [
+            'targetType' => 'segment',
+            'targetIds' => array_map('strval', array_values($segmentIds)),
+            'title' => $title,
+            'body' => $body,
+        ];
+        if (!empty($data)) {
+            $fields['data'] = $data;
+        }
+        if (!empty($imageUrl)) {
+            $fields['imageUrl'] = $imageUrl;
+        }
+
+        $client = new Client();
+        $response = $client->request(
+            'POST',
+            $this->apiUrl . 'notifications',
+            [
+                'headers' => $headers,
+                'json' => $fields,
+                'timeout' => 10,
+            ]
+        );
+
+        return json_decode($response->getBody()->getContents(), true);
+    }
+
     private function sendPushWithRetry($headers, $fields)
     {
         $retryCount = 3;
