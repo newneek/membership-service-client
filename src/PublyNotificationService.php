@@ -742,6 +742,11 @@ class PublyNotificationService extends BaseApiService
         return $this->post("/content_push_schedule/{$scheduleId}/cancel", ['changer_id' => $changerId]);
     }
 
+    public function sendContentPushNow($changerId, $scheduleId)
+    {
+        return $this->post("/content_push_schedule/{$scheduleId}/send_now", ['changer_id' => $changerId]);
+    }
+
     public function sendDueContentPushes()
     {
         return $this->post('/content_push_schedule/send_due');
