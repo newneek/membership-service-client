@@ -78,10 +78,11 @@ class FlarelaneService extends BaseApiService
      * @param array $data 랜딩 데이터 (예: ['content' => '8157'])
      * @param string|null $imageUrl
      * @param string|null $idempotencyKey 재시도 시 이중 발송 방지 키
+     * @param string|null $url 클릭 랜딩 URL — 웹 푸시는 url이 없으면 클릭해도 이동하지 않는다 (data는 앱 전용)
      * @return array 디코딩된 응답 (성공 시 data.id에 notification id)
      * @throws \Exception
      */
-    public function sendPushToSegments($segmentIds, $title, $body, $data = [], $imageUrl = null, $idempotencyKey = null)
+    public function sendPushToSegments($segmentIds, $title, $body, $data = [], $imageUrl = null, $idempotencyKey = null, $url = null)
     {
         if (empty($segmentIds)) {
             throw new \InvalidArgumentException('segmentIds is empty');
@@ -109,6 +110,9 @@ class FlarelaneService extends BaseApiService
         }
         if (!empty($imageUrl)) {
             $fields['imageUrl'] = $imageUrl;
+        }
+        if (!empty($url)) {
+            $fields['url'] = $url;
         }
 
         $client = new Client();
