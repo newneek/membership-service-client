@@ -2873,6 +2873,70 @@ class PublyContentService extends BaseApiService
         return $this->post("profile/{$profileId}/delete", $inputs);
     }
 
+    public function createProfileChangeRequest(
+        $changerId,
+        $profileId,
+        $userId,
+        $name,
+        $imageUrl,
+        $headline,
+        $longDescription,
+        $links
+    ) {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId,
+            'name' => $name,
+            'image_url' => $imageUrl,
+            'headline' => $headline,
+            'long_description' => $longDescription,
+            'links' => $links
+        ];
+
+        return $this->post("profile/{$profileId}/profile_change_request", $inputs);
+    }
+
+    public function getProfileChangeRequests($page = 1, $limit = 20, $filterArray = [])
+    {
+        $filterArray['page'] = $page;
+        $filterArray['limit'] = $limit;
+        return $this->get("profile_change_request", $filterArray);
+    }
+
+    public function getProfileChangeRequestsByProfile($profileId)
+    {
+        return $this->get("profile/{$profileId}/profile_change_request");
+    }
+
+    public function cancelProfileChangeRequest($changerId, $requestId, $userId)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'user_id' => $userId
+        ];
+
+        return $this->post("profile_change_request/{$requestId}/cancel", $inputs);
+    }
+
+    public function approveProfileChangeRequest($changerId, $requestId)
+    {
+        $inputs = [
+            'changer_id' => $changerId
+        ];
+
+        return $this->put("profile_change_request/{$requestId}/approve", $inputs);
+    }
+
+    public function rejectProfileChangeRequest($changerId, $requestId, $rejectReason)
+    {
+        $inputs = [
+            'changer_id' => $changerId,
+            'reject_reason' => $rejectReason
+        ];
+
+        return $this->put("profile_change_request/{$requestId}/reject", $inputs);
+    }
+
     public function getWriterTypes($filterArray = [])
     {
         return $this->get("writer_type", $filterArray);
