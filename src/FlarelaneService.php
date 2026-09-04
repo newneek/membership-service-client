@@ -205,7 +205,7 @@ class FlarelaneService extends BaseApiService
         $fields = [
             'events' => [
                 [
-                    'name' => $eventName,
+                    'type' => $eventName,
                     'data' => $eventData,
                     'subjectType' => 'user',
                     'subjectId' => strval($userId)
