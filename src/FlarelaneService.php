@@ -79,10 +79,11 @@ class FlarelaneService extends BaseApiService
      * @param string|null $imageUrl
      * @param string|null $idempotencyKey 재시도 시 이중 발송 방지 키
      * @param string|null $url 클릭 랜딩 URL — 웹 푸시는 url이 없으면 클릭해도 이동하지 않는다 (data는 앱 전용)
+     * @param string|null $campaignName 콘솔 목록·상세·검색에 노출되는 캠페인명 (세그먼트 발송은 콘솔이 대상을 안 보여주므로 라벨을 여기 싣는다)
      * @return array 디코딩된 응답 (성공 시 data.id에 notification id)
      * @throws \Exception
      */
-    public function sendPushToSegments($segmentIds, $title, $body, $data = [], $imageUrl = null, $idempotencyKey = null, $url = null)
+    public function sendPushToSegments($segmentIds, $title, $body, $data = [], $imageUrl = null, $idempotencyKey = null, $url = null, $campaignName = null)
     {
         if (empty($segmentIds)) {
             throw new \InvalidArgumentException('segmentIds is empty');
@@ -113,6 +114,9 @@ class FlarelaneService extends BaseApiService
         }
         if (!empty($url)) {
             $fields['url'] = $url;
+        }
+        if (!empty($campaignName)) {
+            $fields['campaignName'] = $campaignName;
         }
 
         $client = new Client();
